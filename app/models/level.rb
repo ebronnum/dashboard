@@ -1,10 +1,4 @@
 class Level < ActiveRecord::Base
-  has_many :start_level_blocks
-  has_many :blocks, through: :start_level_blocks
-
-  has_many :toolbox_level_blocks
-  has_many :blocks, through: :toolbox_level_blocks
-
   belongs_to :game
   has_and_belongs_to_many :concepts
   belongs_to :solution_level_source, :class_name => "LevelSource"
