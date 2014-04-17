@@ -80,6 +80,8 @@ namespace :seed do
   COL_X = 'X'
   COL_Y = 'Y'
   COL_START_DIRECTION = 'Start_direction'
+  COL_START_BLOCKS = 'Start_blocks'
+  COL_TOOLBOX_BLOCKS = 'Toolbox_blocks'
   COL_SOLUTION = 'Solution'
 
   task custom_levels: :environment do
@@ -89,7 +91,7 @@ namespace :seed do
         level = levels.first_or_create
         game = Game.where(name: row[COL_GAME]).first
         solution = LevelSource.lookup(level, row[COL_SOLUTION])
-        level.update(instructions: row[COL_INSTRUCTIONS], skin: row[COL_SKIN], maze: row[COL_MAZE], x: row[COL_X], y: row[COL_Y], start_direction: row[COL_START_DIRECTION], game: game, solution_level_source: solution)
+        level.update(instructions: row[COL_INSTRUCTIONS], skin: row[COL_SKIN], maze: row[COL_MAZE], x: row[COL_X], y: row[COL_Y], start_blocks: row[COL_START_BLOCKS], toolbox_blocks: row[COL_TOOLBOX_BLOCKS], start_direction: row[COL_START_DIRECTION], game: game, solution_level_source: solution)
       end
     end
   end

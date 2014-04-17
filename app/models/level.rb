@@ -140,7 +140,7 @@ class Level < ActiveRecord::Base
   end
 
   def self.write_custom_levels_to_file
-    headers = %w[name instructions skin maze x y start_direction start_blocks]
+    headers = %w[name instructions skin maze x y start_direction start_blocks toolbox_blocks]
 
     CSV.open(Rails.root.join("config", "scripts", "custom_levels.csv"), 'w+') do |file|
       file << (headers + ["game", "solution"]).map { |header| header.capitalize }
