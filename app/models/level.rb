@@ -132,25 +132,12 @@ class Level < ActiveRecord::Base
   end
 
   def self.custom_levels
-    Level.where("user_id IS NOT NULL")
+    where("user_id IS NOT NULL").select(:game_id, :name, :skin, :solution, :user_id, :instructions, :maze, :x, :y, :start_direction, :start_blocks, :toolbox_blocks)
   end
 
-
-  private
-    def write_custom_levels_to_file
-      headers = %w[name level_num instructions skin maze x y start_direction start_blocks toolbox_blocks]
-
-      CSV.open(Rails.root.join("config", "scripts", "custom_levels.csv"), 'w+') do |file|
-        file << (headers + ["game", "solution"]).map { |header| header.capitalize }
-
-        custom_levels.each do |custom_level|
-          file << custom_level.to_csv(headers)
-        end
-      end
+  def write_custom_levels_to_file
+    File.open(Rails.root.join("config", "scripts", "custom_levels.json"), 'w+') do |file|
+      file << Level.custom_levels.to_json
     end
-
-    def to_csv(columns)
-      solution = self.solution_level_source.data rescue ""
-      (columns.map { |column| self[column] }).push(self.game.name, solution)
-    end
+  end
 end
