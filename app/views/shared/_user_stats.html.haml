@@ -2,25 +2,34 @@
 - script_levels = user ? user.levels_from_script(script) : script.script_levels
 - concept_progress = user ? user.concept_progress : nil
 
--if (!defined? trophies_on_right) || !trophies_on_right
+-#if (!defined? trophies_on_right) || !trophies_on_right
   =render partial: 'shared/concept_trophy_block', locals: { concept_progress: concept_progress, user: user, added_style: 'padding-right:10px;' }
 
-%div{style:"display:inline-block;width:315px;position:relative;overflow:hidden;float:left;"}
+%div{style:"display:inline-block;position:relative;overflow:hidden;float:left;"}
   %h4 #{t('nav.popup.puzzle_map')}
 
   - script_levels.group_by{ |sl| sl.stage ? sl.stage : sl.level.game }.each_pair do |game, sl_group|
-    - title = data_t_suffix('script.name', script.name, game.name) + ' ' + (data_t('game.name', game.name) || game.name)
+    - title = data_t_suffix('script.name', script.name, game.name) + ': ' + (data_t('game.name', game.name) || game.name)
+    - stage_title = data_t_suffix('script.name', script.name, game.name)
+    - game_title = (data_t('game.name', game.name) || game.name)
     .game-group
       - if sl_group.length == 1
-        .single-game
+        %div{style:"display:inline-block;width:200px"}<
+          =stage_title + ": "
+          %div{style:"display:inline-block;font-weight:500"}<
+            =game_title
+        .single-game{style:"display:inline-block;vertical-align:top"}
           - sl = sl_group.first
           - passed, link = level_info(user, sl)
           %a{href: link, class: ('level-done' if passed)}
-            %span=title
+            %span="Activity"
             - if passed
               = check_mark_html
       - else
-        %div=title
+        %div{style:"display:inline-block;width:200px"}<
+          =stage_title + ": "
+          %div{style:"display:inline-block;font-weight:500"}<
+            =game_title
         - sl_group.each do |sl|
           - passed, link = level_info(user, sl)
           - if passed
@@ -32,5 +41,5 @@
 
     .stage_separator
 
--if (defined? trophies_on_right) && trophies_on_right
+-#if (defined? trophies_on_right) && trophies_on_right
   =render partial: 'shared/concept_trophy_block', locals: { concept_progress: concept_progress, user: user, added_style: 'padding-left:30px;' }
