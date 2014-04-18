@@ -1,4 +1,5 @@
 class Level < ActiveRecord::Base
+  serialize :properties, JSON
   belongs_to :game
   has_and_belongs_to_many :concepts
   belongs_to :solution_level_source, :class_name => "LevelSource"
