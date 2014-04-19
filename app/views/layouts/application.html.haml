@@ -10,7 +10,6 @@
     - if serve_fonts?
       = stylesheet_link_tag    "//cloud.typography.com/7425452/678642/css/fonts.css", media: "all"
     = javascript_include_tag "application"
-    = javascript_include_tag "jquery.placeholder"
     = javascript_include_tag "//cdn.optimizely.com/js/400912536.js" if Rails.env.production?
     = csrf_meta_tags
     = yield :head

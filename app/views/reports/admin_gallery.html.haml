@@ -1,16 +1,23 @@
 :css
   div.gallery_activity {
     float: left;
-    width: 200px;
+    width: 174px;
     padding-bottom: 5px;
+    margin: 10px 10px 5px 10px;
   }
   .gallery_activity img {
+    width: 154px;
+    height: 154px;
     border: 10px groove lightgray;
-    margin: 5px;
   }
-  .gallery_activity span {
+  .gallery_activity div {
     color: #666;
-    margin: auto;
+    margin: 0 auto;
+    clear: both;
+    max-width: 154px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
 %h3 Recent drawings that students have saved to their gallery
@@ -20,9 +27,9 @@
     - activity = gallery_activity.activity
     - level_source = activity.level_source
     = link_to image_tag(original_image_level_source_path(level_source)), level_source
-    %br/
-    %span
+    %div
       by
       = activity.user.name
+    %div
       = time_ago_in_words activity.created_at
       ago

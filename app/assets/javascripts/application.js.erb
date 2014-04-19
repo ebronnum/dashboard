@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery.ui.all
+//= require video
 //= require_tree .
 // Loads all Bootstrap javascripts
 //= require bootstrap
@@ -125,6 +126,80 @@ function showVideo(options) {
   notesDiv.height(divHeight);
 
   dialog.show();
+
+  // Temporarily disabled until youtubeeducation.com has a suitable endpoint
+  // setupVideoFallback(options, divHeight, $div.width());
+}
+
+function setupVideoFallback(videoInfo, playerHeight, playerWidth) {
+  onYouTubeBlocked(function() {
+    addFallbackVideoPlayer(videoInfo, playerHeight, playerWidth);
+  });
+}
+
+function onYouTubeBlocked(callback) {
+  $("<img width=0 height=0>")
+      .on("error", callback)
+      .attr("src", "http://www.youtube.com/favicon.ico?" + Math.random())
+      .css("position", "absolute")
+      .appendTo("body");
+}
+
+function addFallbackVideoPlayer(videoInfo, playerHeight, playerWidth) {
+  var fallbackPlayerID = 'fallbackPlayer' + Date.now();
+  var playerCode =
+    '<div><video id="'+ fallbackPlayerID +'" ' +
+      'width="' + playerWidth + '" height="' + playerHeight + '" ' +
+      'data-setup=\'{ "autoplay": true }\' ' +
+      'class="video-js vjs-default-skin vjs-big-play-centered" ' +
+      'controls preload="auto" ' +
+      'poster="' + videoInfo.thumbnail + '">' +
+      '<source src="' + videoInfo.download + '" type="video/mp4"/>' +
+    '</video></div>';
+
+  // Swap current #video with new code
+  replaceWithElement('video', playerCode);
+
+  videojs.options.flash.swf = "<%= asset_path("video-js.swf") %>";
+  videojs.options.techOrder = ["flash", "html5"];
+
+  var videoPlayer = videojs(fallbackPlayerID, {}, function() {
+    var $fallbackPlayer = $('#' + fallbackPlayerID);
+    var showingErrorMessage = $fallbackPlayer.find('p').length > 0;
+    if (showingErrorMessage) {
+      $fallbackPlayer.addClass('fallback-video-player-failed');
+      openNotesTab();
+    }
+    // Properly dispose of video.js player instance when hidden
+    $fallbackPlayer.parents('.modal').one('hidden.bs.modal', function(){
+      videoPlayer.dispose();
+    })
+  });
+}
+
+function openNotesTab() {
+  var notesTabIndex = $('.dash_modal_body a[href="#notes-outer"]').parent().index();
+  $('.ui-tabs').tabs('option', 'active', notesTabIndex);
+}
+
+/**
+ * Replaces element with ID oldID with the HTML at newHTML
+ * Copies over attributes of old element into new one
+ * @param oldID
+ * @param newHTML
+ */
+function replaceWithElement(oldID, newHTML) {
+  var $oldElement = $('#' + oldID);
+  var oldAttributes = $oldElement.prop("attributes");
+
+  var $newElement = $(newHTML);
+  $oldElement.before($newElement);
+  $oldElement.remove();
+  $newElement.attr('id', oldID);
+
+  $.each(oldAttributes, function() {
+    $newElement.attr(this.name, this.value);
+  });
 }
 
 function embed_thumbnail_image(data) {

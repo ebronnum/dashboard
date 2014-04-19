@@ -14,93 +14,101 @@ class ActivitiesController < ApplicationController
     @@milestone_logger ||= Logger.new("#{Rails.root}/log/milestone.log")
   end
 
-  def milestone
-    solved = 'true' == params[:result]
-    total_lines = 0
-    trophy_updates = []
+  def track_progress_for_user
     test_result = params[:testResult].to_i
     lines = params[:lines].to_i
-    script_level = ScriptLevel.cache_find(params[:script_level_id].to_i)
-    level = script_level.level
+    solved = ('true' == params[:result])
+    
+    authorize! :create, Activity
+    authorize! :create, UserLevel
 
-    if params[:program]
-      level_source = LevelSource.lookup(level, params[:program])
+    @activity = Activity.create!(user: current_user,
+                                 level: @script_level.level,
+                                 action: solved, # TODO I think we don't actually use this. (maybe in a report?)
+                                 test_result: test_result,
+                                 attempt: params[:attempt].to_i,
+                                 lines: lines,
+                                 time: [[params[:time].to_i, 0].max, MAX_INT_MILESTONE].min,
+                                 level_source: @level_source )
+
+    user_level = UserLevel.where(user: current_user, level: @script_level.level).first_or_create
+    user_level.attempts += 1 unless user_level.best?
+    user_level.best_result = user_level.best_result ?
+      [test_result, user_level.best_result].max :
+      test_result
+    user_level.save!
+
+    if lines > 0 && test_result >= Activity::MINIMUM_PASS_RESULT
+      current_user.total_lines += lines
+      current_user.save!
     end
 
-    log_milestone(level_source, params)
+    begin
+      trophy_check(current_user)
+    rescue Exception => e
+      Rails.logger.error "Error updating trophy exception: #{e.inspect}"
+    end
+    
+    unless @trophy_updates.blank?
+      prize_check(current_user)
+    end
+  end
+
+  def track_progress_in_session
+    test_result = params[:testResult].to_i
+    lines = params[:lines].to_i
+
+    # TODO: this doesn't work for multiple scripts, especially if scripts share levels
+    session_progress = session[:progress] || {}
+
+    if test_result > session_progress.fetch(@script_level.level_id, -1)
+      session_progress[@script_level.level_id] = test_result
+      session[:progress] = session_progress
+    end
+
+    total_lines = session[:lines] || 0
+
+    if lines > 0 && test_result >= Activity::MINIMUM_PASS_RESULT
+      total_lines += lines
+      session[:lines] = total_lines
+    end
+  end
+
+  def milestone
+    # TODO: do we use the :result and :testResult params for the same thing?
+    solved = ('true' == params[:result])
+    total_lines = 0
+    @script_level = ScriptLevel.cache_find(params[:script_level_id].to_i)
+
+    if params[:program]
+      @level_source = LevelSource.lookup(@script_level.level, params[:program])
+    end
+
+    log_milestone(@level_source, params)
 
     # Store the image only if the image is set, and the image has not been saved
     if params[:image]
-      level_source_id = level_source.id
-      level_source_image = LevelSourceImage.find_or_create_by(:level_source_id => level_source_id)
-      if level_source_image.image.nil?
-        level_source_image.image = Base64.decode64(params[:image])
-        level_source_image.save!
-      end
+      level_source_image = LevelSourceImage.find_or_create_by(:level_source_id => @level_source.id)
+      level_source_image.replace_image_if_better Base64.decode64(params[:image])
     end
 
     if current_user
-      authorize! :create, Activity
-      authorize! :create, UserLevel
-
-      @activity = Activity.create!(
-          user: current_user,
-          level: level,
-          action: solved,
-          test_result: test_result,
-          attempt: params[:attempt].to_i,
-          lines: lines,
-          time: [[params[:time].to_i, 0].max, MAX_INT_MILESTONE].min,
-          level_source: level_source )
-
-      user_level = UserLevel.where(user: current_user, level: level).first_or_create
-      user_level.attempts += 1 unless user_level.best?
-      user_level.best_result = user_level.best_result ?
-          [test_result, user_level.best_result].max :
-          test_result
-      user_level.save!
-
-      if lines > 0 && test_result >= Activity::MINIMUM_PASS_RESULT
-        current_user.total_lines += lines
-        current_user.save!
-      end
-
+      track_progress_for_user
       total_lines = current_user.total_lines
-
-      begin
-        trophy_updates = trophy_check(current_user)
-      rescue Exception => e
-        Rails.logger.error "Error updating trophy exception: #{e.inspect}"
-      end
-
-      if trophy_updates.length > 0
-        prize_check(current_user)
-      end
     else
-      session_progress = session[:progress] || {}
-
-      if test_result > session_progress.fetch(level.id, -1)
-        session_progress[level.id] = test_result
-        session[:progress] = session_progress
-      end
-
+      track_progress_in_session
       total_lines = session[:lines] || 0
-
-      if lines > 0 && test_result >= Activity::MINIMUM_PASS_RESULT
-        total_lines += lines
-        session[:lines] = total_lines
-      end
     end
 
-    render json: milestone_response(script_level: script_level,
+    render json: milestone_response(script_level: @script_level,
                                     total_lines: total_lines,
-                                    trophy_updates: trophy_updates,
+                                    trophy_updates: @trophy_updates,
                                     solved?: solved,
-                                    level_source: level_source,
+                                    level_source: @level_source,
                                     activity: @activity)
 
     slog(:tag => 'activity_finish',
-         :script_level_id => script_level.id,
+         :script_level_id => @script_level.id,
          :user_agent => request.user_agent,
          :locale => locale)
   end
@@ -166,7 +174,7 @@ class ActivitiesController < ApplicationController
   end
 
   def trophy_check(user)
-    trophy_updates = []
+    @trophy_updates ||= []
     # called after a new activity is logged to assign any appropriate trophies
     current_trophies = user.user_trophies.includes([:trophy, :concept]).index_by { |ut| ut.concept }
     progress = user.concept_progress
@@ -191,15 +199,13 @@ class ActivitiesController < ApplicationController
           # they already have the right trophy
         elsif current
           current.update_attributes!(trophy_id: new_trophy.id)
-          trophy_updates << [data_t('concept.description', concept.name), new_trophy.name, view_context.image_path(new_trophy.image_name)]
+          @trophy_updates << [data_t('concept.description', concept.name), new_trophy.name, view_context.image_path(new_trophy.image_name)]
         else
           UserTrophy.create!(user: user, trophy_id: new_trophy.id, concept: concept)
-          trophy_updates << [data_t('concept.description', concept.name), new_trophy.name, view_context.image_path(new_trophy.image_name)]
+          @trophy_updates << [data_t('concept.description', concept.name), new_trophy.name, view_context.image_path(new_trophy.image_name)]
         end
       end
     end
-
-    trophy_updates
   end
 
   def prize_check(user)

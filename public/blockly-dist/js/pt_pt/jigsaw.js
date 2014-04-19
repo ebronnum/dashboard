@@ -152,6 +152,9 @@ BlocklyApps.init = function(config) {
   BlocklyApps.share = config.share;
   BlocklyApps.noPadding = config.no_padding;
 
+  BlocklyApps.IDEAL_BLOCK_NUM = config.level.ideal || Infinity;
+  BlocklyApps.REQUIRED_BLOCKS = config.level.requiredBlocks || [];
+
   // enableShowCode defaults to true if not defined
   BlocklyApps.enableShowCode = (config.enableShowCode === false) ? false : true;
 
@@ -1119,12 +1122,7 @@ exports.displayFeedback = function(options) {
   // Update the background color if it is set to be in special design.
   if (options.response && options.response.design &&
       isFeedbackMessageCustomized(options)) {
-    if (options.response.design == "yellow_background") {
-      document.getElementById('feedback-dialog')
-          .className += " yellow-background";
-      document.getElementById('feedback-content')
-          .className += " white-background";
-    } else if (options.response.design == "white_background") {
+    if (options.response.design == "white_background") {
       document.getElementById('feedback-dialog')
           .className += " white-background";
       document.getElementById('feedback-content')
@@ -1855,8 +1853,66 @@ var generateXMLForBlocks = function(blocks) {
 
 var msg = require('../../locale/pt_pt/jigsaw');
 var dom = require('../dom');
+var levels = require('./levels');
+
+var patternCache = {
+  queued: [],
+  created: {},
+
+  /**
+   * Stick an item in our queue
+   */
+  addToQueue: function (patternInfo) {
+    this.queued.push(patternInfo);
+  },
+
+  /**
+   * Add all the svg patterns we've queued up.
+   */
+  addQueuedPatterns: function () {
+    this.queued.forEach(function (pattern) {
+      addPattern(pattern.id, pattern.imagePath, pattern.width, pattern.height,
+        pattern.offsetX, pattern.offsetY);
+    });
+    this.queued = [];
+  },
+
+  /**
+   * Have we already created an svg element for this patternInfo?  Throws if
+   * we ask with a patternInfo that has the same id but different attributes.
+   */
+  wasCreated: function (patternInfo) {
+    var equal = true;
+    var cached = this.created[patternInfo.id];
+    if (!cached) {
+      return false;
+    }
+
+    Object.keys(patternInfo).forEach(function (key) {
+      if (patternInfo[key] !== cached[key]) {
+        equal = false;
+      }
+    });
+    if (!equal) {
+      throw new Error("Can't add attribute of same id with different attributes");
+    }
+    return true;
+  },
+
+  /**
+   * Mark that we've created an svg pattern
+   */
+  markCreated: function (patternInfo) {
+    if (this.created[patternInfo.id]) {
+      throw new Error('Already have cached item with id: ' + patternInfo.id);
+    }
+    this.created[patternInfo.id] = patternInfo;
+  }
+
+};
 
 var patterns = [];
+var createdPatterns = {};
 
 /**
  * Add an svg pattern for the given image. If document is not yet fully loaded,
@@ -1871,25 +1927,26 @@ var patterns = [];
  */
 var addPattern = function (id, imagePath, width, height, offsetX, offsetY) {
   var x, y, pattern, patternImage;
+  var patternInfo = {
+    id: id,
+    imagePath: imagePath,
+    width: width,
+    height: height,
+    offsetX: offsetX,
+    offsetY: offsetY
+  };
 
   if (document.readyState !== "complete") {
-    // queue it up
-    patterns.push({
-      id: id,
-      imagePath: imagePath,
-      width: width,
-      height: height,
-      offsetX: offsetX,
-      offsetY: offsetY
-    });
-  } else {
+    patternCache.addToQueue(patternInfo);
+  } else if (!patternCache.wasCreated(patternInfo)) {
+    // add the pattern
     x = typeof(offsetX) === "function" ? -offsetX() : -offsetX;
     y = typeof(offsetY) === "function" ? -offsetY() : -offsetY;
     pattern = Blockly.createSvgElement('pattern', {
       id: id,
       patternUnits: 'userSpaceOnUse',
       width: "100%",
-      height: "100%",
+      height: height,
       x: x,
       y: y
     }, document.getElementById('blocklySvgDefs'));
@@ -1899,24 +1956,10 @@ var addPattern = function (id, imagePath, width, height, offsetX, offsetY) {
     }, pattern);
     patternImage.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href',
       imagePath);
-  }
 
+    patternCache.markCreated(patternInfo);
+  }
   return id;
-};
-
-/**
- * Add all the svg patterns we've queued up.
- */
-var addQueuedPatterns = function () {
-  if (document.readyState !== "complete") {
-    throw new Error('Should only add queued patterns after fully loaded');
-  }
-  for (var i = 0; i < patterns.length; i++) {
-    var pattern = patterns[i];
-    addPattern(pattern.id, pattern.imagePath, pattern.width, pattern.height,
-      pattern.offsetX, pattern.offsetY);
-  }
-  patterns = [];
 };
 
 /**
@@ -1943,52 +1986,46 @@ var blockWidth = function (type) {
   return blockOfType(type).getHeightWidth().width;
 };
 
+function addQueuedWhenReady() {
+  if (!document.getElementById('blocklySvgDefs')) {
+    setTimeout(addQueuedWhenReady, 100);
+    return;
+  }
+  patternCache.addQueuedPatterns();
+}
+
+
 // Install extensions to Blockly's language and JavaScript generator.
 exports.install = function(blockly, skin) {
-  // don't add patterns until ready
-  dom.addReadyListener(function() {
-    if (document.readyState === "complete") {
-      addQueuedPatterns();
-    }
-  });
+  // could make this settable on the level if I need
+  var HSV = [0, 1.00, 0.98];
 
   var existingBlocks = Object.keys(blockly.Blocks);
 
-  generateBlocksForLevel(blockly, skin, {
-     image: skin.smiley,
-     HSV: [121, 1.00, 0.98],
-     width: 200,
-     height: 200,
-     numBlocks: 2,
-     level: 1
-   });
+  Object.keys(levels).forEach(function(key) {
+    var level = levels[key];
+    generateJigsawBlocksForLevel(blockly, skin, {
+      image: skin[level.image.name],
+      HSV: HSV,
+      width: level.image.width,
+      height: level.image.height,
+      numBlocks: level.numBlocks,
+      notchedEnds: level.notchedEnds,
+      level: key
+    });
 
-  generateBlocksForLevel(blockly, skin, {
-     image: skin.smiley,
-     HSV: [0, 1.00, 0.98],
-     width: 300,
-     height: 300,
-     numBlocks: 3,
-     level: 2
-   });
+    if (level.numBlocks === 0) {
+      // still want the pattern for the ghost
+      var patternName = 'pat_' + level.id + 'A';
+      addPattern(patternName, skin[level.image.name], level.image.width,
+        level.image.height, 0, 0);
+    }
+  });
 
-  generateBlocksForLevel(blockly, skin, {
-     image: skin.artist,
-     HSV: [0, 1.00, 0.98],
-     width: 200,
-     height: 200,
-     numBlocks: 3,
-     level: 3
-   });
-
-  generateBlocksForLevel(blockly, skin, {
-     image: skin.smiley,
-     HSV: [0, 1.00, 0.98],
-     width: 400,
-     height: 400,
-     numBlocks: 5,
-     level: 4
-   });
+  generateBlankBlock(blockly, skin, 'jigsaw_repeat', [322, 0.90, 0.95], 100, true);
+  generateBlankBlock(blockly, skin, 'jigsaw_green', [140, 1.00, 0.74], 80);
+  generateBlankBlock(blockly, skin, 'jigsaw_blue', [184, 1.00, 0.74], 80);
+  generateBlankBlock(blockly, skin, 'jigsaw_purple', [312, 0.32, 0.62], 80);
 
   // Go through all added blocks, and add empty generators for those that
   // weren't already given generators
@@ -2002,17 +2039,37 @@ exports.install = function(blockly, skin) {
     }
   });
 
+  addQueuedWhenReady();
+
   delete blockly.Blocks.procedures_defreturn;
   delete blockly.Blocks.procedures_ifreturn;
 };
 
-function generateBlocksForLevel(blockly, skin, options) {
+function generateBlankBlock(blockly, skin, name, hsv, width, hasAppend) {
+  blockly.Blocks[name] = {
+    helpUrl: '',
+    init: function () {
+      this.setHSV.apply(this, hsv);
+      this.appendDummyInput()
+        .appendTitle(new blockly.FieldImage(skin.blank, width, 1));
+      this.setPreviousStatement(true);
+      if (hasAppend) {
+        this.appendStatementInput('');
+      }
+      this.setNextStatement(true);
+    }
+  };
+}
+
+function generateJigsawBlocksForLevel(blockly, skin, options) {
   var image = options.image;
   var width = options.width;
   var height = options.height;
   var numBlocks = options.numBlocks;
   var level = options.level;
   var HSV = options.HSV;
+  // if true, first/last block will still have previous/next notches
+  var notchedEnds = options.notchedEnds;
 
   var blockHeight = height / numBlocks;
   var titleWidth = width - 20;
@@ -2029,8 +2086,8 @@ function generateBlocksForLevel(blockly, skin, options) {
         this.setHSV.apply(this, HSV);
         this.appendDummyInput()
           .appendTitle(new blockly.FieldImage(skin.blank, titleWidth, titleHeight));
-        this.setPreviousStatement(blockNum !== 1);
-        this.setNextStatement(blockNum !== numBlocks);
+        this.setPreviousStatement(blockNum !== 1 || notchedEnds);
+        this.setNextStatement(blockNum !== numBlocks || notchedEnds);
         this.setFillPattern(
           addPattern(patternName, image, width, height, 0,
             blockHeight * (blockNum - 1)));
@@ -2043,7 +2100,7 @@ function generateBlocksForLevel(blockly, skin, options) {
   }
 }
 
-},{"../../locale/pt_pt/jigsaw":29,"../dom":6}],9:[function(require,module,exports){
+},{"../../locale/pt_pt/jigsaw":29,"../dom":6,"./levels":11}],9:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2092,34 +2149,36 @@ BlocklyApps.CHECK_FOR_EMPTY_BLOCKS = true;
 //The number of blocks to show as feedback.
 BlocklyApps.NUM_REQUIRED_BLOCKS_TO_FLAG = 1;
 
-Blockly.BlockSvg.NOTCH_WIDTH = 50;
+function useLargeNotches() {
+  Blockly.BlockSvg.NOTCH_WIDTH = 50;
 
-var notchHeight = 8;
-var notchWidthA = 6;
-var notchWidthB = 10;
+  var notchHeight = 8;
+  var notchWidthA = 6;
+  var notchWidthB = 10;
 
-Blockly.BlockSvg.NOTCH_PATH_WIDTH = notchWidthA * 2 + notchWidthB;
+  Blockly.BlockSvg.NOTCH_PATH_WIDTH = notchWidthA * 2 + notchWidthB;
 
-Blockly.BlockSvg.NOTCH_PATH_LEFT = 'l ' +
-  notchWidthA + ',' + notchHeight + ' ' +
-  notchWidthB + ',0 ' +
-  notchWidthA + ',-' + notchHeight;
-Blockly.BlockSvg.NOTCH_PATH_RIGHT = 'l ' +
-  '-' + notchWidthA + ',' + notchHeight + ' ' +
-  '-' + notchWidthB + ',0 ' +
-  '-' + notchWidthA + ',-' + notchHeight;
-// Blockly.BlockSvg.NOTCH_PATH_LEFT = 'l 6,4 3,0 6,-4';
-// Blockly.BlockSvg.NOTCH_PATH_RIGHT = 'l -6,4 -3,0 -6,-4';
+  Blockly.BlockSvg.NOTCH_PATH_LEFT = 'l ' +
+    notchWidthA + ',' + notchHeight + ' ' +
+    notchWidthB + ',0 ' +
+    notchWidthA + ',-' + notchHeight;
+  Blockly.BlockSvg.NOTCH_PATH_RIGHT = 'l ' +
+    '-' + notchWidthA + ',' + notchHeight + ' ' +
+    '-' + notchWidthB + ',0 ' +
+    '-' + notchWidthA + ',-' + notchHeight;
+  // Blockly.BlockSvg.NOTCH_PATH_LEFT = 'l 6,4 3,0 6,-4';
+  // Blockly.BlockSvg.NOTCH_PATH_RIGHT = 'l -6,4 -3,0 -6,-4';
 
-var notchHighlightHeight = notchHeight; //4;
-var notchHighlightWidthA = notchWidthA + 0.5; //6.5;
-var notchHighlightWidthB = notchWidthB - 1; //2;
+  var notchHighlightHeight = notchHeight; //4;
+  var notchHighlightWidthA = notchWidthA + 0.5; //6.5;
+  var notchHighlightWidthB = notchWidthB - 1; //2;
 
-Blockly.BlockSvg.NOTCH_PATH_LEFT_HIGHLIGHT = 'l ' +
-  notchHighlightWidthA + ',' + notchHighlightHeight + ' ' +
-  notchHighlightWidthB + ',0 ' +
-  notchHighlightWidthA + ',-' + notchHighlightHeight;
-// Blockly.BlockSvg.NOTCH_PATH_LEFT_HIGHLIGHT = 'l 6.5,4 2,0 6.5,-4';
+  Blockly.BlockSvg.NOTCH_PATH_LEFT_HIGHLIGHT = 'l ' +
+    notchHighlightWidthA + ',' + notchHighlightHeight + ' ' +
+    notchHighlightWidthB + ',0 ' +
+    notchHighlightWidthA + ',-' + notchHighlightHeight;
+  // Blockly.BlockSvg.NOTCH_PATH_LEFT_HIGHLIGHT = 'l 6.5,4 2,0 6.5,-4';
+}
 
 
 // Default Scalings
@@ -2130,9 +2189,6 @@ Jigsaw.scale = {
 
 var loadLevel = function() {
   // Load maps.
-  BlocklyApps.IDEAL_BLOCK_NUM = level.ideal || Infinity;
-  BlocklyApps.REQUIRED_BLOCKS = level.requiredBlocks;
-
   // Override scalars.
   for (var key in level.scale) {
     Jigsaw.scale[key] = level.scale[key];
@@ -2152,6 +2208,23 @@ var drawMap = function() {
   var belowVisualization = document.getElementById('belowVisualization');
   belowVisualization.style.width = Jigsaw.MAZE_WIDTH + 'px';
   belowVisualization.style.display = 'none';
+
+  // account for toolbox if there
+  var toolboxWidth = -Blockly.mainWorkspace.getMetrics().viewLeft;
+
+  if (level.ghost) {
+    var svg = document.querySelectorAll(".blocklySvg")[0];
+    var image = Blockly.createSvgElement('rect', {
+      fill: "url(#pat_" + level.id + "A)",
+      "fill-opacity": "0.2",
+      width: level.image.width,
+      height: level.image.height,
+      transform: "translate(" + (toolboxWidth + level.ghost.x) + ", " +
+        level.ghost.y + ")"
+    });
+    // we want it to be first, so it's behind everything
+    svg.insertBefore(image, svg.childNodes[0]);
+  }
 };
 
 /**
@@ -2162,6 +2235,11 @@ Jigsaw.init = function(config) {
   skin = config.skin;
   level = config.level;
   loadLevel();
+
+  if (level.largeNotches) {
+    useLargeNotches();
+  }
+  Blockly.SNAP_RADIUS = level.snapRadius || 90;
 
   config.html = page({
     assetUrl: BlocklyApps.assetUrl,
@@ -2186,8 +2264,6 @@ Jigsaw.init = function(config) {
      * Blockly's default is 0.45.
      */
     Blockly.HSV_SATURATION = 0.6;
-
-    Blockly.SNAP_RADIUS *= Jigsaw.scale.snapRadius;
 
     drawMap();
   };
@@ -2319,17 +2395,23 @@ var jigsawBlock = function (type, x, y, child) {
 /**
  * Validates whether puzzle has been successfully put together.
  *
+ * @param {string[]} list of types
  * @param {number} options.level Level number
  * @Param {number} options.numBlocks How many blocks there are in the level
  */
-var validateSimplePuzzle = function (options) {
-  var level = options.level;
-  var numBlocks = options.numBlocks;
+var validateSimplePuzzle = function (types, options) {
+  var numBlocks;
+  if (types) {
+    numBlocks = types.length;
+  } else {
+    var letters = '-ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    var level = options.level;
+    numBlocks = options.numBlocks;
 
-  var letters = '-ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  var types = [];
-  for (var i = 1; i <= numBlocks; i++) {
-    types.push('jigsaw_' + level + letters[i]);
+    types = [];
+    for (var i = 1; i <= numBlocks; i++) {
+      types.push('jigsaw_' + level + letters[i]);
+    }
   }
 
   var roots = Blockly.mainWorkspace.getTopBlocks();
@@ -2337,10 +2419,10 @@ var validateSimplePuzzle = function (options) {
     return false;
   }
 
-  var depth = 1;
+  var depth = 0;
   var block = roots[0];
-  while (depth <= numBlocks) {
-    if (!block || block.type !== types[depth - 1]) {
+  while (depth < numBlocks) {
+    if (!block || block.type !== types[depth]) {
       return false;
     }
     var children = block.getChildren();
@@ -2365,84 +2447,355 @@ var validateSimplePuzzle = function (options) {
 
 module.exports = {
   '1': {
-    'instructionsIcon': 'smiley',
-    'requiredBlocks': [],
-    'freePlay': false,
-    'goal': {
+    instructionsIcon: 'smiley',
+    image: {
+      name: 'smiley',
+      width: 200,
+      height: 200
+    },
+    numBlocks: 1,
+    requiredBlocks: [],
+    freePlay: false,
+    largeNotches: true,
+    goal: {
       successCondition: function () {
-        return validateSimplePuzzle({level: 1, numBlocks: 2});
-      },
+        // todo (brent) : not yet implemented
+        return false;
+      }
     },
-    'scale': {
-      'snapRadius': 2
-    },
-    'startBlocks':
-      jigsawBlock('jigsaw_1A', 20, 20) +
-      jigsawBlock('jigsaw_1B', 245, 65)
+    startBlocks:
+      jigsawBlock('jigsaw_1A', 20, 20)
   },
-
   '2': {
-    'instructionsIcon': 'smiley',
-    'requiredBlocks': [],
-    'freePlay': false,
-    'goal': {
+    instructionsIcon: 'smiley',
+    image: {
+      name: 'smiley',
+      width: 200,
+      height: 200
+    },
+    ghost: {
+      x: 400,
+      y: 100
+    },
+    numBlocks: 1,
+    requiredBlocks: [],
+    freePlay: false,
+    largeNotches: true,
+    goal: {
       successCondition: function () {
-        return validateSimplePuzzle({level: 2, numBlocks: 3});
-      },
+        // need to be finished drag
+        if (Blockly.mainWorkspace.dragMode) {
+          return false;
+        }
+        var pos = Blockly.mainWorkspace.getAllBlocks()[0].getRelativeToSurfaceXY();
+        // how close to ghost?
+        var dx = Math.abs(400 - pos.x);
+        var dy = Math.abs(100 - pos.y);
+        console.log(dx + dy);
+        return dx + dy < 80;
+      }
     },
-    'scale': {
-      'snapRadius': 2
-    },
-    'startBlocks':
-      jigsawBlock('jigsaw_2A', 260, 20) +
-      jigsawBlock('jigsaw_2B', 120, 190) +
-      jigsawBlock('jigsaw_2C', 20, 70)
+    startBlocks:
+      jigsawBlock('jigsaw_2A', 20, 20)
   },
-
   '3': {
-    'instructionsIcon': 'artist',
-    'requiredBlocks': [],
-    'freePlay': false,
-    'goal': {
+    instructionsIcon: 'smiley',
+    image: {
+      name: 'smiley',
+      width: 200,
+      height: 200
+    },
+    ghost: {
+      x: 100,
+      y: 20
+    },
+    numBlocks: 2,
+    requiredBlocks: [],
+    freePlay: false,
+    largeNotches: true,
+    goal: {
       successCondition: function () {
-        return validateSimplePuzzle({level: 3, numBlocks: 3});
+        return validateSimplePuzzle(null, {level: 3, numBlocks: 2});
       },
     },
-    'scale': {
-      'snapRadius': 2
-    },
-    'toolbox':
-      createToolbox(
-        jigsawBlock('jigsaw_3C') +
-        jigsawBlock('jigsaw_3B') +
-        jigsawBlock('jigsaw_3A')
-      ),
-    'startBlocks': ''
-
+    startBlocks:
+      jigsawBlock('jigsaw_3A', 100, 20) +
+      jigsawBlock('jigsaw_3B', 100, 220)
   },
 
   '4': {
-    'instructionsIcon': 'smiley',
-    'requiredBlocks': [],
-    'freePlay': false,
-    'goal': {
+    instructionsIcon: 'smiley',
+    image: {
+      name: 'smiley',
+      width: 200,
+      height: 200
+    },
+    ghost: {
+      x: 100,
+      y: 38
+    },
+    numBlocks: 2,
+    requiredBlocks: [],
+    freePlay: false,
+    largeNotches: true,
+    goal: {
       successCondition: function () {
-        return validateSimplePuzzle({level: 4, numBlocks: 5});
+        return validateSimplePuzzle(null, {level: 4, numBlocks: 2});
       },
     },
-    'scale': {
-      'snapRadius': 2
-    },
-    'toolbox':
-      createToolbox(
-        jigsawBlock('jigsaw_4B') +
-        jigsawBlock('jigsaw_4A') +
-        jigsawBlock('jigsaw_4D') +
-        jigsawBlock('jigsaw_4C') +
-        jigsawBlock('jigsaw_4E')
-      ),
-    'startBlocks': ''
+    startBlocks:
+      jigsawBlock('jigsaw_4A', 100, 280) +
+      jigsawBlock('jigsaw_4B', 100, 140)
+  },
 
+  '5': {
+    instructionsIcon: 'smiley',
+    image: {
+      name: 'smiley',
+      width: 200,
+      height: 200
+    },
+    ghost: {
+      x: 400,
+      y: 20
+    },
+    numBlocks: 3,
+    requiredBlocks: [],
+    freePlay: false,
+    largeNotches: true,
+    goal: {
+      successCondition: function () {
+        return validateSimplePuzzle(null, {level: 5, numBlocks: 3});
+      },
+    },
+    startBlocks:
+      jigsawBlock('jigsaw_5A', 100, 20) +
+      jigsawBlock('jigsaw_5B', 100, 140) +
+      jigsawBlock('jigsaw_5C', 100, 280)
+  },
+
+  '6': {
+    instructionsIcon: 'smiley',
+    image: {
+      name: 'smiley',
+      width: 200,
+      height: 200
+    },
+    numBlocks: 3,
+    requiredBlocks: [],
+    freePlay: false,
+    largeNotches: true,
+    goal: {
+      successCondition: function () {
+        return validateSimplePuzzle(null, {level: 6, numBlocks: 3});
+      },
+    },
+    startBlocks:
+      jigsawBlock('jigsaw_6B', 100, 20) +
+      jigsawBlock('jigsaw_6A', 100, 140) +
+      jigsawBlock('jigsaw_6C', 100, 280)
+  },
+
+  '7': {
+    instructionsIcon: 'artist',
+    image: {
+      name: 'artist',
+      width: 200,
+      height: 200
+    },
+    numBlocks: 3,
+    requiredBlocks: [],
+    freePlay: false,
+    largeNotches: true,
+    goal: {
+      successCondition: function () {
+        return validateSimplePuzzle(null, {level: 7, numBlocks: 3});
+      },
+    },
+    startBlocks:
+      jigsawBlock('jigsaw_7B', 100, 20) +
+      jigsawBlock('jigsaw_7A', 100, 140) +
+      jigsawBlock('jigsaw_7C', 100, 280)
+  },
+
+  '8': {
+    instructionsIcon: 'artist',
+    image: {
+      name: 'artist',
+      width: 200,
+      height: 200
+    },
+    numBlocks: 3,
+    requiredBlocks: [],
+    freePlay: false,
+    largeNotches: true,
+    goal: {
+      successCondition: function () {
+        return validateSimplePuzzle(null, {level: 8, numBlocks: 3});
+      },
+    },
+    startBlocks:
+      jigsawBlock('jigsaw_8C', 100, 20) +
+      jigsawBlock('jigsaw_8B', 100, 140) +
+      jigsawBlock('jigsaw_8A', 100, 280)
+  },
+
+  '9': {
+    instructionsIcon: 'artist',
+    image: {
+      name: 'artist',
+      width: 200,
+      height: 200
+    },
+    numBlocks: 3,
+    requiredBlocks: [],
+    freePlay: false,
+    notchedEnds: true,
+    largeNotches: true,
+    goal: {
+      successCondition: function () {
+        return validateSimplePuzzle(null, {level: 9, numBlocks: 3});
+      },
+    },
+    startBlocks:
+      jigsawBlock('jigsaw_9B', 100, 20, jigsawBlock('jigsaw_9C', 0, 0, jigsawBlock('jigsaw_9A', 0, 0)))
+  },
+
+  '10': {
+    instructionsIcon: 'artist',
+    image: {
+      name: 'artist',
+      width: 200,
+      height: 200
+    },
+    numBlocks: 3,
+    requiredBlocks: [],
+    freePlay: false,
+    notchedEnds: true,
+    largeNotches: true,
+    goal: {
+      successCondition: function () {
+        return validateSimplePuzzle(null, {level: 10, numBlocks: 3});
+      },
+    },
+    startBlocks:
+      jigsawBlock('jigsaw_10A', 100, 20, jigsawBlock('jigsaw_10C', 0, 0, jigsawBlock('jigsaw_10B', 0, 0)))
+  },
+
+  '11': {
+    instructionsIcon: 'blocks',
+    image: {
+      name: 'blocks',
+      width: 140,
+      height: 140
+    },
+    ghost: {
+      x: 200,
+      y: 12
+    },
+    numBlocks: 0,
+    requiredBlocks: [],
+    freePlay: false,
+    notchedEnds: true,
+    largeNotches: false,
+    snapRadius: 30,
+    goal: {
+      successCondition: function () {
+        return validateSimplePuzzle(['jigsaw_repeat', 'jigsaw_purple',
+          'jigsaw_blue', 'jigsaw_green'], {});
+      },
+    },
+    startBlocks: jigsawBlock('jigsaw_repeat', 20, 20),
+    toolbox: createToolbox(
+      jigsawBlock('jigsaw_green') +
+      jigsawBlock('jigsaw_purple') +
+      jigsawBlock('jigsaw_blue')
+    )
+  },
+
+  '21': {
+    instructionsIcon: 'smiley',
+    image: {
+      name: 'smiley',
+      width: 300,
+      height: 300,
+    },
+    ghost: {
+      x: 700,
+      y: 50
+    },
+    numBlocks: 3,
+    requiredBlocks: [],
+    freePlay: false,
+    largeNotches: true,
+    goal: {
+      successCondition: function () {
+        return validateSimplePuzzle(null, {level: 2, numBlocks: 3});
+      },
+    },
+    startBlocks:
+      jigsawBlock('jigsaw_21A', 260, 20) +
+      jigsawBlock('jigsaw_21B', 120, 190) +
+      jigsawBlock('jigsaw_21C', 20, 70)
+  },
+
+  '22': {
+    instructionsIcon: 'artist',
+    image: {
+      name: 'artist',
+      width: 200,
+      height: 200
+    },
+    numBlocks: 3,
+    notchedEnds: true,
+    requiredBlocks: [],
+    freePlay: false,
+    largeNotches: true,
+    goal: {
+      successCondition: function () {
+        return validateSimplePuzzle(null, {level: 3, numBlocks: 3});
+      },
+    },
+    ghost: {
+      x: 100,
+      y: 50
+    },
+    toolbox: createToolbox(
+      jigsawBlock('jigsaw_22C') +
+      jigsawBlock('jigsaw_22B') +
+      jigsawBlock('jigsaw_22A')
+    ),
+    startBlocks: ''
+  },
+
+  '23': {
+    instructionsIcon: 'smiley',
+    image: {
+      name: 'smiley',
+      width: 400,
+      height: 400
+    },
+    ghost: {
+      x: 100,
+      y: 50
+    },
+    numBlocks: 5,
+    requiredBlocks: [],
+    freePlay: false,
+    largeNotches: true,
+    goal: {
+      successCondition: function () {
+        return validateSimplePuzzle(null, {level: 4, numBlocks: 5});
+      },
+    },
+    toolbox: createToolbox(
+      jigsawBlock('jigsaw_23B') +
+      jigsawBlock('jigsaw_23A') +
+      jigsawBlock('jigsaw_23D') +
+      jigsawBlock('jigsaw_23C') +
+      jigsawBlock('jigsaw_23E')
+    ),
+    startBlocks: ''
   }
 };
 
@@ -2484,6 +2837,7 @@ exports.load = function(assetUrl, id) {
 
   skin.smiley = skin.assetUrl('smiley.png');
   skin.artist = skin.assetUrl('artist.png');
+  skin.blocks = skin.assetUrl('blocks.png');
 
   skin.blank = skin.assetUrl('blank.png');
 

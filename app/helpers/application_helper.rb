@@ -76,11 +76,16 @@ module ApplicationHelper
   end
 
   def video_thumbnail_url(video)
-    asset_url("/c/video_thumbnails/#{video.id}.jpg")
+    asset_url(video_thumbnail_path(video))
+  end
+
+  def video_thumbnail_path(video)
+    "/c/video_thumbnails/#{video.id}.jpg"
   end
 
   def video_info(video)
-    { src: youtube_url(video.youtube_code), key: video.key, name: data_t('video.name', video.key), download: video.download }
+    # Note: similar video info is also set in javascript at levels/_blockly.html.haml
+    { src: youtube_url(video.youtube_code), key: video.key, name: data_t('video.name', video.key), download: video.download, thumbnail: video_thumbnail_path(video) }
   end
 
   def format_xml(xml)

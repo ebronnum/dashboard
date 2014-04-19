@@ -152,6 +152,9 @@ BlocklyApps.init = function(config) {
   BlocklyApps.share = config.share;
   BlocklyApps.noPadding = config.no_padding;
 
+  BlocklyApps.IDEAL_BLOCK_NUM = config.level.ideal || Infinity;
+  BlocklyApps.REQUIRED_BLOCKS = config.level.requiredBlocks || [];
+
   // enableShowCode defaults to true if not defined
   BlocklyApps.enableShowCode = (config.enableShowCode === false) ? false : true;
 
@@ -1110,12 +1113,7 @@ exports.displayFeedback = function(options) {
   // Update the background color if it is set to be in special design.
   if (options.response && options.response.design &&
       isFeedbackMessageCustomized(options)) {
-    if (options.response.design == "yellow_background") {
-      document.getElementById('feedback-dialog')
-          .className += " yellow-background";
-      document.getElementById('feedback-content')
-          .className += " white-background";
-    } else if (options.response.design == "white_background") {
+    if (options.response.design == "white_background") {
       document.getElementById('feedback-dialog')
           .className += " white-background";
       document.getElementById('feedback-content')
@@ -4530,18 +4528,12 @@ module.exports = {
   },
   'custom': {
     'toolbox': toolbox(3, 4),
-    'ideal': 7,
     'codeFunctions': [
       {'func': 'move', 'alias': 'Maze.moveForward();'},
       {'func': 'turnleft', 'alias': 'Maze.turnLeft();'},
       {'func': 'turnright', 'alias': 'Maze.turnRight();'},
     ],
-    'requiredBlocks': [
-      [{'test': 'moveForward', 'type': 'maze_moveForward'}],
-      [{'test': 'turnLeft',
-       'type': 'maze_turn',
-       'titles': {'DIR': 'turnLeft'}}]
-    ],
+    'requiredBlocks': [],
     'startDirection': Direction.EAST,
     'map': [
       [0, 0, 0, 0, 0, 0, 0, 0],
@@ -4653,11 +4645,9 @@ Maze.scale = {
 var loadLevel = function() {
   // Load maps.
   Maze.map = level.maze ? JSON.parse(level.maze) : level.map;
-  BlocklyApps.IDEAL_BLOCK_NUM = level.ideal || Infinity;
   Maze.initialDirtMap = level.initialDirt;
   Maze.finalDirtMap = level.finalDirt;
   Maze.startDirection = level.startDirection;
-  BlocklyApps.REQUIRED_BLOCKS = level.requiredBlocks;
 
   // Override scalars.
   for (var key in level.scale) {

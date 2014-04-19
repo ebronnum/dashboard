@@ -1,6 +1,7 @@
 stage 'Introduction to Computer Science'
-level 'Unplug1://u_1_1'
 
 stage 'The Maze'
-level 'learn.code.org/games/25/levels/148'
-level 'learn.code.org/games/25/levels/149'
+level 'bob'
+
+stage 'The Coffee'
+level 'bob2'

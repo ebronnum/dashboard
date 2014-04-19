@@ -4,7 +4,7 @@ class ExperimentActivity < ActiveRecord::Base
 
   private
   # Experiments
-  @@is_experimenting_feedback_design = true
+  @@is_experimenting_feedback_design = false
 
   # Experiment types
   TYPE_FEEDBACK_DESIGN_WHITE = 'white_background'

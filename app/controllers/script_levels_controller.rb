@@ -33,7 +33,7 @@ class ScriptLevelsController < ApplicationController
       # and start them at the beginning of the script.
       # If the user is signed in, continue normally
       reset_session if !current_user
-      redirect_to build_script_level_path(@script.script_levels.first)
+      redirect_to build_script_level_path(@script.script_levels.first) # TODO: we don't really specify order, this just happens to work
       return
     end
 
