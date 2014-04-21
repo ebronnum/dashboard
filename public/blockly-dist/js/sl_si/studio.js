@@ -2684,8 +2684,8 @@ exports.install = function(blockly, skin) {
   generator.studio_saySprite = function() {
     // Generate JavaScript for saying.
     return 'Studio.saySprite(\'block_id_' + this.id + '\', ' +
-               this.getTitleValue('SPRITE') + ', ' + '\'' +
-               this.getTitleValue('TEXT') + '\');\n';
+               this.getTitleValue('SPRITE') + ', ' +
+               blockly.JavaScript.quote_(this.getTitleValue('TEXT')) + ');\n';
   };
   
   delete blockly.Blocks.procedures_defreturn;
