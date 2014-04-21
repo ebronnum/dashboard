@@ -15,13 +15,13 @@ class ActivitiesController < ApplicationController
   end
 
   def track_progress_for_user
-    test_result = params[:testResult].to_i
-    lines = params[:lines].to_i
-    solved = ('true' == params[:result])
-    
     authorize! :create, Activity
     authorize! :create, UserLevel
 
+    test_result = params[:testResult].to_i
+    solved = ('true' == params[:result])
+    lines = params[:lines].to_i
+    
     @activity = Activity.create!(user: current_user,
                                  level: @script_level.level,
                                  action: solved, # TODO I think we don't actually use this. (maybe in a report?)
@@ -38,9 +38,13 @@ class ActivitiesController < ApplicationController
       test_result
     user_level.save!
 
-    if lines > 0 && test_result >= Activity::MINIMUM_PASS_RESULT
+    if lines > 0 && Activity.passing?(test_result)
       current_user.total_lines += lines
       current_user.save!
+    end
+
+    if params[:save_to_gallery] && @level_source_image && solved
+      @gallery_activity = GalleryActivity.create!(user: current_user, activity: @activity)
     end
 
     begin
@@ -55,29 +59,26 @@ class ActivitiesController < ApplicationController
   end
 
   def track_progress_in_session
-    test_result = params[:testResult].to_i
-    lines = params[:lines].to_i
-
     # TODO: this doesn't work for multiple scripts, especially if scripts share levels
-    session_progress = session[:progress] || {}
 
-    if test_result > session_progress.fetch(@script_level.level_id, -1)
-      session_progress[@script_level.level_id] = test_result
-      session[:progress] = session_progress
+    # hash of level_id => test_result
+    test_result = params[:testResult].to_i
+    session[:progress] ||= {}
+    if test_result > session[:progress].fetch(@script_level.level_id, -1)
+      session[:progress][@script_level.level_id] = test_result
     end
 
-    total_lines = session[:lines] || 0
-
-    if lines > 0 && test_result >= Activity::MINIMUM_PASS_RESULT
-      total_lines += lines
-      session[:lines] = total_lines
+    # counter of total lines written
+    session[:lines] ||= 0
+    lines = params[:lines].to_i
+    if lines > 0 && Activity.passing?(test_result)
+      session[:lines] += lines
     end
   end
 
   def milestone
     # TODO: do we use the :result and :testResult params for the same thing?
     solved = ('true' == params[:result])
-    total_lines = 0
     @script_level = ScriptLevel.cache_find(params[:script_level_id].to_i)
 
     if params[:program]
@@ -88,17 +89,23 @@ class ActivitiesController < ApplicationController
 
     # Store the image only if the image is set, and the image has not been saved
     if params[:image]
-      level_source_image = LevelSourceImage.find_or_create_by(:level_source_id => @level_source.id)
-      level_source_image.replace_image_if_better Base64.decode64(params[:image])
+      @level_source_image = LevelSourceImage.find_or_create_by(:level_source_id => @level_source.id)
+      @level_source_image.replace_image_if_better Base64.decode64(params[:image])
     end
 
     if current_user
       track_progress_for_user
-      total_lines = current_user.total_lines
     else
       track_progress_in_session
-      total_lines = session[:lines] || 0
     end
+    
+    total_lines = if current_user && current_user.total_lines
+                    current_user.total_lines
+                  elsif session[:lines]
+                    session[:lines]
+                  else
+                    0
+                  end
 
     render json: milestone_response(script_level: @script_level,
                                     total_lines: total_lines,
