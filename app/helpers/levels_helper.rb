@@ -122,37 +122,37 @@ module LevelsHelper
     level[:stage_total] = @script ? @script.script_levels_from_game(@level.game_id).length : @level.game.levels.count
 
     # Fetch localized strings for specified symbols
-    [:instructions, :levelIncompleteError, :other1StarError, :tooFewBlocksMsg].each{ |label|
+    [:instructions, :levelIncompleteError, :other1StarError, :tooFewBlocksMsg].each do |label|
       level[label] = [@level.game.app, @level.game.name].map { |name|
           data_t('level.'+label.to_s, name+'_'+@level.level_num)
         }.compact!.first
-    }
+    end
 
     # Copy Dashboard-style names from local_assigns or @level parameters to Blockly-style names in level object.
     # Keys are Dashboard names, values are Blockly's expected names.
     {:startBlocks => :start_blocks,
-     :solutionBlocks => :solution_blocks,
-     :sliderSpeed => :slider_speed,
-     :maze => :maze,
-     :toolbox => :toolbox_blocks,
-     :startDirection => :start_direction,
-     :instructions => :instructions,
-     :initialX => :x,
-     :initialY => :y,
-     :builder => :artist_builder}.each { |block, dash|
-      # Select first valid value in 1. local_assigns, 2. property of @level object, and 3. named instance variable
-      prop = (local_assigns[dash] if local_assigns.has_key?(dash) && local_assigns[dash].to_s.length > 0) ||
-              (@level[dash] if @level.has_attribute?(dash) && @level[dash].to_s.length > 0) ||
-              (instance_variable_get('@'+dash.to_s) if instance_variable_defined?('@'+dash.to_s) && instance_variable_get('@'+dash.to_s).to_s.length > 0)
-
-      # Don't override existing values, and don't treat nil/empty string as a valid value
-      level[block] = escape_javascript(prop) if !level.has_key?(block) && prop.to_s.length > 0
-    }
+      :solutionBlocks => :solution_blocks,
+      :sliderSpeed => :slider_speed,
+      :maze => :maze,
+      :toolbox => :toolbox_blocks,
+      :startDirection => :start_direction,
+      :instructions => :instructions,
+      :initialX => :x,
+      :initialY => :y,
+      :builder => :artist_builder}.each do |block, dash|
+      # Select first valid value from 1. local_assigns, 2. property of @level object, and 3. named instance variable
+      # Don't override existing valid (non-nil/empty) values
+      param =
+          (local_assigns[dash].presence) ||
+          (@level[dash].presence) ||
+          (instance_variable_get('@'+dash.to_s).presence)
+      level[block] ||= escape_javascript(param) if param.present?
+    end
 
     # Set some values that Blockly expects on the root of its options string
     app_options = {:levelId => @level.level_num}
     app_options[:scriptId] = @script.id if @script
     app_options[:levelGameName] = @level.game.name if @level.game
-    return level, app_options
+    [level, app_options]
   end
 end

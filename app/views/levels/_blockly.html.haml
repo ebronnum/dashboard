@@ -143,6 +143,6 @@
       position: { blockYCoordinateInterval: 25 }
     };
     var appOptions2 = #{app_options.to_json};
-    for (var attrname in appOptions2) { appOptions[attrname] = appOptions2[attrname]; }
+    $.extend(appOptions,appOptions2);
     //console.log(appOptions);
     #{app}Main(appOptions);
