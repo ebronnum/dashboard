@@ -5821,7 +5821,7 @@ exports.catLogic = function(d){return "逻辑"};
 
 exports.colourTooltip = function(d){return "更改铅笔的颜色。"};
 
-exports.degrees = function(d){return "深度"};
+exports.degrees = function(d){return "度"};
 
 exports.dots = function(d){return "像素"};
 
@@ -5847,9 +5847,9 @@ exports.jumpForward = function(d){return "向前跳"};
 
 exports.jumpTooltip = function(d){return "不着痕迹地移动艺术家。"};
 
-exports.lengthParameter = function(d){return "长度"};
+exports.lengthParameter = function(d){return "边长"};
 
-exports.loopVariable = function(d){return "计数"};
+exports.loopVariable = function(d){return "计数器"};
 
 exports.moveBackward = function(d){return "向后移动"};
 

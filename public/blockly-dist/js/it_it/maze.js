@@ -7165,7 +7165,7 @@ exports.dialogOK = function(d){return "Ok"};
 
 exports.emptyBlocksErrorMsg = function(d){return "Il blocco \"ripeti\" o \"se\" deve avere all'interno altri blocchi per poter funzionare. Assicurati che i blocchi interni siano inseriti correttamente all'interno del blocco principale."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Ci sono blocchi che non sono attaccati ad un blocco evento."};
 
 exports.finalStage = function(d){return "Complimenti! Hai completato l'ultima lezione."};
 
@@ -7221,7 +7221,7 @@ exports.tooManyBlocksMsg = function(d){return "Questo puzzle può essere risolto
 
 exports.tooMuchWork = function(d){return "Mi hai fatto fare un sacco di lavoro!  Puoi provare a farmi fare meno ripetizioni?"};
 
-exports.flappySpecificFail = function(d){return "Il tuo codice sembra buono - sbatte le ali ad ogni click. Ma devi cliccare molte volte per volare fino alla meta."};
+exports.flappySpecificFail = function(d){return "Il tuo codice sembra buono: Flappy sbatte le ali ad ogni clic. Ma devi cliccare molte volte per volare fino al bersaglio disegnato."};
 
 exports.toolboxHeader = function(d){return "Blocchi"};
 
@@ -7268,7 +7268,7 @@ exports.continue = function(d){return "Prosegui"};
 
 exports.dig = function(d){return "rimuovi 1"};
 
-exports.digTooltip = function(d){return "rimuovi 1 unità di terra"};
+exports.digTooltip = function(d){return "togli 1 palata di terra"};
 
 exports.dirE = function(d){return "E"};
 
@@ -7286,11 +7286,11 @@ exports.fill = function(d){return "riempi 1"};
 
 exports.fillN = function(d){return "riempi "+v(d,"shovelfuls")};
 
-exports.fillStack = function(d){return "Riempi una colonna di "+v(d,"shovelfuls")+" buche"};
+exports.fillStack = function(d){return "riempi una colonna di "+v(d,"shovelfuls")+" buche"};
 
-exports.fillSquare = function(d){return "riempire il quadrato"};
+exports.fillSquare = function(d){return "riempi un quadrato"};
 
-exports.fillTooltip = function(d){return "metti 1 unità di terra"};
+exports.fillTooltip = function(d){return "metti 1 palata di terra"};
 
 exports.finalLevel = function(d){return "Complimenti! Hai risolto il puzzle finale."};
 
@@ -7324,7 +7324,7 @@ exports.numBlocksNeeded = function(d){return "Questo puzzle può essere risolto 
 
 exports.oneTopBlock = function(d){return "Per questo puzzle, devi sovrapporre verticalmente tutti i blocchi nell'area di lavoro bianca."};
 
-exports.pathAhead = function(d){return "la strada in avanti"};
+exports.pathAhead = function(d){return "c'è strada in avanti"};
 
 exports.pathLeft = function(d){return "se c'è strada a sinistra"};
 
@@ -7340,7 +7340,7 @@ exports.removeN = function(d){return "rimuovi "+v(d,"shovelfuls")};
 
 exports.removePile = function(d){return "rimuovi il mucchio"};
 
-exports.removeStack = function(d){return "rimuovere la colonna di "+v(d,"shovelfuls")+" mucchi"};
+exports.removeStack = function(d){return "rimuovi una colonna di "+v(d,"shovelfuls")+" mucchi"};
 
 exports.removeSquare = function(d){return "rimuovi il quadrato"};
 
@@ -7358,7 +7358,7 @@ exports.turnTooltip = function(d){return "Gira a sinistra o a destra di 90 gradi
 
 exports.while = function(d){return "mentre"};
 
-exports.whileTooltip = function(d){return "Ripeti le azioni incluse fino a che diventa vera la condizione di arresto."};
+exports.whileTooltip = function(d){return "Ripeti le azioni incluse per tutto il tempo in cui rimane vera la condizione."};
 
 exports.yes = function(d){return "Sì"};
 

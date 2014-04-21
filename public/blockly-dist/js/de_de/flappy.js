@@ -4730,7 +4730,7 @@ exports.dialogOK = function(d){return "OK"};
 
 exports.emptyBlocksErrorMsg = function(d){return "Die \"Wiederholen\"- und die \"Wenn\"-Bausteine benötigten im Inneren andere Bausteine um zu funktionieren. Stelle sicher, dass der innere Baustein in den umschließenden Baustein passt."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Es gibt zusätzliche Bausteine, die keinem Ereignis-Baustein zugeordnet sind."};
 
 exports.finalStage = function(d){return "Glückwunsch! Du hast das letzte Level erfolgreich abgeschlossen."};
 
@@ -4786,7 +4786,7 @@ exports.tooManyBlocksMsg = function(d){return "Dieses Puzzle kann mit <x id='STA
 
 exports.tooMuchWork = function(d){return "Du lässt mich ganz schön arbeiten! Könntest du versuchen es seltener zu wiederholen?"};
 
-exports.flappySpecificFail = function(d){return "Your code looks good - it will flap with each click. But you need to click many times to flap to the target."};
+exports.flappySpecificFail = function(d){return "Dein Code sieht gut aus - er wird bei jedem Klick die Flügel schlagen. Aber du musst viele Male klicken, um zum Ziel zu flattern."};
 
 exports.toolboxHeader = function(d){return "Bausteine"};
 
@@ -4857,7 +4857,7 @@ exports.flapTooltip = function(d){return "Nach oben fliegen."};
 
 exports.incrementPlayerScore = function(d){return "Erziele einen Punkt"};
 
-exports.incrementPlayerScoreTooltip = function(d){return "Add one to the current player score."};
+exports.incrementPlayerScoreTooltip = function(d){return "Erhöhe den Punktestand um 1."};
 
 exports.nextLevel = function(d){return "Herzlichen Glückwunsch! Du hast dieses Puzzle abgeschlossen."};
 
@@ -4895,7 +4895,7 @@ exports.playSoundLaser = function(d){return "Laser sound abspielen"};
 
 exports.playSoundTooltip = function(d){return "Den ausgewählten Sound abspielen."};
 
-exports.reinfFeedbackMsg = function(d){return "You can press the \"Try again\" button to go back to playing your game."};
+exports.reinfFeedbackMsg = function(d){return "Du kannst den \"Versuche erneut\"-Button drücken, um weiterzuspielen."};
 
 exports.scoreText = function(d){return "Ergebnis: "+v(d,"playerScore")};
 
@@ -4929,129 +4929,129 @@ exports.setGapVeryLarge = function(d){return "Sehr grosse Lücke setzen"};
 
 exports.setGapHeightTooltip = function(d){return "Vertikaler Abstand eines Hindernisses setzen"};
 
-exports.setGravityRandom = function(d){return "set gravity random"};
+exports.setGravityRandom = function(d){return "Setze Schwerkraft auf zufällig"};
 
-exports.setGravityVeryLow = function(d){return "set gravity very low"};
+exports.setGravityVeryLow = function(d){return "Setze Schwerkraft auf sehr tief"};
 
-exports.setGravityLow = function(d){return "set gravity low"};
+exports.setGravityLow = function(d){return "Setze Schwerkraft auf tief"};
 
-exports.setGravityNormal = function(d){return "set gravity normal"};
+exports.setGravityNormal = function(d){return "Setze Schwerkraft auf normal"};
 
-exports.setGravityHigh = function(d){return "set gravity high"};
+exports.setGravityHigh = function(d){return "Setze Schwerkraft auf hoch"};
 
-exports.setGravityVeryHigh = function(d){return "set gravity very high"};
+exports.setGravityVeryHigh = function(d){return "Setze Schwerkraft auf sehr hoch"};
 
-exports.setGravityTooltip = function(d){return "Sets the level's gravity"};
+exports.setGravityTooltip = function(d){return "Setzt die Schwerkraft des Levels"};
 
-exports.setGroundRandom = function(d){return "set ground Random"};
+exports.setGroundRandom = function(d){return "Setzt den Boden auf zufällig"};
 
-exports.setGroundFlappy = function(d){return "set ground Ground"};
+exports.setGroundFlappy = function(d){return "Setzt den Boden auf Boden"};
 
-exports.setGroundSciFi = function(d){return "set ground Sci-Fi"};
+exports.setGroundSciFi = function(d){return "Setzt den Boden auf zufällig"};
 
-exports.setGroundUnderwater = function(d){return "set ground Underwater"};
+exports.setGroundUnderwater = function(d){return "Setzt den Boden auf Unterwasser"};
 
-exports.setGroundCave = function(d){return "set ground Cave"};
+exports.setGroundCave = function(d){return "Setzt den Boden auf Höhle"};
 
-exports.setGroundSanta = function(d){return "set ground Santa"};
+exports.setGroundSanta = function(d){return "Setzt den Boden auf Weihnachtsmann"};
 
-exports.setGroundLava = function(d){return "set ground Lava"};
+exports.setGroundLava = function(d){return "Setzt den Boden auf Lava"};
 
-exports.setGroundTooltip = function(d){return "Sets the ground image"};
+exports.setGroundTooltip = function(d){return "Setzt den Boden auf ein bestimmtes Bild"};
 
-exports.setObstacleRandom = function(d){return "set obstacle Random"};
+exports.setObstacleRandom = function(d){return "Setzt das Hindernis auf zufällig"};
 
-exports.setObstacleFlappy = function(d){return "set obstacle Pipe"};
+exports.setObstacleFlappy = function(d){return "Setzt das Hindernis auf Röhre"};
 
-exports.setObstacleSciFi = function(d){return "set obstacle Sci-Fi"};
+exports.setObstacleSciFi = function(d){return "Setzt das Hindernis auf Sci-Fi"};
 
-exports.setObstacleUnderwater = function(d){return "set obstacle Plant"};
+exports.setObstacleUnderwater = function(d){return "Setzt das Hindernis auf Pflanze"};
 
-exports.setObstacleCave = function(d){return "set obstacle Cave"};
+exports.setObstacleCave = function(d){return "Setzt das Hindernis auf Höhle"};
 
-exports.setObstacleSanta = function(d){return "set obstacle Chimney"};
+exports.setObstacleSanta = function(d){return "Setzt das Hindernis auf Kamin"};
 
-exports.setObstacleLaser = function(d){return "set obstacle Laser"};
+exports.setObstacleLaser = function(d){return "Setzt das Hindernis auf Laser"};
 
-exports.setObstacleTooltip = function(d){return "Sets the obstacle image"};
+exports.setObstacleTooltip = function(d){return "Setzt das Hindernis auf ein bestimmtes Bild"};
 
-exports.setPlayerRandom = function(d){return "set player Random"};
+exports.setPlayerRandom = function(d){return "Setzt den Spieler auf zufällig"};
 
-exports.setPlayerFlappy = function(d){return "set player Yellow Bird"};
+exports.setPlayerFlappy = function(d){return "Setzt den Spieler auf gelben Vogel"};
 
-exports.setPlayerRedBird = function(d){return "set player Red Bird"};
+exports.setPlayerRedBird = function(d){return "Setzt den Spieler auf roten Vogel"};
 
-exports.setPlayerSciFi = function(d){return "set player Spaceship"};
+exports.setPlayerSciFi = function(d){return "Setzt den Spieler auf Raumschiff"};
 
-exports.setPlayerUnderwater = function(d){return "set player Fish"};
+exports.setPlayerUnderwater = function(d){return "Setzt den Spieler auf Fisch"};
 
-exports.setPlayerCave = function(d){return "set player Bat"};
+exports.setPlayerCave = function(d){return "Setzt den Spieler auf Fledermaus"};
 
-exports.setPlayerSanta = function(d){return "set player Santa"};
+exports.setPlayerSanta = function(d){return "Setzt den Spieler auf Weihnachtsmann"};
 
-exports.setPlayerShark = function(d){return "set player Shark"};
+exports.setPlayerShark = function(d){return "Setzt den Spieler auf Haifisch"};
 
-exports.setPlayerEaster = function(d){return "set player Easter Bunny"};
+exports.setPlayerEaster = function(d){return "Setzt den Spieler auf Osterhase"};
 
-exports.setPlayerBatman = function(d){return "set player Bat guy"};
+exports.setPlayerBatman = function(d){return "Setzt den Spieler auf Batman"};
 
-exports.setPlayerSubmarine = function(d){return "set player Submarine"};
+exports.setPlayerSubmarine = function(d){return "Setzt den Spieler auf U-Boot"};
 
-exports.setPlayerUnicorn = function(d){return "set player Unicorn"};
+exports.setPlayerUnicorn = function(d){return "Setzt den Spieler auf Steinbock"};
 
-exports.setPlayerFairy = function(d){return "set player Fairy"};
+exports.setPlayerFairy = function(d){return "Setzt den Spieler auf Fee"};
 
-exports.setPlayerSuperman = function(d){return "set player Flappyman"};
+exports.setPlayerSuperman = function(d){return "Setzt den Spieler auf Flappymann"};
 
-exports.setPlayerTurkey = function(d){return "set player Turkey"};
+exports.setPlayerTurkey = function(d){return "Setzt den Spieler auf Truthahn"};
 
-exports.setPlayerTooltip = function(d){return "Sets the player image"};
+exports.setPlayerTooltip = function(d){return "Setzt den Spieler auf ein bestimmtes Bild"};
 
-exports.setScore = function(d){return "set score"};
+exports.setScore = function(d){return "Setzt den Punktestand"};
 
-exports.setScoreTooltip = function(d){return "Sets the player's score"};
+exports.setScoreTooltip = function(d){return "Setzt den Punktestand des Spielers"};
 
-exports.setSpeed = function(d){return "set speed"};
+exports.setSpeed = function(d){return "Setzt die Geschwindigkeit"};
 
-exports.setSpeedTooltip = function(d){return "Sets the levels speed"};
+exports.setSpeedTooltip = function(d){return "Setzt die Levelgeschwindigkeit"};
 
-exports.share = function(d){return "Share"};
+exports.share = function(d){return "Teilen"};
 
-exports.shareFlappyTwitter = function(d){return "Check out the Flappy game I made. I wrote it myself with @codeorg"};
+exports.shareFlappyTwitter = function(d){return "Schau dir das Flappy Spiel an, das ich gemacht habe. Ich habe es selbst mit @codeorg programmiert"};
 
-exports.shareGame = function(d){return "Share your game:"};
+exports.shareGame = function(d){return "Teile dein Spiel:"};
 
-exports.speedRandom = function(d){return "set speed random"};
+exports.speedRandom = function(d){return "Setze Geschwindigkeit auf zufällig"};
 
-exports.speedVerySlow = function(d){return "set speed very slow"};
+exports.speedVerySlow = function(d){return "Setze die Geschwindigkeit auf sehr tief"};
 
-exports.speedSlow = function(d){return "set speed slow"};
+exports.speedSlow = function(d){return "Setze die Geschwindigkeit auf tief"};
 
-exports.speedNormal = function(d){return "set speed normal"};
+exports.speedNormal = function(d){return "Setze die Geschwindigkeit auf normal"};
 
-exports.speedFast = function(d){return "set speed fast"};
+exports.speedFast = function(d){return "Setzt die Geschwindigkeit auf schnell"};
 
-exports.speedVeryFast = function(d){return "set speed very fast"};
+exports.speedVeryFast = function(d){return "Setzt die Geschwindigkeit auf sehr hoch"};
 
-exports.whenClick = function(d){return "when click"};
+exports.whenClick = function(d){return "Beim Klicken"};
 
-exports.whenClickTooltip = function(d){return "Execute the actions below when a click event occurs."};
+exports.whenClickTooltip = function(d){return "Führe die Aktionen unten aus, wenn ein Klick-Event passiert."};
 
-exports.whenCollideGround = function(d){return "when hit the ground"};
+exports.whenCollideGround = function(d){return "Wenn der Boden berührt wird"};
 
-exports.whenCollideGroundTooltip = function(d){return "Execute the actions below when Flappy hits the ground."};
+exports.whenCollideGroundTooltip = function(d){return "Führe die Aktionen unten aus, wenn Flappy den Boden berührt."};
 
-exports.whenCollideObstacle = function(d){return "when hit an obstacle"};
+exports.whenCollideObstacle = function(d){return "Wenn ein Hindernis getroffen wird"};
 
-exports.whenCollideObstacleTooltip = function(d){return "Execute the actions below when Flappy hits an obstacle."};
+exports.whenCollideObstacleTooltip = function(d){return "Führe die Aktionen unten aus, wenn Flappy ein Hindernis berührt."};
 
-exports.whenEnterObstacle = function(d){return "when pass obstacle"};
+exports.whenEnterObstacle = function(d){return "Wenn Hindernis passiert wird"};
 
 exports.whenEnterObstacleTooltip = function(d){return "Führen sie die unteren Aktionen aus, wenn Flappy ein Hindernis betritt."};
 
-exports.whenRunButtonClick = function(d){return "when Run is clicked"};
+exports.whenRunButtonClick = function(d){return "Wenn Spiel gestartet wird"};
 
-exports.whenRunButtonClickTooltip = function(d){return "Execute the actions below when the run button is pressed."};
+exports.whenRunButtonClickTooltip = function(d){return "Führe die Aktionen unten aus, wenn das Spiel startet."};
 
 exports.yes = function(d){return "Ja"};
 

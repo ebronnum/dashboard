@@ -4470,7 +4470,7 @@ exports.dialogOK = function(d){return "確定"};
 
 exports.emptyBlocksErrorMsg = function(d){return "\"重複\"和\"如果\"程式積木需要包含其它積木在裏面才能正常運作, 請檢查裏面是否有安排適當的程式積木."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "你有一些程式積木還沒有加到事件積木中。"};
 
 exports.finalStage = function(d){return "恭喜你 ！你已完成最後關卡的挑戰。"};
 

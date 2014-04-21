@@ -5327,57 +5327,57 @@ exports.repeatUntilFinish = function(d){return "آنقدر تکرار کن تا 
 
 exports.scoreText = function(d){return "Score: "+v(d,"playerScore")+" : "+v(d,"opponentScore")};
 
-exports.setBackgroundRandom = function(d){return "set random scene"};
+exports.setBackgroundRandom = function(d){return "تنظیم منظره تصادفی"};
 
-exports.setBackgroundHardcourt = function(d){return "set hardcourt scene"};
+exports.setBackgroundHardcourt = function(d){return "قرار دادن مرحله هاردکورت"};
 
-exports.setBackgroundRetro = function(d){return "set retro scene"};
+exports.setBackgroundRetro = function(d){return "قرار دادن منظره ریترو"};
 
-exports.setBackgroundTooltip = function(d){return "Sets the background image"};
+exports.setBackgroundTooltip = function(d){return "تنظیم تصاویر زمینه"};
 
-exports.setBallRandom = function(d){return "set random ball"};
+exports.setBallRandom = function(d){return "تنظیم توپ تصادفی"};
 
-exports.setBallHardcourt = function(d){return "set hardcourt ball"};
+exports.setBallHardcourt = function(d){return "تنظیم توپ هاردکورت"};
 
-exports.setBallRetro = function(d){return "set retro ball"};
+exports.setBallRetro = function(d){return "تنظیم توپ ریترو"};
 
-exports.setBallTooltip = function(d){return "Sets the ball image"};
+exports.setBallTooltip = function(d){return "قرار دادن تصویر توپها"};
 
-exports.setBallSpeedRandom = function(d){return "set random ball speed"};
+exports.setBallSpeedRandom = function(d){return "تنظیم سرعت توپ تصادفی"};
 
-exports.setBallSpeedVerySlow = function(d){return "set very slow ball speed"};
+exports.setBallSpeedVerySlow = function(d){return "تنظیم سرعت بسیار آهسته توپ"};
 
-exports.setBallSpeedSlow = function(d){return "set slow ball speed"};
+exports.setBallSpeedSlow = function(d){return "تنظیم سرعت توپ آهسته"};
 
-exports.setBallSpeedNormal = function(d){return "set normal ball speed"};
+exports.setBallSpeedNormal = function(d){return "تنظیم سرعت نرمال توپ"};
 
-exports.setBallSpeedFast = function(d){return "set fast ball speed"};
+exports.setBallSpeedFast = function(d){return "تنظیم سرعت سریع توپ"};
 
-exports.setBallSpeedVeryFast = function(d){return "set very fast ball speed"};
+exports.setBallSpeedVeryFast = function(d){return "تنظیم سرعت توپ بسیار سریع"};
 
-exports.setBallSpeedTooltip = function(d){return "Sets the speed of the ball"};
+exports.setBallSpeedTooltip = function(d){return "تنظیمات سرعت توپ"};
 
-exports.setPaddleRandom = function(d){return "set random paddle"};
+exports.setPaddleRandom = function(d){return "تنظیم راکت تصادفی"};
 
-exports.setPaddleHardcourt = function(d){return "set hardcourt paddle"};
+exports.setPaddleHardcourt = function(d){return "تنظیم راکت هاردکورت"};
 
-exports.setPaddleRetro = function(d){return "set retro paddle"};
+exports.setPaddleRetro = function(d){return "تنظیم راکت ریترو"};
 
 exports.setPaddleTooltip = function(d){return "Sets the ball paddle"};
 
-exports.setPaddleSpeedRandom = function(d){return "set random paddle speed"};
+exports.setPaddleSpeedRandom = function(d){return "تنظیم سرعت راکت تصادفی"};
 
-exports.setPaddleSpeedVerySlow = function(d){return "set very slow paddle speed"};
+exports.setPaddleSpeedVerySlow = function(d){return "تنظیم سرعت بسیار آهسته راکت"};
 
-exports.setPaddleSpeedSlow = function(d){return "set slow paddle speed"};
+exports.setPaddleSpeedSlow = function(d){return "تنظیم سرعت آهسته راکت"};
 
-exports.setPaddleSpeedNormal = function(d){return "set normal paddle speed"};
+exports.setPaddleSpeedNormal = function(d){return "تنظیم سرعت نرمال راکت"};
 
-exports.setPaddleSpeedFast = function(d){return "set fast paddle speed"};
+exports.setPaddleSpeedFast = function(d){return "تنظیم سرعت سریع راکت"};
 
-exports.setPaddleSpeedVeryFast = function(d){return "set very fast paddle speed"};
+exports.setPaddleSpeedVeryFast = function(d){return "تنظیم سرعت سریع بسیار سریع راکت"};
 
-exports.setPaddleSpeedTooltip = function(d){return "Sets the speed of the paddle"};
+exports.setPaddleSpeedTooltip = function(d){return "تنظیم سرعت راکت ها"};
 
 exports.share = function(d){return "Share"};
 
@@ -5403,9 +5403,9 @@ exports.whenDown = function(d){return "when Down arrow"};
 
 exports.whenDownTooltip = function(d){return "Execute the actions below when the Down arrow button is pressed."};
 
-exports.whenGameStarts = function(d){return "when game starts"};
+exports.whenGameStarts = function(d){return "وقتی که بازی شروع می شود"};
 
-exports.whenGameStartsTooltip = function(d){return "Execute the actions below when the game starts."};
+exports.whenGameStartsTooltip = function(d){return "اجرای اقدامات زیر وقتی که بازی شروع شد."};
 
 exports.whenLeft = function(d){return "when Left arrow"};
 
@@ -5464,11 +5464,11 @@ exports.dialogCancel = function(d){return "لغو"};
 
 exports.dialogOK = function(d){return "Ok"};
 
-exports.emptyBlocksErrorMsg = function(d){return "بلوک‌های \"تکرار\" یا \"اگر\" برای کار کردن باید بلوک‌های دیگری در داخلشان باشد. اطمینان حاصل کنید که بلوک داخلی در جای درستی از بلوک اصلی قرار گرفته باشد."};
+exports.emptyBlocksErrorMsg = function(d){return "بلوک های \"تکرار\" (Repeat) یا \"شرطی\" (If)  برای کار کردن، نیاز به بلوکهای دیگری در داخل خود دارند. مطمئن شوید که بلوک داخلی، به درستی درون بلوک اصلی قرار گرفته است."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "شما بلوک های اضافه ای دارید که به یک بلوک رویداد متصل نیست."};
 
-exports.finalStage = function(d){return "تبریک می‌گوییم! شما مرحله‌ی آخر را به پایان رساندید."};
+exports.finalStage = function(d){return "تبریک می‌گوییم! شما مرحله‌ی نهایی را به پایان رساندید."};
 
 exports.finalStageTrophies = function(d){return "تبریک می‌گوییم! شما مرحله‌ی آخر را به پایان رساندید و برنده‌ی "+p(d,"numTrophies",0,"fa",{"one":"یک جایزه","other":n(d,"numTrophies")+" جایزه"})+" شدید."};
 
@@ -5556,7 +5556,7 @@ exports.watchVideo = function(d){return "ویدیو را ببینید"};
 
 exports.tryHOC = function(d){return "ساعتِ کد نویسی را امتحان کنید"};
 
-exports.signup = function(d){return "برای دوره‌ی معرفی نام نویسی کنید"};
+exports.signup = function(d){return "برای دوره‌ی مقدماتی نام نویسی کنید"};
 
 exports.hintHeader = function(d){return "Here's a tip:"};
 

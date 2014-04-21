@@ -4730,7 +4730,7 @@ exports.dialogOK = function(d){return "Ok"};
 
 exports.emptyBlocksErrorMsg = function(d){return "Il blocco \"ripeti\" o \"se\" deve avere all'interno altri blocchi per poter funzionare. Assicurati che i blocchi interni siano inseriti correttamente all'interno del blocco principale."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Ci sono blocchi che non sono attaccati ad un blocco evento."};
 
 exports.finalStage = function(d){return "Complimenti! Hai completato l'ultima lezione."};
 
@@ -4786,7 +4786,7 @@ exports.tooManyBlocksMsg = function(d){return "Questo puzzle può essere risolto
 
 exports.tooMuchWork = function(d){return "Mi hai fatto fare un sacco di lavoro!  Puoi provare a farmi fare meno ripetizioni?"};
 
-exports.flappySpecificFail = function(d){return "Il tuo codice sembra buono - sbatte le ali ad ogni click. Ma devi cliccare molte volte per volare fino alla meta."};
+exports.flappySpecificFail = function(d){return "Il tuo codice sembra buono: Flappy sbatte le ali ad ogni clic. Ma devi cliccare molte volte per volare fino al bersaglio disegnato."};
 
 exports.toolboxHeader = function(d){return "Blocchi"};
 
@@ -4829,7 +4829,7 @@ exports.hintHeader = function(d){return "Here's a tip:"};
 var MessageFormat = require("messageformat");MessageFormat.locale.it=function(n){return n===1?"one":"other"}
 exports.continue = function(d){return "Continua"};
 
-exports.doCode = function(d){return "fai"};
+exports.doCode = function(d){return "esegui"};
 
 exports.elseCode = function(d){return "altrimenti"};
 
@@ -4839,25 +4839,25 @@ exports.endGameTooltip = function(d){return "Termina il gioco."};
 
 exports.finalLevel = function(d){return "Complimenti! Hai risolto il puzzle finale."};
 
-exports.flap = function(d){return "Sbatti le ali"};
+exports.flap = function(d){return "sbatti le ali"};
 
-exports.flapRandom = function(d){return "sbatti le ali per un numero di volte casuale"};
+exports.flapRandom = function(d){return "sbatti le ali per un numero di volte scelto a caso"};
 
-exports.flapVerySmall = function(d){return "sbatti le ali molto poco"};
+exports.flapVerySmall = function(d){return "sbatti le ali sbatti le ali per un numero di volte molto piccolo"};
 
-exports.flapSmall = function(d){return "sbatti le ali poco"};
+exports.flapSmall = function(d){return "sbatti le ali per un numero di volte piccolo"};
 
-exports.flapNormal = function(d){return "sbatti le ali per una quantità normale"};
+exports.flapNormal = function(d){return "sbatti le ali per un numero di volte normale"};
 
-exports.flapLarge = function(d){return "sbatti tanto le ali"};
+exports.flapLarge = function(d){return "sbatti le ali per un numero di volte grande"};
 
-exports.flapVeryLarge = function(d){return "sbatti le ali veramente tanto"};
+exports.flapVeryLarge = function(d){return "sbatti le ali per un numero di volte molto grande"};
 
-exports.flapTooltip = function(d){return "Fai volare Flappy verso l'alto."};
+exports.flapTooltip = function(d){return "fai volare Flappy verso l'alto."};
 
-exports.incrementPlayerScore = function(d){return "Segna un punto"};
+exports.incrementPlayerScore = function(d){return "aggiungi un punto"};
 
-exports.incrementPlayerScoreTooltip = function(d){return "Aggiungi uno al punteggio attuale del giocatore."};
+exports.incrementPlayerScoreTooltip = function(d){return "Aggiunge uno al punteggio attuale del giocatore."};
 
 exports.nextLevel = function(d){return "Complimenti! Hai completato questo puzzle."};
 
@@ -4867,191 +4867,191 @@ exports.numBlocksNeeded = function(d){return "Questo puzzle può essere risolto 
 
 exports.oneTopBlock = function(d){return "Per questo puzzle, devi sovrapporre verticalmente tutti i blocchi nell'area di lavoro bianca."};
 
-exports.playSoundRandom = function(d){return "Riproduci un suono casuale"};
+exports.playSoundRandom = function(d){return "riproduci un suono scelto a caso"};
 
-exports.playSoundBounce = function(d){return "Rproduci il rumore di un rimbalzo"};
+exports.playSoundBounce = function(d){return "riproduci il suono di un rimbalzo"};
 
-exports.playSoundCrunch = function(d){return "Riproduci il rumore di uno sgranocchiamento"};
+exports.playSoundCrunch = function(d){return "riproduci il suono di uno sgranocchiamento"};
 
-exports.playSoundDie = function(d){return "Fai un suono triste"};
+exports.playSoundDie = function(d){return "riproduci un suono triste"};
 
-exports.playSoundHit = function(d){return "Riproduci il suono di uno schiacciamento"};
+exports.playSoundHit = function(d){return "riproduci il suono di uno schiacciamento"};
 
-exports.playSoundPoint = function(d){return "Riproduci il suono di un punto"};
+exports.playSoundPoint = function(d){return "riproduci il suono di un punto"};
 
-exports.playSoundSwoosh = function(d){return "Riproduci il suono di uno swoosh"};
+exports.playSoundSwoosh = function(d){return "riproduci il suono di un risucchio"};
 
-exports.playSoundWing = function(d){return "Riproduci il suono di un'ala"};
+exports.playSoundWing = function(d){return "riproduci il suono di un'ala"};
 
-exports.playSoundJet = function(d){return "Riproduci il suono di un jet"};
+exports.playSoundJet = function(d){return "riproduci il suono di un aereo a reazione"};
 
-exports.playSoundCrash = function(d){return "Riproduci il suono di un crash"};
+exports.playSoundCrash = function(d){return "riproduci il suono di qualcosa che si rompe"};
 
-exports.playSoundJingle = function(d){return "Riproduci il suono di un jingle"};
+exports.playSoundJingle = function(d){return "riproduci il suono di un tintinnio"};
 
-exports.playSoundSplash = function(d){return "Riproduci il suono di uno splash"};
+exports.playSoundSplash = function(d){return "riproduci il suono di un tuffo nell'acqua"};
 
-exports.playSoundLaser = function(d){return "Riproduci il suono di un laser"};
+exports.playSoundLaser = function(d){return "riproduci il suono di un raggio laser"};
 
 exports.playSoundTooltip = function(d){return "Riproduci il suono scelto."};
 
-exports.reinfFeedbackMsg = function(d){return "Premi \"Riprova\" per ricominciare a giocare la tua partita."};
+exports.reinfFeedbackMsg = function(d){return "Premi \"Ricomincia\" per ricominciare a giocare la tua partita."};
 
 exports.scoreText = function(d){return "Punteggio: "+v(d,"playerScore")};
 
-exports.setBackgroundRandom = function(d){return "impostare la scena Casuale"};
+exports.setBackgroundRandom = function(d){return "imposta una scena scelta a caso"};
 
-exports.setBackgroundFlappy = function(d){return "impostare la scena Città (giorno)"};
+exports.setBackgroundFlappy = function(d){return "impostare la scena Città di giorno"};
 
-exports.setBackgroundNight = function(d){return "impostare la scena Città (notte)"};
+exports.setBackgroundNight = function(d){return "impostare la scena Città di notte"};
 
-exports.setBackgroundSciFi = function(d){return "impostare la scena Sci-Fi"};
+exports.setBackgroundSciFi = function(d){return "imposta la scena Fantascienza"};
 
-exports.setBackgroundUnderwater = function(d){return "Impostare la scena Sott'acqua"};
+exports.setBackgroundUnderwater = function(d){return "imposta la scena Sottomarina"};
 
-exports.setBackgroundCave = function(d){return "impostare la scena Grotta"};
+exports.setBackgroundCave = function(d){return "imposta la scena Grotta"};
 
-exports.setBackgroundSanta = function(d){return "impostare la scena Natale"};
+exports.setBackgroundSanta = function(d){return "imposta la scena Natale"};
 
 exports.setBackgroundTooltip = function(d){return "Imposta l'immagine di sfondo"};
 
-exports.setGapRandom = function(d){return "impostare una distanza casuale"};
+exports.setGapRandom = function(d){return "imposta una distanza casuale"};
 
-exports.setGapVerySmall = function(d){return "impostare una distanza molto piccola"};
+exports.setGapVerySmall = function(d){return "imposta una distanza molto piccola"};
 
-exports.setGapSmall = function(d){return "impostare una distanza piccola"};
+exports.setGapSmall = function(d){return "imposta una distanza piccola"};
 
-exports.setGapNormal = function(d){return "impostare una distanza normale"};
+exports.setGapNormal = function(d){return "imposta una distanza normale"};
 
-exports.setGapLarge = function(d){return "impostare un intervallo grande"};
+exports.setGapLarge = function(d){return "imposta una distanza grande"};
 
-exports.setGapVeryLarge = function(d){return "impostare una distanza molto grande"};
+exports.setGapVeryLarge = function(d){return "imposta una distanza molto grande"};
 
 exports.setGapHeightTooltip = function(d){return "Imposta la distanza verticale in un ostacolo"};
 
-exports.setGravityRandom = function(d){return "imposta gravità casuale"};
+exports.setGravityRandom = function(d){return "imposta una gravità scelta a caso"};
 
-exports.setGravityVeryLow = function(d){return "imposta gravità molto bassa"};
+exports.setGravityVeryLow = function(d){return "imposta la gravità molto bassa"};
 
-exports.setGravityLow = function(d){return "imposta gravità bassa"};
+exports.setGravityLow = function(d){return "imposta la gravità bassa"};
 
-exports.setGravityNormal = function(d){return "imposta gravità normale"};
+exports.setGravityNormal = function(d){return "imposta la gravità normale"};
 
-exports.setGravityHigh = function(d){return "imposta gravità alta"};
+exports.setGravityHigh = function(d){return "imposta la gravità alta"};
 
-exports.setGravityVeryHigh = function(d){return "imposta gravità molto alta"};
+exports.setGravityVeryHigh = function(d){return "imposta la gravità molto alta"};
 
 exports.setGravityTooltip = function(d){return "Imposta il livello della gravità"};
 
-exports.setGroundRandom = function(d){return "impostare un suolo casuale"};
+exports.setGroundRandom = function(d){return "imposta un terreno scelto a caso"};
 
-exports.setGroundFlappy = function(d){return "impostare il suolo Terreno"};
+exports.setGroundFlappy = function(d){return "impostare il terreno Normale"};
 
-exports.setGroundSciFi = function(d){return "Impostare il suolo Sci-Fi"};
+exports.setGroundSciFi = function(d){return "imposta il terreno Fantascienza"};
 
-exports.setGroundUnderwater = function(d){return "impostare il suolo Sott'acqua"};
+exports.setGroundUnderwater = function(d){return "imposta il terreno Sottomarino"};
 
-exports.setGroundCave = function(d){return "impostare il suolo Grotta"};
+exports.setGroundCave = function(d){return "imposta il terreno Grotta"};
 
-exports.setGroundSanta = function(d){return "Impostare il suolo Natale"};
+exports.setGroundSanta = function(d){return "Imposta il terreno Natale"};
 
-exports.setGroundLava = function(d){return "impostare il terreno Lava"};
+exports.setGroundLava = function(d){return "imposta il terreno Lava"};
 
 exports.setGroundTooltip = function(d){return "Imposta l'immagine del terreno"};
 
-exports.setObstacleRandom = function(d){return "impostare un ostacolo casuale"};
+exports.setObstacleRandom = function(d){return "imposta un ostacolo scelto a caso"};
 
-exports.setObstacleFlappy = function(d){return "selezionare l'ostacolo Tubo"};
+exports.setObstacleFlappy = function(d){return "imposta l'ostacolo Tubo"};
 
-exports.setObstacleSciFi = function(d){return "impostare l'ostale Sci-Fi"};
+exports.setObstacleSciFi = function(d){return "imposta l'ostacolo Fantascienza"};
 
-exports.setObstacleUnderwater = function(d){return "selezionare l'ostacolo Pianta"};
+exports.setObstacleUnderwater = function(d){return "imposta l'ostacolo Pianta"};
 
-exports.setObstacleCave = function(d){return "impostare l'ostacolo Caverna"};
+exports.setObstacleCave = function(d){return "imposta l'ostacolo Grotta"};
 
-exports.setObstacleSanta = function(d){return "impostare l'ostacolo Camino"};
+exports.setObstacleSanta = function(d){return "imposta l'ostacolo Camino"};
 
-exports.setObstacleLaser = function(d){return "impostare l'ostacolo Laser"};
+exports.setObstacleLaser = function(d){return "imposta l'ostacolo Raggio Laser"};
 
-exports.setObstacleTooltip = function(d){return "Imposta l'immagine dell'ostacolo"};
+exports.setObstacleTooltip = function(d){return "Imposta l'immagine degli ostacoli"};
 
-exports.setPlayerRandom = function(d){return "impostare  un giocatore a caso"};
+exports.setPlayerRandom = function(d){return "imposta un giocatore scelto a caso"};
 
-exports.setPlayerFlappy = function(d){return "impostare il giocatore Uccello Giallo"};
+exports.setPlayerFlappy = function(d){return "imposta il giocatore Uccello Giallo"};
 
-exports.setPlayerRedBird = function(d){return "impostare il giocatore Uccello Rosso"};
+exports.setPlayerRedBird = function(d){return "imposta il giocatore Uccello Rosso"};
 
-exports.setPlayerSciFi = function(d){return "impostare il giocatore Astronave"};
+exports.setPlayerSciFi = function(d){return "imposta il giocatore Astronave"};
 
-exports.setPlayerUnderwater = function(d){return "impostare il giocatore Pesce"};
+exports.setPlayerUnderwater = function(d){return "imposta il giocatore Pesce"};
 
-exports.setPlayerCave = function(d){return "impostare il giocatore Pippistrello"};
+exports.setPlayerCave = function(d){return "imposta il giocatore Pipistrello"};
 
-exports.setPlayerSanta = function(d){return "impostare il giocatore Natale"};
+exports.setPlayerSanta = function(d){return "imposta il giocatore Babbo Natale"};
 
-exports.setPlayerShark = function(d){return "impostare il giocatore Squalo"};
+exports.setPlayerShark = function(d){return "imposta il giocatore Squalo"};
 
-exports.setPlayerEaster = function(d){return "impostare il giocatore Coniglietto di Pasqua"};
+exports.setPlayerEaster = function(d){return "imposta il giocatore Coniglietto"};
 
-exports.setPlayerBatman = function(d){return "impostare il giorcatore Bat ragazzo"};
+exports.setPlayerBatman = function(d){return "imposta il giocatore Batman"};
 
-exports.setPlayerSubmarine = function(d){return "impostare il giocatore Sottomarino"};
+exports.setPlayerSubmarine = function(d){return "imposta il giocatore Sottomarino"};
 
-exports.setPlayerUnicorn = function(d){return "impostare il giocatore Unicorno"};
+exports.setPlayerUnicorn = function(d){return "imposta il giocatore Unicorno"};
 
-exports.setPlayerFairy = function(d){return "impostare il giocatore Fata"};
+exports.setPlayerFairy = function(d){return "imposta il giocatore Fatina"};
 
-exports.setPlayerSuperman = function(d){return "impostare il giocatore Flappyman"};
+exports.setPlayerSuperman = function(d){return "imposta il giocatore Superman"};
 
-exports.setPlayerTurkey = function(d){return "impostare il giocatore Tacchino"};
+exports.setPlayerTurkey = function(d){return "imposta il giocatore Tacchino"};
 
 exports.setPlayerTooltip = function(d){return "Imposta l'immagine del giocatore"};
 
-exports.setScore = function(d){return "impostare il punteggio"};
+exports.setScore = function(d){return "imposta il punteggio"};
 
 exports.setScoreTooltip = function(d){return "Imposta il punteggio del giocatore"};
 
-exports.setSpeed = function(d){return "impostare la velocità"};
+exports.setSpeed = function(d){return "Imposta una velocità"};
 
-exports.setSpeedTooltip = function(d){return "Imposta la velocità del livello"};
+exports.setSpeedTooltip = function(d){return "Imposta la velocità con cui Flappy sbatte le ali"};
 
 exports.share = function(d){return "Condividi"};
 
-exports.shareFlappyTwitter = function(d){return "Scopri il gioco Flappy che ho creato. L'ho fatto da solo @codeorg"};
+exports.shareFlappyTwitter = function(d){return "Guarda il gioco Flappy che ho creato io. L'ho fatto da solo @codeorg"};
 
 exports.shareGame = function(d){return "Condividi il tuo gioco:"};
 
-exports.speedRandom = function(d){return "imposta la velocità casuale"};
+exports.speedRandom = function(d){return "imposta una velocità scelta a caso"};
 
-exports.speedVerySlow = function(d){return "imposta la velocità molto lenta"};
+exports.speedVerySlow = function(d){return "imposta una velocità molto lenta"};
 
-exports.speedSlow = function(d){return "imposta la velocità lenta"};
+exports.speedSlow = function(d){return "imposta una velocità lenta"};
 
-exports.speedNormal = function(d){return "imposta la velocità normale"};
+exports.speedNormal = function(d){return "imposta una velocità normale"};
 
-exports.speedFast = function(d){return "imposta la velocità veloce"};
+exports.speedFast = function(d){return "imposta una velocità veloce"};
 
-exports.speedVeryFast = function(d){return "imposta la velocità molto veloce"};
+exports.speedVeryFast = function(d){return "imposta una velocità molto veloce"};
 
-exports.whenClick = function(d){return "Quando fa click"};
+exports.whenClick = function(d){return "quando si clicca"};
 
-exports.whenClickTooltip = function(d){return "Eseguire le azioni di seguito quando si verifica un evento click."};
+exports.whenClickTooltip = function(d){return "Esegue le azioni qua sotto quando si verifica l'evento \"clic\"."};
 
-exports.whenCollideGround = function(d){return "Quando ha colpito il suolo"};
+exports.whenCollideGround = function(d){return "quando precipita a terra"};
 
-exports.whenCollideGroundTooltip = function(d){return "Eseguire le azioni di seguito quando Flappy colpisce il suolo."};
+exports.whenCollideGroundTooltip = function(d){return "Esegue le azioni qua sotto quando Flappy precipita a terra."};
 
-exports.whenCollideObstacle = function(d){return "Quando ha colpito un ostacolo"};
+exports.whenCollideObstacle = function(d){return "quando colpisce un ostacolo"};
 
-exports.whenCollideObstacleTooltip = function(d){return "Eseguire le azioni di seguito quando Flappy colpisce un ostacolo."};
+exports.whenCollideObstacleTooltip = function(d){return "Esegue le azioni qua sotto quando Flappy colpisce un ostacolo."};
 
 exports.whenEnterObstacle = function(d){return "quando supera un ostacolo"};
 
-exports.whenEnterObstacleTooltip = function(d){return "Eseguire le azioni di seguito quando Flappy incontra un ostacolo."};
+exports.whenEnterObstacleTooltip = function(d){return "Esegue le azioni qua sotto quando Flappy incontra un ostacolo."};
 
-exports.whenRunButtonClick = function(d){return "Quando il gioco inizia"};
+exports.whenRunButtonClick = function(d){return "quando si clicca su \"Esegui il programma\""};
 
-exports.whenRunButtonClickTooltip = function(d){return "Eseguire le azioni di seguito quando il gioco inizia."};
+exports.whenRunButtonClickTooltip = function(d){return "Esegue le azioni qua sotto quando si clicca su \"Esegui il programma\"."};
 
 exports.yes = function(d){return "Sì"};
 

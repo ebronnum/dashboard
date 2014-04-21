@@ -7165,7 +7165,7 @@ exports.dialogOK = function(d){return "Đồng ý"};
 
 exports.emptyBlocksErrorMsg = function(d){return "Miếng ghép được \"Lặp lại\" hay \"Nếu\" cần có những miếng ghép bên trong để hoạt động. Đảm bảo là miếng gạch đó khớp hoàn toàn phần ở trong của miếng gạch kia."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Bạn có khối phụ không gắn liền với một sự kiện khối."};
 
 exports.finalStage = function(d){return "Chúc mừng. Bạn vừa hoàn thành xong bước cuối cùng."};
 
@@ -7227,7 +7227,7 @@ exports.toolboxHeader = function(d){return "Các khối lệnh"};
 
 exports.openWorkspace = function(d){return "Hoạt động ra sao"};
 
-exports.totalNumLinesOfCodeWritten = function(d){return "All-time total: "+p(d,"numLines",0,"vi",{"one":"1 line","other":n(d,"numLines")+" lines"})+" of code."};
+exports.totalNumLinesOfCodeWritten = function(d){return "Thời gian tổng cộng: "+p(d,"numLines",0,"vi",{"one":"1 dòng","other":n(d,"numLines")+" dòng"})+" của mã chương trình."};
 
 exports.tryAgain = function(d){return "Thử lại"};
 
@@ -7286,7 +7286,7 @@ exports.fill = function(d){return "điền vào 1"};
 
 exports.fillN = function(d){return "điền vào "+v(d,"shovelfuls")};
 
-exports.fillStack = function(d){return "fill stack of "+v(d,"shovelfuls")+" holes"};
+exports.fillStack = function(d){return "Điền vào các ngăn xếp của "+v(d,"shovelfuls")+"những cái lỗ"};
 
 exports.fillSquare = function(d){return "lấp đầy hình vuông"};
 
@@ -7332,15 +7332,15 @@ exports.pathRight = function(d){return "Nếu bên phải có đường"};
 
 exports.pilePresent = function(d){return "Một mảng"};
 
-exports.putdownTower = function(d){return "put down tower"};
+exports.putdownTower = function(d){return "Đặt xuống tháp"};
 
 exports.removeAndAvoidTheCow = function(d){return "loại bỏ 1 và tránh những con bò"};
 
-exports.removeN = function(d){return "remove "+v(d,"shovelfuls")};
+exports.removeN = function(d){return "Loại bỏ "+v(d,"shovelfuls")};
 
 exports.removePile = function(d){return "Loại bỏ mảng"};
 
-exports.removeStack = function(d){return "remove stack of "+v(d,"shovelfuls")+" piles"};
+exports.removeStack = function(d){return "Loại bỏ các ngăn xếp của "+v(d,"shovelfuls")+" những cái cọc"};
 
 exports.removeSquare = function(d){return "xóa ô vuông"};
 

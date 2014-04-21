@@ -5704,11 +5704,11 @@ exports.dialogCancel = function(d){return "Annuller"};
 
 exports.dialogOK = function(d){return "Ok"};
 
-exports.emptyBlocksErrorMsg = function(d){return "\"Gentag\" eller \"Hvis\" blokkene skal have andre blokke inde i for at virke. Kontroller, at den indre blok passer ordentligt inde i blokken."};
+exports.emptyBlocksErrorMsg = function(d){return "\"Gentag\" eller \"Hvis\" blokkene skal have andre blokke inden i for at virke. Kontroller, at den indre blok passer ordentligt inde i blokken."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Du har ekstra blokke, der ikke er knyttet til en hændelsesblok."};
 
-exports.finalStage = function(d){return "Tillykke! Du har fuldført den sidste fase."};
+exports.finalStage = function(d){return "Tillykke! Du har fuldført det sidste trin."};
 
 exports.finalStageTrophies = function(d){return "Tillykke! Du har afsluttet det sidste trin og vundet "+p(d,"numTrophies",0,"da",{"one":"et trofæ","other":n(d,"numTrophies")+" trofæer"})+"."};
 
@@ -5724,7 +5724,7 @@ exports.levelIncompleteError = function(d){return "Du bruger alle de nødvendige
 
 exports.listVariable = function(d){return "liste"};
 
-exports.makeYourOwnFlappy = function(d){return "Make Your Own Flappy Game"};
+exports.makeYourOwnFlappy = function(d){return "Lav dit eget Flappy spil"};
 
 exports.missingBlocksErrorMsg = function(d){return "Prøv en eller flere af blokkene nedenfor til at løse dette puslespil."};
 
@@ -5762,7 +5762,7 @@ exports.tooManyBlocksMsg = function(d){return "Dette puslespil kan løses med <x
 
 exports.tooMuchWork = function(d){return "Du fik mig til at gøre en masse arbejde! Kunne du prøve at gentage færre gange?"};
 
-exports.flappySpecificFail = function(d){return "Your code looks good - it will flap with each click. But you need to click many times to flap to the target."};
+exports.flappySpecificFail = function(d){return "Din kode ser godt ud - den vil baske ved hvert klik. Men du skal klikke mange gange for at baske til målet."};
 
 exports.toolboxHeader = function(d){return "Blokke"};
 
@@ -5780,11 +5780,11 @@ exports.typeCode = function(d){return "Skriv din JavaScript kode under disse ins
 
 exports.typeFuncs = function(d){return "Tilgængelige funktioner: %1"};
 
-exports.typeHint = function(d){return "Bemærk, at parenteser og semikoloner er påkrævet."};
+exports.typeHint = function(d){return "Bemærk, at parenteser og semikoloner er nødvendige."};
 
 exports.workspaceHeader = function(d){return "Saml dine blokke her: "};
 
-exports.infinity = function(d){return "Uendelighed"};
+exports.infinity = function(d){return "Uendelig"};
 
 exports.rotateText = function(d){return "Drej din enhed."};
 
@@ -5817,7 +5817,7 @@ exports.catTurtle = function(d){return "Handlinger"};
 
 exports.catVariables = function(d){return "Variabler"};
 
-exports.catLogic = function(d){return "Logic"};
+exports.catLogic = function(d){return "Logik"};
 
 exports.colourTooltip = function(d){return "Ændrer farven på blyanten."};
 
@@ -5869,13 +5869,13 @@ exports.penTooltip = function(d){return "Lyfter eller sænker blyanten for at st
 
 exports.penUp = function(d){return "blyant op"};
 
-exports.reinfFeedbackMsg = function(d){return "Does this look like what you want? You can press the \"Try again\" button to see your drawing."};
+exports.reinfFeedbackMsg = function(d){return "Ser dette se ud, som det du ønsker? Du kan trykke på \"Prøv igen\" knappen for at se din tegning."};
 
 exports.setColour = function(d){return "vælg farve"};
 
 exports.setWidth = function(d){return "indstil bredde"};
 
-exports.shareDrawing = function(d){return "Share your drawing:"};
+exports.shareDrawing = function(d){return "Del dine tegninger:"};
 
 exports.showMe = function(d){return "Vis mig"};
 

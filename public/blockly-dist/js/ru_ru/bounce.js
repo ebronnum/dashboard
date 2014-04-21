@@ -5340,21 +5340,21 @@ exports.repeatUntilFinish = function(d){return "повторять до окон
 
 exports.scoreText = function(d){return "Score: "+v(d,"playerScore")+" : "+v(d,"opponentScore")};
 
-exports.setBackgroundRandom = function(d){return "set random scene"};
+exports.setBackgroundRandom = function(d){return "Задать случайную сцену"};
 
-exports.setBackgroundHardcourt = function(d){return "set hardcourt scene"};
+exports.setBackgroundHardcourt = function(d){return "Задать сцену с твердым покрытием"};
 
-exports.setBackgroundRetro = function(d){return "set retro scene"};
+exports.setBackgroundRetro = function(d){return "Задать ретро сцену"};
 
-exports.setBackgroundTooltip = function(d){return "Sets the background image"};
+exports.setBackgroundTooltip = function(d){return "Задать фоновую картинку"};
 
-exports.setBallRandom = function(d){return "set random ball"};
+exports.setBallRandom = function(d){return "Задать случайный мяч"};
 
-exports.setBallHardcourt = function(d){return "set hardcourt ball"};
+exports.setBallHardcourt = function(d){return "Задать мяч для твердого покрытия"};
 
-exports.setBallRetro = function(d){return "set retro ball"};
+exports.setBallRetro = function(d){return "Задать ретро мяч"};
 
-exports.setBallTooltip = function(d){return "Sets the ball image"};
+exports.setBallTooltip = function(d){return "Задать изображение мяча "};
 
 exports.setBallSpeedRandom = function(d){return "присвоить случайную скорость мяча"};
 
@@ -5370,11 +5370,11 @@ exports.setBallSpeedVeryFast = function(d){return "присвоить очень
 
 exports.setBallSpeedTooltip = function(d){return "Присвоить скорость мяча"};
 
-exports.setPaddleRandom = function(d){return "set random paddle"};
+exports.setPaddleRandom = function(d){return "Задать случайную педаль"};
 
-exports.setPaddleHardcourt = function(d){return "set hardcourt paddle"};
+exports.setPaddleHardcourt = function(d){return "Задать ракетку для твердого покрытия"};
 
-exports.setPaddleRetro = function(d){return "set retro paddle"};
+exports.setPaddleRetro = function(d){return "Задать ретро педаль "};
 
 exports.setPaddleTooltip = function(d){return "Sets the ball paddle"};
 
@@ -5578,11 +5578,11 @@ exports.orientationLock = function(d){return "Выключите блокиро�
 
 exports.wantToLearn = function(d){return "Хотите научиться писать код?"};
 
-exports.watchVideo = function(d){return "Посмотрите видео"};
+exports.watchVideo = function(d){return "Посмотреть видео"};
 
-exports.tryHOC = function(d){return "Попробуйте час кода"};
+exports.tryHOC = function(d){return "Попробуйте Час кода"};
 
-exports.signup = function(d){return "Подпишитесь на вводный курс"};
+exports.signup = function(d){return "Зарегистрируйтесь на вводный курс"};
 
 exports.hintHeader = function(d){return "Here's a tip:"};
 

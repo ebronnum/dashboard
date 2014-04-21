@@ -3524,7 +3524,7 @@ exports.dialogOK = function(d){return "Гаразд"};
 
 exports.emptyBlocksErrorMsg = function(d){return "Блоки \"Повторити\" та \"Якщо\" повинні містити інші блоки. Переконайтесь, що внутрішній блок належно розміщений всередині зовнішнього."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "У вас є додаткові блоки, які не прив'язані до жодного блоку подій."};
 
 exports.finalStage = function(d){return "Вітання! Завершено останній етап."};
 

@@ -5227,11 +5227,11 @@ exports.ifTooltip = function(d){return "Ef það er slóð í þessa stefnu þá
 
 exports.ifelseTooltip = function(d){return "Ef það er slóð í þessa stefnu þá á að gera fyrstu kubbastæðuna. Annars á að gera stæðu númer tvö."};
 
-exports.incrementOpponentScore = function(d){return "bæta við skor andstæðings"};
+exports.incrementOpponentScore = function(d){return "skora stig andstæðings"};
 
 exports.incrementOpponentScoreTooltip = function(d){return "Bæta 1 við núverandi skor andstæðings."};
 
-exports.incrementPlayerScore = function(d){return "bæta við skor leikmanns"};
+exports.incrementPlayerScore = function(d){return "skora stig"};
 
 exports.incrementPlayerScoreTooltip = function(d){return "Bæta 1 við núverandi skor leikmanns."};
 
@@ -5289,29 +5289,29 @@ exports.pilePresent = function(d){return "það er haugur"};
 
 exports.playSoundCrunch = function(d){return "spila brothljóð"};
 
-exports.playSoundGoal1 = function(d){return "play goal 1 sound"};
+exports.playSoundGoal1 = function(d){return "spila markhljóð 1"};
 
-exports.playSoundGoal2 = function(d){return "play goal 2 sound"};
+exports.playSoundGoal2 = function(d){return "spila markhljóð 2"};
 
-exports.playSoundHit = function(d){return "play hit sound"};
+exports.playSoundHit = function(d){return "spila áreksturshljóð"};
 
-exports.playSoundLosePoint = function(d){return "play lose point sound"};
+exports.playSoundLosePoint = function(d){return "spila stigatapshljóð 1"};
 
-exports.playSoundLosePoint2 = function(d){return "play lose point 2 sound"};
+exports.playSoundLosePoint2 = function(d){return "spila stigatapshljóð 2"};
 
-exports.playSoundRetro = function(d){return "play retro sound"};
+exports.playSoundRetro = function(d){return "spila retro hljóð"};
 
-exports.playSoundRubber = function(d){return "play rubber sound"};
+exports.playSoundRubber = function(d){return "spila gúmmíhljóð"};
 
-exports.playSoundSlap = function(d){return "play slap sound"};
+exports.playSoundSlap = function(d){return "spila skellhljóð"};
 
 exports.playSoundTooltip = function(d){return "Spila valið hljóð."};
 
-exports.playSoundWinPoint = function(d){return "play win point sound"};
+exports.playSoundWinPoint = function(d){return "spila stigaskorshljóð 1"};
 
-exports.playSoundWinPoint2 = function(d){return "play win point 2 sound"};
+exports.playSoundWinPoint2 = function(d){return "spila stigaskorshljóð 2"};
 
-exports.playSoundWood = function(d){return "play wood sound"};
+exports.playSoundWood = function(d){return "spila viðarhljóð"};
 
 exports.putdownTower = function(d){return "setja niður turn"};
 
@@ -5327,57 +5327,57 @@ exports.repeatUntilFinish = function(d){return "endurtaka til loka"};
 
 exports.scoreText = function(d){return "Skor: "+v(d,"playerScore")+" : "+v(d,"opponentScore")};
 
-exports.setBackgroundRandom = function(d){return "set random scene"};
+exports.setBackgroundRandom = function(d){return "handahófsumhverfi"};
 
-exports.setBackgroundHardcourt = function(d){return "set hardcourt scene"};
+exports.setBackgroundHardcourt = function(d){return "vallarumhverfi"};
 
-exports.setBackgroundRetro = function(d){return "set retro scene"};
+exports.setBackgroundRetro = function(d){return "eldra umhverfi"};
 
-exports.setBackgroundTooltip = function(d){return "Sets the background image"};
+exports.setBackgroundTooltip = function(d){return "Stillir bakgrunninn"};
 
-exports.setBallRandom = function(d){return "set random ball"};
+exports.setBallRandom = function(d){return "handahófsbolti"};
 
-exports.setBallHardcourt = function(d){return "set hardcourt ball"};
+exports.setBallHardcourt = function(d){return "vallarbolti"};
 
-exports.setBallRetro = function(d){return "set retro ball"};
+exports.setBallRetro = function(d){return "eldri bolti"};
 
-exports.setBallTooltip = function(d){return "Sets the ball image"};
+exports.setBallTooltip = function(d){return "Stillir gerð bolta"};
 
-exports.setBallSpeedRandom = function(d){return "set random ball speed"};
+exports.setBallSpeedRandom = function(d){return "hraði handahófsbolta"};
 
-exports.setBallSpeedVerySlow = function(d){return "set very slow ball speed"};
+exports.setBallSpeedVerySlow = function(d){return "hraði á mjög hægum bolta"};
 
-exports.setBallSpeedSlow = function(d){return "set slow ball speed"};
+exports.setBallSpeedSlow = function(d){return "hraði á hægum bolta"};
 
-exports.setBallSpeedNormal = function(d){return "set normal ball speed"};
+exports.setBallSpeedNormal = function(d){return "hraði á venjulegum bolta"};
 
-exports.setBallSpeedFast = function(d){return "set fast ball speed"};
+exports.setBallSpeedFast = function(d){return "hraði á hröðum bolta"};
 
-exports.setBallSpeedVeryFast = function(d){return "set very fast ball speed"};
+exports.setBallSpeedVeryFast = function(d){return "hraði á mjög hröðum bolta"};
 
-exports.setBallSpeedTooltip = function(d){return "Sets the speed of the ball"};
+exports.setBallSpeedTooltip = function(d){return "Stillir hraða boltans"};
 
-exports.setPaddleRandom = function(d){return "set random paddle"};
+exports.setPaddleRandom = function(d){return "handahófsspaði"};
 
-exports.setPaddleHardcourt = function(d){return "set hardcourt paddle"};
+exports.setPaddleHardcourt = function(d){return "vallarspaði"};
 
-exports.setPaddleRetro = function(d){return "set retro paddle"};
+exports.setPaddleRetro = function(d){return "eldri spaði"};
 
 exports.setPaddleTooltip = function(d){return "Sets the ball paddle"};
 
-exports.setPaddleSpeedRandom = function(d){return "set random paddle speed"};
+exports.setPaddleSpeedRandom = function(d){return "hraði á handahófsspaða"};
 
-exports.setPaddleSpeedVerySlow = function(d){return "set very slow paddle speed"};
+exports.setPaddleSpeedVerySlow = function(d){return "hraði á mjög hægum spaða"};
 
-exports.setPaddleSpeedSlow = function(d){return "set slow paddle speed"};
+exports.setPaddleSpeedSlow = function(d){return "hraði á hægum spaða"};
 
-exports.setPaddleSpeedNormal = function(d){return "set normal paddle speed"};
+exports.setPaddleSpeedNormal = function(d){return "hraði á venjulegum spaða"};
 
-exports.setPaddleSpeedFast = function(d){return "set fast paddle speed"};
+exports.setPaddleSpeedFast = function(d){return "hraði á hröðum spaða"};
 
-exports.setPaddleSpeedVeryFast = function(d){return "set very fast paddle speed"};
+exports.setPaddleSpeedVeryFast = function(d){return "hraði á mjög hröðum spaða"};
 
-exports.setPaddleSpeedTooltip = function(d){return "Sets the speed of the paddle"};
+exports.setPaddleSpeedTooltip = function(d){return "Stillir hraða spaðans"};
 
 exports.share = function(d){return "Share"};
 
@@ -5403,9 +5403,9 @@ exports.whenDown = function(d){return "þegar niður ör"};
 
 exports.whenDownTooltip = function(d){return "Gera aðgerðirnar fyrir neðan þegar ýtt er á örvarlykil niður."};
 
-exports.whenGameStarts = function(d){return "when game starts"};
+exports.whenGameStarts = function(d){return "þegar leikur byrjar"};
 
-exports.whenGameStartsTooltip = function(d){return "Execute the actions below when the game starts."};
+exports.whenGameStartsTooltip = function(d){return "Gera aðgerðirnar fyrir neðan þegar leikurinn byrjar."};
 
 exports.whenLeft = function(d){return "þegar vinstri ör"};
 
@@ -5448,7 +5448,7 @@ exports.catLists = function(d){return "Listar"};
 
 exports.catLoops = function(d){return "Lykkjur"};
 
-exports.catMath = function(d){return "Stærðfræðiaðgerðir"};
+exports.catMath = function(d){return "Reikningur"};
 
 exports.catProcedures = function(d){return "Föll"};
 
@@ -5466,7 +5466,7 @@ exports.dialogOK = function(d){return "Í lagi"};
 
 exports.emptyBlocksErrorMsg = function(d){return "Kubbarnir \"endurtaka\" og \"ef\" verða að innihalda aðra kubba til að virka. Gættu þess að innri kubburinn smellpassi í ytri kubbinn."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Þú hefur auka kubba sem ekki tengjast atvikakubbi."};
 
 exports.finalStage = function(d){return "Til hamingju! Þú hefur klárað síðasta áfangann."};
 
@@ -5484,7 +5484,7 @@ exports.levelIncompleteError = function(d){return "Þú ert að nota allar nauð
 
 exports.listVariable = function(d){return "listi"};
 
-exports.makeYourOwnFlappy = function(d){return "Make Your Own Flappy Game"};
+exports.makeYourOwnFlappy = function(d){return "Búðu til þinn eigin(n) Flappy leik"};
 
 exports.missingBlocksErrorMsg = function(d){return "Reyndu einn eða fleiri af kubbunum hér fyrir neðan til að leysa þessa þraut."};
 
@@ -5522,7 +5522,7 @@ exports.tooManyBlocksMsg = function(d){return "Þessa þraut er hægt að leysa 
 
 exports.tooMuchWork = function(d){return "Þú lagðir á mig mjög mikla vinnu! Gætirðu reynt að nota færri endurtekningar?"};
 
-exports.flappySpecificFail = function(d){return "Your code looks good - it will flap with each click. But you need to click many times to flap to the target."};
+exports.flappySpecificFail = function(d){return "Kóðinn þinn lítur vel út - fuglinn flögrar við hvern smell. En þú þarft að smella oft til að flögra að endamarkinu."};
 
 exports.toolboxHeader = function(d){return "Kubbar"};
 

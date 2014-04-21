@@ -4895,7 +4895,7 @@ exports.playSoundLaser = function(d){return "spill laser-lyd"};
 
 exports.playSoundTooltip = function(d){return "Spill den valgte lyden."};
 
-exports.reinfFeedbackMsg = function(d){return "You can press the \"Try again\" button to go back to playing your game."};
+exports.reinfFeedbackMsg = function(d){return "Du kan trykke på \"Try Again\" knappen for å gå tilbake til ditt spill."};
 
 exports.scoreText = function(d){return "Sluttresultat: "+v(d,"playerScore")};
 
@@ -4929,19 +4929,19 @@ exports.setGapVeryLarge = function(d){return "Angi en svært stort åpning"};
 
 exports.setGapHeightTooltip = function(d){return "Setter den vertikale åpningen i et hinder"};
 
-exports.setGravityRandom = function(d){return "set gravity random"};
+exports.setGravityRandom = function(d){return "Angi tilfeldig tyngdekraft"};
 
-exports.setGravityVeryLow = function(d){return "set gravity very low"};
+exports.setGravityVeryLow = function(d){return "Angi veldig lav tyngdekraft"};
 
-exports.setGravityLow = function(d){return "set gravity low"};
+exports.setGravityLow = function(d){return "Angi lav tyngdekraft"};
 
-exports.setGravityNormal = function(d){return "set gravity normal"};
+exports.setGravityNormal = function(d){return "Angi normal tyngdekraft"};
 
-exports.setGravityHigh = function(d){return "set gravity high"};
+exports.setGravityHigh = function(d){return "Angi høy tyngdekraft"};
 
-exports.setGravityVeryHigh = function(d){return "set gravity very high"};
+exports.setGravityVeryHigh = function(d){return "Angi veldig høy tyngdekraft"};
 
-exports.setGravityTooltip = function(d){return "Sets the level's gravity"};
+exports.setGravityTooltip = function(d){return "Angir nivåets tyngdekraft"};
 
 exports.setGroundRandom = function(d){return "Angi bakke Tilfeldig"};
 
@@ -4993,7 +4993,7 @@ exports.setPlayerShark = function(d){return "Angi spiller Hai"};
 
 exports.setPlayerEaster = function(d){return "angi spiller Påskehare"};
 
-exports.setPlayerBatman = function(d){return "set player Bat guy"};
+exports.setPlayerBatman = function(d){return "Angi spiller Bat guy"};
 
 exports.setPlayerSubmarine = function(d){return "angi spiller Ubåt"};
 
@@ -5007,19 +5007,19 @@ exports.setPlayerTurkey = function(d){return "angi spiller Kalkun"};
 
 exports.setPlayerTooltip = function(d){return "Angir spiller-bilde"};
 
-exports.setScore = function(d){return "set score"};
+exports.setScore = function(d){return "Angi poengsum"};
 
-exports.setScoreTooltip = function(d){return "Sets the player's score"};
+exports.setScoreTooltip = function(d){return "Angir spillerens poengsum"};
 
 exports.setSpeed = function(d){return "Angi fart"};
 
-exports.setSpeedTooltip = function(d){return "Sets the levels speed"};
+exports.setSpeedTooltip = function(d){return "Angir nivåets hastighet"};
 
 exports.share = function(d){return "Del"};
 
 exports.shareFlappyTwitter = function(d){return "Sjekk ut Flappy-spillet jeg har laget! Jeg laget det selv med @codeorg"};
 
-exports.shareGame = function(d){return "Share your game:"};
+exports.shareGame = function(d){return "Del ditt spill:"};
 
 exports.speedRandom = function(d){return "angi fart Tilfeldig"};
 
@@ -5027,11 +5027,11 @@ exports.speedVerySlow = function(d){return "angi fart veldig sakte"};
 
 exports.speedSlow = function(d){return "angi fart sakte"};
 
-exports.speedNormal = function(d){return "angi fart normal"};
+exports.speedNormal = function(d){return "Angi normal fart"};
 
-exports.speedFast = function(d){return "angi fart rask"};
+exports.speedFast = function(d){return "angi rask hastighet"};
 
-exports.speedVeryFast = function(d){return "angi fart veldig rask"};
+exports.speedVeryFast = function(d){return "angi veldig rask hastighet"};
 
 exports.whenClick = function(d){return "Når klikk"};
 
@@ -5049,9 +5049,9 @@ exports.whenEnterObstacle = function(d){return "når passert hindring"};
 
 exports.whenEnterObstacleTooltip = function(d){return "Utfør handlingene nedenfor når Flappy møter en hindring."};
 
-exports.whenRunButtonClick = function(d){return "Når Kjør klikkes"};
+exports.whenRunButtonClick = function(d){return "Når spillet starter"};
 
-exports.whenRunButtonClickTooltip = function(d){return "Execute the actions below when the run button is pressed."};
+exports.whenRunButtonClickTooltip = function(d){return "Utfør handlingene nedenfor når spillet starter."};
 
 exports.yes = function(d){return "Ja"};
 

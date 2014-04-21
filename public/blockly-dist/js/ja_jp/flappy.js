@@ -4700,7 +4700,7 @@ exports.parseElement = function(text) {
 
 },{}],32:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.ja=function(n){return "other"}
-exports.blocklyMessage = function(d){return "ブロックリー"};
+exports.blocklyMessage = function(d){return "ブロック状の"};
 
 exports.catActions = function(d){return "操作"};
 
@@ -4712,7 +4712,7 @@ exports.catLists = function(d){return "リスト"};
 
 exports.catLoops = function(d){return "繰り返し"};
 
-exports.catMath = function(d){return "計算"};
+exports.catMath = function(d){return "数値"};
 
 exports.catProcedures = function(d){return "関数"};
 
@@ -4730,7 +4730,7 @@ exports.dialogOK = function(d){return "OK"};
 
 exports.emptyBlocksErrorMsg = function(d){return "”Repeat”または\"If\"のブロックを動作をさせるためには内側に別のブロックが必要になります。内側のブロックが構成されているブロック 内に適切にはめ込まれているか確認をしてください。\n\n\n"};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "イベントブロックに付いていない余分なブロックがあります。"};
 
 exports.finalStage = function(d){return "おめでとうございます ！最終ステージをクリアしました。"};
 
@@ -4827,19 +4827,19 @@ exports.hintHeader = function(d){return "Here's a tip:"};
 
 },{"messageformat":45}],33:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.ja=function(n){return "other"}
-exports.continue = function(d){return "続ける"};
+exports.continue = function(d){return "続行"};
 
 exports.doCode = function(d){return "実行"};
 
 exports.elseCode = function(d){return "そうでなければ"};
 
-exports.endGame = function(d){return "end game"};
+exports.endGame = function(d){return "ゲーム終了"};
 
-exports.endGameTooltip = function(d){return "Ends the game."};
+exports.endGameTooltip = function(d){return "ゲーム終了"};
 
 exports.finalLevel = function(d){return "おめでとうございます ！最後のパズルを解決しました。"};
 
-exports.flap = function(d){return "flap"};
+exports.flap = function(d){return "フラップ"};
 
 exports.flapRandom = function(d){return "ランダムな量だけパタパタします。"};
 
@@ -4855,9 +4855,9 @@ exports.flapVeryLarge = function(d){return "とてもたくさんパタパタし
 
 exports.flapTooltip = function(d){return "フラッピーが上に飛びます。"};
 
-exports.incrementPlayerScore = function(d){return "increment player score"};
+exports.incrementPlayerScore = function(d){return "1 ポイント"};
 
-exports.incrementPlayerScoreTooltip = function(d){return "Add one to the current player score."};
+exports.incrementPlayerScoreTooltip = function(d){return "現在のプレイヤーのスコアに追加"};
 
 exports.nextLevel = function(d){return "おめでとうございます ！このパズルを完了しました。"};
 
@@ -4867,191 +4867,191 @@ exports.numBlocksNeeded = function(d){return "このパズルは%1個のブロ�
 
 exports.oneTopBlock = function(d){return "このパズルでは、白いワークスペース内にすべてのブロックを山積みにする必要があります。\n"};
 
-exports.playSoundRandom = function(d){return "play random sound"};
+exports.playSoundRandom = function(d){return "ランダムな音を再生"};
 
-exports.playSoundBounce = function(d){return "play bounce sound"};
+exports.playSoundBounce = function(d){return "バウンド音の再生"};
 
-exports.playSoundCrunch = function(d){return "play crunch sound"};
+exports.playSoundCrunch = function(d){return "バリバリ音の再生"};
 
-exports.playSoundDie = function(d){return "play sad sound"};
+exports.playSoundDie = function(d){return "悲しい音を再生"};
 
-exports.playSoundHit = function(d){return "play smash sound"};
+exports.playSoundHit = function(d){return "叩く音を再生"};
 
-exports.playSoundPoint = function(d){return "play point sound"};
+exports.playSoundPoint = function(d){return "ポイントする音の再生"};
 
-exports.playSoundSwoosh = function(d){return "play swoosh sound"};
+exports.playSoundSwoosh = function(d){return "シュッと動く音の再生"};
 
-exports.playSoundWing = function(d){return "play wing sound"};
+exports.playSoundWing = function(d){return "羽音の再生"};
 
-exports.playSoundJet = function(d){return "play jet sound"};
+exports.playSoundJet = function(d){return "ジェット音の再生"};
 
-exports.playSoundCrash = function(d){return "play crash sound"};
+exports.playSoundCrash = function(d){return "クラッシュ音を再生"};
 
-exports.playSoundJingle = function(d){return "play jingle sound"};
+exports.playSoundJingle = function(d){return "チリンチリンとなる音の再生"};
 
-exports.playSoundSplash = function(d){return "play splash sound"};
+exports.playSoundSplash = function(d){return "スプラッシュ音の再生"};
 
-exports.playSoundLaser = function(d){return "play laser sound"};
+exports.playSoundLaser = function(d){return "レーザー音を再生"};
 
-exports.playSoundTooltip = function(d){return "Play a sound."};
+exports.playSoundTooltip = function(d){return "選択音を再生"};
 
-exports.reinfFeedbackMsg = function(d){return "You can press the \"Try again\" button to go back to playing your game."};
+exports.reinfFeedbackMsg = function(d){return "\"Try again\" ボタンを押すと、ゲームに戻る"};
 
-exports.scoreText = function(d){return "Score: "+v(d,"playerScore")+" : "+v(d,"opponentScore")};
+exports.scoreText = function(d){return "得点："};
 
-exports.setBackgroundRandom = function(d){return "set scene Random"};
+exports.setBackgroundRandom = function(d){return "状況をランダム に設定"};
 
-exports.setBackgroundFlappy = function(d){return "set scene City (day)"};
+exports.setBackgroundFlappy = function(d){return "状況を街（昼）に設定"};
 
-exports.setBackgroundNight = function(d){return "set scene City (night)"};
+exports.setBackgroundNight = function(d){return "状況を街（夜）に設定"};
 
-exports.setBackgroundSciFi = function(d){return "set scene Sci-Fi"};
+exports.setBackgroundSciFi = function(d){return "状況をSFに設定"};
 
-exports.setBackgroundUnderwater = function(d){return "set scene Underwater"};
+exports.setBackgroundUnderwater = function(d){return "状況を水中に設定"};
 
-exports.setBackgroundCave = function(d){return "set scene Cave"};
+exports.setBackgroundCave = function(d){return "状況を洞窟に設定"};
 
-exports.setBackgroundSanta = function(d){return "set scene Santa"};
+exports.setBackgroundSanta = function(d){return "状況をクリスマスに設定"};
 
-exports.setBackgroundTooltip = function(d){return "Sets the background image"};
+exports.setBackgroundTooltip = function(d){return "背景画像を設定"};
 
-exports.setGapRandom = function(d){return "set a random gap"};
+exports.setGapRandom = function(d){return "ギャップをランダムに設定"};
 
-exports.setGapVerySmall = function(d){return "set a very small gap"};
+exports.setGapVerySmall = function(d){return "ギャップを非常に小さいに設定"};
 
-exports.setGapSmall = function(d){return "set a small gap"};
+exports.setGapSmall = function(d){return "ギャップを小さいに設定"};
 
-exports.setGapNormal = function(d){return "set a normal gap"};
+exports.setGapNormal = function(d){return "ギャップを通常に設定"};
 
-exports.setGapLarge = function(d){return "set a large gap"};
+exports.setGapLarge = function(d){return "ギャップを大きいに設定"};
 
-exports.setGapVeryLarge = function(d){return "set a very large gap"};
+exports.setGapVeryLarge = function(d){return "ギャップを非常に大きいに設定"};
 
-exports.setGapHeightTooltip = function(d){return "Sets the vertical gap in an obstacle"};
+exports.setGapHeightTooltip = function(d){return "障害物の垂直方向のギャップを設定"};
 
-exports.setGravityRandom = function(d){return "set gravity random"};
+exports.setGravityRandom = function(d){return "重力をランダムに設定"};
 
-exports.setGravityVeryLow = function(d){return "set gravity very low"};
+exports.setGravityVeryLow = function(d){return "重力を非常に小さいに設定"};
 
-exports.setGravityLow = function(d){return "set gravity low"};
+exports.setGravityLow = function(d){return "重力を小さいに設定"};
 
-exports.setGravityNormal = function(d){return "set gravity normal"};
+exports.setGravityNormal = function(d){return "重力を通常に設定"};
 
-exports.setGravityHigh = function(d){return "set gravity high"};
+exports.setGravityHigh = function(d){return "重力を大きいに設定"};
 
-exports.setGravityVeryHigh = function(d){return "set gravity very high"};
+exports.setGravityVeryHigh = function(d){return "重力を非常に大きいに設定"};
 
-exports.setGravityTooltip = function(d){return "Sets the level's gravity"};
+exports.setGravityTooltip = function(d){return "重力のレベルを設定"};
 
-exports.setGroundRandom = function(d){return "set ground Random"};
+exports.setGroundRandom = function(d){return "地面をランダムに設定"};
 
-exports.setGroundFlappy = function(d){return "set ground Ground"};
+exports.setGroundFlappy = function(d){return "地面を通常に設定"};
 
-exports.setGroundSciFi = function(d){return "set ground Sci-Fi"};
+exports.setGroundSciFi = function(d){return "地面をSFに設定"};
 
-exports.setGroundUnderwater = function(d){return "set ground Underwater"};
+exports.setGroundUnderwater = function(d){return "地面を水中に設定"};
 
-exports.setGroundCave = function(d){return "set ground Cave"};
+exports.setGroundCave = function(d){return "地面を洞窟に設定"};
 
-exports.setGroundSanta = function(d){return "set ground Santa"};
+exports.setGroundSanta = function(d){return "地面をクリスマスに設定"};
 
-exports.setGroundLava = function(d){return "set ground Lava"};
+exports.setGroundLava = function(d){return "地面を溶岩に設定"};
 
-exports.setGroundTooltip = function(d){return "Sets the ground image"};
+exports.setGroundTooltip = function(d){return "地面の画像を設定"};
 
-exports.setObstacleRandom = function(d){return "set obstacle Random"};
+exports.setObstacleRandom = function(d){return "障害物をランダムに設定"};
 
-exports.setObstacleFlappy = function(d){return "set obstacle Pipe"};
+exports.setObstacleFlappy = function(d){return "障害物をパイプに設定"};
 
-exports.setObstacleSciFi = function(d){return "set obstacle Sci-Fi"};
+exports.setObstacleSciFi = function(d){return "障害物をSFに設定"};
 
-exports.setObstacleUnderwater = function(d){return "set obstacle Plant"};
+exports.setObstacleUnderwater = function(d){return "障害物を植物に設定"};
 
-exports.setObstacleCave = function(d){return "set obstacle Cave"};
+exports.setObstacleCave = function(d){return "障害物を洞窟に設定"};
 
-exports.setObstacleSanta = function(d){return "set obstacle Chimney"};
+exports.setObstacleSanta = function(d){return "障害物を煙突に設定"};
 
-exports.setObstacleLaser = function(d){return "set obstacle Laser"};
+exports.setObstacleLaser = function(d){return "障害物をレーザーに設定"};
 
-exports.setObstacleTooltip = function(d){return "Sets the obstacle image"};
+exports.setObstacleTooltip = function(d){return "障害物の背景を設定"};
 
-exports.setPlayerRandom = function(d){return "set player Random"};
+exports.setPlayerRandom = function(d){return "プレーヤーをランダムに設定"};
 
-exports.setPlayerFlappy = function(d){return "set player Yellow Bird"};
+exports.setPlayerFlappy = function(d){return "プレーヤーをイエローバードに設定"};
 
-exports.setPlayerRedBird = function(d){return "set player Red Bird"};
+exports.setPlayerRedBird = function(d){return "プレーヤーをレッドバードに設定"};
 
-exports.setPlayerSciFi = function(d){return "set player Spaceship"};
+exports.setPlayerSciFi = function(d){return "プレーヤーをスペースシップに設定"};
 
-exports.setPlayerUnderwater = function(d){return "set player Fish"};
+exports.setPlayerUnderwater = function(d){return "プレーヤーをフィッシュに設定"};
 
-exports.setPlayerCave = function(d){return "set player Bat"};
+exports.setPlayerCave = function(d){return "プレーヤーをバットマンに設定"};
 
-exports.setPlayerSanta = function(d){return "set player Santa"};
+exports.setPlayerSanta = function(d){return "プレーヤーをサンタクロースに設定"};
 
-exports.setPlayerShark = function(d){return "set player Shark"};
+exports.setPlayerShark = function(d){return "プレーヤーをシャークに設定"};
 
-exports.setPlayerEaster = function(d){return "set player Easter Bunny"};
+exports.setPlayerEaster = function(d){return "プレーヤーをイースターバニーに設定"};
 
-exports.setPlayerBatman = function(d){return "set player Bat guy"};
+exports.setPlayerBatman = function(d){return "プレーヤーをバットマンに設定"};
 
-exports.setPlayerSubmarine = function(d){return "set player Submarine"};
+exports.setPlayerSubmarine = function(d){return "プレーヤーをサブマリンに設定"};
 
-exports.setPlayerUnicorn = function(d){return "set player Unicorn"};
+exports.setPlayerUnicorn = function(d){return "プレーヤーをユニコーンに設定"};
 
-exports.setPlayerFairy = function(d){return "set player Fairy"};
+exports.setPlayerFairy = function(d){return "プレーヤーをフェアリーに設定"};
 
-exports.setPlayerSuperman = function(d){return "set player Flappyman"};
+exports.setPlayerSuperman = function(d){return "プレーヤーをフラッピーマンに設定"};
 
-exports.setPlayerTurkey = function(d){return "set player Turkey"};
+exports.setPlayerTurkey = function(d){return "プレーヤーをターキーに設定"};
 
-exports.setPlayerTooltip = function(d){return "Sets the player image"};
+exports.setPlayerTooltip = function(d){return "プレーヤーの画像を設定"};
 
-exports.setScore = function(d){return "set score"};
+exports.setScore = function(d){return "得点を設定"};
 
-exports.setScoreTooltip = function(d){return "Sets the player's score"};
+exports.setScoreTooltip = function(d){return "プレーヤーの得点を設定"};
 
-exports.setSpeed = function(d){return "set speed"};
+exports.setSpeed = function(d){return "速度を設定"};
 
-exports.setSpeedTooltip = function(d){return "Sets the levels speed"};
+exports.setSpeedTooltip = function(d){return "速度のレベルを設定"};
 
-exports.share = function(d){return "Share"};
+exports.share = function(d){return "共有"};
 
-exports.shareFlappyTwitter = function(d){return "Check out the Flappy game I made. I wrote it myself with @codeorg"};
+exports.shareFlappyTwitter = function(d){return "作られたフラッピーゲームをチェックしてください。@ codeorgで書きました。"};
 
-exports.shareGame = function(d){return "Share your game:"};
+exports.shareGame = function(d){return "あなたのゲームを共有："};
 
-exports.speedRandom = function(d){return "set speed random"};
+exports.speedRandom = function(d){return "速度をランダムに設定"};
 
-exports.speedVerySlow = function(d){return "set speed very slow"};
+exports.speedVerySlow = function(d){return "速度を非常に遅いに設定"};
 
-exports.speedSlow = function(d){return "set speed slow"};
+exports.speedSlow = function(d){return "速度を遅いに設定"};
 
-exports.speedNormal = function(d){return "set speed normal"};
+exports.speedNormal = function(d){return "速度を通常に設定"};
 
-exports.speedFast = function(d){return "set speed fast"};
+exports.speedFast = function(d){return "速度を早いに設定"};
 
-exports.speedVeryFast = function(d){return "set speed very fast"};
+exports.speedVeryFast = function(d){return "速度を非常に早いに設定"};
 
-exports.whenClick = function(d){return "when click"};
+exports.whenClick = function(d){return "クリックしたとき"};
 
-exports.whenClickTooltip = function(d){return "Execute the actions below when a click event occurs."};
+exports.whenClickTooltip = function(d){return "クリックしたイベント発生時に次のアクションを実行"};
 
-exports.whenCollideGround = function(d){return "when hit the ground"};
+exports.whenCollideGround = function(d){return "地面をヒットしたとき"};
 
-exports.whenCollideGroundTooltip = function(d){return "Execute the actions below when Flappy hits the ground."};
+exports.whenCollideGroundTooltip = function(d){return "フラッピーが地面にヒットしたとき、次のアクションを実行"};
 
-exports.whenCollideObstacle = function(d){return "when hit an obstacle"};
+exports.whenCollideObstacle = function(d){return "障害物をヒットしたとき"};
 
-exports.whenCollideObstacleTooltip = function(d){return "Execute the actions below when Flappy hits an obstacle."};
+exports.whenCollideObstacleTooltip = function(d){return "フラッピーが障害物にヒットしたとき、次のアクションを実行"};
 
-exports.whenEnterObstacle = function(d){return "when pass obstacle"};
+exports.whenEnterObstacle = function(d){return "障害物を通過したとき"};
 
-exports.whenEnterObstacleTooltip = function(d){return "Execute the actions below when Flappy enters an obstacle."};
+exports.whenEnterObstacleTooltip = function(d){return "フラッピーが障害物に進入したとき、次のアクションを実行"};
 
-exports.whenRunButtonClick = function(d){return "when Run is clicked"};
+exports.whenRunButtonClick = function(d){return "ゲームの開始時"};
 
-exports.whenRunButtonClickTooltip = function(d){return "Execute the actions below when the run button is pressed."};
+exports.whenRunButtonClickTooltip = function(d){return "ゲーム開始時、次のアクションを実行"};
 
 exports.yes = function(d){return "はい"};
 

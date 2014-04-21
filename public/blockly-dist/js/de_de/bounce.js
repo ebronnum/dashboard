@@ -5327,57 +5327,57 @@ exports.repeatUntilFinish = function(d){return "Wiederholen bis abgeschlossen"};
 
 exports.scoreText = function(d){return "Score: "+v(d,"playerScore")+" : "+v(d,"opponentScore")};
 
-exports.setBackgroundRandom = function(d){return "set random scene"};
+exports.setBackgroundRandom = function(d){return "Setze zufälligen Hintergrund"};
 
-exports.setBackgroundHardcourt = function(d){return "set hardcourt scene"};
+exports.setBackgroundHardcourt = function(d){return "Setze Hartplatz als Hintergrund"};
 
-exports.setBackgroundRetro = function(d){return "set retro scene"};
+exports.setBackgroundRetro = function(d){return "Setze retro Hintergrund"};
 
-exports.setBackgroundTooltip = function(d){return "Sets the background image"};
+exports.setBackgroundTooltip = function(d){return "Legt das Hintergrundbild fest"};
 
-exports.setBallRandom = function(d){return "set random ball"};
+exports.setBallRandom = function(d){return "Setze zufälligen Ball"};
 
-exports.setBallHardcourt = function(d){return "set hardcourt ball"};
+exports.setBallHardcourt = function(d){return "Setze Hartplatz-Ball"};
 
-exports.setBallRetro = function(d){return "set retro ball"};
+exports.setBallRetro = function(d){return "Setze retro Ball"};
 
-exports.setBallTooltip = function(d){return "Sets the ball image"};
+exports.setBallTooltip = function(d){return "Legt das Ball-Bild fest"};
 
-exports.setBallSpeedRandom = function(d){return "set random ball speed"};
+exports.setBallSpeedRandom = function(d){return "Setze zufällige Ballgeschwindigkeit"};
 
-exports.setBallSpeedVerySlow = function(d){return "set very slow ball speed"};
+exports.setBallSpeedVerySlow = function(d){return "Setze sehr langsame Ballgeschwindigkeit"};
 
-exports.setBallSpeedSlow = function(d){return "set slow ball speed"};
+exports.setBallSpeedSlow = function(d){return "Setze langsame Ballgeschwindigkeit"};
 
-exports.setBallSpeedNormal = function(d){return "set normal ball speed"};
+exports.setBallSpeedNormal = function(d){return "Setze normale Ballgeschwindigkeit"};
 
-exports.setBallSpeedFast = function(d){return "set fast ball speed"};
+exports.setBallSpeedFast = function(d){return "Setze schnelle Ballgeschwindigkeit"};
 
-exports.setBallSpeedVeryFast = function(d){return "set very fast ball speed"};
+exports.setBallSpeedVeryFast = function(d){return "Setze sehr schnelle Ballgeschwindigkeit"};
 
-exports.setBallSpeedTooltip = function(d){return "Sets the speed of the ball"};
+exports.setBallSpeedTooltip = function(d){return "Legt die Ballgeschwindigkeit fest"};
 
-exports.setPaddleRandom = function(d){return "set random paddle"};
+exports.setPaddleRandom = function(d){return "Setze zufälligen Schläger"};
 
-exports.setPaddleHardcourt = function(d){return "set hardcourt paddle"};
+exports.setPaddleHardcourt = function(d){return "Setze Hartplatz-Schläger"};
 
-exports.setPaddleRetro = function(d){return "set retro paddle"};
+exports.setPaddleRetro = function(d){return "Setze retro Schläger"};
 
 exports.setPaddleTooltip = function(d){return "Sets the ball paddle"};
 
-exports.setPaddleSpeedRandom = function(d){return "set random paddle speed"};
+exports.setPaddleSpeedRandom = function(d){return "Setze zufällige Schlägergeschwindigkeit"};
 
-exports.setPaddleSpeedVerySlow = function(d){return "set very slow paddle speed"};
+exports.setPaddleSpeedVerySlow = function(d){return "Setze sehr langsame Schlägergeschwindigkeit"};
 
-exports.setPaddleSpeedSlow = function(d){return "set slow paddle speed"};
+exports.setPaddleSpeedSlow = function(d){return "Setze langsame Schlägergeschwindigkeit"};
 
-exports.setPaddleSpeedNormal = function(d){return "set normal paddle speed"};
+exports.setPaddleSpeedNormal = function(d){return "Setze normale Schlägergeschwindigkeit"};
 
-exports.setPaddleSpeedFast = function(d){return "set fast paddle speed"};
+exports.setPaddleSpeedFast = function(d){return "Setze schnelle Schlägergeschwindigkeit"};
 
-exports.setPaddleSpeedVeryFast = function(d){return "set very fast paddle speed"};
+exports.setPaddleSpeedVeryFast = function(d){return "Setze sehr schnelle Schlägergeschwindigkeit"};
 
-exports.setPaddleSpeedTooltip = function(d){return "Sets the speed of the paddle"};
+exports.setPaddleSpeedTooltip = function(d){return "Legt die Schlägergeschwindigkeit fest"};
 
 exports.share = function(d){return "Share"};
 
@@ -5403,9 +5403,9 @@ exports.whenDown = function(d){return "when Down arrow"};
 
 exports.whenDownTooltip = function(d){return "Execute the actions below when the Down arrow button is pressed."};
 
-exports.whenGameStarts = function(d){return "when game starts"};
+exports.whenGameStarts = function(d){return "Wenn das Spiel beginnt"};
 
-exports.whenGameStartsTooltip = function(d){return "Execute the actions below when the game starts."};
+exports.whenGameStartsTooltip = function(d){return "Führe die folgenden Aktionen aus, wenn das Spiel beginnt."};
 
 exports.whenLeft = function(d){return "when Left arrow"};
 
@@ -5466,7 +5466,7 @@ exports.dialogOK = function(d){return "OK"};
 
 exports.emptyBlocksErrorMsg = function(d){return "Die \"Wiederholen\"- und die \"Wenn\"-Bausteine benötigten im Inneren andere Bausteine um zu funktionieren. Stelle sicher, dass der innere Baustein in den umschließenden Baustein passt."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Es gibt zusätzliche Bausteine, die keinem Ereignis-Baustein zugeordnet sind."};
 
 exports.finalStage = function(d){return "Glückwunsch! Du hast das letzte Level erfolgreich abgeschlossen."};
 
@@ -5522,7 +5522,7 @@ exports.tooManyBlocksMsg = function(d){return "Dieses Puzzle kann mit <x id='STA
 
 exports.tooMuchWork = function(d){return "Du lässt mich ganz schön arbeiten! Könntest du versuchen es seltener zu wiederholen?"};
 
-exports.flappySpecificFail = function(d){return "Your code looks good - it will flap with each click. But you need to click many times to flap to the target."};
+exports.flappySpecificFail = function(d){return "Dein Code sieht gut aus - er wird bei jedem Klick die Flügel schlagen. Aber du musst viele Male klicken, um zum Ziel zu flattern."};
 
 exports.toolboxHeader = function(d){return "Bausteine"};
 

@@ -4474,7 +4474,7 @@ exports.extraTopBlocks = function(d){return "You have extra blocks that aren't a
 
 exports.finalStage = function(d){return "ขอแสดงความยินดี คุณเสร็จขั้นตอนสุดท้าย."};
 
-exports.finalStageTrophies = function(d){return "Congratulations! You have completed the final stage and won "+p(d,"numTrophies",0,"th",{"one":"a trophy","other":n(d,"numTrophies")+" trophies"})+"."};
+exports.finalStageTrophies = function(d){return "ขอแสดงความยินดี คุณได้เสร็จสิ้นขั้นตอนสุดท้าย และชนะ "+p(d,"numTrophies",0,"th",{"one":"a trophy","other":n(d,"numTrophies")+" trophies"})+"."};
 
 exports.generatedCodeInfo = function(d){return "บล็อกสำหรับโปรแกรมของคุณยังสามารถแสดงใน JavaScript, การเขียนโปรแกรมภาษาของโลกที่นำมาใช้กันอย่างแพร่หลาย:"};
 
@@ -4494,13 +4494,13 @@ exports.missingBlocksErrorMsg = function(d){return "ลองอย่างน�
 
 exports.nextLevel = function(d){return "ขอแสดงความยินดี คุณเสร็จสิ้นปริศนา "+v(d,"puzzleNumber")+"."};
 
-exports.nextLevelTrophies = function(d){return "Congratulations! You completed Puzzle "+v(d,"puzzleNumber")+" and won "+p(d,"numTrophies",0,"th",{"one":"a trophy","other":n(d,"numTrophies")+" trophies"})+"."};
+exports.nextLevelTrophies = function(d){return "ขอแสดงความยินดี คุณเสร็จสิ้นปริศนา "+v(d,"puzzleNumber")+" และชนะ "+p(d,"numTrophies",0,"th",{"one":"a trophy","other":n(d,"numTrophies")+" trophies"})+"."};
 
 exports.nextStage = function(d){return "ขอแสดงความยินดี คุณเสร็จสิ้นขั้นตอน "+v(d,"stageNumber")+"."};
 
 exports.nextStageTrophies = function(d){return "Congratulations! You completed "+v(d,"stageName")+" and won "+p(d,"numTrophies",0,"th",{"one":"a trophy","other":n(d,"numTrophies")+" trophies"})+"."};
 
-exports.numBlocksNeeded = function(d){return "Congratulations! You completed Puzzle "+v(d,"puzzleNumber")+". (However, you could have used only "+p(d,"numBlocks",0,"th",{"one":"1 block","other":n(d,"numBlocks")+" blocks"})+".)"};
+exports.numBlocksNeeded = function(d){return "ขอแสดงความยินดี คุณสมบูรณ์ปริศนา "+v(d,"puzzleNumber")+" (อย่างไรก็ตาม คุณสามารถใช้เฉพาะ "+p(d,"numBlocks",0,"th",{"one":"1 block","other":n(d,"numBlocks")+" blocks"})+".)"};
 
 exports.numLinesOfCodeWritten = function(d){return "คุณเพิ่งเขียนรหัส "+p(d,"numLines",0,"th",{"one":"1 บรรทัด","other":n(d,"numLines")+" บรรทัด"})+"!"};
 

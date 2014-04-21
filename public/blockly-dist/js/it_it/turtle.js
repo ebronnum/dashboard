@@ -5706,7 +5706,7 @@ exports.dialogOK = function(d){return "Ok"};
 
 exports.emptyBlocksErrorMsg = function(d){return "Il blocco \"ripeti\" o \"se\" deve avere all'interno altri blocchi per poter funzionare. Assicurati che i blocchi interni siano inseriti correttamente all'interno del blocco principale."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Ci sono blocchi che non sono attaccati ad un blocco evento."};
 
 exports.finalStage = function(d){return "Complimenti! Hai completato l'ultima lezione."};
 
@@ -5762,7 +5762,7 @@ exports.tooManyBlocksMsg = function(d){return "Questo puzzle può essere risolto
 
 exports.tooMuchWork = function(d){return "Mi hai fatto fare un sacco di lavoro!  Puoi provare a farmi fare meno ripetizioni?"};
 
-exports.flappySpecificFail = function(d){return "Il tuo codice sembra buono - sbatte le ali ad ogni click. Ma devi cliccare molte volte per volare fino alla meta."};
+exports.flappySpecificFail = function(d){return "Il tuo codice sembra buono: Flappy sbatte le ali ad ogni clic. Ma devi cliccare molte volte per volare fino al bersaglio disegnato."};
 
 exports.toolboxHeader = function(d){return "Blocchi"};
 
@@ -5857,7 +5857,7 @@ exports.moveForward = function(d){return "vai avanti di"};
 
 exports.moveForwardTooltip = function(d){return "Sposta l'artista in avanti."};
 
-exports.moveTooltip = function(d){return "Sposta l'artista in avanti o all'indietro della quantita specificata."};
+exports.moveTooltip = function(d){return "Sposta l'artista in avanti o all'indietro della quantita di pixel specificata."};
 
 exports.notBlackColour = function(d){return "Devi impostare un colore diverso dal nero per questo puzzle."};
 
@@ -5889,7 +5889,7 @@ exports.turnRight = function(d){return "gira a destra di"};
 
 exports.turnRightTooltip = function(d){return "Gira l'artista a destra dell'angolo specificato."};
 
-exports.turnTooltip = function(d){return "Gira l'artista a sinistra o a destra del numero di gradi specificati."};
+exports.turnTooltip = function(d){return "Gira l'artista a sinistra o a destra della quantità di gradi specificata."};
 
 exports.turtleVisibilityTooltip = function(d){return "Rende l'artista visibile o invisibile."};
 

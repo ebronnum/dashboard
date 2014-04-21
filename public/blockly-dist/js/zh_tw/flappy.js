@@ -4730,7 +4730,7 @@ exports.dialogOK = function(d){return "確定"};
 
 exports.emptyBlocksErrorMsg = function(d){return "\"重複\"和\"如果\"程式積木需要包含其它積木在裏面才能正常運作, 請檢查裏面是否有安排適當的程式積木."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "你有一些程式積木還沒有加到事件積木中。"};
 
 exports.finalStage = function(d){return "恭喜你 ！你已完成最後關卡的挑戰。"};
 
@@ -4835,57 +4835,57 @@ exports.elseCode = function(d){return "否則"};
 
 exports.endGame = function(d){return "結束遊戲"};
 
-exports.endGameTooltip = function(d){return "遊戲結尾處。"};
+exports.endGameTooltip = function(d){return "遊戲結束"};
 
-exports.finalLevel = function(d){return "恭喜你 ！你已經解決了最後的關卡。"};
+exports.finalLevel = function(d){return "恭喜！你已經完成最後的關卡。"};
 
-exports.flap = function(d){return "拍打"};
+exports.flap = function(d){return "拍打翅膀"};
 
-exports.flapRandom = function(d){return "拍打隨機次數"};
+exports.flapRandom = function(d){return "以隨機的力量拍打翅膀"};
 
-exports.flapVerySmall = function(d){return "拍極少的次數"};
+exports.flapVerySmall = function(d){return "以非常小的力量拍打翅膀"};
 
-exports.flapSmall = function(d){return "拍較少的次數"};
+exports.flapSmall = function(d){return "以較小的力量拍打翅膀"};
 
-exports.flapNormal = function(d){return "拍正常的次數"};
+exports.flapNormal = function(d){return "以正常的力量拍打翅膀"};
 
-exports.flapLarge = function(d){return "拍較多的次數"};
+exports.flapLarge = function(d){return "以較大的力量拍打翅膀"};
 
-exports.flapVeryLarge = function(d){return "拍極多的次數"};
+exports.flapVeryLarge = function(d){return "以非常大的力量拍打翅膀"};
 
-exports.flapTooltip = function(d){return "向上拍打飛行"};
+exports.flapTooltip = function(d){return "讓Flappy向上飛"};
 
-exports.incrementPlayerScore = function(d){return "積分點"};
+exports.incrementPlayerScore = function(d){return "得一分"};
 
-exports.incrementPlayerScoreTooltip = function(d){return "替當前的玩家添加一分。"};
+exports.incrementPlayerScoreTooltip = function(d){return "替玩家加一分"};
 
 exports.nextLevel = function(d){return "恭喜！你已經完成這個關卡。"};
 
 exports.no = function(d){return "否"};
 
-exports.numBlocksNeeded = function(d){return "這個關卡可以使用 %1 個程式區塊來完成。"};
+exports.numBlocksNeeded = function(d){return "這個關卡可以使用 %1 個程式積木來完成。"};
 
-exports.oneTopBlock = function(d){return "要完成這個關卡，你必需將白色工作區中的全部程式區塊給堆疊連接起來。"};
+exports.oneTopBlock = function(d){return "要完成這個關卡，你必需將工作區中的所有程式積木堆疊起來。"};
 
 exports.playSoundRandom = function(d){return "播放隨機的音效"};
 
 exports.playSoundBounce = function(d){return "播放彈跳音效"};
 
-exports.playSoundCrunch = function(d){return "播放收縮音效"};
+exports.playSoundCrunch = function(d){return "播放嘎吱音效"};
 
 exports.playSoundDie = function(d){return "播放悲傷音效"};
 
 exports.playSoundHit = function(d){return "播放粉碎音效"};
 
-exports.playSoundPoint = function(d){return "播放點出音效"};
+exports.playSoundPoint = function(d){return "播放得分音效"};
 
 exports.playSoundSwoosh = function(d){return "播放旋風音效"};
 
-exports.playSoundWing = function(d){return "播放羽翼音效"};
+exports.playSoundWing = function(d){return "播放拍打翅膀音效"};
 
 exports.playSoundJet = function(d){return "播放噴射音效"};
 
-exports.playSoundCrash = function(d){return "播放崩裂音效"};
+exports.playSoundCrash = function(d){return "播放碰撞音效"};
 
 exports.playSoundJingle = function(d){return "播放叮噹音效"};
 
@@ -4895,115 +4895,115 @@ exports.playSoundLaser = function(d){return "播放雷射音效"};
 
 exports.playSoundTooltip = function(d){return "播放所選音效"};
 
-exports.reinfFeedbackMsg = function(d){return "您可以按\"重試\"鈕，回去玩您的遊戲。"};
+exports.reinfFeedbackMsg = function(d){return "你可以按下\"再玩一次\"按鈕，重新開始遊戲。"};
 
 exports.scoreText = function(d){return "積分: "+v(d,"playerScore")};
 
-exports.setBackgroundRandom = function(d){return "設置隨機場景"};
+exports.setBackgroundRandom = function(d){return "設定為隨機場景"};
 
-exports.setBackgroundFlappy = function(d){return "設置城市 (日)場景"};
+exports.setBackgroundFlappy = function(d){return "設定為城市場景(白天)"};
 
-exports.setBackgroundNight = function(d){return "設置城市 (夜)場景"};
+exports.setBackgroundNight = function(d){return "設定為城市場景(晚上)"};
 
-exports.setBackgroundSciFi = function(d){return "設置科幻場景"};
+exports.setBackgroundSciFi = function(d){return "設定為科幻場景"};
 
-exports.setBackgroundUnderwater = function(d){return "設置水下現場"};
+exports.setBackgroundUnderwater = function(d){return "設定為水底場景"};
 
-exports.setBackgroundCave = function(d){return "設置山洞場景"};
+exports.setBackgroundCave = function(d){return "設定為山洞場景"};
 
-exports.setBackgroundSanta = function(d){return "設置聖誕場景"};
+exports.setBackgroundSanta = function(d){return "設定為聖誕場景"};
 
 exports.setBackgroundTooltip = function(d){return "設置背景圖像"};
 
-exports.setGapRandom = function(d){return "設置隨機差距"};
+exports.setGapRandom = function(d){return "設定一個隨機的間距"};
 
-exports.setGapVerySmall = function(d){return "設置極小差距"};
+exports.setGapVerySmall = function(d){return "設定一個非常小的間距"};
 
-exports.setGapSmall = function(d){return "設置較小差距"};
+exports.setGapSmall = function(d){return "設定一個較小的間距"};
 
-exports.setGapNormal = function(d){return "設置正常差距"};
+exports.setGapNormal = function(d){return "設定一個正常的間距"};
 
-exports.setGapLarge = function(d){return "設置較大差距"};
+exports.setGapLarge = function(d){return "設定一個較大的間距"};
 
-exports.setGapVeryLarge = function(d){return "設置極大差距"};
+exports.setGapVeryLarge = function(d){return "設定一個非常大的間距"};
 
-exports.setGapHeightTooltip = function(d){return "在障礙中設置垂直差距"};
+exports.setGapHeightTooltip = function(d){return "設定障礙物的垂直間距"};
 
-exports.setGravityRandom = function(d){return "設置隨機重力"};
+exports.setGravityRandom = function(d){return "設定為隨機重力"};
 
-exports.setGravityVeryLow = function(d){return "設置極小重力"};
+exports.setGravityVeryLow = function(d){return "設定為極小重力"};
 
-exports.setGravityLow = function(d){return "設置較小重力"};
+exports.setGravityLow = function(d){return "設定為較小重力"};
 
-exports.setGravityNormal = function(d){return "設置正常重力"};
+exports.setGravityNormal = function(d){return "設定為正常重力"};
 
-exports.setGravityHigh = function(d){return "設置較高重力"};
+exports.setGravityHigh = function(d){return "設定為較大重力"};
 
-exports.setGravityVeryHigh = function(d){return "設置極高重力"};
+exports.setGravityVeryHigh = function(d){return "設定為極大重力"};
 
-exports.setGravityTooltip = function(d){return "設置級別的重力"};
+exports.setGravityTooltip = function(d){return "設定關卡重力值"};
 
-exports.setGroundRandom = function(d){return "設置隨機地面"};
+exports.setGroundRandom = function(d){return "設定地面種類為隨機風格"};
 
-exports.setGroundFlappy = function(d){return "設置地下地面"};
+exports.setGroundFlappy = function(d){return "設定地面種類為地板風格"};
 
-exports.setGroundSciFi = function(d){return "設置科幻地面"};
+exports.setGroundSciFi = function(d){return "設定地面種類為科幻風格"};
 
-exports.setGroundUnderwater = function(d){return "設置水下地面"};
+exports.setGroundUnderwater = function(d){return "設定地面種類為水底風格"};
 
-exports.setGroundCave = function(d){return "設置洞穴地面"};
+exports.setGroundCave = function(d){return "設定地面種類為洞穴風格"};
 
-exports.setGroundSanta = function(d){return "設置聖誕地面"};
+exports.setGroundSanta = function(d){return "設定地面種類為聖誕風格"};
 
-exports.setGroundLava = function(d){return "設置岩漿地面"};
+exports.setGroundLava = function(d){return "設定地面種類為岩漿風格"};
 
 exports.setGroundTooltip = function(d){return "設置地面圖像"};
 
-exports.setObstacleRandom = function(d){return "設置隨機障礙"};
+exports.setObstacleRandom = function(d){return "設定障礙物種類為隨機風格"};
 
-exports.setObstacleFlappy = function(d){return "設置管狀障礙"};
+exports.setObstacleFlappy = function(d){return "設定障礙物種類為水管"};
 
-exports.setObstacleSciFi = function(d){return "設置科幻障礙"};
+exports.setObstacleSciFi = function(d){return "設定障礙物種類為科幻"};
 
-exports.setObstacleUnderwater = function(d){return "設置植物障礙"};
+exports.setObstacleUnderwater = function(d){return "設定障礙物種類為植物"};
 
-exports.setObstacleCave = function(d){return "設置洞穴障礙"};
+exports.setObstacleCave = function(d){return "設定障礙物種類為洞穴"};
 
-exports.setObstacleSanta = function(d){return "設置煙囪障礙"};
+exports.setObstacleSanta = function(d){return "設定障礙物種類為煙囪"};
 
-exports.setObstacleLaser = function(d){return "設置雷射障礙"};
+exports.setObstacleLaser = function(d){return "設定障礙物種類為雷射"};
 
 exports.setObstacleTooltip = function(d){return "設置障礙圖像"};
 
-exports.setPlayerRandom = function(d){return "設置玩家-隨機"};
+exports.setPlayerRandom = function(d){return "設置玩家為隨機種類"};
 
-exports.setPlayerFlappy = function(d){return "設置玩家-黃色小鳥"};
+exports.setPlayerFlappy = function(d){return "設置玩家為黃色小鳥"};
 
-exports.setPlayerRedBird = function(d){return "設置玩家-紅色小鳥"};
+exports.setPlayerRedBird = function(d){return "設置玩家為紅色小鳥"};
 
-exports.setPlayerSciFi = function(d){return "設置玩家-飛船"};
+exports.setPlayerSciFi = function(d){return "設置玩家為飛船"};
 
-exports.setPlayerUnderwater = function(d){return "設置玩家-魚"};
+exports.setPlayerUnderwater = function(d){return "設置玩家為魚"};
 
-exports.setPlayerCave = function(d){return "設置玩家-蝙蝠"};
+exports.setPlayerCave = function(d){return "設置玩家為蝙蝠"};
 
-exports.setPlayerSanta = function(d){return "設置玩家-聖誕老人"};
+exports.setPlayerSanta = function(d){return "設置玩家為聖誕老人"};
 
-exports.setPlayerShark = function(d){return "設置玩家-鯊魚"};
+exports.setPlayerShark = function(d){return "設置玩家為鯊魚"};
 
-exports.setPlayerEaster = function(d){return "設置玩家-復活節兔子"};
+exports.setPlayerEaster = function(d){return "設置玩家為復活節兔子"};
 
-exports.setPlayerBatman = function(d){return "設置蝙蝠人玩家"};
+exports.setPlayerBatman = function(d){return "設置玩家為蝙蝠俠"};
 
-exports.setPlayerSubmarine = function(d){return "設置玩家-潛艇"};
+exports.setPlayerSubmarine = function(d){return "設置玩家為潛水艇"};
 
-exports.setPlayerUnicorn = function(d){return "設置玩家-獨角獸"};
+exports.setPlayerUnicorn = function(d){return "設置玩家為獨角獸"};
 
-exports.setPlayerFairy = function(d){return "設置玩家-仙女"};
+exports.setPlayerFairy = function(d){return "設置玩家為小精靈"};
 
-exports.setPlayerSuperman = function(d){return "設置玩家- Flappy 俠"};
+exports.setPlayerSuperman = function(d){return "設置玩家為飛翔的人"};
 
-exports.setPlayerTurkey = function(d){return "設置玩家-火雞"};
+exports.setPlayerTurkey = function(d){return "設置玩家為火雞"};
 
 exports.setPlayerTooltip = function(d){return "設置玩家圖像"};
 
@@ -5013,45 +5013,45 @@ exports.setScoreTooltip = function(d){return "設置玩家的得分"};
 
 exports.setSpeed = function(d){return "設置速度"};
 
-exports.setSpeedTooltip = function(d){return "設置級別的速度"};
+exports.setSpeedTooltip = function(d){return "設置關卡的速度"};
 
 exports.share = function(d){return "分享"};
 
-exports.shareFlappyTwitter = function(d){return "查閱我製作的 Flappy 遊戲。我透過 @codeorg 自己寫的。"};
+exports.shareFlappyTwitter = function(d){return "來玩玩我在 @codeorg　自己完成的 Flappy 遊戲吧。"};
 
 exports.shareGame = function(d){return "分享您的遊戲："};
 
-exports.speedRandom = function(d){return "設置隨機速"};
+exports.speedRandom = function(d){return "設定為隨機的速度"};
 
-exports.speedVerySlow = function(d){return "設置極慢速"};
+exports.speedVerySlow = function(d){return "設定為極慢的速度"};
 
-exports.speedSlow = function(d){return "設置慢速"};
+exports.speedSlow = function(d){return "設定為稍慢的速度"};
 
-exports.speedNormal = function(d){return "設置正常速"};
+exports.speedNormal = function(d){return "設定為正常的速度"};
 
-exports.speedFast = function(d){return "設置快速"};
+exports.speedFast = function(d){return "設定為較快的速度"};
 
-exports.speedVeryFast = function(d){return "設置極快速"};
+exports.speedVeryFast = function(d){return "設定為極快的速度"};
 
-exports.whenClick = function(d){return "當 點擊"};
+exports.whenClick = function(d){return "當點擊時"};
 
-exports.whenClickTooltip = function(d){return "當一個 點擊 事件觸發，執行以下動作。"};
+exports.whenClickTooltip = function(d){return "當點擊事件發生時，就執行以下程式碼。"};
 
-exports.whenCollideGround = function(d){return "當撞到地面"};
+exports.whenCollideGround = function(d){return "當撞到地面時"};
 
 exports.whenCollideGroundTooltip = function(d){return "當 Flappy 撞到地面時，執行以下動作。"};
 
-exports.whenCollideObstacle = function(d){return "當撞到一個障礙時"};
+exports.whenCollideObstacle = function(d){return "當撞到一個障礙物時"};
 
 exports.whenCollideObstacleTooltip = function(d){return "當 Flappy 撞到一個障礙時，執行以下動作。"};
 
-exports.whenEnterObstacle = function(d){return "當越過障礙"};
+exports.whenEnterObstacle = function(d){return "當通過障礙物時"};
 
-exports.whenEnterObstacleTooltip = function(d){return "當 Flappy 進入障礙時，執行以下行動。"};
+exports.whenEnterObstacleTooltip = function(d){return "當 Flappy 進入障礙物時，執行以下動作。"};
 
-exports.whenRunButtonClick = function(d){return "當遊戲開始"};
+exports.whenRunButtonClick = function(d){return "當遊戲開始時"};
 
-exports.whenRunButtonClickTooltip = function(d){return "當游戲開始，執行以下動作。"};
+exports.whenRunButtonClickTooltip = function(d){return "當游戲開始時，執行以下動作。"};
 
 exports.yes = function(d){return "是"};
 

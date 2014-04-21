@@ -5723,7 +5723,7 @@ exports.dialogOK = function(d){return "موافق"};
 
 exports.emptyBlocksErrorMsg = function(d){return "قطعة \" أكرر\" او \" اذا \" تحتاج ان تحتوي على قطع اخرى داخلها من اجل العمل . تأكد من القطع الداخلية بحيث يجب ان تكون تناسب القطع المحتوية في الداخل ."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "لديك قطع إضافية لم ترفق على قطع الاحتفالية."};
 
 exports.finalStage = function(d){return "تهانينا! لقد اتممت المرحلة النهائية."};
 
@@ -5809,11 +5809,11 @@ exports.orientationLock = function(d){return "قم بتعطيل قفل التو�
 
 exports.wantToLearn = function(d){return "هل تريد أن تتعلم البرمجة؟"};
 
-exports.watchVideo = function(d){return "مشاهدة الفيديو"};
+exports.watchVideo = function(d){return "شاهد الفيديو"};
 
 exports.tryHOC = function(d){return "جرب \"Hour of Code\""};
 
-exports.signup = function(d){return "سجل للمتابعة لبداية الدرس"};
+exports.signup = function(d){return "سجل لمشاهدة مقدمة الدورة"};
 
 exports.hintHeader = function(d){return "Here's a tip:"};
 

@@ -5803,99 +5803,99 @@ exports.hintHeader = function(d){return "Here's a tip:"};
 
 },{"messageformat":48}],36:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.eu=function(n){return n===1?"one":"other"}
-exports.blocksUsed = function(d){return "Blocks used: %1"};
+exports.blocksUsed = function(d){return "Erabilitako blokeak: %1"};
 
-exports.catColour = function(d){return "Color"};
+exports.catColour = function(d){return "Kolorea"};
 
-exports.catControl = function(d){return "Loops"};
+exports.catControl = function(d){return "Itzuliak"};
 
-exports.catMath = function(d){return "Math"};
+exports.catMath = function(d){return "Matematika"};
 
-exports.catProcedures = function(d){return "Functions"};
+exports.catProcedures = function(d){return "Funtzioak"};
 
-exports.catTurtle = function(d){return "Actions"};
+exports.catTurtle = function(d){return "Ekintzak"};
 
-exports.catVariables = function(d){return "Variables"};
+exports.catVariables = function(d){return "Aldagaiak"};
 
-exports.catLogic = function(d){return "Logic"};
+exports.catLogic = function(d){return "Logika"};
 
-exports.colourTooltip = function(d){return "Changes the color of the pencil."};
+exports.colourTooltip = function(d){return "Arkatzaren kolorea aldatzen du."};
 
-exports.degrees = function(d){return "degrees"};
+exports.degrees = function(d){return "Graduak"};
 
-exports.dots = function(d){return "pixels"};
+exports.dots = function(d){return "Pixelak"};
 
-exports.drawASquare = function(d){return "draw a square"};
+exports.drawASquare = function(d){return "Marraztu karratua"};
 
-exports.drawATriangle = function(d){return "draw a triangle"};
+exports.drawATriangle = function(d){return "Marraztu triangelua"};
 
-exports.drawACircle = function(d){return "draw a circle"};
+exports.drawACircle = function(d){return "Marraztu zirkulua"};
 
-exports.drawAHouse = function(d){return "draw a house"};
+exports.drawAHouse = function(d){return "Marraztu etxea"};
 
-exports.drawATree = function(d){return "draw a tree"};
+exports.drawATree = function(d){return "Marraztu zuhaitza"};
 
-exports.drawASnowman = function(d){return "draw a snowman"};
+exports.drawASnowman = function(d){return "Marraztu elurgizona"};
 
-exports.heightParameter = function(d){return "height"};
+exports.heightParameter = function(d){return "Altuera"};
 
-exports.hideTurtle = function(d){return "hide artist"};
+exports.hideTurtle = function(d){return "Izkutatu artista"};
 
-exports.jumpBackward = function(d){return "jump backward by"};
+exports.jumpBackward = function(d){return "Salto egin atzera"};
 
-exports.jumpForward = function(d){return "jump forward by"};
+exports.jumpForward = function(d){return "Salto egin aurrera"};
 
-exports.jumpTooltip = function(d){return "Moves the artist without leaving any marks."};
+exports.jumpTooltip = function(d){return "Artista mugitzen du inongo aztarnarik utzi gabe."};
 
-exports.lengthParameter = function(d){return "length"};
+exports.lengthParameter = function(d){return "luzera"};
 
-exports.loopVariable = function(d){return "counter"};
+exports.loopVariable = function(d){return "kontagailua"};
 
-exports.moveBackward = function(d){return "move backward by"};
+exports.moveBackward = function(d){return "mugitu atzera"};
 
-exports.moveForward = function(d){return "move forward by"};
+exports.moveForward = function(d){return "mugitu aurrera"};
 
-exports.moveForwardTooltip = function(d){return "Moves the artist forward."};
+exports.moveForwardTooltip = function(d){return "Artista aurrera mugitzen du."};
 
-exports.moveTooltip = function(d){return "Moves the artist forward or backward by the specified amount."};
+exports.moveTooltip = function(d){return "Artista atzera edo aurrera mugitzen du zehaztutako kopuruan."};
 
-exports.notBlackColour = function(d){return "You need to set a color other than black for this puzzle."};
+exports.notBlackColour = function(d){return "Beltza ez den beste kolore bat aukeratu behar duzu puzle hontarako."};
 
-exports.numBlocksNeeded = function(d){return "This puzzle can be solved with %1 blocks.  You used %2."};
+exports.numBlocksNeeded = function(d){return "Puzlea %1 blokerekin ebatz daiteke. Zuk %2 erabili dituzu."};
 
-exports.penDown = function(d){return "pencil down"};
+exports.penDown = function(d){return "Arkatza behera"};
 
-exports.penTooltip = function(d){return "Lifts or lowers the pencil, to start or stop drawing."};
+exports.penTooltip = function(d){return "Arkatza igo edo jeisten du, marrazten hasi edo bukatzkeo."};
 
-exports.penUp = function(d){return "pencil up"};
+exports.penUp = function(d){return "Arkatza gora"};
 
-exports.reinfFeedbackMsg = function(d){return "Does this look like what you want? You can press the \"Try again\" button to see your drawing."};
+exports.reinfFeedbackMsg = function(d){return "Nahi duzun itxura du honek? \"Berriro saiatu\" botoia sakatu dezakezu zure marrazkia ikusteko."};
 
-exports.setColour = function(d){return "set color"};
+exports.setColour = function(d){return "Ezarri kolorea"};
 
-exports.setWidth = function(d){return "set width"};
+exports.setWidth = function(d){return "Ezarri zabalera"};
 
-exports.shareDrawing = function(d){return "Share your drawing:"};
+exports.shareDrawing = function(d){return "Elkarbanatu zure marrazkia:"};
 
-exports.showMe = function(d){return "Show me"};
+exports.showMe = function(d){return "Erakutsi niri"};
 
-exports.showTurtle = function(d){return "show artist"};
+exports.showTurtle = function(d){return "erakutsi artista"};
 
-exports.tooFewColours = function(d){return "You need to use at least %1 different colors for this puzzle.  You used only %2."};
+exports.tooFewColours = function(d){return "Gutxienez %1 kolore ezberdin erabili behar dituzu puzle. Bakarrik %2 erabili dituzu."};
 
-exports.turnLeft = function(d){return "turn left by"};
+exports.turnLeft = function(d){return "Biratu ezkerrera"};
 
-exports.turnRight = function(d){return "turn right by"};
+exports.turnRight = function(d){return "Biratu eskubira"};
 
-exports.turnRightTooltip = function(d){return "Turns the artist right by the specified angle."};
+exports.turnRightTooltip = function(d){return "Artista eskubira biratzen du zehaztutako angeluan."};
 
-exports.turnTooltip = function(d){return "Turns the artist left or right by the specified number of degrees."};
+exports.turnTooltip = function(d){return "Artista ezkerrera biratzen du zehaztutako angeluan."};
 
-exports.turtleVisibilityTooltip = function(d){return "Makes the artist visible or invisible."};
+exports.turtleVisibilityTooltip = function(d){return "Artista ikuskor edo ikustezin bihurtzen du."};
 
-exports.widthTooltip = function(d){return "Changes the width of the pencil."};
+exports.widthTooltip = function(d){return "Arkatzaren lodiera aldatzen du."};
 
-exports.wrongColour = function(d){return "Your picture is the wrong color.  For this puzzle, it needs to be %1."};
+exports.wrongColour = function(d){return "Zure irudia kolore okerrekoa da. Puzle hontarako %1 behar du izan."};
 
 
 },{"messageformat":48}],37:[function(require,module,exports){

@@ -4895,7 +4895,7 @@ exports.playSoundLaser = function(d){return "laser geluid afspelen"};
 
 exports.playSoundTooltip = function(d){return "Het gekozen geluid afspelen."};
 
-exports.reinfFeedbackMsg = function(d){return "You can press the \"Try again\" button to go back to playing your game."};
+exports.reinfFeedbackMsg = function(d){return "Klik 'Probeer opnieuw' om terug te gaan naar uw spel."};
 
 exports.scoreText = function(d){return "Score: "+v(d,"playerScore")+" : "+v(d,"opponentScore")};
 
@@ -4929,19 +4929,19 @@ exports.setGapVeryLarge = function(d){return "een heel grote opening instellen"}
 
 exports.setGapHeightTooltip = function(d){return "De 'doorvlieg'-opening instellen"};
 
-exports.setGravityRandom = function(d){return "set gravity random"};
+exports.setGravityRandom = function(d){return "zwaartekracht willekeurig instellen"};
 
-exports.setGravityVeryLow = function(d){return "set gravity very low"};
+exports.setGravityVeryLow = function(d){return "zwaartekracht heel zwak instellen"};
 
-exports.setGravityLow = function(d){return "set gravity low"};
+exports.setGravityLow = function(d){return "zwaartekracht zwak instellen"};
 
-exports.setGravityNormal = function(d){return "set gravity normal"};
+exports.setGravityNormal = function(d){return "zwaartekracht normaal instellen"};
 
-exports.setGravityHigh = function(d){return "set gravity high"};
+exports.setGravityHigh = function(d){return "zwaartekracht sterk instellen"};
 
-exports.setGravityVeryHigh = function(d){return "set gravity very high"};
+exports.setGravityVeryHigh = function(d){return "zwaartekracht heel sterk instellen"};
 
-exports.setGravityTooltip = function(d){return "Sets the level's gravity"};
+exports.setGravityTooltip = function(d){return "Stelt de zwaartekracht in"};
 
 exports.setGroundRandom = function(d){return "Willekeurig achtergrond instellen"};
 
@@ -4993,7 +4993,7 @@ exports.setPlayerShark = function(d){return "Stel haai als speler in"};
 
 exports.setPlayerEaster = function(d){return "Stel paashaas als speler in"};
 
-exports.setPlayerBatman = function(d){return "set player Bat guy"};
+exports.setPlayerBatman = function(d){return "speler als vleermuis instellen"};
 
 exports.setPlayerSubmarine = function(d){return "Stel onderzeeer als speler in"};
 
@@ -5007,19 +5007,19 @@ exports.setPlayerTurkey = function(d){return "Stel kalkoen als speler in"};
 
 exports.setPlayerTooltip = function(d){return "Stelt in hoe de speler er uit ziet"};
 
-exports.setScore = function(d){return "set score"};
+exports.setScore = function(d){return "score instellen"};
 
-exports.setScoreTooltip = function(d){return "Sets the player's score"};
+exports.setScoreTooltip = function(d){return "Stelt de score van de speler in"};
 
 exports.setSpeed = function(d){return "stel snelheid in"};
 
-exports.setSpeedTooltip = function(d){return "Sets the levels speed"};
+exports.setSpeedTooltip = function(d){return "Stelt de snelheid van de speler in"};
 
 exports.share = function(d){return "Delen"};
 
 exports.shareFlappyTwitter = function(d){return "Speel hier het Flappy spel dat ik zelf heb gemaakt. Ik maakte het met @codeorg"};
 
-exports.shareGame = function(d){return "Share your game:"};
+exports.shareGame = function(d){return "Deel je spel met anderen:"};
 
 exports.speedRandom = function(d){return "stel snelheid willekeurig in"};
 
@@ -5049,9 +5049,9 @@ exports.whenEnterObstacle = function(d){return "als een obstakel wordt gepasseer
 
 exports.whenEnterObstacleTooltip = function(d){return "De onderstaande acties uitvoeren als Flappy een obstakel raakt."};
 
-exports.whenRunButtonClick = function(d){return "when Run is clicked"};
+exports.whenRunButtonClick = function(d){return "als het spel start"};
 
-exports.whenRunButtonClickTooltip = function(d){return "Execute the actions below when the run button is pressed."};
+exports.whenRunButtonClickTooltip = function(d){return "Voer de onderstaande acties uit als het spel start."};
 
 exports.yes = function(d){return "Ja"};
 

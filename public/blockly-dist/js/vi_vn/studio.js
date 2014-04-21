@@ -4470,7 +4470,7 @@ exports.dialogOK = function(d){return "Đồng ý"};
 
 exports.emptyBlocksErrorMsg = function(d){return "Miếng ghép được \"Lặp lại\" hay \"Nếu\" cần có những miếng ghép bên trong để hoạt động. Đảm bảo là miếng gạch đó khớp hoàn toàn phần ở trong của miếng gạch kia."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Bạn có khối phụ không gắn liền với một sự kiện khối."};
 
 exports.finalStage = function(d){return "Chúc mừng. Bạn vừa hoàn thành xong bước cuối cùng."};
 
@@ -4532,7 +4532,7 @@ exports.toolboxHeader = function(d){return "Các khối lệnh"};
 
 exports.openWorkspace = function(d){return "Hoạt động ra sao"};
 
-exports.totalNumLinesOfCodeWritten = function(d){return "All-time total: "+p(d,"numLines",0,"vi",{"one":"1 line","other":n(d,"numLines")+" lines"})+" of code."};
+exports.totalNumLinesOfCodeWritten = function(d){return "Thời gian tổng cộng: "+p(d,"numLines",0,"vi",{"one":"1 dòng","other":n(d,"numLines")+" dòng"})+" của mã chương trình."};
 
 exports.tryAgain = function(d){return "Thử lại"};
 

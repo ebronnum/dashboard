@@ -5197,9 +5197,9 @@ exports.parseElement = function(text) {
 
 },{}],32:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.id=function(n){return "other"}
-exports.bounceBall = function(d){return "bounce ball"};
+exports.bounceBall = function(d){return "Pantul bola"};
 
-exports.bounceBallTooltip = function(d){return "Bounce a ball off of an object."};
+exports.bounceBallTooltip = function(d){return "Pantulkan bola dari sebuah benda."};
 
 exports.continue = function(d){return "Lanjutkan"};
 
@@ -5211,7 +5211,7 @@ exports.dirS = function(d){return "S"};
 
 exports.dirW = function(d){return "B"};
 
-exports.doCode = function(d){return "maka"};
+exports.doCode = function(d){return "kerjakan"};
 
 exports.elseCode = function(d){return "jika tidak"};
 
@@ -5327,57 +5327,57 @@ exports.repeatUntilFinish = function(d){return "Ulangi sampai selesai"};
 
 exports.scoreText = function(d){return "Score: "+v(d,"playerScore")+" : "+v(d,"opponentScore")};
 
-exports.setBackgroundRandom = function(d){return "set random scene"};
+exports.setBackgroundRandom = function(d){return "Tetapkan adegan secara acak"};
 
-exports.setBackgroundHardcourt = function(d){return "set hardcourt scene"};
+exports.setBackgroundHardcourt = function(d){return "tetapkan adegan 'hardcourt'"};
 
-exports.setBackgroundRetro = function(d){return "set retro scene"};
+exports.setBackgroundRetro = function(d){return "tetapkan adegan retro"};
 
-exports.setBackgroundTooltip = function(d){return "Sets the background image"};
+exports.setBackgroundTooltip = function(d){return "Tetapkan gambar latar belakang"};
 
-exports.setBallRandom = function(d){return "set random ball"};
+exports.setBallRandom = function(d){return "tetapkan bola secara acak"};
 
-exports.setBallHardcourt = function(d){return "set hardcourt ball"};
+exports.setBallHardcourt = function(d){return "tetapkan bola 'hardcourt'"};
 
-exports.setBallRetro = function(d){return "set retro ball"};
+exports.setBallRetro = function(d){return "tetapkan bola retro"};
 
-exports.setBallTooltip = function(d){return "Sets the ball image"};
+exports.setBallTooltip = function(d){return "tetapkan gambar bola"};
 
-exports.setBallSpeedRandom = function(d){return "Atur acak kecepatan bola"};
+exports.setBallSpeedRandom = function(d){return "tetapkan bola dengan kecepatan acak"};
 
-exports.setBallSpeedVerySlow = function(d){return "Atur sangat lambat kecepatan bola"};
+exports.setBallSpeedVerySlow = function(d){return "tetapkan bola dengan kecepatan sangat lambat"};
 
-exports.setBallSpeedSlow = function(d){return "Atur lambat kecepatan bola"};
+exports.setBallSpeedSlow = function(d){return "tetapkan bola dengan kecepatan lambat"};
 
-exports.setBallSpeedNormal = function(d){return "Atur normal kecepatan bola"};
+exports.setBallSpeedNormal = function(d){return "tetapkan bola dengan kecepatan normal"};
 
-exports.setBallSpeedFast = function(d){return "Atur cepat kecepatan bola"};
+exports.setBallSpeedFast = function(d){return "tetapkan bola dengan kecepatan cepat"};
 
-exports.setBallSpeedVeryFast = function(d){return "Atur sangat cepat kecepatan bola"};
+exports.setBallSpeedVeryFast = function(d){return "tetapkan bola dengan kecepatan sangat cepat"};
 
-exports.setBallSpeedTooltip = function(d){return "Sets the speed of the ball"};
+exports.setBallSpeedTooltip = function(d){return "Tetapkan kecepatan bola"};
 
-exports.setPaddleRandom = function(d){return "set random paddle"};
+exports.setPaddleRandom = function(d){return "tetapkan dayung secara acak"};
 
-exports.setPaddleHardcourt = function(d){return "set hardcourt paddle"};
+exports.setPaddleHardcourt = function(d){return "tetapkan dayung 'hardcourt' "};
 
-exports.setPaddleRetro = function(d){return "set retro paddle"};
+exports.setPaddleRetro = function(d){return "tetapkan dayung retro"};
 
 exports.setPaddleTooltip = function(d){return "Sets the ball paddle"};
 
-exports.setPaddleSpeedRandom = function(d){return "set random paddle speed"};
+exports.setPaddleSpeedRandom = function(d){return "Tetapkan kecepatan dayung secara acak"};
 
-exports.setPaddleSpeedVerySlow = function(d){return "set very slow paddle speed"};
+exports.setPaddleSpeedVerySlow = function(d){return "Tetapkan dayung dengan kecepatan sangat lambat"};
 
-exports.setPaddleSpeedSlow = function(d){return "set slow paddle speed"};
+exports.setPaddleSpeedSlow = function(d){return "tetapkan dayung dengan kecepatan lambat"};
 
-exports.setPaddleSpeedNormal = function(d){return "set normal paddle speed"};
+exports.setPaddleSpeedNormal = function(d){return "tetapkan dayung dengan kecepatan normal"};
 
-exports.setPaddleSpeedFast = function(d){return "set fast paddle speed"};
+exports.setPaddleSpeedFast = function(d){return "tetapkan dayung dengan kecepatan cepat"};
 
-exports.setPaddleSpeedVeryFast = function(d){return "set very fast paddle speed"};
+exports.setPaddleSpeedVeryFast = function(d){return "tetapkan dayung dengan kecepatan sangat cepat"};
 
-exports.setPaddleSpeedTooltip = function(d){return "Sets the speed of the paddle"};
+exports.setPaddleSpeedTooltip = function(d){return "Tetapkan kecepatan dayung"};
 
 exports.share = function(d){return "Share"};
 
@@ -5403,9 +5403,9 @@ exports.whenDown = function(d){return "when Down arrow"};
 
 exports.whenDownTooltip = function(d){return "Execute the actions below when the Down arrow button is pressed."};
 
-exports.whenGameStarts = function(d){return "when game starts"};
+exports.whenGameStarts = function(d){return "jika permainan dimulai"};
 
-exports.whenGameStartsTooltip = function(d){return "Execute the actions below when the game starts."};
+exports.whenGameStartsTooltip = function(d){return "Jalankan aksi dibawah ketika permainan dimulai."};
 
 exports.whenLeft = function(d){return "when Left arrow"};
 
@@ -5466,7 +5466,7 @@ exports.dialogOK = function(d){return "Oke!"};
 
 exports.emptyBlocksErrorMsg = function(d){return "Blok \"Ulangi\" atau blok \"Jika\" membutuhkan blok lain di dalamnya supaya bisa bekerja. Pastikan blok yang berada didalam diletakkan secara pas."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Anda memiliki blok ekstra yang tidak melekat pada sebuah blok acara (event)."};
 
 exports.finalStage = function(d){return "Horee! Anda berhasil menyelesaikan tahap akhir."};
 

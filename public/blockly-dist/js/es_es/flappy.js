@@ -4730,7 +4730,7 @@ exports.dialogOK = function(d){return "OK"};
 
 exports.emptyBlocksErrorMsg = function(d){return "Los bloques \"repetir\" o \"si\" deben tener otros bloques dentro de ellos para funcionar. Asegúrate que el bloque interno quede correctamente dentro del bloque que lo contiene."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Tienes bloques adicionales que no están conectados a un bloque de evento."};
 
 exports.finalStage = function(d){return "¡Felicidades! Has completado la etapa final."};
 
@@ -4748,7 +4748,7 @@ exports.levelIncompleteError = function(d){return "Estás utilizando todos los t
 
 exports.listVariable = function(d){return "lista"};
 
-exports.makeYourOwnFlappy = function(d){return "Crea tu propio juego Flappy"};
+exports.makeYourOwnFlappy = function(d){return "Crea tu propio juego Flappy Bird"};
 
 exports.missingBlocksErrorMsg = function(d){return "Trata de resolver este puzzle usando uno o más de los bloques de abajo."};
 
@@ -4786,7 +4786,7 @@ exports.tooManyBlocksMsg = function(d){return "Puedes resolver este puzzle con <
 
 exports.tooMuchWork = function(d){return "¡Me has hecho trabajar mucho!  ¿Podrías tratar de repetir menos veces?"};
 
-exports.flappySpecificFail = function(d){return "Tú código se ve bien - aleteará con cada clic. Pero tienes que hacer clic varias veces para aletear a la meta."};
+exports.flappySpecificFail = function(d){return "Tú código se ve bien - aleteará con cada clic. Pero tienes que hacer clic varias veces para aletear hacia la meta."};
 
 exports.toolboxHeader = function(d){return "Bloques"};
 
@@ -4829,19 +4829,19 @@ exports.hintHeader = function(d){return "Here's a tip:"};
 var MessageFormat = require("messageformat");MessageFormat.locale.es=function(n){return n===1?"one":"other"}
 exports.continue = function(d){return "Continuar"};
 
-exports.doCode = function(d){return "asta"};
+exports.doCode = function(d){return "hacer"};
 
 exports.elseCode = function(d){return "sino"};
 
-exports.endGame = function(d){return "final del juego"};
+exports.endGame = function(d){return "terminar el  juego"};
 
-exports.endGameTooltip = function(d){return "Fin del juego."};
+exports.endGameTooltip = function(d){return "Termina el juego."};
 
-exports.finalLevel = function(d){return "¡Felicidades! Has resuelto el puzzle final."};
+exports.finalLevel = function(d){return "¡ Felicidades! Ha resuelto el rompecabezas final."};
 
 exports.flap = function(d){return "aletear"};
 
-exports.flapRandom = function(d){return "aletear de forma aleatoria"};
+exports.flapRandom = function(d){return "aletear una cantidad aleatoria"};
 
 exports.flapVerySmall = function(d){return "aletear muy suave"};
 
@@ -4865,7 +4865,7 @@ exports.no = function(d){return "No"};
 
 exports.numBlocksNeeded = function(d){return "Este puzzle puede resolverse con %1 bloques."};
 
-exports.oneTopBlock = function(d){return "Para este puzzle, debes apilar juntos todos los bloques en el espacio de trabajo blanco."};
+exports.oneTopBlock = function(d){return "Para este puzle, debes apilar juntos todos los bloques dentro del espacio de trabajo blanco."};
 
 exports.playSoundRandom = function(d){return "reproducir sonido aleatorio"};
 
@@ -4993,7 +4993,7 @@ exports.setPlayerShark = function(d){return "establecer player Tiburón"};
 
 exports.setPlayerEaster = function(d){return "establecer player Conejo de Pascua"};
 
-exports.setPlayerBatman = function(d){return "set player Bat guy"};
+exports.setPlayerBatman = function(d){return "configurar a jugador tipo murciélago"};
 
 exports.setPlayerSubmarine = function(d){return "establecer player Submarino"};
 
@@ -5051,7 +5051,7 @@ exports.whenEnterObstacleTooltip = function(d){return "Ejecute las siguientes ac
 
 exports.whenRunButtonClick = function(d){return "Cuando el juego comienza"};
 
-exports.whenRunButtonClickTooltip = function(d){return "Execute the actions below when the run button is pressed."};
+exports.whenRunButtonClickTooltip = function(d){return "Ejecutar las acciones indicadas debajo cuando empieza el juego."};
 
 exports.yes = function(d){return "Sí"};
 

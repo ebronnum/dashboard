@@ -5704,9 +5704,9 @@ exports.dialogCancel = function(d){return "Отказ"};
 
 exports.dialogOK = function(d){return "OK"};
 
-exports.emptyBlocksErrorMsg = function(d){return "Блоковете \"Repeat\" и \"If\" трябва да съдържат други блокове в себе си, за да работят. Уверете се, че вътрешния блок се вписва правилно във външния блок."};
+exports.emptyBlocksErrorMsg = function(d){return "Блоковете \"Повтори\" и \"или\" трябва да съдържат други блокове в себе си, за да работят. Уверете се, че вътрешния блок се вписва правилно във външния блок."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Имате допълнителни блокчета, които не са били използвани в блока за програмиране."};
 
 exports.finalStage = function(d){return "Поздравления! Вие завършихте последния етап."};
 
@@ -5744,7 +5744,7 @@ exports.puzzleTitle = function(d){return "Пъзел "+v(d,"puzzle_number")+" о
 
 exports.resetProgram = function(d){return "Възстановяване"};
 
-exports.runProgram = function(d){return "Пусни програмата"};
+exports.runProgram = function(d){return "Стартиране на програмата"};
 
 exports.runTooltip = function(d){return "Пусни програмата, определена от блоковете в работното поле."};
 
@@ -5770,7 +5770,7 @@ exports.openWorkspace = function(d){return "Как работи"};
 
 exports.totalNumLinesOfCodeWritten = function(d){return "Общо: "+p(d,"numLines",0,"bg",{"one":"1 ред","other":n(d,"numLines")+" реда"})+" код."};
 
-exports.tryAgain = function(d){return "Опитайте пак"};
+exports.tryAgain = function(d){return "Опитайте отново"};
 
 exports.backToPreviousLevel = function(d){return "Обратно към предишното ниво"};
 
@@ -5839,7 +5839,7 @@ exports.drawASnowman = function(d){return "нарисувай снежен чо�
 
 exports.heightParameter = function(d){return "височина"};
 
-exports.hideTurtle = function(d){return "скрий художник"};
+exports.hideTurtle = function(d){return "скрий художника"};
 
 exports.jumpBackward = function(d){return "скок назад с"};
 
@@ -5865,11 +5865,11 @@ exports.numBlocksNeeded = function(d){return "Този пъзел може да 
 
 exports.penDown = function(d){return "постави надолу молива"};
 
-exports.penTooltip = function(d){return "Издига или понижава молива, за да започнете или да спрете да рисувате."};
+exports.penTooltip = function(d){return "Вдига или сваля молива, за да започнете или да спрете да рисувате."};
 
 exports.penUp = function(d){return "молив нагоре"};
 
-exports.reinfFeedbackMsg = function(d){return "Това изглежда ли както желаехте? Можете да натиснете бутона \"Опитайте отново\", за да видите вашата рисунка."};
+exports.reinfFeedbackMsg = function(d){return "Това изглежда ли както желаехте? Можете да натиснете бутона \"Опитай отново\", за да видите вашата рисунка."};
 
 exports.setColour = function(d){return "задай цвят"};
 

@@ -5338,11 +5338,11 @@ exports.repeatUntilFinish = function(d){return "repeat until finish"};
 
 exports.scoreText = function(d){return "Score: "+v(d,"playerScore")+" : "+v(d,"opponentScore")};
 
-exports.setBackgroundRandom = function(d){return "set random scene"};
+exports.setBackgroundRandom = function(d){return "nastavite naključno sceno"};
 
 exports.setBackgroundHardcourt = function(d){return "set hardcourt scene"};
 
-exports.setBackgroundRetro = function(d){return "set retro scene"};
+exports.setBackgroundRetro = function(d){return "nastavite retro sceno"};
 
 exports.setBackgroundTooltip = function(d){return "Sets the background image"};
 
@@ -5386,9 +5386,9 @@ exports.setPaddleSpeedNormal = function(d){return "set normal paddle speed"};
 
 exports.setPaddleSpeedFast = function(d){return "set fast paddle speed"};
 
-exports.setPaddleSpeedVeryFast = function(d){return "set very fast paddle speed"};
+exports.setPaddleSpeedVeryFast = function(d){return "nastavite histrost vesla na zelo hitro"};
 
-exports.setPaddleSpeedTooltip = function(d){return "Sets the speed of the paddle"};
+exports.setPaddleSpeedTooltip = function(d){return "Nastavi hitrost vesla"};
 
 exports.share = function(d){return "Share"};
 
@@ -5414,9 +5414,9 @@ exports.whenDown = function(d){return "when Down arrow"};
 
 exports.whenDownTooltip = function(d){return "Execute the actions below when the Down arrow button is pressed."};
 
-exports.whenGameStarts = function(d){return "when game starts"};
+exports.whenGameStarts = function(d){return "ko se igra začne"};
 
-exports.whenGameStartsTooltip = function(d){return "Execute the actions below when the game starts."};
+exports.whenGameStartsTooltip = function(d){return "Izvedite spodnja dejanja, ko se igra začne."};
 
 exports.whenLeft = function(d){return "when Left arrow"};
 

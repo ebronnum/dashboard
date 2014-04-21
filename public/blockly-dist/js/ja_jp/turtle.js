@@ -5676,7 +5676,7 @@ exports.parseElement = function(text) {
 
 },{}],35:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.ja=function(n){return "other"}
-exports.blocklyMessage = function(d){return "ブロックリー"};
+exports.blocklyMessage = function(d){return "ブロック状の"};
 
 exports.catActions = function(d){return "操作"};
 
@@ -5688,7 +5688,7 @@ exports.catLists = function(d){return "リスト"};
 
 exports.catLoops = function(d){return "繰り返し"};
 
-exports.catMath = function(d){return "計算"};
+exports.catMath = function(d){return "数値"};
 
 exports.catProcedures = function(d){return "関数"};
 
@@ -5706,7 +5706,7 @@ exports.dialogOK = function(d){return "OK"};
 
 exports.emptyBlocksErrorMsg = function(d){return "”Repeat”または\"If\"のブロックを動作をさせるためには内側に別のブロックが必要になります。内側のブロックが構成されているブロック 内に適切にはめ込まれているか確認をしてください。\n\n\n"};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "イベントブロックに付いていない余分なブロックがあります。"};
 
 exports.finalStage = function(d){return "おめでとうございます ！最終ステージをクリアしました。"};
 
@@ -5803,61 +5803,61 @@ exports.hintHeader = function(d){return "Here's a tip:"};
 
 },{"messageformat":48}],36:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.ja=function(n){return "other"}
-exports.blocksUsed = function(d){return "使われているブロック: %1"};
+exports.blocksUsed = function(d){return "使用ブロック: %1"};
 
 exports.catColour = function(d){return "色"};
 
 exports.catControl = function(d){return "ループ"};
 
-exports.catMath = function(d){return "数学"};
+exports.catMath = function(d){return "数値"};
 
-exports.catProcedures = function(d){return "機能:"};
+exports.catProcedures = function(d){return "関数"};
 
 exports.catTurtle = function(d){return "操作"};
 
-exports.catVariables = function(d){return "可変\n"};
+exports.catVariables = function(d){return "変数"};
 
 exports.catLogic = function(d){return "ロジック（論理）"};
 
-exports.colourTooltip = function(d){return "鉛筆の色を変更します。"};
+exports.colourTooltip = function(d){return "鉛筆の色を変更"};
 
 exports.degrees = function(d){return "度"};
 
 exports.dots = function(d){return "ピクセル"};
 
-exports.drawASquare = function(d){return "正方形を描く"};
+exports.drawASquare = function(d){return "正方形を描画"};
 
-exports.drawATriangle = function(d){return "三角形を描画します。"};
+exports.drawATriangle = function(d){return "三角形を描画"};
 
 exports.drawACircle = function(d){return "円を描く"};
 
-exports.drawAHouse = function(d){return "家を描画します。"};
+exports.drawAHouse = function(d){return "家を描画"};
 
-exports.drawATree = function(d){return "木を描きます。"};
+exports.drawATree = function(d){return "木を描画"};
 
-exports.drawASnowman = function(d){return "雪だるまを描く"};
+exports.drawASnowman = function(d){return "雪だるまを描画"};
 
 exports.heightParameter = function(d){return "高さ"};
 
 exports.hideTurtle = function(d){return "アーティストを隠す"};
 
-exports.jumpBackward = function(d){return "後方へジャンプする"};
+exports.jumpBackward = function(d){return "後方へジャンプ"};
 
-exports.jumpForward = function(d){return "前方へジャンプします。"};
+exports.jumpForward = function(d){return "前方へジャンプ"};
 
-exports.jumpTooltip = function(d){return "なんの跡もつけずにアーティストを移動する。"};
+exports.jumpTooltip = function(d){return "跡をつけずにアーティストを移動"};
 
 exports.lengthParameter = function(d){return "長さ"};
 
 exports.loopVariable = function(d){return "カウンター"};
 
-exports.moveBackward = function(d){return "で後ろに動く\n"};
+exports.moveBackward = function(d){return "後進"};
 
-exports.moveForward = function(d){return "で前に動く。"};
+exports.moveForward = function(d){return "前進"};
 
-exports.moveForwardTooltip = function(d){return "アーティストを前に動かします。"};
+exports.moveForwardTooltip = function(d){return "アーティストを前進"};
 
-exports.moveTooltip = function(d){return "指定した量で、アーティストを前または後ろに動かしてください。"};
+exports.moveTooltip = function(d){return "指定した量で、アーティストを前進または後進"};
 
 exports.notBlackColour = function(d){return "このパズルに黒以外の色を設定する必要があります。"};
 
@@ -5869,13 +5869,13 @@ exports.penTooltip = function(d){return "鉛筆を持ち上げたり、下げた
 
 exports.penUp = function(d){return "鉛筆を上げる。\n"};
 
-exports.reinfFeedbackMsg = function(d){return "Does this look like what you want? You can press the \"Try again\" button to see your drawing."};
+exports.reinfFeedbackMsg = function(d){return "この図でよろしいですか？「再試行」ボタンで描いた図を確認する事ができます。"};
 
 exports.setColour = function(d){return "色の設定"};
 
-exports.setWidth = function(d){return "幅を設定します。"};
+exports.setWidth = function(d){return "幅を設定"};
 
-exports.shareDrawing = function(d){return "Share your drawing:"};
+exports.shareDrawing = function(d){return "描いた図を共有"};
 
 exports.showMe = function(d){return "見せてください"};
 
@@ -5883,17 +5883,17 @@ exports.showTurtle = function(d){return "アーティストを見せる。"};
 
 exports.tooFewColours = function(d){return "このパズルには少なくとも %1 別の色を使います。 %2しか使っていません。"};
 
-exports.turnLeft = function(d){return "で左に回転"};
+exports.turnLeft = function(d){return "左に向く"};
 
-exports.turnRight = function(d){return "で右に回転"};
+exports.turnRight = function(d){return "右に向く"};
 
-exports.turnRightTooltip = function(d){return "指定した角度でアーティストを右方向に変えなさい。"};
+exports.turnRightTooltip = function(d){return "指定した角度でアーティストを右に向ける"};
 
-exports.turnTooltip = function(d){return "指定した角度でアーティストを左方向に変えなさい。"};
+exports.turnTooltip = function(d){return "指定した角度でアーティストを左まはた右に向ける"};
 
-exports.turtleVisibilityTooltip = function(d){return "アーティストを表示または非表示しなさい。"};
+exports.turtleVisibilityTooltip = function(d){return "アーティストを表示または非表示"};
 
-exports.widthTooltip = function(d){return "鉛筆の幅を変更します。"};
+exports.widthTooltip = function(d){return "鉛筆の幅を変更"};
 
 exports.wrongColour = function(d){return "あなたの絵は、間違った色です。このパズル では%1である必要があります。"};
 

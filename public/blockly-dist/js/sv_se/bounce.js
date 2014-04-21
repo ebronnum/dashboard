@@ -5327,7 +5327,7 @@ exports.repeatUntilFinish = function(d){return "Upprepa tills målet nåtts"};
 
 exports.scoreText = function(d){return "Score: "+v(d,"playerScore")+" : "+v(d,"opponentScore")};
 
-exports.setBackgroundRandom = function(d){return "set random scene"};
+exports.setBackgroundRandom = function(d){return "ställ in tillfällig bakgrund"};
 
 exports.setBackgroundHardcourt = function(d){return "set hardcourt scene"};
 

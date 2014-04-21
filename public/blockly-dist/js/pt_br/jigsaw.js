@@ -3511,7 +3511,7 @@ exports.dialogOK = function(d){return "Confirma"};
 
 exports.emptyBlocksErrorMsg = function(d){return "Os blocos \"Repetir\"ou \"Se\" precisam conter outros blocos para funcionar. Tenha certeza de que o bloco de dentro se ajusta corretamente ao bloco principal."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Você tem blocos extras que não estão ligados a um bloco de evento."};
 
 exports.finalStage = function(d){return "Parabéns! Você concluiu a etapa final."};
 
@@ -3567,7 +3567,7 @@ exports.tooManyBlocksMsg = function(d){return "Este quebra-cabeça pode ser reso
 
 exports.tooMuchWork = function(d){return "Você me fez trabalhar bastante! Podemos tentar repetindo menos vezes?"};
 
-exports.flappySpecificFail = function(d){return "Seu código parece bom - ele irá agitar com cada clique. Mas você precisa clicar muitas vezes para agitar para o alvo."};
+exports.flappySpecificFail = function(d){return "Seu código parece bom - ele irá bater as asas com cada clique. Mas você precisa clicar muitas vezes para bater as asas para o alvo."};
 
 exports.toolboxHeader = function(d){return "Blocos"};
 

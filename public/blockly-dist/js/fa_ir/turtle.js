@@ -5704,11 +5704,11 @@ exports.dialogCancel = function(d){return "لغو"};
 
 exports.dialogOK = function(d){return "Ok"};
 
-exports.emptyBlocksErrorMsg = function(d){return "بلوک‌های \"تکرار\" یا \"اگر\" برای کار کردن باید بلوک‌های دیگری در داخلشان باشد. اطمینان حاصل کنید که بلوک داخلی در جای درستی از بلوک اصلی قرار گرفته باشد."};
+exports.emptyBlocksErrorMsg = function(d){return "بلوک های \"تکرار\" (Repeat) یا \"شرطی\" (If)  برای کار کردن، نیاز به بلوکهای دیگری در داخل خود دارند. مطمئن شوید که بلوک داخلی، به درستی درون بلوک اصلی قرار گرفته است."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "شما بلوک های اضافه ای دارید که به یک بلوک رویداد متصل نیست."};
 
-exports.finalStage = function(d){return "تبریک می‌گوییم! شما مرحله‌ی آخر را به پایان رساندید."};
+exports.finalStage = function(d){return "تبریک می‌گوییم! شما مرحله‌ی نهایی را به پایان رساندید."};
 
 exports.finalStageTrophies = function(d){return "تبریک می‌گوییم! شما مرحله‌ی آخر را به پایان رساندید و برنده‌ی "+p(d,"numTrophies",0,"fa",{"one":"یک جایزه","other":n(d,"numTrophies")+" جایزه"})+" شدید."};
 
@@ -5796,7 +5796,7 @@ exports.watchVideo = function(d){return "ویدیو را ببینید"};
 
 exports.tryHOC = function(d){return "ساعتِ کد نویسی را امتحان کنید"};
 
-exports.signup = function(d){return "برای دوره‌ی معرفی نام نویسی کنید"};
+exports.signup = function(d){return "برای دوره‌ی مقدماتی نام نویسی کنید"};
 
 exports.hintHeader = function(d){return "Here's a tip:"};
 
@@ -5817,7 +5817,7 @@ exports.catTurtle = function(d){return "اقدامات"};
 
 exports.catVariables = function(d){return "متغیرها"};
 
-exports.catLogic = function(d){return "Logic"};
+exports.catLogic = function(d){return "منطق"};
 
 exports.colourTooltip = function(d){return "رنگ قلم را تغییر می دهد."};
 
@@ -5869,13 +5869,13 @@ exports.penTooltip = function(d){return "مداد را بالا و پایین م
 
 exports.penUp = function(d){return "مداد بالا"};
 
-exports.reinfFeedbackMsg = function(d){return "Does this look like what you want? You can press the \"Try again\" button to see your drawing."};
+exports.reinfFeedbackMsg = function(d){return "آیا این شبیه آنچه می خواهید است؟ برای دیدن نقاشی خود میتوانید کلید \"دوباره امتحان کنید\" را فشار دهید."};
 
 exports.setColour = function(d){return "رنگ را تعیین کنید"};
 
 exports.setWidth = function(d){return "عرض را تعیین کنید"};
 
-exports.shareDrawing = function(d){return "Share your drawing:"};
+exports.shareDrawing = function(d){return "نقاشی خود را به اشتراک بگذارید:"};
 
 exports.showMe = function(d){return "نمایش بده"};
 

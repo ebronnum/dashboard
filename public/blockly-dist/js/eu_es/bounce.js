@@ -5327,21 +5327,21 @@ exports.repeatUntilFinish = function(d){return "repeat until finish"};
 
 exports.scoreText = function(d){return "Score: "+v(d,"playerScore")+" : "+v(d,"opponentScore")};
 
-exports.setBackgroundRandom = function(d){return "set random scene"};
+exports.setBackgroundRandom = function(d){return "ezarri ausazko eszena"};
 
 exports.setBackgroundHardcourt = function(d){return "set hardcourt scene"};
 
 exports.setBackgroundRetro = function(d){return "set retro scene"};
 
-exports.setBackgroundTooltip = function(d){return "Sets the background image"};
+exports.setBackgroundTooltip = function(d){return "Atzeko irudia ezartzen du"};
 
-exports.setBallRandom = function(d){return "set random ball"};
+exports.setBallRandom = function(d){return "ezarri ausazko pilota"};
 
-exports.setBallHardcourt = function(d){return "set hardcourt ball"};
+exports.setBallHardcourt = function(d){return "ezarri retro pilota"};
 
 exports.setBallRetro = function(d){return "set retro ball"};
 
-exports.setBallTooltip = function(d){return "Sets the ball image"};
+exports.setBallTooltip = function(d){return "Pilotaren irudai ezartzen du"};
 
 exports.setBallSpeedRandom = function(d){return "set random ball speed"};
 

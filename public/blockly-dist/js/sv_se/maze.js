@@ -7286,7 +7286,7 @@ exports.fill = function(d){return "Fyll 1"};
 
 exports.fillN = function(d){return "fyll "+v(d,"shovelfuls")};
 
-exports.fillStack = function(d){return "fill stack of "+v(d,"shovelfuls")+" holes"};
+exports.fillStack = function(d){return "fyll stapel med "+v(d,"shovelfuls")+" högar"};
 
 exports.fillSquare = function(d){return "fyll kvadrat"};
 
@@ -7298,7 +7298,7 @@ exports.heightParameter = function(d){return "höjd"};
 
 exports.holePresent = function(d){return "Det finns ett hål"};
 
-exports.ifCode = function(d){return "if"};
+exports.ifCode = function(d){return "om"};
 
 exports.ifPathAhead = function(d){return "om väg finns framåt"};
 

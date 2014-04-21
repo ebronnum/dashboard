@@ -4730,7 +4730,7 @@ exports.dialogOK = function(d){return "OK"};
 
 exports.emptyBlocksErrorMsg = function(d){return "Le bloc « Répéter » ou «Si» doit avoir des autres blocs à l'intérieur pour fonctionner. Assurez-vous que le bloc interne s'adapte correctement à l'intérieur du bloc conteneur."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Vous avez des blocs supplémentaires qui ne sont pas attachés à un bloc d'événements."};
 
 exports.finalStage = function(d){return "Félicitations ! Vous avez terminé l'étape finale."};
 
@@ -4748,7 +4748,7 @@ exports.levelIncompleteError = function(d){return "Vous utilisez tous les types 
 
 exports.listVariable = function(d){return "liste"};
 
-exports.makeYourOwnFlappy = function(d){return "Make Your Own Flappy Game"};
+exports.makeYourOwnFlappy = function(d){return "Faire votre propre jeu Flappy"};
 
 exports.missingBlocksErrorMsg = function(d){return "Essayez un ou plusieurs des blocs ci-dessous pour résoudre ce puzzle."};
 
@@ -4786,7 +4786,7 @@ exports.tooManyBlocksMsg = function(d){return "Ce puzzle peut être résolu avec
 
 exports.tooMuchWork = function(d){return "Vous m'avez fait faire beaucoup de travail !  Pourriez-vous essayer en répétant moins de fois ?"};
 
-exports.flappySpecificFail = function(d){return "Your code looks good - it will flap with each click. But you need to click many times to flap to the target."};
+exports.flappySpecificFail = function(d){return "Votre code semble bon - il battrera des ailes à chaque clic. Mais vous devez cliquer plusieurs fois pour battre des ailes jusqu'à la cible."};
 
 exports.toolboxHeader = function(d){return "Blocs"};
 
@@ -4833,31 +4833,31 @@ exports.doCode = function(d){return "faire"};
 
 exports.elseCode = function(d){return "sinon"};
 
-exports.endGame = function(d){return "end game"};
+exports.endGame = function(d){return "Fin du jeu"};
 
-exports.endGameTooltip = function(d){return "Ends the game."};
+exports.endGameTooltip = function(d){return "Termines le jeu."};
 
 exports.finalLevel = function(d){return "Félicitations ! Vous avez résolu l'énigme finale."};
 
-exports.flap = function(d){return "flap"};
+exports.flap = function(d){return "battre des ailes"};
 
 exports.flapRandom = function(d){return "flap a random amount"};
 
-exports.flapVerySmall = function(d){return "flap a very small amount"};
+exports.flapVerySmall = function(d){return "battre très peu des ailes"};
 
-exports.flapSmall = function(d){return "flap a small amount"};
+exports.flapSmall = function(d){return "battre peu des ailes"};
 
 exports.flapNormal = function(d){return "flap a normal amount"};
 
-exports.flapLarge = function(d){return "flap a large amount"};
+exports.flapLarge = function(d){return "battre beaucoup des ailes"};
 
 exports.flapVeryLarge = function(d){return "flap a very large amount"};
 
 exports.flapTooltip = function(d){return "Fly Flappy upwards."};
 
-exports.incrementPlayerScore = function(d){return "increment player score"};
+exports.incrementPlayerScore = function(d){return "marquer un point"};
 
-exports.incrementPlayerScoreTooltip = function(d){return "Add one to the current player score."};
+exports.incrementPlayerScoreTooltip = function(d){return "Ajouter un au score du joueur actuel."};
 
 exports.nextLevel = function(d){return "Félicitations ! Vous avez terminé cette énigme."};
 
@@ -4865,49 +4865,49 @@ exports.no = function(d){return "Non"};
 
 exports.numBlocksNeeded = function(d){return "Cette enigme peut être résolue avec %1 blocs."};
 
-exports.oneTopBlock = function(d){return "Pour cette énigme, vous devez empiler ensemble tous les blocs dans l'espace blanc."};
+exports.oneTopBlock = function(d){return "Pour cette énigme, vous devez empiler ensemble tous les blocs dans l'espace de travail blanc."};
 
-exports.playSoundRandom = function(d){return "play random sound"};
+exports.playSoundRandom = function(d){return "jouer son aléatoire"};
 
-exports.playSoundBounce = function(d){return "play bounce sound"};
+exports.playSoundBounce = function(d){return "jouer son rebond"};
 
-exports.playSoundCrunch = function(d){return "play crunch sound"};
+exports.playSoundCrunch = function(d){return "jouer son croquement"};
 
-exports.playSoundDie = function(d){return "play sad sound"};
+exports.playSoundDie = function(d){return "jouer son triste"};
 
-exports.playSoundHit = function(d){return "play smash sound"};
+exports.playSoundHit = function(d){return "jouer son frappe"};
 
-exports.playSoundPoint = function(d){return "play point sound"};
+exports.playSoundPoint = function(d){return "Jouer le son 'point'"};
 
-exports.playSoundSwoosh = function(d){return "play swoosh sound"};
+exports.playSoundSwoosh = function(d){return "Jouer le son 'swoosh'"};
 
-exports.playSoundWing = function(d){return "play wing sound"};
+exports.playSoundWing = function(d){return "jouer son ailes"};
 
 exports.playSoundJet = function(d){return "play jet sound"};
 
-exports.playSoundCrash = function(d){return "play crash sound"};
+exports.playSoundCrash = function(d){return "jouer son crash"};
 
 exports.playSoundJingle = function(d){return "play jingle sound"};
 
 exports.playSoundSplash = function(d){return "play splash sound"};
 
-exports.playSoundLaser = function(d){return "play laser sound"};
+exports.playSoundLaser = function(d){return "Jouer le son 'laser'"};
 
-exports.playSoundTooltip = function(d){return "Play a sound."};
+exports.playSoundTooltip = function(d){return "Jouer le son choisi"};
 
-exports.reinfFeedbackMsg = function(d){return "You can press the \"Try again\" button to go back to playing your game."};
+exports.reinfFeedbackMsg = function(d){return "Appuyer sur \"Joue encore\" pour revenir à votre partie."};
 
 exports.scoreText = function(d){return "Score: "+v(d,"playerScore")+" : "+v(d,"opponentScore")};
 
-exports.setBackgroundRandom = function(d){return "set scene Random"};
+exports.setBackgroundRandom = function(d){return "Choisir 'Décor aléatoire'"};
 
-exports.setBackgroundFlappy = function(d){return "set scene City (day)"};
+exports.setBackgroundFlappy = function(d){return "Choisir 'Décor City (de jour)'"};
 
-exports.setBackgroundNight = function(d){return "set scene City (night)"};
+exports.setBackgroundNight = function(d){return "Choisir 'Décor City (de nuit)'"};
 
-exports.setBackgroundSciFi = function(d){return "set scene Sci-Fi"};
+exports.setBackgroundSciFi = function(d){return "Choisir 'Décor Science-Fiction'"};
 
-exports.setBackgroundUnderwater = function(d){return "set scene Underwater"};
+exports.setBackgroundUnderwater = function(d){return "Choisir la scène 'Sous l'eau'"};
 
 exports.setBackgroundCave = function(d){return "set scene Cave"};
 
@@ -5011,45 +5011,45 @@ exports.setScore = function(d){return "set score"};
 
 exports.setScoreTooltip = function(d){return "Sets the player's score"};
 
-exports.setSpeed = function(d){return "set speed"};
+exports.setSpeed = function(d){return "Choisir 'Vitesse'"};
 
-exports.setSpeedTooltip = function(d){return "Sets the levels speed"};
+exports.setSpeedTooltip = function(d){return "Choisir 'Niveau de vitesse'"};
 
-exports.share = function(d){return "Share"};
+exports.share = function(d){return "Partager"};
 
-exports.shareFlappyTwitter = function(d){return "Check out the Flappy game I made. I wrote it myself with @codeorg"};
+exports.shareFlappyTwitter = function(d){return "Regarde le jeu Flappy que j'ai fait. Je l'ai écrit moi-même avec @codeorg"};
 
-exports.shareGame = function(d){return "Share your game:"};
+exports.shareGame = function(d){return "Partagez votre jeu :"};
 
-exports.speedRandom = function(d){return "set speed random"};
+exports.speedRandom = function(d){return "régler la vitesse sur 'aléatoire'"};
 
-exports.speedVerySlow = function(d){return "set speed very slow"};
+exports.speedVerySlow = function(d){return "régler la vitesse sur 'très lente'"};
 
-exports.speedSlow = function(d){return "set speed slow"};
+exports.speedSlow = function(d){return "Régler la vitesse sur 'lente'"};
 
-exports.speedNormal = function(d){return "set speed normal"};
+exports.speedNormal = function(d){return "Régler la vitesse sur 'normal'"};
 
-exports.speedFast = function(d){return "set speed fast"};
+exports.speedFast = function(d){return "Régler la vitesse sur 'rapide'"};
 
 exports.speedVeryFast = function(d){return "set speed very fast"};
 
-exports.whenClick = function(d){return "when click"};
+exports.whenClick = function(d){return "quand on clique"};
 
-exports.whenClickTooltip = function(d){return "Execute the actions below when a click event occurs."};
+exports.whenClickTooltip = function(d){return "Exécuter les actions ci-dessous lorsque l'événement click se produit."};
 
 exports.whenCollideGround = function(d){return "when hit the ground"};
 
-exports.whenCollideGroundTooltip = function(d){return "Execute the actions below when Flappy hits the ground."};
+exports.whenCollideGroundTooltip = function(d){return "Exécuter les actions ci-dessous lorsque Flappy touche le sol."};
 
-exports.whenCollideObstacle = function(d){return "when hit an obstacle"};
+exports.whenCollideObstacle = function(d){return "Quand il frappe un obstacle"};
 
-exports.whenCollideObstacleTooltip = function(d){return "Execute the actions below when Flappy hits an obstacle."};
+exports.whenCollideObstacleTooltip = function(d){return "Exécuter les actions ci-dessous lorsque Flappy touche un obstacle."};
 
-exports.whenEnterObstacle = function(d){return "when pass obstacle"};
+exports.whenEnterObstacle = function(d){return "Quand il dépasse un obstacle"};
 
 exports.whenEnterObstacleTooltip = function(d){return "Execute the actions below when Flappy enters an obstacle."};
 
-exports.whenRunButtonClick = function(d){return "when Run is clicked"};
+exports.whenRunButtonClick = function(d){return "Quand le jeu commence"};
 
 exports.whenRunButtonClickTooltip = function(d){return "Execute the actions below when the run button is pressed."};
 

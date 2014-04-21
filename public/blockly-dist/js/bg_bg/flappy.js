@@ -4728,9 +4728,9 @@ exports.dialogCancel = function(d){return "Отказ"};
 
 exports.dialogOK = function(d){return "OK"};
 
-exports.emptyBlocksErrorMsg = function(d){return "Блоковете \"Repeat\" и \"If\" трябва да съдържат други блокове в себе си, за да работят. Уверете се, че вътрешния блок се вписва правилно във външния блок."};
+exports.emptyBlocksErrorMsg = function(d){return "Блоковете \"Повтори\" и \"или\" трябва да съдържат други блокове в себе си, за да работят. Уверете се, че вътрешния блок се вписва правилно във външния блок."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Имате допълнителни блокчета, които не са били използвани в блока за програмиране."};
 
 exports.finalStage = function(d){return "Поздравления! Вие завършихте последния етап."};
 
@@ -4768,7 +4768,7 @@ exports.puzzleTitle = function(d){return "Пъзел "+v(d,"puzzle_number")+" о
 
 exports.resetProgram = function(d){return "Възстановяване"};
 
-exports.runProgram = function(d){return "Пусни програмата"};
+exports.runProgram = function(d){return "Стартиране на програмата"};
 
 exports.runTooltip = function(d){return "Пусни програмата, определена от блоковете в работното поле."};
 
@@ -4794,7 +4794,7 @@ exports.openWorkspace = function(d){return "Как работи"};
 
 exports.totalNumLinesOfCodeWritten = function(d){return "Общо: "+p(d,"numLines",0,"bg",{"one":"1 ред","other":n(d,"numLines")+" реда"})+" код."};
 
-exports.tryAgain = function(d){return "Опитайте пак"};
+exports.tryAgain = function(d){return "Опитайте отново"};
 
 exports.backToPreviousLevel = function(d){return "Обратно към предишното ниво"};
 
@@ -4839,7 +4839,7 @@ exports.endGameTooltip = function(d){return "Завършва играта."};
 
 exports.finalLevel = function(d){return "Поздравления! Вие решихте последния пъзел."};
 
-exports.flap = function(d){return "пляскам с криле"};
+exports.flap = function(d){return "пляскане с крила"};
 
 exports.flapRandom = function(d){return "пляскане с криле неопределен брой пъти"};
 
@@ -4857,7 +4857,7 @@ exports.flapTooltip = function(d){return "Flappy лети нагоре."};
 
 exports.incrementPlayerScore = function(d){return "въвежда точка"};
 
-exports.incrementPlayerScoreTooltip = function(d){return "Добавете една точка към текущия резултат на играча."};
+exports.incrementPlayerScoreTooltip = function(d){return "Добавя една точка към текущия резултат на играча."};
 
 exports.nextLevel = function(d){return "Поздравления! Вие завършихте този пъзел."};
 
@@ -4871,17 +4871,17 @@ exports.playSoundRandom = function(d){return "пусни случаен звук
 
 exports.playSoundBounce = function(d){return "пусни звук \"Подскок\""};
 
-exports.playSoundCrunch = function(d){return "възпроизвеждане на звук на криза"};
+exports.playSoundCrunch = function(d){return "възпроизвеждане на звук за разбиване"};
 
 exports.playSoundDie = function(d){return "възпроизвеждане тъжен звук"};
 
-exports.playSoundHit = function(d){return "възпроизвеждане на smash звук"};
+exports.playSoundHit = function(d){return "възпроизвеждане на размазващ звук"};
 
 exports.playSoundPoint = function(d){return "възпроизвеждане на звук за точка"};
 
 exports.playSoundSwoosh = function(d){return "Възпроизвеждане на  swoosh звук"};
 
-exports.playSoundWing = function(d){return "възпроизвеждане на звук на крило"};
+exports.playSoundWing = function(d){return "възпроизвеждане на звук от пляскане с крила"};
 
 exports.playSoundJet = function(d){return "Възпроизвеждане на звук за струя"};
 
@@ -4893,25 +4893,25 @@ exports.playSoundSplash = function(d){return "Възпроизвеждане н�
 
 exports.playSoundLaser = function(d){return "възпроизвеждане на звук от лазер"};
 
-exports.playSoundTooltip = function(d){return "Възпроизведете избраният звук."};
+exports.playSoundTooltip = function(d){return "Възпроизвеждане на избраният звук."};
 
 exports.reinfFeedbackMsg = function(d){return "Може да натиснете бутона \"Опитай отново\", за да се върнете да играете играта си."};
 
 exports.scoreText = function(d){return "Резултат: "+v(d,"playerScore")};
 
-exports.setBackgroundRandom = function(d){return "Зареди сцена на случаен принцип"};
+exports.setBackgroundRandom = function(d){return "Зарежда сцена на случаен принцип"};
 
-exports.setBackgroundFlappy = function(d){return "Задайте сцена \"Град\" (ден)"};
+exports.setBackgroundFlappy = function(d){return "Задава сцена \"Град\" (ден)"};
 
-exports.setBackgroundNight = function(d){return "Задайте сцена \"Град\" (нощ)"};
+exports.setBackgroundNight = function(d){return "Задаване на сцена \"Град\" (нощ)"};
 
 exports.setBackgroundSciFi = function(d){return "сцената Sci-Fi"};
 
 exports.setBackgroundUnderwater = function(d){return "Задаване сцена под водата"};
 
-exports.setBackgroundCave = function(d){return "Задайте сцена пещера"};
+exports.setBackgroundCave = function(d){return "Задаване сцена \"пещера\""};
 
-exports.setBackgroundSanta = function(d){return "Задайте сцена Дядо Коледа"};
+exports.setBackgroundSanta = function(d){return "Задаване на сцена \"Дядо Коледа\""};
 
 exports.setBackgroundTooltip = function(d){return "Задаване на фоновото изображение"};
 
@@ -4919,13 +4919,13 @@ exports.setGapRandom = function(d){return "Задаване на случайн�
 
 exports.setGapVerySmall = function(d){return "Задаване на много малки дупки"};
 
-exports.setGapSmall = function(d){return "Задайте една малка дупка"};
+exports.setGapSmall = function(d){return "Задаване на малка пролука"};
 
-exports.setGapNormal = function(d){return "Задайте една нормална дупка"};
+exports.setGapNormal = function(d){return "Задавана на нормална пролука"};
 
-exports.setGapLarge = function(d){return "поставям голям интервал"};
+exports.setGapLarge = function(d){return "поставяне на голяма пролука"};
 
-exports.setGapVeryLarge = function(d){return "Задаване на много голяма разлика"};
+exports.setGapVeryLarge = function(d){return "Задаване на много голяма пролука"};
 
 exports.setGapHeightTooltip = function(d){return "Задава вертикална дупка между препятствията"};
 

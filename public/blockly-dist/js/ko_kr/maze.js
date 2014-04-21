@@ -7165,7 +7165,7 @@ exports.dialogOK = function(d){return "확인"};
 
 exports.emptyBlocksErrorMsg = function(d){return "\"반복\" 블럭이나 \"조건\" 블럭이 실행되려면, 그 안에 다른 블럭들이 있어야 합니다. 블럭 안쪽에 필요한 블럭들을 끼워 맞춰 연결하세요."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "이벤트 블럭에 연결하지 않은 남는 블럭이 있습니다."};
 
 exports.finalStage = function(d){return "축하합니다! 마지막 단계까지 성공적으로 해결했습니다."};
 
@@ -7183,7 +7183,7 @@ exports.levelIncompleteError = function(d){return "필요한 블럭들을 모두
 
 exports.listVariable = function(d){return "리스트"};
 
-exports.makeYourOwnFlappy = function(d){return "Make Your Own Flappy Game"};
+exports.makeYourOwnFlappy = function(d){return "자신만의 플래피 게임을 만들어보세요."};
 
 exports.missingBlocksErrorMsg = function(d){return "퍼즐을 풀기 위해 아래 블럭들을 더 사용해 보세요."};
 
@@ -7221,7 +7221,7 @@ exports.tooManyBlocksMsg = function(d){return "이 퍼즐은  <x id='START_SPAN'
 
 exports.tooMuchWork = function(d){return "작업을 너무 많이 해야 되요! 더 적게 반복하는 방법은 없을까요?"};
 
-exports.flappySpecificFail = function(d){return "Your code looks good - it will flap with each click. But you need to click many times to flap to the target."};
+exports.flappySpecificFail = function(d){return "적합한 코드입니다. - 클릭할 때마다 펄럭여 올라갑니다. 목표에 도착하려면 많이 클릭해야 합니다."};
 
 exports.toolboxHeader = function(d){return "블럭"};
 
@@ -7249,13 +7249,13 @@ exports.rotateText = function(d){return "돌리세요."};
 
 exports.orientationLock = function(d){return "회전 잠금을 해제하세요."};
 
-exports.wantToLearn = function(d){return "Want to learn to code?"};
+exports.wantToLearn = function(d){return "코드(code)를 배워볼까요?"};
 
-exports.watchVideo = function(d){return "Watch the Video"};
+exports.watchVideo = function(d){return "비디오 보기"};
 
-exports.tryHOC = function(d){return "Try the Hour of Code"};
+exports.tryHOC = function(d){return "Hour of Code 해보기"};
 
-exports.signup = function(d){return "Sign up for the intro course"};
+exports.signup = function(d){return "샘플 코스를 위해 가입하기"};
 
 exports.hintHeader = function(d){return "Here's a tip:"};
 
@@ -7286,7 +7286,7 @@ exports.fill = function(d){return "메우기1번"};
 
 exports.fillN = function(d){return "메우기"+v(d,"shovelfuls")+"번"};
 
-exports.fillStack = function(d){return "fill stack of "+v(d,"shovelfuls")+" holes"};
+exports.fillStack = function(d){return "메우기"+v(d,"shovelfuls")+"번 구덩이들 채우기"};
 
 exports.fillSquare = function(d){return "사각형 메우기"};
 
@@ -7298,7 +7298,7 @@ exports.heightParameter = function(d){return "높이:"};
 
 exports.holePresent = function(d){return "구덩이가 있으면"};
 
-exports.ifCode = function(d){return "if"};
+exports.ifCode = function(d){return "만약,"};
 
 exports.ifPathAhead = function(d){return "만약, 앞쪽에 길이 있으면"};
 

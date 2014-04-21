@@ -4829,13 +4829,13 @@ exports.hintHeader = function(d){return "Here's a tip:"};
 var MessageFormat = require("messageformat");MessageFormat.locale.sv=function(n){return n===1?"one":"other"}
 exports.continue = function(d){return "Fortsätt"};
 
-exports.doCode = function(d){return "utför"};
+exports.doCode = function(d){return "gör"};
 
-exports.elseCode = function(d){return "annars"};
+exports.elseCode = function(d){return "annat"};
 
-exports.endGame = function(d){return "end game"};
+exports.endGame = function(d){return "slutspelet"};
 
-exports.endGameTooltip = function(d){return "Ends the game."};
+exports.endGameTooltip = function(d){return "Avslutar spelet."};
 
 exports.finalLevel = function(d){return "Grattis! Du har löst det sista pusslet."};
 
@@ -4853,11 +4853,11 @@ exports.flapLarge = function(d){return "flap a large amount"};
 
 exports.flapVeryLarge = function(d){return "flap a very large amount"};
 
-exports.flapTooltip = function(d){return "Fly Flappy upwards."};
+exports.flapTooltip = function(d){return "Flyga Flappy uppåt."};
 
-exports.incrementPlayerScore = function(d){return "increment player score"};
+exports.incrementPlayerScore = function(d){return "Gör ett poäng"};
 
-exports.incrementPlayerScoreTooltip = function(d){return "Add one to the current player score."};
+exports.incrementPlayerScoreTooltip = function(d){return "Lägg till ett till den nuvarande spelarens poängsumma."};
 
 exports.nextLevel = function(d){return "Grattis! Du har slutfört detta pusslet."};
 
@@ -4867,23 +4867,23 @@ exports.numBlocksNeeded = function(d){return "Detta pusslet kan lösas med %1 bl
 
 exports.oneTopBlock = function(d){return "För detta pussel måste du använda alla block och sätta ihop dem i den vita arbetsytan."};
 
-exports.playSoundRandom = function(d){return "play random sound"};
+exports.playSoundRandom = function(d){return "Spela ljud slumpmässig"};
 
-exports.playSoundBounce = function(d){return "play bounce sound"};
+exports.playSoundBounce = function(d){return "spela studsa ljud"};
 
-exports.playSoundCrunch = function(d){return "play crunch sound"};
+exports.playSoundCrunch = function(d){return "spela krossa ljud"};
 
-exports.playSoundDie = function(d){return "play sad sound"};
+exports.playSoundDie = function(d){return "spela ledsen ljud"};
 
-exports.playSoundHit = function(d){return "play smash sound"};
+exports.playSoundHit = function(d){return "spela krasch ljud"};
 
-exports.playSoundPoint = function(d){return "play point sound"};
+exports.playSoundPoint = function(d){return "spela poäng ljud"};
 
-exports.playSoundSwoosh = function(d){return "play swoosh sound"};
+exports.playSoundSwoosh = function(d){return "spela swoosh ljud"};
 
-exports.playSoundWing = function(d){return "play wing sound"};
+exports.playSoundWing = function(d){return "spela vinge ljud"};
 
-exports.playSoundJet = function(d){return "play jet sound"};
+exports.playSoundJet = function(d){return "spela jetplan ljud"};
 
 exports.playSoundCrash = function(d){return "play crash sound"};
 

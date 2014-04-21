@@ -5327,57 +5327,57 @@ exports.repeatUntilFinish = function(d){return "gentag indtil færdig"};
 
 exports.scoreText = function(d){return "Score: "+v(d,"playerScore")+" : "+v(d,"opponentScore")};
 
-exports.setBackgroundRandom = function(d){return "set random scene"};
+exports.setBackgroundRandom = function(d){return "sæt tilfældig baggrund"};
 
-exports.setBackgroundHardcourt = function(d){return "set hardcourt scene"};
+exports.setBackgroundHardcourt = function(d){return "sæt hardcourt baggrund"};
 
-exports.setBackgroundRetro = function(d){return "set retro scene"};
+exports.setBackgroundRetro = function(d){return "sæt retro baggrund"};
 
-exports.setBackgroundTooltip = function(d){return "Sets the background image"};
+exports.setBackgroundTooltip = function(d){return "Indstiller baggrundsbilledet"};
 
-exports.setBallRandom = function(d){return "set random ball"};
+exports.setBallRandom = function(d){return "sæt tilfældig bold"};
 
-exports.setBallHardcourt = function(d){return "set hardcourt ball"};
+exports.setBallHardcourt = function(d){return "sæt hardcourt bold"};
 
-exports.setBallRetro = function(d){return "set retro ball"};
+exports.setBallRetro = function(d){return "sæt retro bold"};
 
-exports.setBallTooltip = function(d){return "Sets the ball image"};
+exports.setBallTooltip = function(d){return "Indstiller boldbilledet"};
 
-exports.setBallSpeedRandom = function(d){return "set random ball speed"};
+exports.setBallSpeedRandom = function(d){return "sæt tilfældig boldhastighed"};
 
-exports.setBallSpeedVerySlow = function(d){return "set very slow ball speed"};
+exports.setBallSpeedVerySlow = function(d){return "sæt meget langsom boldhastighed"};
 
-exports.setBallSpeedSlow = function(d){return "set slow ball speed"};
+exports.setBallSpeedSlow = function(d){return "sæt langsom boldhastighed"};
 
-exports.setBallSpeedNormal = function(d){return "set normal ball speed"};
+exports.setBallSpeedNormal = function(d){return "sæt normal boldhastighed"};
 
-exports.setBallSpeedFast = function(d){return "set fast ball speed"};
+exports.setBallSpeedFast = function(d){return "sæt hurtig boldhastighed"};
 
-exports.setBallSpeedVeryFast = function(d){return "set very fast ball speed"};
+exports.setBallSpeedVeryFast = function(d){return "sæt meget hurtig boldhastighed"};
 
-exports.setBallSpeedTooltip = function(d){return "Sets the speed of the ball"};
+exports.setBallSpeedTooltip = function(d){return "Indstiller boldens hastighed"};
 
-exports.setPaddleRandom = function(d){return "set random paddle"};
+exports.setPaddleRandom = function(d){return "sæt tilfældigt bat"};
 
-exports.setPaddleHardcourt = function(d){return "set hardcourt paddle"};
+exports.setPaddleHardcourt = function(d){return "sæt hardcourt bat"};
 
-exports.setPaddleRetro = function(d){return "set retro paddle"};
+exports.setPaddleRetro = function(d){return "sæt retro bat"};
 
 exports.setPaddleTooltip = function(d){return "Sets the ball paddle"};
 
-exports.setPaddleSpeedRandom = function(d){return "set random paddle speed"};
+exports.setPaddleSpeedRandom = function(d){return "sæt tilfældig bat hastighed"};
 
-exports.setPaddleSpeedVerySlow = function(d){return "set very slow paddle speed"};
+exports.setPaddleSpeedVerySlow = function(d){return "sæt meget langsom bat hastighed"};
 
-exports.setPaddleSpeedSlow = function(d){return "set slow paddle speed"};
+exports.setPaddleSpeedSlow = function(d){return "sæt langsom bat hastighed"};
 
-exports.setPaddleSpeedNormal = function(d){return "set normal paddle speed"};
+exports.setPaddleSpeedNormal = function(d){return "sæt normal bat hastighed"};
 
-exports.setPaddleSpeedFast = function(d){return "set fast paddle speed"};
+exports.setPaddleSpeedFast = function(d){return "sæt hurtig bat hastighed"};
 
-exports.setPaddleSpeedVeryFast = function(d){return "set very fast paddle speed"};
+exports.setPaddleSpeedVeryFast = function(d){return "sæt meget hurtig bat hastighed"};
 
-exports.setPaddleSpeedTooltip = function(d){return "Sets the speed of the paddle"};
+exports.setPaddleSpeedTooltip = function(d){return "Indstiller battets hastighed"};
 
 exports.share = function(d){return "Share"};
 
@@ -5403,9 +5403,9 @@ exports.whenDown = function(d){return "when Down arrow"};
 
 exports.whenDownTooltip = function(d){return "Execute the actions below when the Down arrow button is pressed."};
 
-exports.whenGameStarts = function(d){return "when game starts"};
+exports.whenGameStarts = function(d){return "når spillet starter"};
 
-exports.whenGameStartsTooltip = function(d){return "Execute the actions below when the game starts."};
+exports.whenGameStartsTooltip = function(d){return "Udfør nedenstående handlinger når spillet starter."};
 
 exports.whenLeft = function(d){return "when Left arrow"};
 
@@ -5464,11 +5464,11 @@ exports.dialogCancel = function(d){return "Annuller"};
 
 exports.dialogOK = function(d){return "Ok"};
 
-exports.emptyBlocksErrorMsg = function(d){return "\"Gentag\" eller \"Hvis\" blokkene skal have andre blokke inde i for at virke. Kontroller, at den indre blok passer ordentligt inde i blokken."};
+exports.emptyBlocksErrorMsg = function(d){return "\"Gentag\" eller \"Hvis\" blokkene skal have andre blokke inden i for at virke. Kontroller, at den indre blok passer ordentligt inde i blokken."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Du har ekstra blokke, der ikke er knyttet til en hændelsesblok."};
 
-exports.finalStage = function(d){return "Tillykke! Du har fuldført den sidste fase."};
+exports.finalStage = function(d){return "Tillykke! Du har fuldført det sidste trin."};
 
 exports.finalStageTrophies = function(d){return "Tillykke! Du har afsluttet det sidste trin og vundet "+p(d,"numTrophies",0,"da",{"one":"et trofæ","other":n(d,"numTrophies")+" trofæer"})+"."};
 
@@ -5484,7 +5484,7 @@ exports.levelIncompleteError = function(d){return "Du bruger alle de nødvendige
 
 exports.listVariable = function(d){return "liste"};
 
-exports.makeYourOwnFlappy = function(d){return "Make Your Own Flappy Game"};
+exports.makeYourOwnFlappy = function(d){return "Lav dit eget Flappy spil"};
 
 exports.missingBlocksErrorMsg = function(d){return "Prøv en eller flere af blokkene nedenfor til at løse dette puslespil."};
 
@@ -5522,7 +5522,7 @@ exports.tooManyBlocksMsg = function(d){return "Dette puslespil kan løses med <x
 
 exports.tooMuchWork = function(d){return "Du fik mig til at gøre en masse arbejde! Kunne du prøve at gentage færre gange?"};
 
-exports.flappySpecificFail = function(d){return "Your code looks good - it will flap with each click. But you need to click many times to flap to the target."};
+exports.flappySpecificFail = function(d){return "Din kode ser godt ud - den vil baske ved hvert klik. Men du skal klikke mange gange for at baske til målet."};
 
 exports.toolboxHeader = function(d){return "Blokke"};
 
@@ -5540,11 +5540,11 @@ exports.typeCode = function(d){return "Skriv din JavaScript kode under disse ins
 
 exports.typeFuncs = function(d){return "Tilgængelige funktioner: %1"};
 
-exports.typeHint = function(d){return "Bemærk, at parenteser og semikoloner er påkrævet."};
+exports.typeHint = function(d){return "Bemærk, at parenteser og semikoloner er nødvendige."};
 
 exports.workspaceHeader = function(d){return "Saml dine blokke her: "};
 
-exports.infinity = function(d){return "Uendelighed"};
+exports.infinity = function(d){return "Uendelig"};
 
 exports.rotateText = function(d){return "Drej din enhed."};
 

@@ -5327,57 +5327,57 @@ exports.repeatUntilFinish = function(d){return "repetir hasta terminar"};
 
 exports.scoreText = function(d){return "Puntuación: "+v(d,"playerScore")+": "+v(d,"opponentScore")};
 
-exports.setBackgroundRandom = function(d){return "set random scene"};
+exports.setBackgroundRandom = function(d){return "Establecer escena al azar"};
 
-exports.setBackgroundHardcourt = function(d){return "set hardcourt scene"};
+exports.setBackgroundHardcourt = function(d){return "Establecer escena de cancha dura"};
 
-exports.setBackgroundRetro = function(d){return "set retro scene"};
+exports.setBackgroundRetro = function(d){return "Establecer escena retro"};
 
-exports.setBackgroundTooltip = function(d){return "Sets the background image"};
+exports.setBackgroundTooltip = function(d){return "Establece la imagen de fondo"};
 
-exports.setBallRandom = function(d){return "set random ball"};
+exports.setBallRandom = function(d){return "Establecer pelota al azar"};
 
-exports.setBallHardcourt = function(d){return "set hardcourt ball"};
+exports.setBallHardcourt = function(d){return "Establecer pelota para cancha dura"};
 
-exports.setBallRetro = function(d){return "set retro ball"};
+exports.setBallRetro = function(d){return "Establecer pelota retro"};
 
-exports.setBallTooltip = function(d){return "Sets the ball image"};
+exports.setBallTooltip = function(d){return "Establece la imagen de la pelota"};
 
-exports.setBallSpeedRandom = function(d){return "set random ball speed"};
+exports.setBallSpeedRandom = function(d){return "Establecer velocidad de pelota al azar"};
 
-exports.setBallSpeedVerySlow = function(d){return "set very slow ball speed"};
+exports.setBallSpeedVerySlow = function(d){return "Establecer velocidad de pelota muy lenta"};
 
-exports.setBallSpeedSlow = function(d){return "set slow ball speed"};
+exports.setBallSpeedSlow = function(d){return "Establecer velocidad de pelota lenta"};
 
-exports.setBallSpeedNormal = function(d){return "set normal ball speed"};
+exports.setBallSpeedNormal = function(d){return "Establecer velocidad de pelota normal"};
 
-exports.setBallSpeedFast = function(d){return "set fast ball speed"};
+exports.setBallSpeedFast = function(d){return "Establecer velocidad de pelota rápida"};
 
-exports.setBallSpeedVeryFast = function(d){return "set very fast ball speed"};
+exports.setBallSpeedVeryFast = function(d){return "Establecer velocidad de pelota muy rápida"};
 
-exports.setBallSpeedTooltip = function(d){return "Sets the speed of the ball"};
+exports.setBallSpeedTooltip = function(d){return "Establece la velocidad de la pelota"};
 
-exports.setPaddleRandom = function(d){return "set random paddle"};
+exports.setPaddleRandom = function(d){return "Establecer paleta al azar"};
 
-exports.setPaddleHardcourt = function(d){return "set hardcourt paddle"};
+exports.setPaddleHardcourt = function(d){return "Establecer paleta para cancha dura"};
 
-exports.setPaddleRetro = function(d){return "set retro paddle"};
+exports.setPaddleRetro = function(d){return "Establecer paleta retro"};
 
 exports.setPaddleTooltip = function(d){return "Sets the ball paddle"};
 
-exports.setPaddleSpeedRandom = function(d){return "set random paddle speed"};
+exports.setPaddleSpeedRandom = function(d){return "Establecer velocidad de paleta al azar"};
 
-exports.setPaddleSpeedVerySlow = function(d){return "set very slow paddle speed"};
+exports.setPaddleSpeedVerySlow = function(d){return "Establecer velocidad de paleta muy lenta"};
 
-exports.setPaddleSpeedSlow = function(d){return "set slow paddle speed"};
+exports.setPaddleSpeedSlow = function(d){return "Establecer velocidad de paleta lenta"};
 
-exports.setPaddleSpeedNormal = function(d){return "set normal paddle speed"};
+exports.setPaddleSpeedNormal = function(d){return "Establecer velocidad de paleta normal"};
 
-exports.setPaddleSpeedFast = function(d){return "set fast paddle speed"};
+exports.setPaddleSpeedFast = function(d){return "Establecer velocidad de paleta rápida"};
 
-exports.setPaddleSpeedVeryFast = function(d){return "set very fast paddle speed"};
+exports.setPaddleSpeedVeryFast = function(d){return "Establecer velocidad de paleta muy rápida"};
 
-exports.setPaddleSpeedTooltip = function(d){return "Sets the speed of the paddle"};
+exports.setPaddleSpeedTooltip = function(d){return "Establece la velocidad de la paleta de juego"};
 
 exports.share = function(d){return "Share"};
 
@@ -5403,9 +5403,9 @@ exports.whenDown = function(d){return "cuando la flecha apunte abajo"};
 
 exports.whenDownTooltip = function(d){return "Realiza las instrucciones de abajo cuando se presiona la tecla de fecha hacia abajo."};
 
-exports.whenGameStarts = function(d){return "when game starts"};
+exports.whenGameStarts = function(d){return "Cuando el juego comience"};
 
-exports.whenGameStartsTooltip = function(d){return "Execute the actions below when the game starts."};
+exports.whenGameStartsTooltip = function(d){return "Ejecutar las acciones indicadas debajo cuando comience el juego."};
 
 exports.whenLeft = function(d){return "cuando la fecha apunta a la izquierda"};
 
@@ -5466,7 +5466,7 @@ exports.dialogOK = function(d){return "OK"};
 
 exports.emptyBlocksErrorMsg = function(d){return "Los bloques \"repetir\" o \"si\" deben tener otros bloques dentro de ellos para funcionar. Asegúrate que el bloque interno quede correctamente dentro del bloque que lo contiene."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Tienes bloques adicionales que no están conectados a un bloque de evento."};
 
 exports.finalStage = function(d){return "¡Felicidades! Has completado la etapa final."};
 
@@ -5484,7 +5484,7 @@ exports.levelIncompleteError = function(d){return "Estás utilizando todos los t
 
 exports.listVariable = function(d){return "lista"};
 
-exports.makeYourOwnFlappy = function(d){return "Crea tu propio juego Flappy"};
+exports.makeYourOwnFlappy = function(d){return "Crea tu propio juego Flappy Bird"};
 
 exports.missingBlocksErrorMsg = function(d){return "Trata de resolver este puzzle usando uno o más de los bloques de abajo."};
 
@@ -5522,7 +5522,7 @@ exports.tooManyBlocksMsg = function(d){return "Puedes resolver este puzzle con <
 
 exports.tooMuchWork = function(d){return "¡Me has hecho trabajar mucho!  ¿Podrías tratar de repetir menos veces?"};
 
-exports.flappySpecificFail = function(d){return "Tú código se ve bien - aleteará con cada clic. Pero tienes que hacer clic varias veces para aletear a la meta."};
+exports.flappySpecificFail = function(d){return "Tú código se ve bien - aleteará con cada clic. Pero tienes que hacer clic varias veces para aletear hacia la meta."};
 
 exports.toolboxHeader = function(d){return "Bloques"};
 

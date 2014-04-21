@@ -7165,7 +7165,7 @@ exports.dialogOK = function(d){return "OK"};
 
 exports.emptyBlocksErrorMsg = function(d){return "Le bloc « Répéter » ou «Si» doit avoir des autres blocs à l'intérieur pour fonctionner. Assurez-vous que le bloc interne s'adapte correctement à l'intérieur du bloc conteneur."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Vous avez des blocs supplémentaires qui ne sont pas attachés à un bloc d'événements."};
 
 exports.finalStage = function(d){return "Félicitations ! Vous avez terminé l'étape finale."};
 
@@ -7183,7 +7183,7 @@ exports.levelIncompleteError = function(d){return "Vous utilisez tous les types 
 
 exports.listVariable = function(d){return "liste"};
 
-exports.makeYourOwnFlappy = function(d){return "Make Your Own Flappy Game"};
+exports.makeYourOwnFlappy = function(d){return "Faire votre propre jeu Flappy"};
 
 exports.missingBlocksErrorMsg = function(d){return "Essayez un ou plusieurs des blocs ci-dessous pour résoudre ce puzzle."};
 
@@ -7221,7 +7221,7 @@ exports.tooManyBlocksMsg = function(d){return "Ce puzzle peut être résolu avec
 
 exports.tooMuchWork = function(d){return "Vous m'avez fait faire beaucoup de travail !  Pourriez-vous essayer en répétant moins de fois ?"};
 
-exports.flappySpecificFail = function(d){return "Your code looks good - it will flap with each click. But you need to click many times to flap to the target."};
+exports.flappySpecificFail = function(d){return "Votre code semble bon - il battrera des ailes à chaque clic. Mais vous devez cliquer plusieurs fois pour battre des ailes jusqu'à la cible."};
 
 exports.toolboxHeader = function(d){return "Blocs"};
 
@@ -7320,13 +7320,13 @@ exports.noPathLeft = function(d){return "pas de chemin vers la gauche"};
 
 exports.noPathRight = function(d){return "pas de chemin vers la droite"};
 
-exports.numBlocksNeeded = function(d){return "Cette enigme peut être résolue avec %1 blocs."};
+exports.numBlocksNeeded = function(d){return "Cette énigme peut être résolue avec %1 blocs."};
 
 exports.oneTopBlock = function(d){return "Pour cette énigme, vous devez empiler ensemble tous les blocs dans l'espace blanc."};
 
 exports.pathAhead = function(d){return "chemin à parcourir"};
 
-exports.pathLeft = function(d){return "Si il ya un chemin vers la gauche"};
+exports.pathLeft = function(d){return "Si il y a un chemin vers la gauche"};
 
 exports.pathRight = function(d){return "Si il y a un chemin vers la droite"};
 

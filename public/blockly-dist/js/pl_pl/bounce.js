@@ -5341,57 +5341,57 @@ exports.repeatUntilFinish = function(d){return "powtarzaj aż będzie koniec"};
 
 exports.scoreText = function(d){return "Wynik: "+v(d,"playerScore")+": "+v(d,"opponentScore")};
 
-exports.setBackgroundRandom = function(d){return "set random scene"};
+exports.setBackgroundRandom = function(d){return "wybierz losową scenę"};
 
 exports.setBackgroundHardcourt = function(d){return "set hardcourt scene"};
 
-exports.setBackgroundRetro = function(d){return "set retro scene"};
+exports.setBackgroundRetro = function(d){return "ustaw scenę retro"};
 
-exports.setBackgroundTooltip = function(d){return "Sets the background image"};
+exports.setBackgroundTooltip = function(d){return "Ustawia obraz w tle"};
 
-exports.setBallRandom = function(d){return "set random ball"};
+exports.setBallRandom = function(d){return "wybierz losową piłkę"};
 
 exports.setBallHardcourt = function(d){return "set hardcourt ball"};
 
-exports.setBallRetro = function(d){return "set retro ball"};
+exports.setBallRetro = function(d){return "wybierz piłkę retro"};
 
-exports.setBallTooltip = function(d){return "Sets the ball image"};
+exports.setBallTooltip = function(d){return "Ustawia obraz piłki"};
 
-exports.setBallSpeedRandom = function(d){return "set random ball speed"};
+exports.setBallSpeedRandom = function(d){return "ustaw losową prędkość piłki"};
 
-exports.setBallSpeedVerySlow = function(d){return "set very slow ball speed"};
+exports.setBallSpeedVerySlow = function(d){return "ustaw bardzo wolną prędkość piłki"};
 
-exports.setBallSpeedSlow = function(d){return "set slow ball speed"};
+exports.setBallSpeedSlow = function(d){return "ustaw wolną prędkość piłki"};
 
-exports.setBallSpeedNormal = function(d){return "set normal ball speed"};
+exports.setBallSpeedNormal = function(d){return "ustaw normalną prędkość piłki"};
 
-exports.setBallSpeedFast = function(d){return "set fast ball speed"};
+exports.setBallSpeedFast = function(d){return "ustaw szybką prędkość piłki"};
 
-exports.setBallSpeedVeryFast = function(d){return "set very fast ball speed"};
+exports.setBallSpeedVeryFast = function(d){return "ustaw bardzo szybką prędkość piłki"};
 
-exports.setBallSpeedTooltip = function(d){return "Sets the speed of the ball"};
+exports.setBallSpeedTooltip = function(d){return "Ustawianie szybkości piłki"};
 
-exports.setPaddleRandom = function(d){return "set random paddle"};
+exports.setPaddleRandom = function(d){return "ustaw losową paletkę"};
 
 exports.setPaddleHardcourt = function(d){return "set hardcourt paddle"};
 
-exports.setPaddleRetro = function(d){return "set retro paddle"};
+exports.setPaddleRetro = function(d){return "ustaw paletkę retro"};
 
 exports.setPaddleTooltip = function(d){return "Sets the ball paddle"};
 
-exports.setPaddleSpeedRandom = function(d){return "set random paddle speed"};
+exports.setPaddleSpeedRandom = function(d){return "ustaw losową prędkość paletki"};
 
-exports.setPaddleSpeedVerySlow = function(d){return "set very slow paddle speed"};
+exports.setPaddleSpeedVerySlow = function(d){return "ustaw bardzo wolną prędkość paletki"};
 
-exports.setPaddleSpeedSlow = function(d){return "set slow paddle speed"};
+exports.setPaddleSpeedSlow = function(d){return "ustaw wolną prędkość paletki"};
 
-exports.setPaddleSpeedNormal = function(d){return "set normal paddle speed"};
+exports.setPaddleSpeedNormal = function(d){return "ustaw normalną prędkość paletki"};
 
-exports.setPaddleSpeedFast = function(d){return "set fast paddle speed"};
+exports.setPaddleSpeedFast = function(d){return "ustaw szybką prędkość paletki"};
 
-exports.setPaddleSpeedVeryFast = function(d){return "set very fast paddle speed"};
+exports.setPaddleSpeedVeryFast = function(d){return "ustaw bardzo szybką prędkość paletki"};
 
-exports.setPaddleSpeedTooltip = function(d){return "Sets the speed of the paddle"};
+exports.setPaddleSpeedTooltip = function(d){return "Ustawia szybkość paletki"};
 
 exports.share = function(d){return "Share"};
 
@@ -5417,9 +5417,9 @@ exports.whenDown = function(d){return "kiedy strzałka w dół"};
 
 exports.whenDownTooltip = function(d){return "Wykonaj poniższe czynności, gdy wciśnięty jest klawisz strzałki w dół."};
 
-exports.whenGameStarts = function(d){return "when game starts"};
+exports.whenGameStarts = function(d){return "kiedy gra się zacznie"};
 
-exports.whenGameStartsTooltip = function(d){return "Execute the actions below when the game starts."};
+exports.whenGameStartsTooltip = function(d){return "Wykonaj czynności poniżej kiedy gra się zacznie."};
 
 exports.whenLeft = function(d){return "kiedy strzałka w lewo"};
 

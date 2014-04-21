@@ -3483,13 +3483,13 @@ exports.parseElement = function(text) {
 var MessageFormat = require("messageformat");MessageFormat.locale.af=function(n){return n===1?"one":"other"}
 exports.blocklyMessage = function(d){return "Blockly"};
 
-exports.catActions = function(d){return "Actions"};
+exports.catActions = function(d){return "Aksies"};
 
-exports.catColour = function(d){return "Colour"};
+exports.catColour = function(d){return "Kleur"};
 
 exports.catLogic = function(d){return "Logic"};
 
-exports.catLists = function(d){return "Lists"};
+exports.catLists = function(d){return "Lyste"};
 
 exports.catLoops = function(d){return "Loops"};
 
@@ -3497,15 +3497,15 @@ exports.catMath = function(d){return "Math"};
 
 exports.catProcedures = function(d){return "Functions"};
 
-exports.catText = function(d){return "Text"};
+exports.catText = function(d){return "Teks"};
 
 exports.catVariables = function(d){return "Variables"};
 
 exports.codeTooltip = function(d){return "See generated JavaScript code."};
 
-exports.continue = function(d){return "Continue"};
+exports.continue = function(d){return "Gaan voort"};
 
-exports.dialogCancel = function(d){return "Cancel"};
+exports.dialogCancel = function(d){return "Kanselleer"};
 
 exports.dialogOK = function(d){return "OK"};
 
@@ -3527,7 +3527,7 @@ exports.hintTitle = function(d){return "Hint:"};
 
 exports.levelIncompleteError = function(d){return "You are using all of the necessary types of blocks but not in the right way."};
 
-exports.listVariable = function(d){return "list"};
+exports.listVariable = function(d){return "lys"};
 
 exports.makeYourOwnFlappy = function(d){return "Make Your Own Flappy Game"};
 
@@ -3547,7 +3547,7 @@ exports.numLinesOfCodeWritten = function(d){return "You just wrote "+p(d,"numLin
 
 exports.puzzleTitle = function(d){return "Puzzle "+v(d,"puzzle_number")+" of "+v(d,"stage_total")};
 
-exports.resetProgram = function(d){return "Reset"};
+exports.resetProgram = function(d){return "Stel terug"};
 
 exports.runProgram = function(d){return "Run Program"};
 
@@ -3559,7 +3559,7 @@ exports.showGeneratedCode = function(d){return "Show code"};
 
 exports.subtitle = function(d){return "a visual programming environment"};
 
-exports.textVariable = function(d){return "text"};
+exports.textVariable = function(d){return "teks"};
 
 exports.tooFewBlocksMsg = function(d){return "You are using all of the necessary types of blocks, but try using more  of these types of blocks to complete this puzzle."};
 
@@ -3569,13 +3569,13 @@ exports.tooMuchWork = function(d){return "You made me do a lot of work!  Could y
 
 exports.flappySpecificFail = function(d){return "Your code looks good - it will flap with each click. But you need to click many times to flap to the target."};
 
-exports.toolboxHeader = function(d){return "Blocks"};
+exports.toolboxHeader = function(d){return "Blokke"};
 
 exports.openWorkspace = function(d){return "How It Works"};
 
 exports.totalNumLinesOfCodeWritten = function(d){return "All-time total: "+p(d,"numLines",0,"af",{"one":"1 line","other":n(d,"numLines")+" lines"})+" of code."};
 
-exports.tryAgain = function(d){return "Try again"};
+exports.tryAgain = function(d){return "Probeer weer"};
 
 exports.backToPreviousLevel = function(d){return "Back to previous level"};
 
@@ -3589,7 +3589,7 @@ exports.typeHint = function(d){return "Note that the parentheses and semicolons 
 
 exports.workspaceHeader = function(d){return "Assemble your blocks here: "};
 
-exports.infinity = function(d){return "Infinity"};
+exports.infinity = function(d){return "Oneindig"};
 
 exports.rotateText = function(d){return "Rotate your device."};
 

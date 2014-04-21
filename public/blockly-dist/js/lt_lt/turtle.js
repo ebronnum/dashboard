@@ -5695,7 +5695,7 @@ exports.catLogic = function(d){return "Logika"};
 
 exports.catLists = function(d){return "Sąrašai"};
 
-exports.catLoops = function(d){return "Kilpos"};
+exports.catLoops = function(d){return "Ciklai"};
 
 exports.catMath = function(d){return "Matematika"};
 
@@ -5705,7 +5705,7 @@ exports.catText = function(d){return "Tekstas"};
 
 exports.catVariables = function(d){return "Kintamieji"};
 
-exports.codeTooltip = function(d){return "Žr. sukurtas JavaScript kodas."};
+exports.codeTooltip = function(d){return "Žiūrėti sukurtą JavaScript kodą."};
 
 exports.continue = function(d){return "Tęsti"};
 
@@ -5713,99 +5713,99 @@ exports.dialogCancel = function(d){return "Atšaukti"};
 
 exports.dialogOK = function(d){return "gerai"};
 
-exports.emptyBlocksErrorMsg = function(d){return "\"Kartoti\" arba \"If\" blokuoti turi turėti kitų kvartalų viduje ji veikia. Įsitikinkite, kad vidinis blokas tinkamai tinka su bloke."};
+exports.emptyBlocksErrorMsg = function(d){return "„Kartojimo“ arba „Jei“ blokelių viduje reikia įdėti kitus blokelius, kad jie veiktų. Įsitikink, kad jie yra gerai sukibę vienas su kitu."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Tu panaudojai keletą blokų, kurie nėra sujungti su būtinuoju blokeliu."};
 
-exports.finalStage = function(d){return "Sveikinu! Jūs baigėte galutiniame etape."};
+exports.finalStage = function(d){return "Sveikinu! Tu baigei paskutinį etapą."};
 
-exports.finalStageTrophies = function(d){return "Congratulations! You have completed the final stage and won "+p(d,"numTrophies",0,"lt",{"one":"a trophy","other":n(d,"numTrophies")+" trophies"})+"."};
+exports.finalStageTrophies = function(d){return "Sveikinu! Tu užbaigei paskutinį lygį ir laimėjai "+p(d,"numTrophies",0,"lt",{"one":"a trophy","other":n(d,"numTrophies")+" trophies"})+"."};
 
 exports.generatedCodeInfo = function(d){return "Jūsų programa blokus gali taip pat atstovauti JavaScript, pasaulyje labiausiai plačiai naudojama programavimo kalba:"};
 
-exports.hashError = function(d){return "Atsiprašome, '%1' nesutampa su bet kurią įrašytą programą."};
+exports.hashError = function(d){return "Atsiprašome, '%1' nesutampa su jokia įrašyta programa."};
 
 exports.help = function(d){return "pagalba"};
 
 exports.hintTitle = function(d){return "Patarimas:"};
 
-exports.levelIncompleteError = function(d){return "Jūs naudojate visų būtinų tipų blokų, bet ne į teisingą kelią."};
+exports.levelIncompleteError = function(d){return "Tu naudoji visus būtinus blokelius, tačiau netinkamai."};
 
 exports.listVariable = function(d){return "sąrašas"};
 
-exports.makeYourOwnFlappy = function(d){return "Make Your Own Flappy Game"};
+exports.makeYourOwnFlappy = function(d){return "Sukurk savo Flappy žaidimą"};
 
-exports.missingBlocksErrorMsg = function(d){return "Pabandykite atlikti vieną ar daugiau blokų žemiau norint  išspręsti šį galvosūkį."};
+exports.missingBlocksErrorMsg = function(d){return "Išmėgink vieną ar daugiau blokelių, esančių žemiau, kad išspręstum šią užduotį."};
 
-exports.nextLevel = function(d){return "Sveikinu! Jūs baigėte galvosūkį "+v(d,"puzzleNumber")+"."};
+exports.nextLevel = function(d){return "Sveikinu! Tu išsprendei galvosūkį "+v(d,"puzzleNumber")+"."};
 
-exports.nextLevelTrophies = function(d){return "Congratulations! You completed Puzzle "+v(d,"puzzleNumber")+" and won "+p(d,"numTrophies",0,"lt",{"one":"a trophy","other":n(d,"numTrophies")+" trophies"})+"."};
+exports.nextLevelTrophies = function(d){return "Sveikinu! Užbaigėte galvosūkį "+v(d,"puzzleNumber")+" ir laimėjote "+p(d,"numTrophies",0,"lt",{"one":"trofėju","other":n(d,"numTrophies")+" trofėjų"})+"."};
 
 exports.nextStage = function(d){return "Sveikinu! Užbaigėte lygį "+v(d,"stageNumber")+"."};
 
 exports.nextStageTrophies = function(d){return "Congratulations! You completed "+v(d,"stageName")+" and won "+p(d,"numTrophies",0,"lt",{"one":"a trophy","other":n(d,"numTrophies")+" trophies"})+"."};
 
-exports.numBlocksNeeded = function(d){return "Congratulations! You completed Puzzle "+v(d,"puzzleNumber")+". (However, you could have used only "+p(d,"numBlocks",0,"lt",{"one":"1 block","other":n(d,"numBlocks")+" blocks"})+".)"};
+exports.numBlocksNeeded = function(d){return "Sveikinu! Tu išsprendei "+v(d,"puzzleNumber")+" užduotį. (Beje, galėjai panaudoti tik "+p(d,"numBlocks",0,"lt",{"vieną":"1 block","other":n(d,"numBlocks")+" blocks"})+".)"};
 
-exports.numLinesOfCodeWritten = function(d){return "You just wrote "+p(d,"numLines",0,"lt",{"one":"1 line","other":n(d,"numLines")+" lines"})+" of code!"};
+exports.numLinesOfCodeWritten = function(d){return "Tu parašei  "+p(d,"numLines",0,"lt",{"one":"1 line","other":n(d,"numLines")+" lines"})+" kodo!"};
 
-exports.puzzleTitle = function(d){return "Puzzle "+v(d,"puzzle_number")+" of "+v(d,"stage_total")};
+exports.puzzleTitle = function(d){return "Užduotis "+v(d,"puzzle_number")+" iš "+v(d,"stage_total")};
 
-exports.resetProgram = function(d){return "Reset"};
+exports.resetProgram = function(d){return "Iš naujo"};
 
-exports.runProgram = function(d){return "Run Program"};
+exports.runProgram = function(d){return "Paleisti programą"};
 
-exports.runTooltip = function(d){return "Run the program defined by the blocks in the workspace."};
+exports.runTooltip = function(d){return "Paleisk programą, naudodamasis blokeliais."};
 
-exports.showCodeHeader = function(d){return "Show Code"};
+exports.showCodeHeader = function(d){return "Rodyti kodą"};
 
-exports.showGeneratedCode = function(d){return "Show code"};
+exports.showGeneratedCode = function(d){return "Rodyti kodą"};
 
-exports.subtitle = function(d){return "a visual programming environment"};
+exports.subtitle = function(d){return "Vizuali programavimo aplinka"};
 
-exports.textVariable = function(d){return "text"};
+exports.textVariable = function(d){return "tekstas"};
 
-exports.tooFewBlocksMsg = function(d){return "You are using all of the necessary types of blocks, but try using more  of these types of blocks to complete this puzzle."};
+exports.tooFewBlocksMsg = function(d){return "Tu panaudojai visus būtinus blokus, tačiau kad išspręstum šią užduotį, jų reikia panaudoti daugiau."};
 
-exports.tooManyBlocksMsg = function(d){return "This puzzle can be solved with <x id='START_SPAN'/><x id='END_SPAN'/> blocks."};
+exports.tooManyBlocksMsg = function(d){return "Ši užduotis gali būti išspręsta su <x id='START_SPAN'/><x id='END_SPAN'/> blokais."};
 
-exports.tooMuchWork = function(d){return "You made me do a lot of work!  Could you try repeating fewer times?"};
+exports.tooMuchWork = function(d){return "Tu privertei mane tiek daug dirbti! Ar galėtum atlikti užduotį su mažiau kartojimų?"};
 
-exports.flappySpecificFail = function(d){return "Your code looks good - it will flap with each click. But you need to click many times to flap to the target."};
+exports.flappySpecificFail = function(d){return "Tavo kodas atrodo gerai - jis plasnos su kiekvienu paspaudimu. Tačiau tau reikia nuspausti daug kartų, kad jis nuplasnotų į tikslą."};
 
-exports.toolboxHeader = function(d){return "Blocks"};
+exports.toolboxHeader = function(d){return "Blokeliai"};
 
-exports.openWorkspace = function(d){return "How It Works"};
+exports.openWorkspace = function(d){return "Kaip tai veikia"};
 
-exports.totalNumLinesOfCodeWritten = function(d){return "All-time total: "+p(d,"numLines",0,"lt",{"one":"1 line","other":n(d,"numLines")+" lines"})+" of code."};
+exports.totalNumLinesOfCodeWritten = function(d){return "Iš viso: "+p(d,"numLines",0,"lt",{"one":"1 line","other":n(d,"numLines")+" lines"})+" kodo."};
 
-exports.tryAgain = function(d){return "Try again"};
+exports.tryAgain = function(d){return "Pabandyk dar kartą"};
 
-exports.backToPreviousLevel = function(d){return "Back to previous level"};
+exports.backToPreviousLevel = function(d){return "Grįžti į ankstesnį lygį"};
 
 exports.saveToGallery = function(d){return "Save to your gallery"};
 
-exports.typeCode = function(d){return "Type your JavaScript code below these instructions."};
+exports.typeCode = function(d){return "Įvesk savo JavaScript kodą žemiau šių instrukcijų."};
 
-exports.typeFuncs = function(d){return "Available functions:%1"};
+exports.typeFuncs = function(d){return "Galimos funkcijos:%1"};
 
-exports.typeHint = function(d){return "Note that the parentheses and semicolons are required."};
+exports.typeHint = function(d){return "Įsidėmėk, kad skliausteliai ir kabliataškiai yra būtini."};
 
-exports.workspaceHeader = function(d){return "Assemble your blocks here: "};
+exports.workspaceHeader = function(d){return "Sudėliok savo blokelius čia: "};
 
-exports.infinity = function(d){return "Infinity"};
+exports.infinity = function(d){return "Begalybė"};
 
-exports.rotateText = function(d){return "Rotate your device."};
+exports.rotateText = function(d){return "Pasuk savo įrenginį."};
 
-exports.orientationLock = function(d){return "Turn off orientation lock in device settings."};
+exports.orientationLock = function(d){return "Išjunk savo įrenginio ekrano pasukimą."};
 
-exports.wantToLearn = function(d){return "Want to learn to code?"};
+exports.wantToLearn = function(d){return "Nori išmokti programuoti?"};
 
-exports.watchVideo = function(d){return "Watch the Video"};
+exports.watchVideo = function(d){return "Peržiūrėk šį vaizdo įrašą"};
 
-exports.tryHOC = function(d){return "Try the Hour of Code"};
+exports.tryHOC = function(d){return "Išmėgink Vienos Valandos Kodą"};
 
-exports.signup = function(d){return "Sign up for the intro course"};
+exports.signup = function(d){return "Užsiregistruok į kursą pradedantiesiems"};
 
 exports.hintHeader = function(d){return "Here's a tip:"};
 
@@ -5821,99 +5821,99 @@ var MessageFormat = require("messageformat");MessageFormat.locale.lt = function 
   }
   return 'other';
 };
-exports.blocksUsed = function(d){return "Blocks used: %1"};
+exports.blocksUsed = function(d){return "Panaudota blokelių: %1"};
 
-exports.catColour = function(d){return "Color"};
+exports.catColour = function(d){return "Spalva"};
 
-exports.catControl = function(d){return "Loops"};
+exports.catControl = function(d){return "Ciklai"};
 
-exports.catMath = function(d){return "Math"};
+exports.catMath = function(d){return "Matematika"};
 
-exports.catProcedures = function(d){return "Functions"};
+exports.catProcedures = function(d){return "Funkcijos"};
 
-exports.catTurtle = function(d){return "Actions"};
+exports.catTurtle = function(d){return "Veiksmai"};
 
-exports.catVariables = function(d){return "Variables"};
+exports.catVariables = function(d){return "Kintamieji"};
 
-exports.catLogic = function(d){return "Logic"};
+exports.catLogic = function(d){return "Logika"};
 
-exports.colourTooltip = function(d){return "Changes the color of the pencil."};
+exports.colourTooltip = function(d){return "Pakeičia pieštuko spalvą."};
 
-exports.degrees = function(d){return "degrees"};
+exports.degrees = function(d){return "laipsniai"};
 
-exports.dots = function(d){return "pixels"};
+exports.dots = function(d){return "pikselių"};
 
-exports.drawASquare = function(d){return "draw a square"};
+exports.drawASquare = function(d){return "nubrėžk kvadratą"};
 
-exports.drawATriangle = function(d){return "draw a triangle"};
+exports.drawATriangle = function(d){return "nubrėžk trikampį"};
 
-exports.drawACircle = function(d){return "draw a circle"};
+exports.drawACircle = function(d){return "nubrėžk apskritimą"};
 
-exports.drawAHouse = function(d){return "draw a house"};
+exports.drawAHouse = function(d){return "nupiešk namą"};
 
-exports.drawATree = function(d){return "draw a tree"};
+exports.drawATree = function(d){return "nupiešk medį"};
 
-exports.drawASnowman = function(d){return "draw a snowman"};
+exports.drawASnowman = function(d){return "nupiešk sniego senį"};
 
-exports.heightParameter = function(d){return "height"};
+exports.heightParameter = function(d){return "aukštis"};
 
-exports.hideTurtle = function(d){return "hide artist"};
+exports.hideTurtle = function(d){return "slėpti menininką"};
 
-exports.jumpBackward = function(d){return "jump backward by"};
+exports.jumpBackward = function(d){return "peršok atgal per"};
 
-exports.jumpForward = function(d){return "jump forward by"};
+exports.jumpForward = function(d){return "peršok į priekį per"};
 
-exports.jumpTooltip = function(d){return "Moves the artist without leaving any marks."};
+exports.jumpTooltip = function(d){return "Pajudina menininką jam nieko nepiešiant."};
 
-exports.lengthParameter = function(d){return "length"};
+exports.lengthParameter = function(d){return "ilgis"};
 
-exports.loopVariable = function(d){return "counter"};
+exports.loopVariable = function(d){return "skaitiklis"};
 
-exports.moveBackward = function(d){return "move backward by"};
+exports.moveBackward = function(d){return "judėk atgal per"};
 
-exports.moveForward = function(d){return "move forward by"};
+exports.moveForward = function(d){return "judėk į priekį per"};
 
-exports.moveForwardTooltip = function(d){return "Moves the artist forward."};
+exports.moveForwardTooltip = function(d){return "Pajudina menininką į priekį."};
 
-exports.moveTooltip = function(d){return "Moves the artist forward or backward by the specified amount."};
+exports.moveTooltip = function(d){return "Pajudina menininką į priekį arba atgal per nustatytą atstumą."};
 
-exports.notBlackColour = function(d){return "You need to set a color other than black for this puzzle."};
+exports.notBlackColour = function(d){return "Šios užduoties atlikimui reikia pasirinkti bet kurią spalvą, išskyrus juodą."};
 
-exports.numBlocksNeeded = function(d){return "This puzzle can be solved with %1 blocks.  You used %2."};
+exports.numBlocksNeeded = function(d){return "Ši užduotis yra išsprendžiama su %1 blokais. Tu panaudojai %2."};
 
-exports.penDown = function(d){return "pencil down"};
+exports.penDown = function(d){return "nuleisk pieštuką"};
 
-exports.penTooltip = function(d){return "Lifts or lowers the pencil, to start or stop drawing."};
+exports.penTooltip = function(d){return "Pakelia arba nuleidžia pieštuką, kad pradėtų arba sustotų piešti."};
 
-exports.penUp = function(d){return "pencil up"};
+exports.penUp = function(d){return "pakelk pieštuką"};
 
-exports.reinfFeedbackMsg = function(d){return "Does this look like what you want? You can press the \"Try again\" button to see your drawing."};
+exports.reinfFeedbackMsg = function(d){return "Ar tai atrodo taip, kaip norėjai? Gali nuspausti mygtuką „Pamėginti iš naujo“, kad pamatytum savo piešinį."};
 
-exports.setColour = function(d){return "set color"};
+exports.setColour = function(d){return "nustatyk spalvą"};
 
-exports.setWidth = function(d){return "set width"};
+exports.setWidth = function(d){return "nustatyk plotį"};
 
-exports.shareDrawing = function(d){return "Share your drawing:"};
+exports.shareDrawing = function(d){return "Pasidalink savo piešiniu:"};
 
-exports.showMe = function(d){return "Show me"};
+exports.showMe = function(d){return "Parodyk man"};
 
-exports.showTurtle = function(d){return "show artist"};
+exports.showTurtle = function(d){return "rodyti menininką"};
 
-exports.tooFewColours = function(d){return "You need to use at least %1 different colors for this puzzle.  You used only %2."};
+exports.tooFewColours = function(d){return "Reikia panaudoti bent %1 skirtingas spalvas šiai užduočiai atlikti. Tu panaudojai tik %2."};
 
-exports.turnLeft = function(d){return "turn left by"};
+exports.turnLeft = function(d){return "pasisuk į kairę per"};
 
-exports.turnRight = function(d){return "turn right by"};
+exports.turnRight = function(d){return "pasisuk į dešinę per"};
 
-exports.turnRightTooltip = function(d){return "Turns the artist right by the specified angle."};
+exports.turnRightTooltip = function(d){return "Pasuka menininką į dešinę pasirinktu kampu."};
 
-exports.turnTooltip = function(d){return "Turns the artist left or right by the specified number of degrees."};
+exports.turnTooltip = function(d){return "Pasuka menininką į kairę pasirinktu kampu laipsniais."};
 
-exports.turtleVisibilityTooltip = function(d){return "Makes the artist visible or invisible."};
+exports.turtleVisibilityTooltip = function(d){return "Padaro menininką matomą arba nematomą."};
 
-exports.widthTooltip = function(d){return "Changes the width of the pencil."};
+exports.widthTooltip = function(d){return "Pakeičia pieštuko plotį."};
 
-exports.wrongColour = function(d){return "Your picture is the wrong color.  For this puzzle, it needs to be %1."};
+exports.wrongColour = function(d){return "Tavo piešinys yra ne tokios spalvos. Šiai užduočiai atlikti, ji turi būti %1."};
 
 
 },{"messageformat":48}],37:[function(require,module,exports){

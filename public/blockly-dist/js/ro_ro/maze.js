@@ -7172,13 +7172,13 @@ exports.dialogCancel = function(d){return "Revocare"};
 
 exports.dialogOK = function(d){return "OK"};
 
-exports.emptyBlocksErrorMsg = function(d){return "Blocul \"Repeat\" sau \"Dacă\" necesită alte blocuri în interiorul său  pentru a putea funcționa. Asigură-te că blocul interior se încadrează corect în blocul care îl conține."};
+exports.emptyBlocksErrorMsg = function(d){return "Blocul \"Repetă\" sau \"Dacă\" trebuie să aibe alte blocuri în interiorul său  pentru a putea funcționa. Asigură-te că blocul interior se încadrează corect în blocul care îl conține."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Ai blocuri suplimentare care nu sunt ataşate la un bloc de eveniment."};
 
 exports.finalStage = function(d){return "Felicitări! Ai terminat ultima etapă."};
 
-exports.finalStageTrophies = function(d){return "Felicitări! Ai terminat etapa finală şi ai câştigat "+p(d,"numTrophies",0,"ro",{"one":"un trofeu","other":n(d,"numTrophies")+" trofee"})+"."};
+exports.finalStageTrophies = function(d){return "Congratulations! You have completed the final stage and won "+p(d,"numTrophies",0,"ro",{"one":"a trophy","other":n(d,"numTrophies")+" trophies"})+"."};
 
 exports.generatedCodeInfo = function(d){return "Blocurile pentru programul tău pot fi, de asemenea, reprezentate în JavaScript, unul dintre cele mai utilizate limbaje de programare:"};
 
@@ -7188,25 +7188,25 @@ exports.help = function(d){return "Ajutor"};
 
 exports.hintTitle = function(d){return "Sugestie:"};
 
-exports.levelIncompleteError = function(d){return "Utilizati toate tipurile de blocuri necesare, dar nu așa cum trebuie."};
+exports.levelIncompleteError = function(d){return "Utilizezi toate tipurile de blocuri necesare, dar nu așa cum trebuie."};
 
 exports.listVariable = function(d){return "listă"};
 
-exports.makeYourOwnFlappy = function(d){return "Face propriul tău joc Flappy"};
+exports.makeYourOwnFlappy = function(d){return "Crează-ți propriul tău joc Flappy"};
 
-exports.missingBlocksErrorMsg = function(d){return "Încercaţi unul sau mai multe blocuri de mai jos pentru a rezolva acest puzzle."};
+exports.missingBlocksErrorMsg = function(d){return "Încearcă unul sau mai multe blocuri de mai jos pentru a rezolva acest puzzle."};
 
 exports.nextLevel = function(d){return "Felicitări! Ai terminat Puzzle-ul "+v(d,"puzzleNumber")+"."};
 
-exports.nextLevelTrophies = function(d){return "Felicitări! Ai terminat Puzzle-ul "+v(d,"puzzleNumber")+" și ai câștigat "+p(d,"numTrophies",0,"ro",{"one":"un trofeu","other":n(d,"numTrophies")+" trofee"})+"."};
+exports.nextLevelTrophies = function(d){return "Congratulations! You completed Puzzle "+v(d,"puzzleNumber")+" and won "+p(d,"numTrophies",0,"ro",{"one":"a trophy","other":n(d,"numTrophies")+" trophies"})+"."};
 
 exports.nextStage = function(d){return "Felicitări! Ai completat etapa "+v(d,"stageNumber")+"."};
 
 exports.nextStageTrophies = function(d){return "Felicitări! Ai finalizat etapa "+v(d,"stageNumber")+" și ai câștigat "+p(d,"numTrophies",0,"ro",{"one":"un trofeu","other":n(d,"numTrophies")+" trofee"})+"."};
 
-exports.numBlocksNeeded = function(d){return "Felicităr! Ai terminat Puzzle-ul "+v(d,"puzzleNumber")+". (Însă, ai fi putut folosi doar "+p(d,"numBlocks",0,"ro",{"one":"1 bloc","other":n(d,"numBlocks")+" blocuri"})+".)"};
+exports.numBlocksNeeded = function(d){return "Congratulations! You completed Puzzle "+v(d,"puzzleNumber")+". (However, you could have used only "+p(d,"numBlocks",0,"ro",{"one":"1 block","other":n(d,"numBlocks")+" blocks"})+".)"};
 
-exports.numLinesOfCodeWritten = function(d){return "Ai scris doar "+p(d,"numLines",0,"ro",{"one":"1 linie","other":"linii "+n(d,"numLines")})+" de cod!"};
+exports.numLinesOfCodeWritten = function(d){return "You just wrote "+p(d,"numLines",0,"ro",{"one":"1 line","other":n(d,"numLines")+" lines"})+" of code!"};
 
 exports.puzzleTitle = function(d){return "Puzzle "+v(d,"puzzle_number")+" din "+v(d,"stage_total")};
 
@@ -7224,19 +7224,19 @@ exports.subtitle = function(d){return "un mediu de programare vizual"};
 
 exports.textVariable = function(d){return "text"};
 
-exports.tooFewBlocksMsg = function(d){return "Folosești toate tipurile necesare de blocuri, dar încearcă să folosești mai multe din aceste blocuri să completezi puzzle-ul."};
+exports.tooFewBlocksMsg = function(d){return "Folosești toate tipurile necesare de blocuri, dar încearcă să utilizezi mai multe din aceste tipuri de blocuri pentru a completa puzzle-ul."};
 
-exports.tooManyBlocksMsg = function(d){return "Acest puzzle poate fi rezolvat cu blocuri <x id='START_SPAN'/> <x id='END_SPAN'/>."};
+exports.tooManyBlocksMsg = function(d){return "Acest puzzle poate fi rezolvat cu blocuri <x id='START_SPAN'/><x id='END_SPAN'/>."};
 
 exports.tooMuchWork = function(d){return "M-ai făcut să lucrez foarte mult! Ai putea să încerci să repeți de mai puține ori?"};
 
-exports.flappySpecificFail = function(d){return "Codul tău arata bine - va zbura cu fiecare clic. Dar ai nevoie să faceţi clic de mai multe ori ca să zboare la target."};
+exports.flappySpecificFail = function(d){return "Codul tău arată bine - va zbura cu fiecare clic. Dar ai nevoie să faci clic de mai multe ori ca să zboare la țintă."};
 
 exports.toolboxHeader = function(d){return "Blocuri"};
 
 exports.openWorkspace = function(d){return "Cum funcţionează"};
 
-exports.totalNumLinesOfCodeWritten = function(d){return "Totalul all-time: "+p(d,"numLines",0,"ro",{"one":"1 linie","other":n(d,"numLines")+" linii"})+" de cod."};
+exports.totalNumLinesOfCodeWritten = function(d){return "All-time total: "+p(d,"numLines",0,"ro",{"one":"1 line","other":n(d,"numLines")+" lines"})+" of code."};
 
 exports.tryAgain = function(d){return "Încearcă din nou"};
 
@@ -7258,13 +7258,13 @@ exports.rotateText = function(d){return "Rotește dispozitivul tău."};
 
 exports.orientationLock = function(d){return "Oprește blocarea de orientare în setările dispozitivului."};
 
-exports.wantToLearn = function(d){return "Vrei sa inveti sa codezi?"};
+exports.wantToLearn = function(d){return "Vrei să înveți să codezi?"};
 
-exports.watchVideo = function(d){return "Urmareste clipul video"};
+exports.watchVideo = function(d){return "Urmărește clipul video"};
 
-exports.tryHOC = function(d){return "Incearca Ora de Codare"};
+exports.tryHOC = function(d){return "Încearcă Ora de Cod"};
 
-exports.signup = function(d){return "Inscrie-te pentru cursul introductiv"};
+exports.signup = function(d){return "Înscrie-te la cursul introductiv"};
 
 exports.hintHeader = function(d){return "Here's a tip:"};
 

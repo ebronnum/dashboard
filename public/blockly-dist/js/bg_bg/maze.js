@@ -7163,9 +7163,9 @@ exports.dialogCancel = function(d){return "Отказ"};
 
 exports.dialogOK = function(d){return "OK"};
 
-exports.emptyBlocksErrorMsg = function(d){return "Блоковете \"Repeat\" и \"If\" трябва да съдържат други блокове в себе си, за да работят. Уверете се, че вътрешния блок се вписва правилно във външния блок."};
+exports.emptyBlocksErrorMsg = function(d){return "Блоковете \"Повтори\" и \"или\" трябва да съдържат други блокове в себе си, за да работят. Уверете се, че вътрешния блок се вписва правилно във външния блок."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Имате допълнителни блокчета, които не са били използвани в блока за програмиране."};
 
 exports.finalStage = function(d){return "Поздравления! Вие завършихте последния етап."};
 
@@ -7203,7 +7203,7 @@ exports.puzzleTitle = function(d){return "Пъзел "+v(d,"puzzle_number")+" о
 
 exports.resetProgram = function(d){return "Възстановяване"};
 
-exports.runProgram = function(d){return "Пусни програмата"};
+exports.runProgram = function(d){return "Стартиране на програмата"};
 
 exports.runTooltip = function(d){return "Пусни програмата, определена от блоковете в работното поле."};
 
@@ -7229,7 +7229,7 @@ exports.openWorkspace = function(d){return "Как работи"};
 
 exports.totalNumLinesOfCodeWritten = function(d){return "Общо: "+p(d,"numLines",0,"bg",{"one":"1 ред","other":n(d,"numLines")+" реда"})+" код."};
 
-exports.tryAgain = function(d){return "Опитайте пак"};
+exports.tryAgain = function(d){return "Опитайте отново"};
 
 exports.backToPreviousLevel = function(d){return "Обратно към предишното ниво"};
 
@@ -7268,7 +7268,7 @@ exports.continue = function(d){return "продължи"};
 
 exports.dig = function(d){return "премахни 1"};
 
-exports.digTooltip = function(d){return "премахни 1 куп земя"};
+exports.digTooltip = function(d){return "премахни 1 купчинка земя"};
 
 exports.dirE = function(d){return "И"};
 
@@ -7290,7 +7290,7 @@ exports.fillStack = function(d){return "Попълнете "+v(d,"shovelfuls")+"
 
 exports.fillSquare = function(d){return "запълни квадрата"};
 
-exports.fillTooltip = function(d){return "постави 1 купчина пръст"};
+exports.fillTooltip = function(d){return "запълни с 1 купчинка пръст"};
 
 exports.finalLevel = function(d){return "Поздравления! Вие решихте последния пъзел."};
 
@@ -7316,13 +7316,13 @@ exports.no = function(d){return "Не"};
 
 exports.noPathAhead = function(d){return "пътя напред е блокиран"};
 
-exports.noPathLeft = function(d){return "няма път на ляво"};
+exports.noPathLeft = function(d){return "няма път наляво"};
 
-exports.noPathRight = function(d){return "няма път на дясно"};
+exports.noPathRight = function(d){return "няма път надясно"};
 
 exports.numBlocksNeeded = function(d){return "Този пъзел може да бъде решен с %1 блока."};
 
-exports.oneTopBlock = function(d){return "За този пъзел, трябва да съедините заедно всички блокове в бялото работно поле."};
+exports.oneTopBlock = function(d){return "За този пъзел, трябва да съединиш заедно всички блокове в бялото работно поле."};
 
 exports.pathAhead = function(d){return "път напред"};
 
@@ -7344,11 +7344,11 @@ exports.removeStack = function(d){return "премахни натрупанит�
 
 exports.removeSquare = function(d){return "премахни квадрата"};
 
-exports.repeatUntil = function(d){return "повтаряй докато не стане"};
+exports.repeatUntil = function(d){return "повтаряй докато"};
 
 exports.repeatUntilBlocked = function(d){return "докато има място напред"};
 
-exports.repeatUntilFinish = function(d){return "повтаряй докато не приключиш"};
+exports.repeatUntilFinish = function(d){return "повтаряй докато приключиш"};
 
 exports.turnLeft = function(d){return "завий наляво"};
 
@@ -7358,7 +7358,7 @@ exports.turnTooltip = function(d){return "Обръща ме наляво или 
 
 exports.while = function(d){return "докато"};
 
-exports.whileTooltip = function(d){return "Повтори заградените в блока действия, докато целта не бъде достигната."};
+exports.whileTooltip = function(d){return "Повтаря поставените в блока действия, докато целта не бъде достигната."};
 
 exports.yes = function(d){return "Да"};
 

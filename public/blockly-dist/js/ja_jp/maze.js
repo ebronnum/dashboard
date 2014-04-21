@@ -7135,7 +7135,7 @@ exports.parseElement = function(text) {
 
 },{}],40:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.ja=function(n){return "other"}
-exports.blocklyMessage = function(d){return "ブロックリー"};
+exports.blocklyMessage = function(d){return "ブロック状の"};
 
 exports.catActions = function(d){return "操作"};
 
@@ -7147,7 +7147,7 @@ exports.catLists = function(d){return "リスト"};
 
 exports.catLoops = function(d){return "繰り返し"};
 
-exports.catMath = function(d){return "計算"};
+exports.catMath = function(d){return "数値"};
 
 exports.catProcedures = function(d){return "関数"};
 
@@ -7165,7 +7165,7 @@ exports.dialogOK = function(d){return "OK"};
 
 exports.emptyBlocksErrorMsg = function(d){return "”Repeat”または\"If\"のブロックを動作をさせるためには内側に別のブロックが必要になります。内側のブロックが構成されているブロック 内に適切にはめ込まれているか確認をしてください。\n\n\n"};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "イベントブロックに付いていない余分なブロックがあります。"};
 
 exports.finalStage = function(d){return "おめでとうございます ！最終ステージをクリアしました。"};
 
@@ -7262,13 +7262,13 @@ exports.hintHeader = function(d){return "Here's a tip:"};
 
 },{"messageformat":53}],41:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.ja=function(n){return "other"}
-exports.avoidCowAndRemove = function(d){return "牛を回避し、1 を削除します。"};
+exports.avoidCowAndRemove = function(d){return "牛を回避し、1 つ取り除く"};
 
 exports.continue = function(d){return "続行"};
 
-exports.dig = function(d){return "1つ削除します。"};
+exports.dig = function(d){return "1つ取り除く"};
 
-exports.digTooltip = function(d){return "泥を1つ取り除きます。"};
+exports.digTooltip = function(d){return "泥を1つ取り除く"};
 
 exports.dirE = function(d){return "東"};
 
@@ -7282,11 +7282,11 @@ exports.doCode = function(d){return "する"};
 
 exports.elseCode = function(d){return "そうでなければ"};
 
-exports.fill = function(d){return "1つ埋めます。"};
+exports.fill = function(d){return "1つ埋める"};
 
-exports.fillN = function(d){return "埋める "+v(d,"shovelfuls")};
+exports.fillN = function(d){return " "+v(d,"shovelfuls")+"個、埋める"};
 
-exports.fillStack = function(d){return v(d,"shovelfuls")+" この穴を埋める"};
+exports.fillStack = function(d){return v(d,"shovelfuls")+" 個の穴を埋める"};
 
 exports.fillSquare = function(d){return "四角を塗りつぶす"};
 
@@ -7300,9 +7300,9 @@ exports.holePresent = function(d){return "穴があります。"};
 
 exports.ifCode = function(d){return "もし"};
 
-exports.ifPathAhead = function(d){return "もし先にパスがあれば"};
+exports.ifPathAhead = function(d){return "もし先に道があれば"};
 
-exports.ifTooltip = function(d){return "指定した方向にパスがある場合は、いくつかのアクションを行います。"};
+exports.ifTooltip = function(d){return "指定した方向に道がある場合は、いくつかのアクションを行います。"};
 
 exports.ifelseTooltip = function(d){return "指定した方向にパスがある場合は、最初のブロックにアクションを行います。それ以外の場合は、2 番目のブロックにアクションを行います。"};
 
@@ -7346,7 +7346,7 @@ exports.removeSquare = function(d){return "正方形を削除します。"};
 
 exports.repeatUntil = function(d){return "までを繰り返します"};
 
-exports.repeatUntilBlocked = function(d){return "前に道があるとき"};
+exports.repeatUntilBlocked = function(d){return "前に道がある間"};
 
 exports.repeatUntilFinish = function(d){return "完了するまで繰り返し行います"};
 
@@ -7356,7 +7356,7 @@ exports.turnRight = function(d){return "右に回転"};
 
 exports.turnTooltip = function(d){return "私を左もしくは右に90 度曲がらせてください。"};
 
-exports.while = function(d){return "しばらくの間"};
+exports.while = function(d){return "以下の間"};
 
 exports.whileTooltip = function(d){return "終点に到着するまで、封じられた行動を繰り返してください"};
 

@@ -7163,11 +7163,11 @@ exports.dialogCancel = function(d){return "لغو"};
 
 exports.dialogOK = function(d){return "Ok"};
 
-exports.emptyBlocksErrorMsg = function(d){return "بلوک‌های \"تکرار\" یا \"اگر\" برای کار کردن باید بلوک‌های دیگری در داخلشان باشد. اطمینان حاصل کنید که بلوک داخلی در جای درستی از بلوک اصلی قرار گرفته باشد."};
+exports.emptyBlocksErrorMsg = function(d){return "بلوک های \"تکرار\" (Repeat) یا \"شرطی\" (If)  برای کار کردن، نیاز به بلوکهای دیگری در داخل خود دارند. مطمئن شوید که بلوک داخلی، به درستی درون بلوک اصلی قرار گرفته است."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "شما بلوک های اضافه ای دارید که به یک بلوک رویداد متصل نیست."};
 
-exports.finalStage = function(d){return "تبریک می‌گوییم! شما مرحله‌ی آخر را به پایان رساندید."};
+exports.finalStage = function(d){return "تبریک می‌گوییم! شما مرحله‌ی نهایی را به پایان رساندید."};
 
 exports.finalStageTrophies = function(d){return "تبریک می‌گوییم! شما مرحله‌ی آخر را به پایان رساندید و برنده‌ی "+p(d,"numTrophies",0,"fa",{"one":"یک جایزه","other":n(d,"numTrophies")+" جایزه"})+" شدید."};
 
@@ -7255,7 +7255,7 @@ exports.watchVideo = function(d){return "ویدیو را ببینید"};
 
 exports.tryHOC = function(d){return "ساعتِ کد نویسی را امتحان کنید"};
 
-exports.signup = function(d){return "برای دوره‌ی معرفی نام نویسی کنید"};
+exports.signup = function(d){return "برای دوره‌ی مقدماتی نام نویسی کنید"};
 
 exports.hintHeader = function(d){return "Here's a tip:"};
 
@@ -7298,7 +7298,7 @@ exports.heightParameter = function(d){return "ارتفاع"};
 
 exports.holePresent = function(d){return "یک سوراخ وجود دارد"};
 
-exports.ifCode = function(d){return "if"};
+exports.ifCode = function(d){return "اگر"};
 
 exports.ifPathAhead = function(d){return "اگر مسیر پیش رو است"};
 

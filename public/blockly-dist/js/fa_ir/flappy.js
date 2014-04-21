@@ -4728,11 +4728,11 @@ exports.dialogCancel = function(d){return "لغو"};
 
 exports.dialogOK = function(d){return "Ok"};
 
-exports.emptyBlocksErrorMsg = function(d){return "بلوک‌های \"تکرار\" یا \"اگر\" برای کار کردن باید بلوک‌های دیگری در داخلشان باشد. اطمینان حاصل کنید که بلوک داخلی در جای درستی از بلوک اصلی قرار گرفته باشد."};
+exports.emptyBlocksErrorMsg = function(d){return "بلوک های \"تکرار\" (Repeat) یا \"شرطی\" (If)  برای کار کردن، نیاز به بلوکهای دیگری در داخل خود دارند. مطمئن شوید که بلوک داخلی، به درستی درون بلوک اصلی قرار گرفته است."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "شما بلوک های اضافه ای دارید که به یک بلوک رویداد متصل نیست."};
 
-exports.finalStage = function(d){return "تبریک می‌گوییم! شما مرحله‌ی آخر را به پایان رساندید."};
+exports.finalStage = function(d){return "تبریک می‌گوییم! شما مرحله‌ی نهایی را به پایان رساندید."};
 
 exports.finalStageTrophies = function(d){return "تبریک می‌گوییم! شما مرحله‌ی آخر را به پایان رساندید و برنده‌ی "+p(d,"numTrophies",0,"fa",{"one":"یک جایزه","other":n(d,"numTrophies")+" جایزه"})+" شدید."};
 
@@ -4820,7 +4820,7 @@ exports.watchVideo = function(d){return "ویدیو را ببینید"};
 
 exports.tryHOC = function(d){return "ساعتِ کد نویسی را امتحان کنید"};
 
-exports.signup = function(d){return "برای دوره‌ی معرفی نام نویسی کنید"};
+exports.signup = function(d){return "برای دوره‌ی مقدماتی نام نویسی کنید"};
 
 exports.hintHeader = function(d){return "Here's a tip:"};
 
@@ -4829,103 +4829,103 @@ exports.hintHeader = function(d){return "Here's a tip:"};
 var MessageFormat = require("messageformat");MessageFormat.locale.fa=function(n){return "other"}
 exports.continue = function(d){return "ادامه"};
 
-exports.doCode = function(d){return "انجام بده"};
+exports.doCode = function(d){return "انجام"};
 
-exports.elseCode = function(d){return "\"else\""};
+exports.elseCode = function(d){return "دیگر"};
 
-exports.endGame = function(d){return "end game"};
+exports.endGame = function(d){return "پایان بازی"};
 
-exports.endGameTooltip = function(d){return "Ends the game."};
+exports.endGameTooltip = function(d){return "بازی تمام شد."};
 
-exports.finalLevel = function(d){return "تبریک میگویم! شما پازل نهایی را حل کردید."};
+exports.finalLevel = function(d){return "تبریک! شما پازل نهایی را حل کردید."};
 
-exports.flap = function(d){return "flap"};
+exports.flap = function(d){return "ریختن"};
 
-exports.flapRandom = function(d){return "flap a random amount"};
+exports.flapRandom = function(d){return "ریختن یک مقدار تصادفی"};
 
-exports.flapVerySmall = function(d){return "flap a very small amount"};
+exports.flapVerySmall = function(d){return "ریختن یک مقدار خیلی کوچک"};
 
-exports.flapSmall = function(d){return "flap a small amount"};
+exports.flapSmall = function(d){return "ریختن یک مقدار کوچک"};
 
-exports.flapNormal = function(d){return "flap a normal amount"};
+exports.flapNormal = function(d){return "ریختن یک مقدار متوسط"};
 
-exports.flapLarge = function(d){return "flap a large amount"};
+exports.flapLarge = function(d){return "ریختن یک مقدار بزرگ"};
 
-exports.flapVeryLarge = function(d){return "flap a very large amount"};
+exports.flapVeryLarge = function(d){return "ریختن یک مقدار خیلی بزرگ"};
 
-exports.flapTooltip = function(d){return "Fly Flappy upwards."};
+exports.flapTooltip = function(d){return "پرواز به سمت بالا."};
 
-exports.incrementPlayerScore = function(d){return "increment player score"};
+exports.incrementPlayerScore = function(d){return "نمره یک نقطه"};
 
-exports.incrementPlayerScoreTooltip = function(d){return "Add one to the current player score."};
+exports.incrementPlayerScoreTooltip = function(d){return "یکی به نمره بازیکن فعلی اضافه کنید."};
 
-exports.nextLevel = function(d){return "تبریک! شما این مرحله را انجام دادید."};
+exports.nextLevel = function(d){return "تبریک! شما این پازل را به اتمام رساندید."};
 
 exports.no = function(d){return "نه"};
 
-exports.numBlocksNeeded = function(d){return "این پازل می تواند با 1% از بلوکها حل شود."};
+exports.numBlocksNeeded = function(d){return "این پازل می تواند با %1 از بلوکها حل شود."};
 
 exports.oneTopBlock = function(d){return "برای این پازل شما نیاز دارید که همه بلوکها را در یک صفحه کاری سفید جمع کنید."};
 
-exports.playSoundRandom = function(d){return "play random sound"};
+exports.playSoundRandom = function(d){return "پخش صدای تصادفی"};
 
-exports.playSoundBounce = function(d){return "play bounce sound"};
+exports.playSoundBounce = function(d){return "پخش صدای زاخار"};
 
-exports.playSoundCrunch = function(d){return "play crunch sound"};
+exports.playSoundCrunch = function(d){return "پخش صدای خرد شدند"};
 
-exports.playSoundDie = function(d){return "play sad sound"};
+exports.playSoundDie = function(d){return "پخش صدای غمگین"};
 
-exports.playSoundHit = function(d){return "play smash sound"};
+exports.playSoundHit = function(d){return "پخش صدای به تصادم"};
 
-exports.playSoundPoint = function(d){return "play point sound"};
+exports.playSoundPoint = function(d){return "پخش صدای نقطه"};
 
-exports.playSoundSwoosh = function(d){return "play swoosh sound"};
+exports.playSoundSwoosh = function(d){return "پخش صدای خش خش"};
 
-exports.playSoundWing = function(d){return "play wing sound"};
+exports.playSoundWing = function(d){return "پخش صدای بال زدن"};
 
-exports.playSoundJet = function(d){return "play jet sound"};
+exports.playSoundJet = function(d){return "پخش صدای جت"};
 
-exports.playSoundCrash = function(d){return "play crash sound"};
+exports.playSoundCrash = function(d){return "پخش صدای تصادف"};
 
-exports.playSoundJingle = function(d){return "play jingle sound"};
+exports.playSoundJingle = function(d){return "پخش صدای جرنگ جرنگ"};
 
-exports.playSoundSplash = function(d){return "play splash sound"};
+exports.playSoundSplash = function(d){return "پخش صدای چلپ چلوپ"};
 
-exports.playSoundLaser = function(d){return "play laser sound"};
+exports.playSoundLaser = function(d){return "پخش صدای لیزر"};
 
-exports.playSoundTooltip = function(d){return "Play a sound."};
+exports.playSoundTooltip = function(d){return "پخش صدای انتخابی شما."};
 
-exports.reinfFeedbackMsg = function(d){return "You can press the \"Try again\" button to go back to playing your game."};
+exports.reinfFeedbackMsg = function(d){return "شما می توانید دکمه \"دوباره امتحان کنید\" را بفشارید تا به بازی برگردید."};
 
-exports.scoreText = function(d){return "Score: "+v(d,"playerScore")+" : "+v(d,"opponentScore")};
+exports.scoreText = function(d){return "امتیاز: "+v(d,"playerScore")};
 
-exports.setBackgroundRandom = function(d){return "set scene Random"};
+exports.setBackgroundRandom = function(d){return "صحنه تصادفی"};
 
-exports.setBackgroundFlappy = function(d){return "set scene City (day)"};
+exports.setBackgroundFlappy = function(d){return "صحنه شهر (روز)"};
 
-exports.setBackgroundNight = function(d){return "set scene City (night)"};
+exports.setBackgroundNight = function(d){return "صحنه شهر (شب)"};
 
-exports.setBackgroundSciFi = function(d){return "set scene Sci-Fi"};
+exports.setBackgroundSciFi = function(d){return "صحنه Sci-Fi"};
 
-exports.setBackgroundUnderwater = function(d){return "set scene Underwater"};
+exports.setBackgroundUnderwater = function(d){return "صحنه زیر آب"};
 
-exports.setBackgroundCave = function(d){return "set scene Cave"};
+exports.setBackgroundCave = function(d){return "صحنه غار"};
 
-exports.setBackgroundSanta = function(d){return "set scene Santa"};
+exports.setBackgroundSanta = function(d){return "صحنه بابانوئل"};
 
-exports.setBackgroundTooltip = function(d){return "Sets the background image"};
+exports.setBackgroundTooltip = function(d){return "تنظیم تصاویر زمینه"};
 
-exports.setGapRandom = function(d){return "set a random gap"};
+exports.setGapRandom = function(d){return "تنظیم فاصله تصادفی"};
 
-exports.setGapVerySmall = function(d){return "set a very small gap"};
+exports.setGapVerySmall = function(d){return "تنظیم یک فاصله خیلی کوچک"};
 
-exports.setGapSmall = function(d){return "set a small gap"};
+exports.setGapSmall = function(d){return "تنظیم یک فاصله کوچک"};
 
-exports.setGapNormal = function(d){return "set a normal gap"};
+exports.setGapNormal = function(d){return "تنظیم یک فاصله متوسط"};
 
-exports.setGapLarge = function(d){return "set a large gap"};
+exports.setGapLarge = function(d){return "تنظیم یک فاصله بزرگ"};
 
-exports.setGapVeryLarge = function(d){return "set a very large gap"};
+exports.setGapVeryLarge = function(d){return "تنظیم یک فاصله خیلی بزرگ"};
 
 exports.setGapHeightTooltip = function(d){return "Sets the vertical gap in an obstacle"};
 
@@ -5027,31 +5027,31 @@ exports.speedVerySlow = function(d){return "set speed very slow"};
 
 exports.speedSlow = function(d){return "set speed slow"};
 
-exports.speedNormal = function(d){return "set speed normal"};
+exports.speedNormal = function(d){return "تنظیم سرعت نرمال"};
 
-exports.speedFast = function(d){return "set speed fast"};
+exports.speedFast = function(d){return "تنظیم سرعت سریع"};
 
-exports.speedVeryFast = function(d){return "set speed very fast"};
+exports.speedVeryFast = function(d){return "تنظیم سرعت بسیار سریع"};
 
-exports.whenClick = function(d){return "when click"};
+exports.whenClick = function(d){return "زمانی که کلیک میشود"};
 
-exports.whenClickTooltip = function(d){return "Execute the actions below when a click event occurs."};
+exports.whenClickTooltip = function(d){return "اجرای اقدامات زیر زمانی که یک رویداد کلیک رخ می دهد."};
 
-exports.whenCollideGround = function(d){return "when hit the ground"};
+exports.whenCollideGround = function(d){return "زمانی که به زمین میخورد"};
 
-exports.whenCollideGroundTooltip = function(d){return "Execute the actions below when Flappy hits the ground."};
+exports.whenCollideGroundTooltip = function(d){return "اجرای اقدامات زیر زمانی که flappy به زمین میخورد."};
 
-exports.whenCollideObstacle = function(d){return "when hit an obstacle"};
+exports.whenCollideObstacle = function(d){return "زمانی که یک مشکل به وجود می آید"};
 
-exports.whenCollideObstacleTooltip = function(d){return "Execute the actions below when Flappy hits an obstacle."};
+exports.whenCollideObstacleTooltip = function(d){return "اجرای اقدامات زیر زمانی که Flappy به یک مشکل میخورد."};
 
-exports.whenEnterObstacle = function(d){return "when pass obstacle"};
+exports.whenEnterObstacle = function(d){return "زمانی که مشکل برطرف میشود"};
 
-exports.whenEnterObstacleTooltip = function(d){return "Execute the actions below when Flappy enters an obstacle."};
+exports.whenEnterObstacleTooltip = function(d){return "اجرای اقدامات زیر زمانی که Flappy به یک مشکل وارد میشود."};
 
-exports.whenRunButtonClick = function(d){return "when Run is clicked"};
+exports.whenRunButtonClick = function(d){return "وقتی که بازی شروع می شود"};
 
-exports.whenRunButtonClickTooltip = function(d){return "Execute the actions below when the run button is pressed."};
+exports.whenRunButtonClickTooltip = function(d){return "اجرای اقدامات زیر وقتی که بازی شروع می شود."};
 
 exports.yes = function(d){return "بله"};
 

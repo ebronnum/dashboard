@@ -5335,57 +5335,57 @@ exports.repeatUntilFinish = function(d){return "opakovat do konce"};
 
 exports.scoreText = function(d){return "Score: "+v(d,"playerScore")+" : "+v(d,"opponentScore")};
 
-exports.setBackgroundRandom = function(d){return "set random scene"};
+exports.setBackgroundRandom = function(d){return "nastavit náhodnou scénu"};
 
-exports.setBackgroundHardcourt = function(d){return "set hardcourt scene"};
+exports.setBackgroundHardcourt = function(d){return "nastavit scénu 'tenisový kurt'"};
 
-exports.setBackgroundRetro = function(d){return "set retro scene"};
+exports.setBackgroundRetro = function(d){return "nastavit scénu 'retro'"};
 
-exports.setBackgroundTooltip = function(d){return "Sets the background image"};
+exports.setBackgroundTooltip = function(d){return "Nastaví pozadí"};
 
-exports.setBallRandom = function(d){return "set random ball"};
+exports.setBallRandom = function(d){return "nastavit náhodný míč"};
 
-exports.setBallHardcourt = function(d){return "set hardcourt ball"};
+exports.setBallHardcourt = function(d){return "nastavit tenisový míč"};
 
-exports.setBallRetro = function(d){return "set retro ball"};
+exports.setBallRetro = function(d){return "nastavit retro míč"};
 
-exports.setBallTooltip = function(d){return "Sets the ball image"};
+exports.setBallTooltip = function(d){return "Nastaví podobu míče"};
 
-exports.setBallSpeedRandom = function(d){return "set random ball speed"};
+exports.setBallSpeedRandom = function(d){return "nastavit náhodnou rychlost míče"};
 
-exports.setBallSpeedVerySlow = function(d){return "set very slow ball speed"};
+exports.setBallSpeedVerySlow = function(d){return "nastavit velmi pomalou rychlost míče"};
 
-exports.setBallSpeedSlow = function(d){return "set slow ball speed"};
+exports.setBallSpeedSlow = function(d){return "nastavit pomalou rychlost míče"};
 
-exports.setBallSpeedNormal = function(d){return "set normal ball speed"};
+exports.setBallSpeedNormal = function(d){return "nastavit normální rychlost míče"};
 
-exports.setBallSpeedFast = function(d){return "set fast ball speed"};
+exports.setBallSpeedFast = function(d){return "nastavit vysokou rychlost míče"};
 
-exports.setBallSpeedVeryFast = function(d){return "set very fast ball speed"};
+exports.setBallSpeedVeryFast = function(d){return "nastavit velmi vysokou rychlost míče"};
 
-exports.setBallSpeedTooltip = function(d){return "Sets the speed of the ball"};
+exports.setBallSpeedTooltip = function(d){return "Nastaví rychlost míče"};
 
-exports.setPaddleRandom = function(d){return "set random paddle"};
+exports.setPaddleRandom = function(d){return "nastavit náhodnou pálku"};
 
-exports.setPaddleHardcourt = function(d){return "set hardcourt paddle"};
+exports.setPaddleHardcourt = function(d){return "nastavit tenisovou pálku"};
 
-exports.setPaddleRetro = function(d){return "set retro paddle"};
+exports.setPaddleRetro = function(d){return "nastavit retro pálku"};
 
 exports.setPaddleTooltip = function(d){return "Sets the ball paddle"};
 
-exports.setPaddleSpeedRandom = function(d){return "set random paddle speed"};
+exports.setPaddleSpeedRandom = function(d){return "nastavit náhodnou rychlost odpalu"};
 
-exports.setPaddleSpeedVerySlow = function(d){return "set very slow paddle speed"};
+exports.setPaddleSpeedVerySlow = function(d){return "nastavit velmi pomalou rychlost odpalu"};
 
-exports.setPaddleSpeedSlow = function(d){return "set slow paddle speed"};
+exports.setPaddleSpeedSlow = function(d){return "nastavit pomalou rychlost odpalu"};
 
-exports.setPaddleSpeedNormal = function(d){return "set normal paddle speed"};
+exports.setPaddleSpeedNormal = function(d){return "nastavit normální rychlost odpalu"};
 
-exports.setPaddleSpeedFast = function(d){return "set fast paddle speed"};
+exports.setPaddleSpeedFast = function(d){return "nastavit vysokou rychlost odpalu"};
 
-exports.setPaddleSpeedVeryFast = function(d){return "set very fast paddle speed"};
+exports.setPaddleSpeedVeryFast = function(d){return "nastavit velmi vysokou rychlost odpalu"};
 
-exports.setPaddleSpeedTooltip = function(d){return "Sets the speed of the paddle"};
+exports.setPaddleSpeedTooltip = function(d){return "Nastaví rychlost odpalu"};
 
 exports.share = function(d){return "Share"};
 
@@ -5411,9 +5411,9 @@ exports.whenDown = function(d){return "when Down arrow"};
 
 exports.whenDownTooltip = function(d){return "Execute the actions below when the Down arrow button is pressed."};
 
-exports.whenGameStarts = function(d){return "when game starts"};
+exports.whenGameStarts = function(d){return "když hra začne"};
 
-exports.whenGameStartsTooltip = function(d){return "Execute the actions below when the game starts."};
+exports.whenGameStartsTooltip = function(d){return "Když hra začne, provést akce, které jsou pod tímto."};
 
 exports.whenLeft = function(d){return "when Left arrow"};
 
@@ -5482,7 +5482,7 @@ exports.dialogOK = function(d){return "OK"};
 
 exports.emptyBlocksErrorMsg = function(d){return "Bloky \"Opakovat\" nebo \"Pokud\" v sobě musí mít další bloky, aby fungovaly. Ujisti se, že vnitřní bloky jsou v pořádku vložené dovnitř vnějších bloků."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Máš další extra bloky, které nejsou připojené k bloku událostí."};
 
 exports.finalStage = function(d){return "Dobrá práce! Dokončil si poslední fázi."};
 
@@ -5500,7 +5500,7 @@ exports.levelIncompleteError = function(d){return "Používáš všechny potřeb
 
 exports.listVariable = function(d){return "seznam"};
 
-exports.makeYourOwnFlappy = function(d){return "Make Your Own Flappy Game"};
+exports.makeYourOwnFlappy = function(d){return "Vytvoř si vlastní Flappy hru"};
 
 exports.missingBlocksErrorMsg = function(d){return "Použijte jeden či více bloků k vyřešení těto hádanky."};
 
@@ -5538,7 +5538,7 @@ exports.tooManyBlocksMsg = function(d){return "Tato hádanka může být vyřeš
 
 exports.tooMuchWork = function(d){return "Přinutil jsi mne udělat spoustu práce! Mohl bys zkusit opakovat méně krát?"};
 
-exports.flappySpecificFail = function(d){return "Your code looks good - it will flap with each click. But you need to click many times to flap to the target."};
+exports.flappySpecificFail = function(d){return "Tvůj kód vypadá dobře - zamává při každém kliknutí. Ale musíš kliknout víckrát, aby ses dostal k cíli."};
 
 exports.toolboxHeader = function(d){return "Bloky"};
 

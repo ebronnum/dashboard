@@ -5345,11 +5345,11 @@ exports.setBallTooltip = function(d){return "Sets the ball image"};
 
 exports.setBallSpeedRandom = function(d){return "set random ball speed"};
 
-exports.setBallSpeedVerySlow = function(d){return "set very slow ball speed"};
+exports.setBallSpeedVerySlow = function(d){return "zeer langzame bal snelheid instellen"};
 
-exports.setBallSpeedSlow = function(d){return "set slow ball speed"};
+exports.setBallSpeedSlow = function(d){return "langzame bal snelheid instellen"};
 
-exports.setBallSpeedNormal = function(d){return "set normal ball speed"};
+exports.setBallSpeedNormal = function(d){return "normale bal snelheid instellen"};
 
 exports.setBallSpeedFast = function(d){return "set fast ball speed"};
 
@@ -5403,9 +5403,9 @@ exports.whenDown = function(d){return "when Down arrow"};
 
 exports.whenDownTooltip = function(d){return "Execute the actions below when the Down arrow button is pressed."};
 
-exports.whenGameStarts = function(d){return "when game starts"};
+exports.whenGameStarts = function(d){return "als het spel start"};
 
-exports.whenGameStartsTooltip = function(d){return "Execute the actions below when the game starts."};
+exports.whenGameStartsTooltip = function(d){return "Voer de onderstaande acties uit als het spel start."};
 
 exports.whenLeft = function(d){return "when Left arrow"};
 

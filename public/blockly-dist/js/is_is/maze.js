@@ -7147,7 +7147,7 @@ exports.catLists = function(d){return "Listar"};
 
 exports.catLoops = function(d){return "Lykkjur"};
 
-exports.catMath = function(d){return "Stærðfræðiaðgerðir"};
+exports.catMath = function(d){return "Reikningur"};
 
 exports.catProcedures = function(d){return "Föll"};
 
@@ -7165,7 +7165,7 @@ exports.dialogOK = function(d){return "Í lagi"};
 
 exports.emptyBlocksErrorMsg = function(d){return "Kubbarnir \"endurtaka\" og \"ef\" verða að innihalda aðra kubba til að virka. Gættu þess að innri kubburinn smellpassi í ytri kubbinn."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Þú hefur auka kubba sem ekki tengjast atvikakubbi."};
 
 exports.finalStage = function(d){return "Til hamingju! Þú hefur klárað síðasta áfangann."};
 
@@ -7183,7 +7183,7 @@ exports.levelIncompleteError = function(d){return "Þú ert að nota allar nauð
 
 exports.listVariable = function(d){return "listi"};
 
-exports.makeYourOwnFlappy = function(d){return "Make Your Own Flappy Game"};
+exports.makeYourOwnFlappy = function(d){return "Búðu til þinn eigin(n) Flappy leik"};
 
 exports.missingBlocksErrorMsg = function(d){return "Reyndu einn eða fleiri af kubbunum hér fyrir neðan til að leysa þessa þraut."};
 
@@ -7221,7 +7221,7 @@ exports.tooManyBlocksMsg = function(d){return "Þessa þraut er hægt að leysa 
 
 exports.tooMuchWork = function(d){return "Þú lagðir á mig mjög mikla vinnu! Gætirðu reynt að nota færri endurtekningar?"};
 
-exports.flappySpecificFail = function(d){return "Your code looks good - it will flap with each click. But you need to click many times to flap to the target."};
+exports.flappySpecificFail = function(d){return "Kóðinn þinn lítur vel út - fuglinn flögrar við hvern smell. En þú þarft að smella oft til að flögra að endamarkinu."};
 
 exports.toolboxHeader = function(d){return "Kubbar"};
 

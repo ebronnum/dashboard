@@ -7165,7 +7165,7 @@ exports.dialogOK = function(d){return "OK"};
 
 exports.emptyBlocksErrorMsg = function(d){return "Die \"Wiederholen\"- und die \"Wenn\"-Bausteine benötigten im Inneren andere Bausteine um zu funktionieren. Stelle sicher, dass der innere Baustein in den umschließenden Baustein passt."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Es gibt zusätzliche Bausteine, die keinem Ereignis-Baustein zugeordnet sind."};
 
 exports.finalStage = function(d){return "Glückwunsch! Du hast das letzte Level erfolgreich abgeschlossen."};
 
@@ -7221,7 +7221,7 @@ exports.tooManyBlocksMsg = function(d){return "Dieses Puzzle kann mit <x id='STA
 
 exports.tooMuchWork = function(d){return "Du lässt mich ganz schön arbeiten! Könntest du versuchen es seltener zu wiederholen?"};
 
-exports.flappySpecificFail = function(d){return "Your code looks good - it will flap with each click. But you need to click many times to flap to the target."};
+exports.flappySpecificFail = function(d){return "Dein Code sieht gut aus - er wird bei jedem Klick die Flügel schlagen. Aber du musst viele Male klicken, um zum Ziel zu flattern."};
 
 exports.toolboxHeader = function(d){return "Bausteine"};
 
@@ -7298,7 +7298,7 @@ exports.heightParameter = function(d){return "Höhe"};
 
 exports.holePresent = function(d){return "dort ist ein Loch"};
 
-exports.ifCode = function(d){return "if"};
+exports.ifCode = function(d){return "wenn"};
 
 exports.ifPathAhead = function(d){return "Wenn Weg voraus"};
 

@@ -5706,7 +5706,7 @@ exports.dialogOK = function(d){return "OK"};
 
 exports.emptyBlocksErrorMsg = function(d){return "Los bloques \"repetir\" o \"si\" deben tener otros bloques dentro de ellos para funcionar. Asegúrate que el bloque interno quede correctamente dentro del bloque que lo contiene."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Tienes bloques adicionales que no están conectados a un bloque de evento."};
 
 exports.finalStage = function(d){return "¡Felicidades! Has completado la etapa final."};
 
@@ -5724,7 +5724,7 @@ exports.levelIncompleteError = function(d){return "Estás utilizando todos los t
 
 exports.listVariable = function(d){return "lista"};
 
-exports.makeYourOwnFlappy = function(d){return "Crea tu propio juego Flappy"};
+exports.makeYourOwnFlappy = function(d){return "Crea tu propio juego Flappy Bird"};
 
 exports.missingBlocksErrorMsg = function(d){return "Trata de resolver este puzzle usando uno o más de los bloques de abajo."};
 
@@ -5762,7 +5762,7 @@ exports.tooManyBlocksMsg = function(d){return "Puedes resolver este puzzle con <
 
 exports.tooMuchWork = function(d){return "¡Me has hecho trabajar mucho!  ¿Podrías tratar de repetir menos veces?"};
 
-exports.flappySpecificFail = function(d){return "Tú código se ve bien - aleteará con cada clic. Pero tienes que hacer clic varias veces para aletear a la meta."};
+exports.flappySpecificFail = function(d){return "Tú código se ve bien - aleteará con cada clic. Pero tienes que hacer clic varias veces para aletear hacia la meta."};
 
 exports.toolboxHeader = function(d){return "Bloques"};
 
@@ -5869,13 +5869,13 @@ exports.penTooltip = function(d){return "Levanta o baja el lápiz, para empezar 
 
 exports.penUp = function(d){return "levantar lápiz"};
 
-exports.reinfFeedbackMsg = function(d){return "Does this look like what you want? You can press the \"Try again\" button to see your drawing."};
+exports.reinfFeedbackMsg = function(d){return "¿Ha quedado como tú quieres? Puedes pulsar el botón \"Intentar de nuevo\" para ver tu dibujo."};
 
 exports.setColour = function(d){return "definir color"};
 
 exports.setWidth = function(d){return "definir ancho"};
 
-exports.shareDrawing = function(d){return "Share your drawing:"};
+exports.shareDrawing = function(d){return "Comparte tu dibujo:"};
 
 exports.showMe = function(d){return "Muéstrame"};
 

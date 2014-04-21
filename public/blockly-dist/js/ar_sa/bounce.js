@@ -5344,57 +5344,57 @@ exports.repeatUntilFinish = function(d){return "اكرر حتى النهاية"}
 
 exports.scoreText = function(d){return "Score: "+v(d,"playerScore")+" : "+v(d,"opponentScore")};
 
-exports.setBackgroundRandom = function(d){return "set random scene"};
+exports.setBackgroundRandom = function(d){return "تعيين مشهد عشوائي"};
 
-exports.setBackgroundHardcourt = function(d){return "set hardcourt scene"};
+exports.setBackgroundHardcourt = function(d){return "تعيين مشهد صعب"};
 
-exports.setBackgroundRetro = function(d){return "set retro scene"};
+exports.setBackgroundRetro = function(d){return "تعيين مشهد خلفي"};
 
-exports.setBackgroundTooltip = function(d){return "Sets the background image"};
+exports.setBackgroundTooltip = function(d){return "تعيين صورة الخلفية"};
 
-exports.setBallRandom = function(d){return "set random ball"};
+exports.setBallRandom = function(d){return "تعيين عشوائي للكرة"};
 
-exports.setBallHardcourt = function(d){return "set hardcourt ball"};
+exports.setBallHardcourt = function(d){return "تعيين كرة صعبة"};
 
-exports.setBallRetro = function(d){return "set retro ball"};
+exports.setBallRetro = function(d){return "تعيين الكرة الخلفية"};
 
-exports.setBallTooltip = function(d){return "Sets the ball image"};
+exports.setBallTooltip = function(d){return "تعيين صورة للكرة"};
 
-exports.setBallSpeedRandom = function(d){return "set random ball speed"};
+exports.setBallSpeedRandom = function(d){return "تعيين عشوائي لسرعة الكرة"};
 
-exports.setBallSpeedVerySlow = function(d){return "set very slow ball speed"};
+exports.setBallSpeedVerySlow = function(d){return "تعيين سرعة الكرة بطيء جداً"};
 
-exports.setBallSpeedSlow = function(d){return "set slow ball speed"};
+exports.setBallSpeedSlow = function(d){return "تعيين سرعة الكرة بطيء"};
 
-exports.setBallSpeedNormal = function(d){return "set normal ball speed"};
+exports.setBallSpeedNormal = function(d){return "تعيين سرعة عادية للكرة"};
 
-exports.setBallSpeedFast = function(d){return "set fast ball speed"};
+exports.setBallSpeedFast = function(d){return "تعيين سرعة سريعة للكرة"};
 
-exports.setBallSpeedVeryFast = function(d){return "set very fast ball speed"};
+exports.setBallSpeedVeryFast = function(d){return "تعيين سرعة للكرة سريعة جداً"};
 
-exports.setBallSpeedTooltip = function(d){return "Sets the speed of the ball"};
+exports.setBallSpeedTooltip = function(d){return "تعيين سرعة الكرة"};
 
-exports.setPaddleRandom = function(d){return "set random paddle"};
+exports.setPaddleRandom = function(d){return "تعيين مضرب عشوائي"};
 
-exports.setPaddleHardcourt = function(d){return "set hardcourt paddle"};
+exports.setPaddleHardcourt = function(d){return "تعيين مضرب صعب"};
 
-exports.setPaddleRetro = function(d){return "set retro paddle"};
+exports.setPaddleRetro = function(d){return "تعيين مضرب خلفي"};
 
 exports.setPaddleTooltip = function(d){return "Sets the ball paddle"};
 
-exports.setPaddleSpeedRandom = function(d){return "set random paddle speed"};
+exports.setPaddleSpeedRandom = function(d){return "تعيين سرعة المضرب عشوائي"};
 
-exports.setPaddleSpeedVerySlow = function(d){return "set very slow paddle speed"};
+exports.setPaddleSpeedVerySlow = function(d){return "تعيين سرعة بطيئة جداً للمضرب"};
 
-exports.setPaddleSpeedSlow = function(d){return "set slow paddle speed"};
+exports.setPaddleSpeedSlow = function(d){return "تعيين سرعة بطيئة للمضرب"};
 
-exports.setPaddleSpeedNormal = function(d){return "set normal paddle speed"};
+exports.setPaddleSpeedNormal = function(d){return "تعيين سرعة عادية للمضرب"};
 
-exports.setPaddleSpeedFast = function(d){return "set fast paddle speed"};
+exports.setPaddleSpeedFast = function(d){return "تعيين سرعة سريعة للمضرب"};
 
-exports.setPaddleSpeedVeryFast = function(d){return "set very fast paddle speed"};
+exports.setPaddleSpeedVeryFast = function(d){return "تعيين سرعة سريعة جداً للمضرب"};
 
-exports.setPaddleSpeedTooltip = function(d){return "Sets the speed of the paddle"};
+exports.setPaddleSpeedTooltip = function(d){return "تعيين سرعة المضرب"};
 
 exports.share = function(d){return "Share"};
 
@@ -5420,9 +5420,9 @@ exports.whenDown = function(d){return "when Down arrow"};
 
 exports.whenDownTooltip = function(d){return "Execute the actions below when the Down arrow button is pressed."};
 
-exports.whenGameStarts = function(d){return "when game starts"};
+exports.whenGameStarts = function(d){return "عند بدأ تشغيل اللعبة"};
 
-exports.whenGameStartsTooltip = function(d){return "Execute the actions below when the game starts."};
+exports.whenGameStartsTooltip = function(d){return "تنفيذ الإجراءات أدناه عند بدء تشغيل اللعبة."};
 
 exports.whenLeft = function(d){return "when Left arrow"};
 
@@ -5500,7 +5500,7 @@ exports.dialogOK = function(d){return "موافق"};
 
 exports.emptyBlocksErrorMsg = function(d){return "قطعة \" أكرر\" او \" اذا \" تحتاج ان تحتوي على قطع اخرى داخلها من اجل العمل . تأكد من القطع الداخلية بحيث يجب ان تكون تناسب القطع المحتوية في الداخل ."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "لديك قطع إضافية لم ترفق على قطع الاحتفالية."};
 
 exports.finalStage = function(d){return "تهانينا! لقد اتممت المرحلة النهائية."};
 
@@ -5586,11 +5586,11 @@ exports.orientationLock = function(d){return "قم بتعطيل قفل التو�
 
 exports.wantToLearn = function(d){return "هل تريد أن تتعلم البرمجة؟"};
 
-exports.watchVideo = function(d){return "مشاهدة الفيديو"};
+exports.watchVideo = function(d){return "شاهد الفيديو"};
 
 exports.tryHOC = function(d){return "جرب \"Hour of Code\""};
 
-exports.signup = function(d){return "سجل للمتابعة لبداية الدرس"};
+exports.signup = function(d){return "سجل لمشاهدة مقدمة الدورة"};
 
 exports.hintHeader = function(d){return "Here's a tip:"};
 

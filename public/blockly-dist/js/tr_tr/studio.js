@@ -4500,7 +4500,7 @@ exports.nextStage = function(d){return "Tebrikler! Kademe "+v(d,"stageNumber")+"
 
 exports.nextStageTrophies = function(d){return "Tebrikler! Kademe "+v(d,"stageNumber")+" tamamlandı ve "+p(d,"numTrophies",0,"tr",{"one":"bir kupa","other":n(d,"numTrophies")+" kupa"})+" kazandınız."};
 
-exports.numBlocksNeeded = function(d){return "Congratulations! You completed Puzzle "+v(d,"puzzleNumber")+". (However, you could have used only "+p(d,"numBlocks",0,"tr",{"one":"1 block","other":n(d,"numBlocks")+" blocks"})+".)"};
+exports.numBlocksNeeded = function(d){return "Tebrikler! Bulmaca "+v(d,"puzzleNumber")+" tamamlandı. (Ancak, sadece "+p(d,"numBlocks",0,"tr",{"one":"1 blok","other":n(d,"numBlocks")+" blok"})+" kullanmış olabilirdiniz.)"};
 
 exports.numLinesOfCodeWritten = function(d){return "Tam olarak "+p(d,"numLines",0,"tr",{"one":"1 satır","other":n(d,"numLines")+" satır"})+" kod yazdınız!"};
 

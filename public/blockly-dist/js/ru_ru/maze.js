@@ -7264,11 +7264,11 @@ exports.orientationLock = function(d){return "Выключите блокиро�
 
 exports.wantToLearn = function(d){return "Хотите научиться писать код?"};
 
-exports.watchVideo = function(d){return "Посмотрите видео"};
+exports.watchVideo = function(d){return "Посмотреть видео"};
 
-exports.tryHOC = function(d){return "Попробуйте час кода"};
+exports.tryHOC = function(d){return "Попробуйте Час кода"};
 
-exports.signup = function(d){return "Подпишитесь на вводный курс"};
+exports.signup = function(d){return "Зарегистрируйтесь на вводный курс"};
 
 exports.hintHeader = function(d){return "Here's a tip:"};
 
@@ -7312,7 +7312,7 @@ exports.fill = function(d){return "засыпать 1"};
 
 exports.fillN = function(d){return "засыпать "+v(d,"shovelfuls")};
 
-exports.fillStack = function(d){return "заполнить все ямы : "+v(d,"shovelfuls")};
+exports.fillStack = function(d){return "засыпать "+v(d,"shovelfuls")+" ям"};
 
 exports.fillSquare = function(d){return "засыпать квадрат"};
 

@@ -5206,11 +5206,11 @@ var MessageFormat = require("messageformat");MessageFormat.locale.ro = function 
   }
   return 'other';
 };
-exports.bounceBall = function(d){return "minge ce ricoseaza"};
+exports.bounceBall = function(d){return "fă bila să ricoșeze"};
 
-exports.bounceBallTooltip = function(d){return "Ricoseaza o minge de pe un obiect."};
+exports.bounceBallTooltip = function(d){return "Fă mingea să ricoșeze de pe un obiect."};
 
-exports.continue = function(d){return "Continua"};
+exports.continue = function(d){return "Continuă"};
 
 exports.dirE = function(d){return "E"};
 
@@ -5234,19 +5234,19 @@ exports.ifPathAhead = function(d){return "dacă drum înainte"};
 
 exports.ifTooltip = function(d){return "Dacă există o cale de acces în direcţia specificată, atunci realizează unele acțiunii."};
 
-exports.ifelseTooltip = function(d){return "Dacă există o cale de acces în direcţia specificată, atunci realizează primul bloc de acţiuni. Altfel, fă-l pe al doilea bloc de acţiuni."};
+exports.ifelseTooltip = function(d){return "Dacă există o cale de acces în direcţia specificată, atunci realizează primul bloc de acţiuni. Altfel, execută al doilea bloc de acţiuni."};
 
-exports.incrementOpponentScore = function(d){return "increment opponent score"};
+exports.incrementOpponentScore = function(d){return "punct de scor al adversarului"};
 
-exports.incrementOpponentScoreTooltip = function(d){return "Add one to the current opponent score."};
+exports.incrementOpponentScoreTooltip = function(d){return "Adaugă unu la scorul curent al adversarului."};
 
-exports.incrementPlayerScore = function(d){return "increment player score"};
+exports.incrementPlayerScore = function(d){return "punct de scor"};
 
-exports.incrementPlayerScoreTooltip = function(d){return "Add one to the current player score."};
+exports.incrementPlayerScoreTooltip = function(d){return "Adaugă unu la scorul de jucător curent."};
 
 exports.isWall = function(d){return "este acesta un perete"};
 
-exports.isWallTooltip = function(d){return "Revine adevarat daca este un perete aici"};
+exports.isWallTooltip = function(d){return "Returnează adevărat dacă este un perete aici"};
 
 exports.launchBall = function(d){return "launch new ball"};
 
@@ -5254,25 +5254,25 @@ exports.launchBallTooltip = function(d){return "Launch a ball into play."};
 
 exports.makeYourOwn = function(d){return "Make Your Own Bounce Game"};
 
-exports.moveDown = function(d){return "muta in jos"};
+exports.moveDown = function(d){return "mută în jos"};
 
-exports.moveDownTooltip = function(d){return "Muta paleta in jos."};
+exports.moveDownTooltip = function(d){return "Mută paleta în jos."};
 
-exports.moveForward = function(d){return "muta inainte"};
+exports.moveForward = function(d){return "mută înainte"};
 
-exports.moveForwardTooltip = function(d){return "Muta-ma inainte un spatiu."};
+exports.moveForwardTooltip = function(d){return "Mută-mă înainte un spațiu."};
 
-exports.moveLeft = function(d){return "muta in stanga"};
+exports.moveLeft = function(d){return "mută la stânga"};
 
-exports.moveLeftTooltip = function(d){return "Muta paleta catre stanga."};
+exports.moveLeftTooltip = function(d){return "Mută paleta la stânga."};
 
-exports.moveRight = function(d){return "muta in dreapta"};
+exports.moveRight = function(d){return "mută la dreapta"};
 
-exports.moveRightTooltip = function(d){return "Muta paleta catre dreapta."};
+exports.moveRightTooltip = function(d){return "Mută paletă la dreapta."};
 
-exports.moveUp = function(d){return "muta in sus"};
+exports.moveUp = function(d){return "mută în sus"};
 
-exports.moveUpTooltip = function(d){return "Muta paleta in sus."};
+exports.moveUpTooltip = function(d){return "Mută paleta în sus."};
 
 exports.nextLevel = function(d){return "Felicitări! Ai finalizat acest puzzle."};
 
@@ -5280,47 +5280,47 @@ exports.no = function(d){return "Nu"};
 
 exports.noPathAhead = function(d){return "calea de acces este blocată"};
 
-exports.noPathLeft = function(d){return "nu exista cale de acces catre stanga"};
+exports.noPathLeft = function(d){return "nu există cale de acces la stânga"};
 
-exports.noPathRight = function(d){return "nu exista cale de acces catre dreapta"};
+exports.noPathRight = function(d){return "nu există cale de acces la dreapta"};
 
 exports.numBlocksNeeded = function(d){return "Acest puzzle poate fi rezolvat cu %1 blocuri."};
 
-exports.oneTopBlock = function(d){return "Pentru acest puzzle, ai nevoie să depozitezi împreună toate blocurile în spațiul de lucru alb."};
+exports.oneTopBlock = function(d){return "Pentru acest puzzle, ai nevoie să aduni împreună toate blocurile în spațiul de lucru alb."};
 
 exports.pathAhead = function(d){return "cale înainte"};
 
-exports.pathLeft = function(d){return "daca cale de acces catre stanga"};
+exports.pathLeft = function(d){return "dacă cale de acces la stânga"};
 
-exports.pathRight = function(d){return "daca cale de acces catre dreapta"};
+exports.pathRight = function(d){return "dacă cale de acces la dreapta"};
 
-exports.pilePresent = function(d){return "Există o gramada"};
+exports.pilePresent = function(d){return "există o grămadă"};
 
-exports.playSoundCrunch = function(d){return "play crunch sound"};
+exports.playSoundCrunch = function(d){return "Redă un sunet de zdrobire"};
 
-exports.playSoundGoal1 = function(d){return "play goal 1 sound"};
+exports.playSoundGoal1 = function(d){return "Redă sunet obiectiv 1"};
 
-exports.playSoundGoal2 = function(d){return "play goal 2 sound"};
+exports.playSoundGoal2 = function(d){return "Redă sunet obiectiv 2"};
 
-exports.playSoundHit = function(d){return "play hit sound"};
+exports.playSoundHit = function(d){return "redă sunet de lovitură"};
 
-exports.playSoundLosePoint = function(d){return "play lose point sound"};
+exports.playSoundLosePoint = function(d){return "redă sunet de punct slab"};
 
-exports.playSoundLosePoint2 = function(d){return "play lose point 2 sound"};
+exports.playSoundLosePoint2 = function(d){return "redă sunet de punct slab 2"};
 
-exports.playSoundRetro = function(d){return "play retro sound"};
+exports.playSoundRetro = function(d){return "redă sunet retro"};
 
-exports.playSoundRubber = function(d){return "play rubber sound"};
+exports.playSoundRubber = function(d){return "redă sunet de cauciuc"};
 
-exports.playSoundSlap = function(d){return "play slap sound"};
+exports.playSoundSlap = function(d){return "redă sunet de plezneală"};
 
-exports.playSoundTooltip = function(d){return "Reda un sunet."};
+exports.playSoundTooltip = function(d){return "Redă sunetul ales."};
 
-exports.playSoundWinPoint = function(d){return "play win point sound"};
+exports.playSoundWinPoint = function(d){return "redă sunet de punct victorios"};
 
-exports.playSoundWinPoint2 = function(d){return "play win point 2 sound"};
+exports.playSoundWinPoint2 = function(d){return "redă sunet de punct victorios 2"};
 
-exports.playSoundWood = function(d){return "play wood sound"};
+exports.playSoundWood = function(d){return "redă sunet de lemn"};
 
 exports.putdownTower = function(d){return "pune jos turnul"};
 
@@ -5334,59 +5334,59 @@ exports.repeatUntilBlocked = function(d){return "atâta timp cât există cale d
 
 exports.repeatUntilFinish = function(d){return "repetă până la final"};
 
-exports.scoreText = function(d){return "Score: "+v(d,"playerScore")+" : "+v(d,"opponentScore")};
+exports.scoreText = function(d){return "Scor: "+v(d,"playerScore")+": "+v(d,"opponentScore")};
 
-exports.setBackgroundRandom = function(d){return "set random scene"};
+exports.setBackgroundRandom = function(d){return "setează fundal aleator"};
 
-exports.setBackgroundHardcourt = function(d){return "set hardcourt scene"};
+exports.setBackgroundHardcourt = function(d){return "setează fundal hardcourt"};
 
-exports.setBackgroundRetro = function(d){return "set retro scene"};
+exports.setBackgroundRetro = function(d){return "setează fundal retro"};
 
-exports.setBackgroundTooltip = function(d){return "Sets the background image"};
+exports.setBackgroundTooltip = function(d){return "Setează imaginea de fundal"};
 
-exports.setBallRandom = function(d){return "set random ball"};
+exports.setBallRandom = function(d){return "setează bila la întâmplare"};
 
-exports.setBallHardcourt = function(d){return "set hardcourt ball"};
+exports.setBallHardcourt = function(d){return "setează bila pe hardcourt"};
 
-exports.setBallRetro = function(d){return "set retro ball"};
+exports.setBallRetro = function(d){return "setează bila pe retro"};
 
-exports.setBallTooltip = function(d){return "Sets the ball image"};
+exports.setBallTooltip = function(d){return "Setează imaginea bilei"};
 
-exports.setBallSpeedRandom = function(d){return "set random ball speed"};
+exports.setBallSpeedRandom = function(d){return "setează viteza bilei la nivel aleator"};
 
-exports.setBallSpeedVerySlow = function(d){return "set very slow ball speed"};
+exports.setBallSpeedVerySlow = function(d){return "setează viteza bilei la nivel foarte lent"};
 
-exports.setBallSpeedSlow = function(d){return "set slow ball speed"};
+exports.setBallSpeedSlow = function(d){return "setează viteza bilei la nivel lent"};
 
-exports.setBallSpeedNormal = function(d){return "set normal ball speed"};
+exports.setBallSpeedNormal = function(d){return "setează viteza bilei la nivel normal"};
 
-exports.setBallSpeedFast = function(d){return "set fast ball speed"};
+exports.setBallSpeedFast = function(d){return "setează viteza bilei la nivel rapid"};
 
-exports.setBallSpeedVeryFast = function(d){return "set very fast ball speed"};
+exports.setBallSpeedVeryFast = function(d){return "setează viteza bilei la nivel foarte rapid"};
 
-exports.setBallSpeedTooltip = function(d){return "Sets the speed of the ball"};
+exports.setBallSpeedTooltip = function(d){return "Setează viteza bilei"};
 
-exports.setPaddleRandom = function(d){return "set random paddle"};
+exports.setPaddleRandom = function(d){return "setează paleta la întâmplare"};
 
-exports.setPaddleHardcourt = function(d){return "set hardcourt paddle"};
+exports.setPaddleHardcourt = function(d){return "setează paleta la hardcourt"};
 
-exports.setPaddleRetro = function(d){return "set retro paddle"};
+exports.setPaddleRetro = function(d){return "setează paleta la retro"};
 
 exports.setPaddleTooltip = function(d){return "Sets the ball paddle"};
 
-exports.setPaddleSpeedRandom = function(d){return "set random paddle speed"};
+exports.setPaddleSpeedRandom = function(d){return "setează paleta la nivel de viteză aleatorie"};
 
-exports.setPaddleSpeedVerySlow = function(d){return "set very slow paddle speed"};
+exports.setPaddleSpeedVerySlow = function(d){return "setează paleta la viteză foarte mică"};
 
-exports.setPaddleSpeedSlow = function(d){return "set slow paddle speed"};
+exports.setPaddleSpeedSlow = function(d){return "setează paleta la viteză mică"};
 
-exports.setPaddleSpeedNormal = function(d){return "set normal paddle speed"};
+exports.setPaddleSpeedNormal = function(d){return "setează paleta la viteză normală"};
 
-exports.setPaddleSpeedFast = function(d){return "set fast paddle speed"};
+exports.setPaddleSpeedFast = function(d){return "setează paleta la viteză mare"};
 
-exports.setPaddleSpeedVeryFast = function(d){return "set very fast paddle speed"};
+exports.setPaddleSpeedVeryFast = function(d){return "setează paleta la viteză foarte mare"};
 
-exports.setPaddleSpeedTooltip = function(d){return "Sets the speed of the paddle"};
+exports.setPaddleSpeedTooltip = function(d){return "Setează viteza paletei"};
 
 exports.share = function(d){return "Share"};
 
@@ -5394,47 +5394,47 @@ exports.shareBounceTwitter = function(d){return "Check out the Bounce game I mad
 
 exports.shareGame = function(d){return "Share your game:"};
 
-exports.turnLeft = function(d){return "intoarce-te catre stanga"};
+exports.turnLeft = function(d){return "ia-o la stânga"};
 
-exports.turnRight = function(d){return "intoarce-te catre dreapta"};
+exports.turnRight = function(d){return "ia-o la dreapta"};
 
-exports.turnTooltip = function(d){return "Ma indreapta catre stanga sau dreapta cu 90 de grade."};
+exports.turnTooltip = function(d){return "Mă roteşte la stânga sau la dreapta cu 90 de grade."};
 
-exports.whenBallInGoal = function(d){return "when ball in goal"};
+exports.whenBallInGoal = function(d){return "Când bila la țintă"};
 
-exports.whenBallInGoalTooltip = function(d){return "Execute the actions below when a ball enters the goal."};
+exports.whenBallInGoalTooltip = function(d){return "Execută acţiunile de mai jos când o minge intră la țintă."};
 
-exports.whenBallMissesPaddle = function(d){return "when ball misses paddle"};
+exports.whenBallMissesPaddle = function(d){return "Când bila ratează paleta"};
 
-exports.whenBallMissesPaddleTooltip = function(d){return "Execute the actions below when a ball misses the paddle."};
+exports.whenBallMissesPaddleTooltip = function(d){return "Execută acţiunile de mai jos când o minge ratează paletele."};
 
 exports.whenDown = function(d){return "când săgeata în jos"};
 
-exports.whenDownTooltip = function(d){return "Executa actiunile de mai jos atunci cand tasta sageata in jos este apasata."};
+exports.whenDownTooltip = function(d){return "Execută acțiunile de mai jos atunci când tasta săgeată în jos este apăsată."};
 
-exports.whenGameStarts = function(d){return "when game starts"};
+exports.whenGameStarts = function(d){return "Când începe jocul"};
 
-exports.whenGameStartsTooltip = function(d){return "Execute the actions below when the game starts."};
+exports.whenGameStartsTooltip = function(d){return "Execută acţiunile de mai jos atunci când începe jocul."};
 
-exports.whenLeft = function(d){return "cand sageata din stanga"};
+exports.whenLeft = function(d){return "când săgeată la stânga"};
 
-exports.whenLeftTooltip = function(d){return "Executa actiunile de mai jos atunci cand tasta sageata in stanga este apasata."};
+exports.whenLeftTooltip = function(d){return "Execută acțiunile de mai jos atunci când tasta săgeată la stânga este apăsată."};
 
-exports.whenPaddleCollided = function(d){return "cand mingea loveste paleta"};
+exports.whenPaddleCollided = function(d){return "când bila lovește paleta"};
 
-exports.whenPaddleCollidedTooltip = function(d){return "Executa acţiunile de mai jos când o minge se ciocneşte cu o paletă."};
+exports.whenPaddleCollidedTooltip = function(d){return "Execută acţiunile de mai jos când o bilă se ciocneşte cu o paletă."};
 
-exports.whenRight = function(d){return "cand sageata in dreapta"};
+exports.whenRight = function(d){return "când săgeată la dreapta"};
 
-exports.whenRightTooltip = function(d){return "Executa actiunile de mai jos atunci cand tasta sageata in dreapta este apasata."};
+exports.whenRightTooltip = function(d){return "Execută acțiunile de mai jos atunci când tasta săgeată la dreapta este apăsată."};
 
-exports.whenUp = function(d){return "cand sageata in sus"};
+exports.whenUp = function(d){return "când săgeată în sus"};
 
-exports.whenUpTooltip = function(d){return "Executa actiunile de mai jos atunci cand tasta sageata in sus este apasata."};
+exports.whenUpTooltip = function(d){return "Execută acțiunile de mai jos atunci când tasta săgeată în sus este apăsată."};
 
-exports.whenWallCollided = function(d){return "cand mingea loveste peretele"};
+exports.whenWallCollided = function(d){return "când mingea loveşte peretele"};
 
-exports.whenWallCollidedTooltip = function(d){return "Executa acţiunile de mai jos când o minge se ciocneşte cu un perete."};
+exports.whenWallCollidedTooltip = function(d){return "Execută acţiunile de mai jos când o bilă se ciocneşte cu un perete."};
 
 exports.while = function(d){return "în timp ce"};
 
@@ -5482,13 +5482,13 @@ exports.dialogCancel = function(d){return "Revocare"};
 
 exports.dialogOK = function(d){return "OK"};
 
-exports.emptyBlocksErrorMsg = function(d){return "Blocul \"Repeat\" sau \"Dacă\" necesită alte blocuri în interiorul său  pentru a putea funcționa. Asigură-te că blocul interior se încadrează corect în blocul care îl conține."};
+exports.emptyBlocksErrorMsg = function(d){return "Blocul \"Repetă\" sau \"Dacă\" trebuie să aibe alte blocuri în interiorul său  pentru a putea funcționa. Asigură-te că blocul interior se încadrează corect în blocul care îl conține."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Ai blocuri suplimentare care nu sunt ataşate la un bloc de eveniment."};
 
 exports.finalStage = function(d){return "Felicitări! Ai terminat ultima etapă."};
 
-exports.finalStageTrophies = function(d){return "Felicitări! Ai terminat etapa finală şi ai câştigat "+p(d,"numTrophies",0,"ro",{"one":"un trofeu","other":n(d,"numTrophies")+" trofee"})+"."};
+exports.finalStageTrophies = function(d){return "Congratulations! You have completed the final stage and won "+p(d,"numTrophies",0,"ro",{"one":"a trophy","other":n(d,"numTrophies")+" trophies"})+"."};
 
 exports.generatedCodeInfo = function(d){return "Blocurile pentru programul tău pot fi, de asemenea, reprezentate în JavaScript, unul dintre cele mai utilizate limbaje de programare:"};
 
@@ -5498,25 +5498,25 @@ exports.help = function(d){return "Ajutor"};
 
 exports.hintTitle = function(d){return "Sugestie:"};
 
-exports.levelIncompleteError = function(d){return "Utilizati toate tipurile de blocuri necesare, dar nu așa cum trebuie."};
+exports.levelIncompleteError = function(d){return "Utilizezi toate tipurile de blocuri necesare, dar nu așa cum trebuie."};
 
 exports.listVariable = function(d){return "listă"};
 
-exports.makeYourOwnFlappy = function(d){return "Face propriul tău joc Flappy"};
+exports.makeYourOwnFlappy = function(d){return "Crează-ți propriul tău joc Flappy"};
 
-exports.missingBlocksErrorMsg = function(d){return "Încercaţi unul sau mai multe blocuri de mai jos pentru a rezolva acest puzzle."};
+exports.missingBlocksErrorMsg = function(d){return "Încearcă unul sau mai multe blocuri de mai jos pentru a rezolva acest puzzle."};
 
 exports.nextLevel = function(d){return "Felicitări! Ai terminat Puzzle-ul "+v(d,"puzzleNumber")+"."};
 
-exports.nextLevelTrophies = function(d){return "Felicitări! Ai terminat Puzzle-ul "+v(d,"puzzleNumber")+" și ai câștigat "+p(d,"numTrophies",0,"ro",{"one":"un trofeu","other":n(d,"numTrophies")+" trofee"})+"."};
+exports.nextLevelTrophies = function(d){return "Congratulations! You completed Puzzle "+v(d,"puzzleNumber")+" and won "+p(d,"numTrophies",0,"ro",{"one":"a trophy","other":n(d,"numTrophies")+" trophies"})+"."};
 
 exports.nextStage = function(d){return "Felicitări! Ai completat etapa "+v(d,"stageNumber")+"."};
 
 exports.nextStageTrophies = function(d){return "Felicitări! Ai finalizat etapa "+v(d,"stageNumber")+" și ai câștigat "+p(d,"numTrophies",0,"ro",{"one":"un trofeu","other":n(d,"numTrophies")+" trofee"})+"."};
 
-exports.numBlocksNeeded = function(d){return "Felicităr! Ai terminat Puzzle-ul "+v(d,"puzzleNumber")+". (Însă, ai fi putut folosi doar "+p(d,"numBlocks",0,"ro",{"one":"1 bloc","other":n(d,"numBlocks")+" blocuri"})+".)"};
+exports.numBlocksNeeded = function(d){return "Congratulations! You completed Puzzle "+v(d,"puzzleNumber")+". (However, you could have used only "+p(d,"numBlocks",0,"ro",{"one":"1 block","other":n(d,"numBlocks")+" blocks"})+".)"};
 
-exports.numLinesOfCodeWritten = function(d){return "Ai scris doar "+p(d,"numLines",0,"ro",{"one":"1 linie","other":"linii "+n(d,"numLines")})+" de cod!"};
+exports.numLinesOfCodeWritten = function(d){return "You just wrote "+p(d,"numLines",0,"ro",{"one":"1 line","other":n(d,"numLines")+" lines"})+" of code!"};
 
 exports.puzzleTitle = function(d){return "Puzzle "+v(d,"puzzle_number")+" din "+v(d,"stage_total")};
 
@@ -5534,19 +5534,19 @@ exports.subtitle = function(d){return "un mediu de programare vizual"};
 
 exports.textVariable = function(d){return "text"};
 
-exports.tooFewBlocksMsg = function(d){return "Folosești toate tipurile necesare de blocuri, dar încearcă să folosești mai multe din aceste blocuri să completezi puzzle-ul."};
+exports.tooFewBlocksMsg = function(d){return "Folosești toate tipurile necesare de blocuri, dar încearcă să utilizezi mai multe din aceste tipuri de blocuri pentru a completa puzzle-ul."};
 
-exports.tooManyBlocksMsg = function(d){return "Acest puzzle poate fi rezolvat cu blocuri <x id='START_SPAN'/> <x id='END_SPAN'/>."};
+exports.tooManyBlocksMsg = function(d){return "Acest puzzle poate fi rezolvat cu blocuri <x id='START_SPAN'/><x id='END_SPAN'/>."};
 
 exports.tooMuchWork = function(d){return "M-ai făcut să lucrez foarte mult! Ai putea să încerci să repeți de mai puține ori?"};
 
-exports.flappySpecificFail = function(d){return "Codul tău arata bine - va zbura cu fiecare clic. Dar ai nevoie să faceţi clic de mai multe ori ca să zboare la target."};
+exports.flappySpecificFail = function(d){return "Codul tău arată bine - va zbura cu fiecare clic. Dar ai nevoie să faci clic de mai multe ori ca să zboare la țintă."};
 
 exports.toolboxHeader = function(d){return "Blocuri"};
 
 exports.openWorkspace = function(d){return "Cum funcţionează"};
 
-exports.totalNumLinesOfCodeWritten = function(d){return "Totalul all-time: "+p(d,"numLines",0,"ro",{"one":"1 linie","other":n(d,"numLines")+" linii"})+" de cod."};
+exports.totalNumLinesOfCodeWritten = function(d){return "All-time total: "+p(d,"numLines",0,"ro",{"one":"1 line","other":n(d,"numLines")+" lines"})+" of code."};
 
 exports.tryAgain = function(d){return "Încearcă din nou"};
 
@@ -5568,13 +5568,13 @@ exports.rotateText = function(d){return "Rotește dispozitivul tău."};
 
 exports.orientationLock = function(d){return "Oprește blocarea de orientare în setările dispozitivului."};
 
-exports.wantToLearn = function(d){return "Vrei sa inveti sa codezi?"};
+exports.wantToLearn = function(d){return "Vrei să înveți să codezi?"};
 
-exports.watchVideo = function(d){return "Urmareste clipul video"};
+exports.watchVideo = function(d){return "Urmărește clipul video"};
 
-exports.tryHOC = function(d){return "Incearca Ora de Codare"};
+exports.tryHOC = function(d){return "Încearcă Ora de Cod"};
 
-exports.signup = function(d){return "Inscrie-te pentru cursul introductiv"};
+exports.signup = function(d){return "Înscrie-te la cursul introductiv"};
 
 exports.hintHeader = function(d){return "Here's a tip:"};
 

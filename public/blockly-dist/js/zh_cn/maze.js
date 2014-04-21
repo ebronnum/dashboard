@@ -7298,7 +7298,7 @@ exports.heightParameter = function(d){return "高度"};
 
 exports.holePresent = function(d){return "地上有一个坑"};
 
-exports.ifCode = function(d){return "if (如果)"};
+exports.ifCode = function(d){return "如果"};
 
 exports.ifPathAhead = function(d){return "如果前面有路"};
 

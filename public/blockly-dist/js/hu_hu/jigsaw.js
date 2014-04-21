@@ -3511,7 +3511,7 @@ exports.dialogOK = function(d){return "OK"};
 
 exports.emptyBlocksErrorMsg = function(d){return "Akkor van értelme az \"Ismétel\" vagy a \"Ha\" blokknak, ha van  bennük egy vagy több blokk. Bizonyosodj meg róla, hogy a belső blokk megfelelően illeszkedik a külső blokkhoz."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Van egy blokk, ami nincs csatolva egyetlen eseményblokkhoz se."};
 
 exports.finalStage = function(d){return "Gratulálok! Teljesítetted az utolsó szakaszt."};
 
@@ -3529,7 +3529,7 @@ exports.levelIncompleteError = function(d){return "Minden szükséges blokkot fe
 
 exports.listVariable = function(d){return "lista"};
 
-exports.makeYourOwnFlappy = function(d){return "Make Your Own Flappy Game"};
+exports.makeYourOwnFlappy = function(d){return "Készítsd el a saját Flappy játékod"};
 
 exports.missingBlocksErrorMsg = function(d){return "Próbáld meg a lenti blokkokat használni, hogy megoldd a rejtvényt."};
 
@@ -3567,7 +3567,7 @@ exports.tooManyBlocksMsg = function(d){return "Ez a feladvány megoldható a <x 
 
 exports.tooMuchWork = function(d){return "Sokat dolgoztattál. Megpróbálnád egy kicsit kevesebb ismétléssel?"};
 
-exports.flappySpecificFail = function(d){return "Your code looks good - it will flap with each click. But you need to click many times to flap to the target."};
+exports.flappySpecificFail = function(d){return "A kódod nem rossz - Csap minden egyes kattintásra. De sokszor kell kattintania, hogy eljusson a célba."};
 
 exports.toolboxHeader = function(d){return "Blokkok"};
 

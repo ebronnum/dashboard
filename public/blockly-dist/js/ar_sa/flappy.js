@@ -4747,7 +4747,7 @@ exports.dialogOK = function(d){return "موافق"};
 
 exports.emptyBlocksErrorMsg = function(d){return "قطعة \" أكرر\" او \" اذا \" تحتاج ان تحتوي على قطع اخرى داخلها من اجل العمل . تأكد من القطع الداخلية بحيث يجب ان تكون تناسب القطع المحتوية في الداخل ."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "لديك قطع إضافية لم ترفق على قطع الاحتفالية."};
 
 exports.finalStage = function(d){return "تهانينا! لقد اتممت المرحلة النهائية."};
 
@@ -4833,11 +4833,11 @@ exports.orientationLock = function(d){return "قم بتعطيل قفل التو�
 
 exports.wantToLearn = function(d){return "هل تريد أن تتعلم البرمجة؟"};
 
-exports.watchVideo = function(d){return "مشاهدة الفيديو"};
+exports.watchVideo = function(d){return "شاهد الفيديو"};
 
 exports.tryHOC = function(d){return "جرب \"Hour of Code\""};
 
-exports.signup = function(d){return "سجل للمتابعة لبداية الدرس"};
+exports.signup = function(d){return "سجل لمشاهدة مقدمة الدورة"};
 
 exports.hintHeader = function(d){return "Here's a tip:"};
 
@@ -4861,11 +4861,11 @@ var MessageFormat = require("messageformat");MessageFormat.locale.ar = function(
   }
   return 'other';
 };
-exports.continue = function(d){return "أستمر"};
+exports.continue = function(d){return "إستمرار"};
 
 exports.doCode = function(d){return "نفّذ"};
 
-exports.elseCode = function(d){return "آخر"};
+exports.elseCode = function(d){return "والا"};
 
 exports.endGame = function(d){return "إنهاء اللعبة"};
 
@@ -4979,19 +4979,19 @@ exports.setGravityTooltip = function(d){return "يعين مستوى الجاذب
 
 exports.setGroundRandom = function(d){return "تعيين عشوائي لسطح الأرض"};
 
-exports.setGroundFlappy = function(d){return "set ground Ground"};
+exports.setGroundFlappy = function(d){return "تعيين الأرضية أرض"};
 
-exports.setGroundSciFi = function(d){return "set ground Sci-Fi"};
+exports.setGroundSciFi = function(d){return "تعيين الأرضية أرض خيال علمي"};
 
-exports.setGroundUnderwater = function(d){return "set ground Underwater"};
+exports.setGroundUnderwater = function(d){return "تعيين الأرضية تحت الماء"};
 
-exports.setGroundCave = function(d){return "set ground Cave"};
+exports.setGroundCave = function(d){return "تعيين الأرضية كهف"};
 
-exports.setGroundSanta = function(d){return "set ground Santa"};
+exports.setGroundSanta = function(d){return "تعيين الأرضية سانتا"};
 
-exports.setGroundLava = function(d){return "set ground Lava"};
+exports.setGroundLava = function(d){return "تعيين الأرضية حمم بركانية"};
 
-exports.setGroundTooltip = function(d){return "Sets the ground image"};
+exports.setGroundTooltip = function(d){return "تعيين الأرض صورة"};
 
 exports.setObstacleRandom = function(d){return "تعيين عقبة عشوائية"};
 

@@ -5327,57 +5327,57 @@ exports.repeatUntilFinish = function(d){return "повтаряй докато н
 
 exports.scoreText = function(d){return "Score: "+v(d,"playerScore")+" : "+v(d,"opponentScore")};
 
-exports.setBackgroundRandom = function(d){return "set random scene"};
+exports.setBackgroundRandom = function(d){return "Задаване случайна сцена"};
 
-exports.setBackgroundHardcourt = function(d){return "set hardcourt scene"};
+exports.setBackgroundHardcourt = function(d){return "зареди сцена с твърда настилка"};
 
-exports.setBackgroundRetro = function(d){return "set retro scene"};
+exports.setBackgroundRetro = function(d){return "зареди ретро сцената"};
 
-exports.setBackgroundTooltip = function(d){return "Sets the background image"};
+exports.setBackgroundTooltip = function(d){return "Задаване на фоновото изображение"};
 
-exports.setBallRandom = function(d){return "set random ball"};
+exports.setBallRandom = function(d){return "Задаване на произволна топка"};
 
-exports.setBallHardcourt = function(d){return "set hardcourt ball"};
+exports.setBallHardcourt = function(d){return "задаване на твърда топка"};
 
-exports.setBallRetro = function(d){return "set retro ball"};
+exports.setBallRetro = function(d){return "Задаване на ретро топка"};
 
-exports.setBallTooltip = function(d){return "Sets the ball image"};
+exports.setBallTooltip = function(d){return "Задаване на изображение на топка"};
 
-exports.setBallSpeedRandom = function(d){return "set random ball speed"};
+exports.setBallSpeedRandom = function(d){return "Задаване на произволна скорост на топката"};
 
-exports.setBallSpeedVerySlow = function(d){return "set very slow ball speed"};
+exports.setBallSpeedVerySlow = function(d){return "Задаване на много бавна скорост на топката"};
 
-exports.setBallSpeedSlow = function(d){return "set slow ball speed"};
+exports.setBallSpeedSlow = function(d){return "Задаване на бавна скорост на топката"};
 
-exports.setBallSpeedNormal = function(d){return "set normal ball speed"};
+exports.setBallSpeedNormal = function(d){return "Задаване на нормална скорост на топката"};
 
-exports.setBallSpeedFast = function(d){return "set fast ball speed"};
+exports.setBallSpeedFast = function(d){return "Задаване на бърза скорост на топката"};
 
-exports.setBallSpeedVeryFast = function(d){return "set very fast ball speed"};
+exports.setBallSpeedVeryFast = function(d){return "Задаване  на много бърза скорост на топката"};
 
-exports.setBallSpeedTooltip = function(d){return "Sets the speed of the ball"};
+exports.setBallSpeedTooltip = function(d){return "Задаване скоростта на топката"};
 
-exports.setPaddleRandom = function(d){return "set random paddle"};
+exports.setPaddleRandom = function(d){return "Задаване на произволна бухалка"};
 
-exports.setPaddleHardcourt = function(d){return "set hardcourt paddle"};
+exports.setPaddleHardcourt = function(d){return "Задайте hardcourt бухалка"};
 
-exports.setPaddleRetro = function(d){return "set retro paddle"};
+exports.setPaddleRetro = function(d){return "Задайте ретро бухалка"};
 
 exports.setPaddleTooltip = function(d){return "Sets the ball paddle"};
 
-exports.setPaddleSpeedRandom = function(d){return "set random paddle speed"};
+exports.setPaddleSpeedRandom = function(d){return "Задайте произволна скорост на бухалката"};
 
-exports.setPaddleSpeedVerySlow = function(d){return "set very slow paddle speed"};
+exports.setPaddleSpeedVerySlow = function(d){return "зададете много бавна скорост на бухалката"};
 
-exports.setPaddleSpeedSlow = function(d){return "set slow paddle speed"};
+exports.setPaddleSpeedSlow = function(d){return "Задайте бавна скорост на бухалката"};
 
-exports.setPaddleSpeedNormal = function(d){return "set normal paddle speed"};
+exports.setPaddleSpeedNormal = function(d){return "Задайте нормална скорост на бухалката"};
 
-exports.setPaddleSpeedFast = function(d){return "set fast paddle speed"};
+exports.setPaddleSpeedFast = function(d){return "Задава бърза скорост на бухалката"};
 
-exports.setPaddleSpeedVeryFast = function(d){return "set very fast paddle speed"};
+exports.setPaddleSpeedVeryFast = function(d){return "зададете много бърза скорост на бухалката"};
 
-exports.setPaddleSpeedTooltip = function(d){return "Sets the speed of the paddle"};
+exports.setPaddleSpeedTooltip = function(d){return "Задава скоростта на бухалката"};
 
 exports.share = function(d){return "Share"};
 
@@ -5403,9 +5403,9 @@ exports.whenDown = function(d){return "when Down arrow"};
 
 exports.whenDownTooltip = function(d){return "Execute the actions below when the Down arrow button is pressed."};
 
-exports.whenGameStarts = function(d){return "when game starts"};
+exports.whenGameStarts = function(d){return "когато играта започва"};
 
-exports.whenGameStartsTooltip = function(d){return "Execute the actions below when the game starts."};
+exports.whenGameStartsTooltip = function(d){return "Изпълни действията по-долу при стартиране на играта."};
 
 exports.whenLeft = function(d){return "when Left arrow"};
 
@@ -5464,9 +5464,9 @@ exports.dialogCancel = function(d){return "Отказ"};
 
 exports.dialogOK = function(d){return "OK"};
 
-exports.emptyBlocksErrorMsg = function(d){return "Блоковете \"Repeat\" и \"If\" трябва да съдържат други блокове в себе си, за да работят. Уверете се, че вътрешния блок се вписва правилно във външния блок."};
+exports.emptyBlocksErrorMsg = function(d){return "Блоковете \"Повтори\" и \"или\" трябва да съдържат други блокове в себе си, за да работят. Уверете се, че вътрешния блок се вписва правилно във външния блок."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Имате допълнителни блокчета, които не са били използвани в блока за програмиране."};
 
 exports.finalStage = function(d){return "Поздравления! Вие завършихте последния етап."};
 
@@ -5504,7 +5504,7 @@ exports.puzzleTitle = function(d){return "Пъзел "+v(d,"puzzle_number")+" о
 
 exports.resetProgram = function(d){return "Възстановяване"};
 
-exports.runProgram = function(d){return "Пусни програмата"};
+exports.runProgram = function(d){return "Стартиране на програмата"};
 
 exports.runTooltip = function(d){return "Пусни програмата, определена от блоковете в работното поле."};
 
@@ -5530,7 +5530,7 @@ exports.openWorkspace = function(d){return "Как работи"};
 
 exports.totalNumLinesOfCodeWritten = function(d){return "Общо: "+p(d,"numLines",0,"bg",{"one":"1 ред","other":n(d,"numLines")+" реда"})+" код."};
 
-exports.tryAgain = function(d){return "Опитайте пак"};
+exports.tryAgain = function(d){return "Опитайте отново"};
 
 exports.backToPreviousLevel = function(d){return "Обратно към предишното ниво"};
 

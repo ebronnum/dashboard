@@ -4440,7 +4440,7 @@ exports.parseElement = function(text) {
 
 },{}],32:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.ja=function(n){return "other"}
-exports.blocklyMessage = function(d){return "ブロックリー"};
+exports.blocklyMessage = function(d){return "ブロック状の"};
 
 exports.catActions = function(d){return "操作"};
 
@@ -4452,7 +4452,7 @@ exports.catLists = function(d){return "リスト"};
 
 exports.catLoops = function(d){return "繰り返し"};
 
-exports.catMath = function(d){return "計算"};
+exports.catMath = function(d){return "数値"};
 
 exports.catProcedures = function(d){return "関数"};
 
@@ -4470,7 +4470,7 @@ exports.dialogOK = function(d){return "OK"};
 
 exports.emptyBlocksErrorMsg = function(d){return "”Repeat”または\"If\"のブロックを動作をさせるためには内側に別のブロックが必要になります。内側のブロックが構成されているブロック 内に適切にはめ込まれているか確認をしてください。\n\n\n"};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "イベントブロックに付いていない余分なブロックがあります。"};
 
 exports.finalStage = function(d){return "おめでとうございます ！最終ステージをクリアしました。"};
 

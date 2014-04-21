@@ -5227,13 +5227,13 @@ exports.ifTooltip = function(d){return "Se c'è strada nella direzione specifica
 
 exports.ifelseTooltip = function(d){return "Se c'è strada nella direzione specificata, effettua il primo blocco di azioni. Altrimenti, effettua il secondo."};
 
-exports.incrementOpponentScore = function(d){return "aumenta il punteggio dell'avversario"};
+exports.incrementOpponentScore = function(d){return "l'avversario ha fatto 1 punto"};
 
 exports.incrementOpponentScoreTooltip = function(d){return "Aggiungi uno al punteggio attuale dell'avversario."};
 
-exports.incrementPlayerScore = function(d){return "aumenta il punteggio del giocatore"};
+exports.incrementPlayerScore = function(d){return "hai fatto 1 punto"};
 
-exports.incrementPlayerScoreTooltip = function(d){return "Aggiungi uno al punteggio attuale del giocatore."};
+exports.incrementPlayerScoreTooltip = function(d){return "Aggiunge uno al punteggio attuale del giocatore."};
 
 exports.isWall = function(d){return "questo è un muro"};
 
@@ -5287,31 +5287,31 @@ exports.pathRight = function(d){return "se c'è strada a destra"};
 
 exports.pilePresent = function(d){return "c'è un mucchio"};
 
-exports.playSoundCrunch = function(d){return "Fai il rumore di uno sgranocchiamento"};
+exports.playSoundCrunch = function(d){return "riproduci il suono di uno sgranocchiamento"};
 
-exports.playSoundGoal1 = function(d){return "play goal 1 sound"};
+exports.playSoundGoal1 = function(d){return "riproduci il suono per 1 obiettivo raggiunto"};
 
-exports.playSoundGoal2 = function(d){return "play goal 2 sound"};
+exports.playSoundGoal2 = function(d){return "riproduci il suono per 2 obiettivi raggiunti"};
 
-exports.playSoundHit = function(d){return "play hit sound"};
+exports.playSoundHit = function(d){return "riproduci il suono di un colpo"};
 
-exports.playSoundLosePoint = function(d){return "play lose point sound"};
+exports.playSoundLosePoint = function(d){return "riproduci il suono di 1 punto perso"};
 
-exports.playSoundLosePoint2 = function(d){return "play lose point 2 sound"};
+exports.playSoundLosePoint2 = function(d){return "riproduci il suono di 2 punti persi"};
 
-exports.playSoundRetro = function(d){return "play retro sound"};
+exports.playSoundRetro = function(d){return "riproduci un suono retrò"};
 
-exports.playSoundRubber = function(d){return "play rubber sound"};
+exports.playSoundRubber = function(d){return "riproduci il suono della gomma"};
 
-exports.playSoundSlap = function(d){return "play slap sound"};
+exports.playSoundSlap = function(d){return "riproduci il suono di uno schiaffo"};
 
-exports.playSoundTooltip = function(d){return "Fai il rumore scelto."};
+exports.playSoundTooltip = function(d){return "Riproduci il suono scelto."};
 
-exports.playSoundWinPoint = function(d){return "play win point sound"};
+exports.playSoundWinPoint = function(d){return "riproduci il suono di 1 punto vinto"};
 
-exports.playSoundWinPoint2 = function(d){return "play win point 2 sound"};
+exports.playSoundWinPoint2 = function(d){return "riproduci il suono di 2 punti vinti"};
 
-exports.playSoundWood = function(d){return "play wood sound"};
+exports.playSoundWood = function(d){return "riproduci il suono del legno"};
 
 exports.putdownTower = function(d){return "metti giù la torre"};
 
@@ -5327,57 +5327,57 @@ exports.repeatUntilFinish = function(d){return "ripeti fino alla fine"};
 
 exports.scoreText = function(d){return "Punteggio: "+v(d,"playerScore")+" : "+v(d,"opponentScore")};
 
-exports.setBackgroundRandom = function(d){return "set random scene"};
+exports.setBackgroundRandom = function(d){return "imposta una scena casuale"};
 
-exports.setBackgroundHardcourt = function(d){return "set hardcourt scene"};
+exports.setBackgroundHardcourt = function(d){return "imposta una scena per polo"};
 
-exports.setBackgroundRetro = function(d){return "set retro scene"};
+exports.setBackgroundRetro = function(d){return "imposta una scena retrò"};
 
-exports.setBackgroundTooltip = function(d){return "Sets the background image"};
+exports.setBackgroundTooltip = function(d){return "Imposta l'immagine di sfondo"};
 
-exports.setBallRandom = function(d){return "set random ball"};
+exports.setBallRandom = function(d){return "imposta una palla casuale"};
 
-exports.setBallHardcourt = function(d){return "set hardcourt ball"};
+exports.setBallHardcourt = function(d){return "imposta una palla per polo"};
 
-exports.setBallRetro = function(d){return "set retro ball"};
+exports.setBallRetro = function(d){return "imposta una palla retrò"};
 
-exports.setBallTooltip = function(d){return "Sets the ball image"};
+exports.setBallTooltip = function(d){return "Imposta l'immagine della palla"};
 
-exports.setBallSpeedRandom = function(d){return "set random ball speed"};
+exports.setBallSpeedRandom = function(d){return "imposta per la palla una velocità casuale"};
 
-exports.setBallSpeedVerySlow = function(d){return "set very slow ball speed"};
+exports.setBallSpeedVerySlow = function(d){return "imposta per la palla una velocità molto lenta"};
 
-exports.setBallSpeedSlow = function(d){return "set slow ball speed"};
+exports.setBallSpeedSlow = function(d){return "imposta per la palla una velocità lenta"};
 
-exports.setBallSpeedNormal = function(d){return "set normal ball speed"};
+exports.setBallSpeedNormal = function(d){return "imposta per la palla una velocità normale"};
 
-exports.setBallSpeedFast = function(d){return "set fast ball speed"};
+exports.setBallSpeedFast = function(d){return "imposta per la palla una velocità veloce"};
 
-exports.setBallSpeedVeryFast = function(d){return "set very fast ball speed"};
+exports.setBallSpeedVeryFast = function(d){return "imposta per la palla una velocità molto veloce"};
 
-exports.setBallSpeedTooltip = function(d){return "Sets the speed of the ball"};
+exports.setBallSpeedTooltip = function(d){return "Imposta la velocità della palla"};
 
-exports.setPaddleRandom = function(d){return "set random paddle"};
+exports.setPaddleRandom = function(d){return "imposta una racchetta casuale"};
 
-exports.setPaddleHardcourt = function(d){return "set hardcourt paddle"};
+exports.setPaddleHardcourt = function(d){return "imposta una racchetta per polo"};
 
-exports.setPaddleRetro = function(d){return "set retro paddle"};
+exports.setPaddleRetro = function(d){return "imposta una racchetta retrò"};
 
 exports.setPaddleTooltip = function(d){return "Sets the ball paddle"};
 
-exports.setPaddleSpeedRandom = function(d){return "set random paddle speed"};
+exports.setPaddleSpeedRandom = function(d){return "imposta per la racchetta una velocità casuale"};
 
-exports.setPaddleSpeedVerySlow = function(d){return "set very slow paddle speed"};
+exports.setPaddleSpeedVerySlow = function(d){return "imposta per la racchetta una velocità molto lenta"};
 
-exports.setPaddleSpeedSlow = function(d){return "set slow paddle speed"};
+exports.setPaddleSpeedSlow = function(d){return "imposta per la racchetta una velocità lenta"};
 
-exports.setPaddleSpeedNormal = function(d){return "set normal paddle speed"};
+exports.setPaddleSpeedNormal = function(d){return "imposta per la racchetta una velocità normale"};
 
-exports.setPaddleSpeedFast = function(d){return "set fast paddle speed"};
+exports.setPaddleSpeedFast = function(d){return "imposta per la racchetta una velocità veloce"};
 
-exports.setPaddleSpeedVeryFast = function(d){return "set very fast paddle speed"};
+exports.setPaddleSpeedVeryFast = function(d){return "imposta per la racchetta una velocità molto veloce"};
 
-exports.setPaddleSpeedTooltip = function(d){return "Sets the speed of the paddle"};
+exports.setPaddleSpeedTooltip = function(d){return "Imposta la velocità della racchetta"};
 
 exports.share = function(d){return "Share"};
 
@@ -5393,43 +5393,43 @@ exports.turnTooltip = function(d){return "Gira a sinistra o a destra di 90 gradi
 
 exports.whenBallInGoal = function(d){return "quando la palla va in rete"};
 
-exports.whenBallInGoalTooltip = function(d){return "Esegui le azioni qua sotto quando la palla va in rete."};
+exports.whenBallInGoalTooltip = function(d){return "Esegue le azioni qua sotto quando la palla va in rete."};
 
 exports.whenBallMissesPaddle = function(d){return "quando la palla manca la racchetta"};
 
-exports.whenBallMissesPaddleTooltip = function(d){return "Esegui le azioni qua sotto quando la palla manca la racchetta."};
+exports.whenBallMissesPaddleTooltip = function(d){return "Esegue le azioni qua sotto quando la palla manca la racchetta."};
 
 exports.whenDown = function(d){return "quando la freccia in basso"};
 
-exports.whenDownTooltip = function(d){return "Esegui le azioni qua sotto quando viene premuto il tasto \"freccia in basso\"."};
+exports.whenDownTooltip = function(d){return "Esegue le azioni qua sotto quando viene premuto il tasto \"freccia in basso\"."};
 
-exports.whenGameStarts = function(d){return "when game starts"};
+exports.whenGameStarts = function(d){return "quando inizia il gioco"};
 
-exports.whenGameStartsTooltip = function(d){return "Execute the actions below when the game starts."};
+exports.whenGameStartsTooltip = function(d){return "Esegue le azioni qua sotto quando il gioco inizia."};
 
 exports.whenLeft = function(d){return "quando la freccia a sinistra"};
 
-exports.whenLeftTooltip = function(d){return "Esegui le azioni qua sotto quando viene premuto il tasto \"freccia a sinistra\"."};
+exports.whenLeftTooltip = function(d){return "Esegue le azioni qua sotto quando viene premuto il tasto \"freccia a sinistra\"."};
 
 exports.whenPaddleCollided = function(d){return "quando la palla colpisce la racchetta"};
 
-exports.whenPaddleCollidedTooltip = function(d){return "Esegui le azioni qua sotto quando la palla colpisce la racchetta."};
+exports.whenPaddleCollidedTooltip = function(d){return "Esegue le azioni qua sotto quando la palla colpisce la racchetta."};
 
 exports.whenRight = function(d){return "quando la freccia a destra"};
 
-exports.whenRightTooltip = function(d){return "Esegui le azioni qua sotto quando viene premuto il tasto \"freccia a destra\"."};
+exports.whenRightTooltip = function(d){return "Esegue le azioni qua sotto quando viene premuto il tasto \"freccia a destra\"."};
 
 exports.whenUp = function(d){return "quando la freccia in alto"};
 
-exports.whenUpTooltip = function(d){return "Esegui le azioni qua sotto quando viene premuto il tasto \"freccia in alto\"."};
+exports.whenUpTooltip = function(d){return "Esegue le azioni qua sotto quando viene premuto il tasto \"freccia in alto\"."};
 
 exports.whenWallCollided = function(d){return "quando la palla colpisce il muro"};
 
-exports.whenWallCollidedTooltip = function(d){return "Esegui le azioni qua sotto quando una palla colpisce il muro."};
+exports.whenWallCollidedTooltip = function(d){return "Esegue le azioni qua sotto quando una palla colpisce il muro."};
 
 exports.while = function(d){return "mentre"};
 
-exports.whileTooltip = function(d){return "Ripeti le azioni incluse fino a che diventa vera la condizione di arresto."};
+exports.whileTooltip = function(d){return "Ripeti le azioni incluse per tutto il tempo in cui rimane vera la condizione."};
 
 exports.yes = function(d){return "Sì"};
 
@@ -5466,7 +5466,7 @@ exports.dialogOK = function(d){return "Ok"};
 
 exports.emptyBlocksErrorMsg = function(d){return "Il blocco \"ripeti\" o \"se\" deve avere all'interno altri blocchi per poter funzionare. Assicurati che i blocchi interni siano inseriti correttamente all'interno del blocco principale."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Ci sono blocchi che non sono attaccati ad un blocco evento."};
 
 exports.finalStage = function(d){return "Complimenti! Hai completato l'ultima lezione."};
 
@@ -5522,7 +5522,7 @@ exports.tooManyBlocksMsg = function(d){return "Questo puzzle può essere risolto
 
 exports.tooMuchWork = function(d){return "Mi hai fatto fare un sacco di lavoro!  Puoi provare a farmi fare meno ripetizioni?"};
 
-exports.flappySpecificFail = function(d){return "Il tuo codice sembra buono - sbatte le ali ad ogni click. Ma devi cliccare molte volte per volare fino alla meta."};
+exports.flappySpecificFail = function(d){return "Il tuo codice sembra buono: Flappy sbatte le ali ad ogni clic. Ma devi cliccare molte volte per volare fino al bersaglio disegnato."};
 
 exports.toolboxHeader = function(d){return "Blocchi"};
 

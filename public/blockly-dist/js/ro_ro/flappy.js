@@ -4737,13 +4737,13 @@ exports.dialogCancel = function(d){return "Revocare"};
 
 exports.dialogOK = function(d){return "OK"};
 
-exports.emptyBlocksErrorMsg = function(d){return "Blocul \"Repeat\" sau \"Dacă\" necesită alte blocuri în interiorul său  pentru a putea funcționa. Asigură-te că blocul interior se încadrează corect în blocul care îl conține."};
+exports.emptyBlocksErrorMsg = function(d){return "Blocul \"Repetă\" sau \"Dacă\" trebuie să aibe alte blocuri în interiorul său  pentru a putea funcționa. Asigură-te că blocul interior se încadrează corect în blocul care îl conține."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Ai blocuri suplimentare care nu sunt ataşate la un bloc de eveniment."};
 
 exports.finalStage = function(d){return "Felicitări! Ai terminat ultima etapă."};
 
-exports.finalStageTrophies = function(d){return "Felicitări! Ai terminat etapa finală şi ai câştigat "+p(d,"numTrophies",0,"ro",{"one":"un trofeu","other":n(d,"numTrophies")+" trofee"})+"."};
+exports.finalStageTrophies = function(d){return "Congratulations! You have completed the final stage and won "+p(d,"numTrophies",0,"ro",{"one":"a trophy","other":n(d,"numTrophies")+" trophies"})+"."};
 
 exports.generatedCodeInfo = function(d){return "Blocurile pentru programul tău pot fi, de asemenea, reprezentate în JavaScript, unul dintre cele mai utilizate limbaje de programare:"};
 
@@ -4753,25 +4753,25 @@ exports.help = function(d){return "Ajutor"};
 
 exports.hintTitle = function(d){return "Sugestie:"};
 
-exports.levelIncompleteError = function(d){return "Utilizati toate tipurile de blocuri necesare, dar nu așa cum trebuie."};
+exports.levelIncompleteError = function(d){return "Utilizezi toate tipurile de blocuri necesare, dar nu așa cum trebuie."};
 
 exports.listVariable = function(d){return "listă"};
 
-exports.makeYourOwnFlappy = function(d){return "Face propriul tău joc Flappy"};
+exports.makeYourOwnFlappy = function(d){return "Crează-ți propriul tău joc Flappy"};
 
-exports.missingBlocksErrorMsg = function(d){return "Încercaţi unul sau mai multe blocuri de mai jos pentru a rezolva acest puzzle."};
+exports.missingBlocksErrorMsg = function(d){return "Încearcă unul sau mai multe blocuri de mai jos pentru a rezolva acest puzzle."};
 
 exports.nextLevel = function(d){return "Felicitări! Ai terminat Puzzle-ul "+v(d,"puzzleNumber")+"."};
 
-exports.nextLevelTrophies = function(d){return "Felicitări! Ai terminat Puzzle-ul "+v(d,"puzzleNumber")+" și ai câștigat "+p(d,"numTrophies",0,"ro",{"one":"un trofeu","other":n(d,"numTrophies")+" trofee"})+"."};
+exports.nextLevelTrophies = function(d){return "Congratulations! You completed Puzzle "+v(d,"puzzleNumber")+" and won "+p(d,"numTrophies",0,"ro",{"one":"a trophy","other":n(d,"numTrophies")+" trophies"})+"."};
 
 exports.nextStage = function(d){return "Felicitări! Ai completat etapa "+v(d,"stageNumber")+"."};
 
 exports.nextStageTrophies = function(d){return "Felicitări! Ai finalizat etapa "+v(d,"stageNumber")+" și ai câștigat "+p(d,"numTrophies",0,"ro",{"one":"un trofeu","other":n(d,"numTrophies")+" trofee"})+"."};
 
-exports.numBlocksNeeded = function(d){return "Felicităr! Ai terminat Puzzle-ul "+v(d,"puzzleNumber")+". (Însă, ai fi putut folosi doar "+p(d,"numBlocks",0,"ro",{"one":"1 bloc","other":n(d,"numBlocks")+" blocuri"})+".)"};
+exports.numBlocksNeeded = function(d){return "Congratulations! You completed Puzzle "+v(d,"puzzleNumber")+". (However, you could have used only "+p(d,"numBlocks",0,"ro",{"one":"1 block","other":n(d,"numBlocks")+" blocks"})+".)"};
 
-exports.numLinesOfCodeWritten = function(d){return "Ai scris doar "+p(d,"numLines",0,"ro",{"one":"1 linie","other":"linii "+n(d,"numLines")})+" de cod!"};
+exports.numLinesOfCodeWritten = function(d){return "You just wrote "+p(d,"numLines",0,"ro",{"one":"1 line","other":n(d,"numLines")+" lines"})+" of code!"};
 
 exports.puzzleTitle = function(d){return "Puzzle "+v(d,"puzzle_number")+" din "+v(d,"stage_total")};
 
@@ -4789,19 +4789,19 @@ exports.subtitle = function(d){return "un mediu de programare vizual"};
 
 exports.textVariable = function(d){return "text"};
 
-exports.tooFewBlocksMsg = function(d){return "Folosești toate tipurile necesare de blocuri, dar încearcă să folosești mai multe din aceste blocuri să completezi puzzle-ul."};
+exports.tooFewBlocksMsg = function(d){return "Folosești toate tipurile necesare de blocuri, dar încearcă să utilizezi mai multe din aceste tipuri de blocuri pentru a completa puzzle-ul."};
 
-exports.tooManyBlocksMsg = function(d){return "Acest puzzle poate fi rezolvat cu blocuri <x id='START_SPAN'/> <x id='END_SPAN'/>."};
+exports.tooManyBlocksMsg = function(d){return "Acest puzzle poate fi rezolvat cu blocuri <x id='START_SPAN'/><x id='END_SPAN'/>."};
 
 exports.tooMuchWork = function(d){return "M-ai făcut să lucrez foarte mult! Ai putea să încerci să repeți de mai puține ori?"};
 
-exports.flappySpecificFail = function(d){return "Codul tău arata bine - va zbura cu fiecare clic. Dar ai nevoie să faceţi clic de mai multe ori ca să zboare la target."};
+exports.flappySpecificFail = function(d){return "Codul tău arată bine - va zbura cu fiecare clic. Dar ai nevoie să faci clic de mai multe ori ca să zboare la țintă."};
 
 exports.toolboxHeader = function(d){return "Blocuri"};
 
 exports.openWorkspace = function(d){return "Cum funcţionează"};
 
-exports.totalNumLinesOfCodeWritten = function(d){return "Totalul all-time: "+p(d,"numLines",0,"ro",{"one":"1 linie","other":n(d,"numLines")+" linii"})+" de cod."};
+exports.totalNumLinesOfCodeWritten = function(d){return "All-time total: "+p(d,"numLines",0,"ro",{"one":"1 line","other":n(d,"numLines")+" lines"})+" of code."};
 
 exports.tryAgain = function(d){return "Încearcă din nou"};
 
@@ -4823,13 +4823,13 @@ exports.rotateText = function(d){return "Rotește dispozitivul tău."};
 
 exports.orientationLock = function(d){return "Oprește blocarea de orientare în setările dispozitivului."};
 
-exports.wantToLearn = function(d){return "Vrei sa inveti sa codezi?"};
+exports.wantToLearn = function(d){return "Vrei să înveți să codezi?"};
 
-exports.watchVideo = function(d){return "Urmareste clipul video"};
+exports.watchVideo = function(d){return "Urmărește clipul video"};
 
-exports.tryHOC = function(d){return "Incearca Ora de Codare"};
+exports.tryHOC = function(d){return "Încearcă Ora de Cod"};
 
-exports.signup = function(d){return "Inscrie-te pentru cursul introductiv"};
+exports.signup = function(d){return "Înscrie-te la cursul introductiv"};
 
 exports.hintHeader = function(d){return "Here's a tip:"};
 
@@ -4853,29 +4853,29 @@ exports.elseCode = function(d){return "altfel"};
 
 exports.endGame = function(d){return "sfârşitul jocului"};
 
-exports.endGameTooltip = function(d){return "Se termină jocul."};
+exports.endGameTooltip = function(d){return "Termină jocul."};
 
 exports.finalLevel = function(d){return "Felicitări! Ai rezolvat puzzle-ul final."};
 
-exports.flap = function(d){return "Zboară"};
+exports.flap = function(d){return "zboară"};
 
-exports.flapRandom = function(d){return "Zboară cu o cantitate intamplătoare"};
+exports.flapRandom = function(d){return "zboară o porțiune întâmplătoare"};
 
-exports.flapVerySmall = function(d){return "Zboară cu o cantitate foarte mică"};
+exports.flapVerySmall = function(d){return "zboară o porțiune foarte mică"};
 
-exports.flapSmall = function(d){return "Zboară cu o cantitate mică"};
+exports.flapSmall = function(d){return "zboară o porțiune mică"};
 
-exports.flapNormal = function(d){return "Zboară cu o cantitate normală"};
+exports.flapNormal = function(d){return "zboară o porțiune normală"};
 
-exports.flapLarge = function(d){return "Zboară cu o cantitate largă"};
+exports.flapLarge = function(d){return "zboară o porțiune largă"};
 
-exports.flapVeryLarge = function(d){return "Zboară cu o cantitate foarte largă"};
+exports.flapVeryLarge = function(d){return "zboară o porțiune foarte largă"};
 
-exports.flapTooltip = function(d){return "Zboara Flappy în sus."};
+exports.flapTooltip = function(d){return "Zboară-l pe Flappy în sus."};
 
-exports.incrementPlayerScore = function(d){return "marca un punct"};
+exports.incrementPlayerScore = function(d){return "marchează un punct"};
 
-exports.incrementPlayerScoreTooltip = function(d){return "Adauga unul la scorul de jucător curent."};
+exports.incrementPlayerScoreTooltip = function(d){return "Adaugă unu la scorul de jucător curent."};
 
 exports.nextLevel = function(d){return "Felicitări! Ai finalizat acest puzzle."};
 
@@ -4885,191 +4885,191 @@ exports.numBlocksNeeded = function(d){return "Acest puzzle poate fi rezolvat cu 
 
 exports.oneTopBlock = function(d){return "Pentru acest puzzle, ai nevoie să depozitezi împreună toate blocurile în spațiul de lucru alb."};
 
-exports.playSoundRandom = function(d){return "Redă un sunet intamplător"};
+exports.playSoundRandom = function(d){return "redă sunet aleator"};
 
-exports.playSoundBounce = function(d){return "Redă un sunet de salt"};
+exports.playSoundBounce = function(d){return "redă sunet de salt"};
 
-exports.playSoundCrunch = function(d){return "Redă un sunet de Ronţăit"};
+exports.playSoundCrunch = function(d){return "redă sunet de zdrobire"};
 
-exports.playSoundDie = function(d){return "Redă un sunet trist"};
+exports.playSoundDie = function(d){return "redă sunet trist"};
 
-exports.playSoundHit = function(d){return "Redă un sunet spărgător"};
+exports.playSoundHit = function(d){return "redă sunet de spargere"};
 
-exports.playSoundPoint = function(d){return "Redă un sunet point"};
+exports.playSoundPoint = function(d){return "redă sunet point"};
 
-exports.playSoundSwoosh = function(d){return "Redă un sunet de şuierat"};
+exports.playSoundSwoosh = function(d){return "redă sunet de şuierat"};
 
-exports.playSoundWing = function(d){return "Redă un sunet de Aripă"};
+exports.playSoundWing = function(d){return "redă sunet de aripă"};
 
-exports.playSoundJet = function(d){return "Redă un sunet jet"};
+exports.playSoundJet = function(d){return "redă sunet de jet"};
 
-exports.playSoundCrash = function(d){return "Redă un sunet de Prăbuşire"};
+exports.playSoundCrash = function(d){return "redă sunet de prăbuşire"};
 
-exports.playSoundJingle = function(d){return "Redă un sunet de zdrăngăneală"};
+exports.playSoundJingle = function(d){return "redă sunet de zdrăngăneală"};
 
-exports.playSoundSplash = function(d){return "Redă un sunet de stropire"};
+exports.playSoundSplash = function(d){return "redă sunet de stropire"};
 
-exports.playSoundLaser = function(d){return "Redă un sunet de laser"};
+exports.playSoundLaser = function(d){return "redă sunet de laser"};
 
 exports.playSoundTooltip = function(d){return "Redă sunetul ales."};
 
-exports.reinfFeedbackMsg = function(d){return "Aveti posibilitate sa apasati butonul \"Incercati din nou\" pentru a reveni la jocul precedent."};
+exports.reinfFeedbackMsg = function(d){return "Ai posibilitatea să apeși butonul \"Încearcă din nou\" pentru a reveni la jocul precedent."};
 
 exports.scoreText = function(d){return "Scor: "+v(d,"playerScore")};
 
-exports.setBackgroundRandom = function(d){return "Setează scena întâmplătoare"};
+exports.setBackgroundRandom = function(d){return "Setează decor Aleator"};
 
-exports.setBackgroundFlappy = function(d){return "Seteaza scena Oraș (zi)"};
+exports.setBackgroundFlappy = function(d){return "Setează decor Oraș (zi)"};
 
-exports.setBackgroundNight = function(d){return "Seteaza scena Oraș (noaptea)"};
+exports.setBackgroundNight = function(d){return "setează decor Oraș (noaptea)"};
 
-exports.setBackgroundSciFi = function(d){return "Seteaza scena Sci-Fi"};
+exports.setBackgroundSciFi = function(d){return "setează decor Sci-Fi"};
 
-exports.setBackgroundUnderwater = function(d){return "Seteaza scena subacvatica"};
+exports.setBackgroundUnderwater = function(d){return "setează decor Subacvatic"};
 
-exports.setBackgroundCave = function(d){return "Seteaza scena Pestera"};
+exports.setBackgroundCave = function(d){return "setează decor Peșteră"};
 
-exports.setBackgroundSanta = function(d){return "Seteaza scena Santa"};
+exports.setBackgroundSanta = function(d){return "setează decor Moș Crăciun"};
 
 exports.setBackgroundTooltip = function(d){return "Setează imaginea de fundal"};
 
-exports.setGapRandom = function(d){return "Setează un decalaj întâmplător"};
+exports.setGapRandom = function(d){return "setează un decalaj aleator"};
 
-exports.setGapVerySmall = function(d){return "Seteaza un decalaj foarte mic"};
+exports.setGapVerySmall = function(d){return "setează un decalaj foarte mic"};
 
-exports.setGapSmall = function(d){return "Seteaza un decalaj mic"};
+exports.setGapSmall = function(d){return "setează un decalaj mic"};
 
-exports.setGapNormal = function(d){return "Seteaza un decalaj normal"};
+exports.setGapNormal = function(d){return "setează un decalaj normal"};
 
-exports.setGapLarge = function(d){return "Seteaza un decalaj larg"};
+exports.setGapLarge = function(d){return "setează un decalaj larg"};
 
-exports.setGapVeryLarge = function(d){return "Seteaza un decalaj foarte larg"};
+exports.setGapVeryLarge = function(d){return "setează un decalaj foarte larg"};
 
 exports.setGapHeightTooltip = function(d){return "Setează decalajul vertical într-un obstacol"};
 
-exports.setGravityRandom = function(d){return "seteaza gravitatia aleatoriu"};
+exports.setGravityRandom = function(d){return "setează gravitație aleatorie"};
 
-exports.setGravityVeryLow = function(d){return "seteaza gravitatia foarte scazuta"};
+exports.setGravityVeryLow = function(d){return "setează gravitație foarte redusă"};
 
-exports.setGravityLow = function(d){return "Seteaza gravitatia redusa"};
+exports.setGravityLow = function(d){return "setează gravitație redusă"};
 
-exports.setGravityNormal = function(d){return "seteaza gravitatia normala"};
+exports.setGravityNormal = function(d){return "setează gravitație normală"};
 
-exports.setGravityHigh = function(d){return "seteaza gravitatie mare"};
+exports.setGravityHigh = function(d){return "setează gravitație ridicată"};
 
-exports.setGravityVeryHigh = function(d){return "seteaza gravitatia foarte ridicata"};
+exports.setGravityVeryHigh = function(d){return "setează gravitație foarte ridicată"};
 
-exports.setGravityTooltip = function(d){return "Sets the level's gravity"};
+exports.setGravityTooltip = function(d){return "Setează nivelul de gravitație"};
 
-exports.setGroundRandom = function(d){return "Setează solul intamplător"};
+exports.setGroundRandom = function(d){return "setează solul la întâmplare"};
 
-exports.setGroundFlappy = function(d){return "Setează solul sol"};
+exports.setGroundFlappy = function(d){return "setează solul Sol"};
 
-exports.setGroundSciFi = function(d){return "Setează solul Sci-Fi"};
+exports.setGroundSciFi = function(d){return "setează solul Sci-Fi"};
 
-exports.setGroundUnderwater = function(d){return "Setează solul subacvatic"};
+exports.setGroundUnderwater = function(d){return "setează solul Subacvatic"};
 
-exports.setGroundCave = function(d){return "Setează solul Pesteră"};
+exports.setGroundCave = function(d){return "setează solul Peșteră"};
 
-exports.setGroundSanta = function(d){return "Setează solul Santa"};
+exports.setGroundSanta = function(d){return "setează solul Crăciun"};
 
-exports.setGroundLava = function(d){return "Setează solul lavă"};
+exports.setGroundLava = function(d){return "setează solul Lavă"};
 
-exports.setGroundTooltip = function(d){return "Setează imaginea Solului"};
+exports.setGroundTooltip = function(d){return "Setează imaginea solului"};
 
-exports.setObstacleRandom = function(d){return "Setează un obstacol Intamplător"};
+exports.setObstacleRandom = function(d){return "setează obstacol Aleator"};
 
-exports.setObstacleFlappy = function(d){return "Setează un obstacol ţeavă"};
+exports.setObstacleFlappy = function(d){return "setează obstacol Țeavă"};
 
-exports.setObstacleSciFi = function(d){return "Setează un obstacol Sci-Fi"};
+exports.setObstacleSciFi = function(d){return "setează obstacol Sci-Fi"};
 
-exports.setObstacleUnderwater = function(d){return "Setează un obstacol plante"};
+exports.setObstacleUnderwater = function(d){return "setează obstacol Plantă"};
 
-exports.setObstacleCave = function(d){return "Setează un obstacol Pestera"};
+exports.setObstacleCave = function(d){return "setează obstacol Peșteră"};
 
-exports.setObstacleSanta = function(d){return "Setează un obstacol de fum"};
+exports.setObstacleSanta = function(d){return "setează obstacol Horn"};
 
-exports.setObstacleLaser = function(d){return "Setează un obstacol Laser"};
+exports.setObstacleLaser = function(d){return "setează obstacol Laser"};
 
 exports.setObstacleTooltip = function(d){return "Setează imaginea obstacolului"};
 
-exports.setPlayerRandom = function(d){return "Setează jucătorul Intamplător"};
+exports.setPlayerRandom = function(d){return "setează jucător Aleator"};
 
-exports.setPlayerFlappy = function(d){return "Setează jucătorul Pasăre Galbenă"};
+exports.setPlayerFlappy = function(d){return "setează jucător Pasăre Galbenă"};
 
-exports.setPlayerRedBird = function(d){return "Setează jucătorul Pasăre Roșie"};
+exports.setPlayerRedBird = function(d){return "setează jucător Pasăre Roșie"};
 
-exports.setPlayerSciFi = function(d){return "Setează jucătorul Nava Spatiala"};
+exports.setPlayerSciFi = function(d){return "setează jucător Navă Spațială"};
 
-exports.setPlayerUnderwater = function(d){return "Setează jucătorul Peste"};
+exports.setPlayerUnderwater = function(d){return "setează jucător Pește"};
 
-exports.setPlayerCave = function(d){return "Setează jucătorul Liliac"};
+exports.setPlayerCave = function(d){return "setează jucător Liliac"};
 
-exports.setPlayerSanta = function(d){return "Setează jucătorul Santa"};
+exports.setPlayerSanta = function(d){return "setează jucător Moș Crăciun"};
 
-exports.setPlayerShark = function(d){return "Setează jucătorul Rechin"};
+exports.setPlayerShark = function(d){return "setează jucător Rechin"};
 
-exports.setPlayerEaster = function(d){return "Setează jucătorul Iepurasul de paste"};
+exports.setPlayerEaster = function(d){return "setează jucător Iepuraș de Paște"};
 
-exports.setPlayerBatman = function(d){return "set player Bat guy"};
+exports.setPlayerBatman = function(d){return "setează jucător Omul Liliac"};
 
-exports.setPlayerSubmarine = function(d){return "Setează jucătorul Submarin"};
+exports.setPlayerSubmarine = function(d){return "setează jucător Submarin"};
 
-exports.setPlayerUnicorn = function(d){return "Setează jucătorul Unicorn"};
+exports.setPlayerUnicorn = function(d){return "setează jucător Unicorn"};
 
-exports.setPlayerFairy = function(d){return "Setează jucătorul Zâna"};
+exports.setPlayerFairy = function(d){return "setează jucător Zână"};
 
-exports.setPlayerSuperman = function(d){return "Setează jucătorul Flappyman"};
+exports.setPlayerSuperman = function(d){return "setează jucător Flappyman"};
 
-exports.setPlayerTurkey = function(d){return "Setează jucătorul Curcan"};
+exports.setPlayerTurkey = function(d){return "setează jucător Curcan"};
 
 exports.setPlayerTooltip = function(d){return "Setează imaginea jucătorului"};
 
-exports.setScore = function(d){return "set score"};
+exports.setScore = function(d){return "Setează scor"};
 
-exports.setScoreTooltip = function(d){return "Sets the player's score"};
+exports.setScoreTooltip = function(d){return "Setează scorul jucătorului"};
 
-exports.setSpeed = function(d){return "Setează viteza"};
+exports.setSpeed = function(d){return "setează viteză"};
 
-exports.setSpeedTooltip = function(d){return "Seteaza viteza nivelelor"};
+exports.setSpeedTooltip = function(d){return "Setează viteza nivelului"};
 
 exports.share = function(d){return "Distribuie"};
 
-exports.shareFlappyTwitter = function(d){return "Verifica ce  joc Flappy am făcut. Am scris-o eu cu @codeorg"};
+exports.shareFlappyTwitter = function(d){return "Hai să vezi ce  joc Flappy am făcut. L-am scris-o eu cu @codeorg"};
 
-exports.shareGame = function(d){return "Share your game:"};
+exports.shareGame = function(d){return "Distribuie jocul tău:"};
 
-exports.speedRandom = function(d){return "Seteaza viteza intamplatoare"};
+exports.speedRandom = function(d){return "setează viteză aleatorie"};
 
-exports.speedVerySlow = function(d){return "Setează viteza foarte lentă"};
+exports.speedVerySlow = function(d){return "setează viteză foarte lentă"};
 
-exports.speedSlow = function(d){return "Setează viteza lentă"};
+exports.speedSlow = function(d){return "setează viteză lentă"};
 
-exports.speedNormal = function(d){return "Setează viteza normală"};
+exports.speedNormal = function(d){return "setează viteză normală"};
 
-exports.speedFast = function(d){return "Seteaza viteza repede"};
+exports.speedFast = function(d){return "setează viteză rapidă"};
 
-exports.speedVeryFast = function(d){return "Seteaza viteza foarte rapid"};
+exports.speedVeryFast = function(d){return "setează viteză foarte rapidă"};
 
-exports.whenClick = function(d){return "Când faceţi clic"};
+exports.whenClick = function(d){return "când faci clic"};
 
-exports.whenClickTooltip = function(d){return "Executa acţiunia mai jos când are loc un eveniment click."};
+exports.whenClickTooltip = function(d){return "Execută acţiunile de mai jos când se produce un eveniment de click."};
 
-exports.whenCollideGround = function(d){return "Când loveste solul"};
+exports.whenCollideGround = function(d){return "când lovește solul"};
 
-exports.whenCollideGroundTooltip = function(d){return "Executa acţiunia mai jos când Flappy loveste solul."};
+exports.whenCollideGroundTooltip = function(d){return "Execută acţiunile de mai jos când Flappy lovește solul."};
 
-exports.whenCollideObstacle = function(d){return "când lovesti un obstacol"};
+exports.whenCollideObstacle = function(d){return "când lovește un obstacol"};
 
-exports.whenCollideObstacleTooltip = function(d){return "Executa acţiunia mai jos când Flappy loveste un obstacol."};
+exports.whenCollideObstacleTooltip = function(d){return "Execută acţiunile de mai jos când Flappy lovește un obstacol."};
 
-exports.whenEnterObstacle = function(d){return "Când trece obstacolul"};
+exports.whenEnterObstacle = function(d){return "când trece obstacolul"};
 
-exports.whenEnterObstacleTooltip = function(d){return "Executa acţiunia mai jos când Flappy intră într-un obstacol."};
+exports.whenEnterObstacleTooltip = function(d){return "Execută acţiunile de mai jos când Flappy intră într-un obstacol."};
 
-exports.whenRunButtonClick = function(d){return "Cand jocul incepe"};
+exports.whenRunButtonClick = function(d){return "când începe jocul"};
 
-exports.whenRunButtonClickTooltip = function(d){return "Execute the actions below when the run button is pressed."};
+exports.whenRunButtonClickTooltip = function(d){return "Execută acţiunile de mai jos atunci când începe jocul."};
 
 exports.yes = function(d){return "Da"};
 

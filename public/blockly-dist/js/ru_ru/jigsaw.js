@@ -3610,11 +3610,11 @@ exports.orientationLock = function(d){return "Выключите блокиро�
 
 exports.wantToLearn = function(d){return "Хотите научиться писать код?"};
 
-exports.watchVideo = function(d){return "Посмотрите видео"};
+exports.watchVideo = function(d){return "Посмотреть видео"};
 
-exports.tryHOC = function(d){return "Попробуйте час кода"};
+exports.tryHOC = function(d){return "Попробуйте Час кода"};
 
-exports.signup = function(d){return "Подпишитесь на вводный курс"};
+exports.signup = function(d){return "Зарегистрируйтесь на вводный курс"};
 
 exports.hintHeader = function(d){return "Here's a tip:"};
 

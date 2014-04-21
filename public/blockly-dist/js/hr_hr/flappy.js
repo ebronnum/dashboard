@@ -4743,7 +4743,7 @@ exports.dialogOK = function(d){return "U redu"};
 
 exports.emptyBlocksErrorMsg = function(d){return "Da bi blok \"Ponovi\" ili \"Ako\" radio, u njega treba ugraditi druge blokove. Provjeri uklapa li se unutarnji blok pravilno u vanjski blok."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Imaš viška blokova koji nisu povezani za \"događaj\" blokom."};
 
 exports.finalStage = function(d){return "Čestitamo! Posljednja etapa je završena."};
 
@@ -4761,7 +4761,7 @@ exports.levelIncompleteError = function(d){return "Koristiš sve potrebne vrste 
 
 exports.listVariable = function(d){return "popis"};
 
-exports.makeYourOwnFlappy = function(d){return "Make Your Own Flappy Game"};
+exports.makeYourOwnFlappy = function(d){return "Napravi vlastitu Flappy igricu"};
 
 exports.missingBlocksErrorMsg = function(d){return "Za rješavanje ovog zadatka isprobaj jedan ili više blokova koji se nalaze ispod."};
 
@@ -4799,7 +4799,7 @@ exports.tooManyBlocksMsg = function(d){return "Ovaj zadatak se može riješiti s
 
 exports.tooMuchWork = function(d){return "Napravio si puno posla za mene! Možeš li manje puta ponavljati?"};
 
-exports.flappySpecificFail = function(d){return "Your code looks good - it will flap with each click. But you need to click many times to flap to the target."};
+exports.flappySpecificFail = function(d){return "Tvoj kod izgleda dobro - na svaki klik će poletjeti. Ali trebaš kliknuti puno puta do cilja."};
 
 exports.toolboxHeader = function(d){return "Blokovi"};
 
@@ -4855,15 +4855,15 @@ var MessageFormat = require("messageformat");MessageFormat.locale.hr = function 
 };
 exports.continue = function(d){return "Nastavi"};
 
-exports.doCode = function(d){return "uradi"};
+exports.doCode = function(d){return "učini"};
 
 exports.elseCode = function(d){return "inače"};
 
-exports.endGame = function(d){return "end game"};
+exports.endGame = function(d){return "završi igru"};
 
-exports.endGameTooltip = function(d){return "Ends the game."};
+exports.endGameTooltip = function(d){return "Završava igru."};
 
-exports.finalLevel = function(d){return "Čestitamo! Riješen je posljednji zadatak."};
+exports.finalLevel = function(d){return "Čestitamo ! Riješili ste posljednji zadatak."};
 
 exports.flap = function(d){return "flap"};
 
@@ -4881,7 +4881,7 @@ exports.flapVeryLarge = function(d){return "flap a very large amount"};
 
 exports.flapTooltip = function(d){return "Fly Flappy upwards."};
 
-exports.incrementPlayerScore = function(d){return "increment player score"};
+exports.incrementPlayerScore = function(d){return "ostvariti rezultat"};
 
 exports.incrementPlayerScoreTooltip = function(d){return "Add one to the current player score."};
 
@@ -4893,7 +4893,7 @@ exports.numBlocksNeeded = function(d){return "Ovaj zadatak se može riješiti s 
 
 exports.oneTopBlock = function(d){return "Za ovaj zadatak trebaš složiti zajedno sve blokove na bijelom radnom prostoru."};
 
-exports.playSoundRandom = function(d){return "play random sound"};
+exports.playSoundRandom = function(d){return "reproducijraj proizvoljno zvuk"};
 
 exports.playSoundBounce = function(d){return "play bounce sound"};
 
@@ -4919,17 +4919,17 @@ exports.playSoundSplash = function(d){return "play splash sound"};
 
 exports.playSoundLaser = function(d){return "play laser sound"};
 
-exports.playSoundTooltip = function(d){return "Play a sound."};
+exports.playSoundTooltip = function(d){return "Sviraj odrabrani zvuk."};
 
 exports.reinfFeedbackMsg = function(d){return "You can press the \"Try again\" button to go back to playing your game."};
 
-exports.scoreText = function(d){return "Score: "+v(d,"playerScore")+" : "+v(d,"opponentScore")};
+exports.scoreText = function(d){return "Rezultat : "+v(d,"playerScore")};
 
-exports.setBackgroundRandom = function(d){return "set scene Random"};
+exports.setBackgroundRandom = function(d){return "prostavi slucajnu scenu"};
 
-exports.setBackgroundFlappy = function(d){return "set scene City (day)"};
+exports.setBackgroundFlappy = function(d){return "postavi scenu grada( dan)"};
 
-exports.setBackgroundNight = function(d){return "set scene City (night)"};
+exports.setBackgroundNight = function(d){return "postavi scenu grada (noc)"};
 
 exports.setBackgroundSciFi = function(d){return "set scene Sci-Fi"};
 
@@ -4939,7 +4939,7 @@ exports.setBackgroundCave = function(d){return "set scene Cave"};
 
 exports.setBackgroundSanta = function(d){return "set scene Santa"};
 
-exports.setBackgroundTooltip = function(d){return "Sets the background image"};
+exports.setBackgroundTooltip = function(d){return "Postavlja sliku pozadine"};
 
 exports.setGapRandom = function(d){return "set a random gap"};
 
@@ -4983,9 +4983,9 @@ exports.setGroundSanta = function(d){return "set ground Santa"};
 
 exports.setGroundLava = function(d){return "set ground Lava"};
 
-exports.setGroundTooltip = function(d){return "Sets the ground image"};
+exports.setGroundTooltip = function(d){return "Postavlja sliku tla"};
 
-exports.setObstacleRandom = function(d){return "set obstacle Random"};
+exports.setObstacleRandom = function(d){return "postavi proizvoljnu prepreku"};
 
 exports.setObstacleFlappy = function(d){return "set obstacle Pipe"};
 
@@ -4997,9 +4997,9 @@ exports.setObstacleCave = function(d){return "set obstacle Cave"};
 
 exports.setObstacleSanta = function(d){return "set obstacle Chimney"};
 
-exports.setObstacleLaser = function(d){return "set obstacle Laser"};
+exports.setObstacleLaser = function(d){return "postavi lasersku prepreku"};
 
-exports.setObstacleTooltip = function(d){return "Sets the obstacle image"};
+exports.setObstacleTooltip = function(d){return "Postavlja sliku prepreke"};
 
 exports.setPlayerRandom = function(d){return "set player Random"};
 
@@ -5031,53 +5031,53 @@ exports.setPlayerSuperman = function(d){return "set player Flappyman"};
 
 exports.setPlayerTurkey = function(d){return "set player Turkey"};
 
-exports.setPlayerTooltip = function(d){return "Sets the player image"};
+exports.setPlayerTooltip = function(d){return "Postavlja sliku igrača"};
 
-exports.setScore = function(d){return "set score"};
+exports.setScore = function(d){return "postavi rezultat"};
 
-exports.setScoreTooltip = function(d){return "Sets the player's score"};
+exports.setScoreTooltip = function(d){return "Postavlja rezultat igrača"};
 
-exports.setSpeed = function(d){return "set speed"};
+exports.setSpeed = function(d){return "postavi brzinu"};
 
 exports.setSpeedTooltip = function(d){return "Sets the levels speed"};
 
-exports.share = function(d){return "Share"};
+exports.share = function(d){return "Podijeli"};
 
 exports.shareFlappyTwitter = function(d){return "Check out the Flappy game I made. I wrote it myself with @codeorg"};
 
-exports.shareGame = function(d){return "Share your game:"};
+exports.shareGame = function(d){return "Podijeli svoju igru :"};
 
-exports.speedRandom = function(d){return "set speed random"};
+exports.speedRandom = function(d){return "Postavi nasumičnu brzinu"};
 
-exports.speedVerySlow = function(d){return "set speed very slow"};
+exports.speedVerySlow = function(d){return "postavi najmanju brzinu"};
 
-exports.speedSlow = function(d){return "set speed slow"};
+exports.speedSlow = function(d){return "postavi malu brzinu"};
 
-exports.speedNormal = function(d){return "set speed normal"};
+exports.speedNormal = function(d){return "postavi srednju brzinu"};
 
-exports.speedFast = function(d){return "set speed fast"};
+exports.speedFast = function(d){return "postavi veliku brzinu"};
 
-exports.speedVeryFast = function(d){return "set speed very fast"};
+exports.speedVeryFast = function(d){return "postavi najveću brzinu"};
 
-exports.whenClick = function(d){return "when click"};
+exports.whenClick = function(d){return "kada klikne"};
 
 exports.whenClickTooltip = function(d){return "Execute the actions below when a click event occurs."};
 
-exports.whenCollideGround = function(d){return "when hit the ground"};
+exports.whenCollideGround = function(d){return "kada udari o tlo"};
 
 exports.whenCollideGroundTooltip = function(d){return "Execute the actions below when Flappy hits the ground."};
 
-exports.whenCollideObstacle = function(d){return "when hit an obstacle"};
+exports.whenCollideObstacle = function(d){return "kada udari u prepreku"};
 
 exports.whenCollideObstacleTooltip = function(d){return "Execute the actions below when Flappy hits an obstacle."};
 
-exports.whenEnterObstacle = function(d){return "when pass obstacle"};
+exports.whenEnterObstacle = function(d){return "kada zaobiđe prepreku"};
 
 exports.whenEnterObstacleTooltip = function(d){return "Execute the actions below when Flappy enters an obstacle."};
 
-exports.whenRunButtonClick = function(d){return "when Run is clicked"};
+exports.whenRunButtonClick = function(d){return "kada igra započne"};
 
-exports.whenRunButtonClickTooltip = function(d){return "Execute the actions below when the run button is pressed."};
+exports.whenRunButtonClickTooltip = function(d){return "Izvršava dolje navedene radnje kada igra započne."};
 
 exports.yes = function(d){return "Da"};
 

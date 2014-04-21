@@ -4730,7 +4730,7 @@ exports.dialogOK = function(d){return "OK"};
 
 exports.emptyBlocksErrorMsg = function(d){return "Akkor van értelme az \"Ismétel\" vagy a \"Ha\" blokknak, ha van  bennük egy vagy több blokk. Bizonyosodj meg róla, hogy a belső blokk megfelelően illeszkedik a külső blokkhoz."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Van egy blokk, ami nincs csatolva egyetlen eseményblokkhoz se."};
 
 exports.finalStage = function(d){return "Gratulálok! Teljesítetted az utolsó szakaszt."};
 
@@ -4748,7 +4748,7 @@ exports.levelIncompleteError = function(d){return "Minden szükséges blokkot fe
 
 exports.listVariable = function(d){return "lista"};
 
-exports.makeYourOwnFlappy = function(d){return "Make Your Own Flappy Game"};
+exports.makeYourOwnFlappy = function(d){return "Készítsd el a saját Flappy játékod"};
 
 exports.missingBlocksErrorMsg = function(d){return "Próbáld meg a lenti blokkokat használni, hogy megoldd a rejtvényt."};
 
@@ -4786,7 +4786,7 @@ exports.tooManyBlocksMsg = function(d){return "Ez a feladvány megoldható a <x 
 
 exports.tooMuchWork = function(d){return "Sokat dolgoztattál. Megpróbálnád egy kicsit kevesebb ismétléssel?"};
 
-exports.flappySpecificFail = function(d){return "Your code looks good - it will flap with each click. But you need to click many times to flap to the target."};
+exports.flappySpecificFail = function(d){return "A kódod nem rossz - Csap minden egyes kattintásra. De sokszor kell kattintania, hogy eljusson a célba."};
 
 exports.toolboxHeader = function(d){return "Blokkok"};
 
@@ -4833,125 +4833,125 @@ exports.doCode = function(d){return "csináld"};
 
 exports.elseCode = function(d){return "különben"};
 
-exports.endGame = function(d){return "end game"};
+exports.endGame = function(d){return "játék vége"};
 
-exports.endGameTooltip = function(d){return "Ends the game."};
+exports.endGameTooltip = function(d){return "Vége a játéknak."};
 
-exports.finalLevel = function(d){return "Gratulálok! A végső rejtvény megoldotta."};
+exports.finalLevel = function(d){return "Gratulálok, megoldottad az utolsó feladatot."};
 
-exports.flap = function(d){return "flap"};
+exports.flap = function(d){return "Csap"};
 
-exports.flapRandom = function(d){return "flap a random amount"};
+exports.flapRandom = function(d){return "Véletlen számút szárnycsapás"};
 
-exports.flapVerySmall = function(d){return "flap a very small amount"};
+exports.flapVerySmall = function(d){return "Nagyon keveset csap"};
 
-exports.flapSmall = function(d){return "flap a small amount"};
+exports.flapSmall = function(d){return "keveset csap"};
 
-exports.flapNormal = function(d){return "flap a normal amount"};
+exports.flapNormal = function(d){return "normál számut csap"};
 
-exports.flapLarge = function(d){return "flap a large amount"};
+exports.flapLarge = function(d){return "sokat csap"};
 
-exports.flapVeryLarge = function(d){return "flap a very large amount"};
+exports.flapVeryLarge = function(d){return "nagyon sokat csap"};
 
-exports.flapTooltip = function(d){return "Fly Flappy upwards."};
+exports.flapTooltip = function(d){return "Flappy felszáll."};
 
-exports.incrementPlayerScore = function(d){return "increment player score"};
+exports.incrementPlayerScore = function(d){return "nyertes pont"};
 
-exports.incrementPlayerScoreTooltip = function(d){return "Add one to the current player score."};
+exports.incrementPlayerScoreTooltip = function(d){return "Adjon egyet az aktuális játékos pontjaihoz."};
 
-exports.nextLevel = function(d){return "Gratulálok! Elvégezte a puzzle-t."};
+exports.nextLevel = function(d){return "Gratulálok! Ezt a feladatot megoldottad."};
 
-exports.no = function(d){return "nem"};
+exports.no = function(d){return "Nem"};
 
-exports.numBlocksNeeded = function(d){return "Ezt a puzzle-t a(z) % 1 blokkal megoldható."};
+exports.numBlocksNeeded = function(d){return "Ez a feladat a(z) %1 blokkal megoldható."};
 
-exports.oneTopBlock = function(d){return "Ehhez a puzzlihoz összekell ragasztani a összes blokkot a fehér munkatáblán."};
+exports.oneTopBlock = function(d){return "Ehhez a feladathoz fel kell használni az összes blokkot a táblán."};
 
-exports.playSoundRandom = function(d){return "play random sound"};
+exports.playSoundRandom = function(d){return "véletlenszerű hang lejátszása"};
 
-exports.playSoundBounce = function(d){return "play bounce sound"};
+exports.playSoundBounce = function(d){return "pattanó hang lejátszása"};
 
-exports.playSoundCrunch = function(d){return "play crunch sound"};
+exports.playSoundCrunch = function(d){return "recsegő hang lejátszása"};
 
-exports.playSoundDie = function(d){return "play sad sound"};
+exports.playSoundDie = function(d){return "szomorú hang lejátszása"};
 
-exports.playSoundHit = function(d){return "play smash sound"};
+exports.playSoundHit = function(d){return "reccsenő hang lejátszása"};
 
-exports.playSoundPoint = function(d){return "play point sound"};
+exports.playSoundPoint = function(d){return "hegyes hang lejátszása"};
 
-exports.playSoundSwoosh = function(d){return "play swoosh sound"};
+exports.playSoundSwoosh = function(d){return "Swoosh hang lejátszása"};
 
-exports.playSoundWing = function(d){return "play wing sound"};
+exports.playSoundWing = function(d){return "szárny hangjának lejátszása"};
 
-exports.playSoundJet = function(d){return "play jet sound"};
+exports.playSoundJet = function(d){return "gázsugár hangjának lejátszása"};
 
-exports.playSoundCrash = function(d){return "play crash sound"};
+exports.playSoundCrash = function(d){return "roppanás hangjának lejátszása"};
 
-exports.playSoundJingle = function(d){return "play jingle sound"};
+exports.playSoundJingle = function(d){return "csilingelő hang lejátszása"};
 
-exports.playSoundSplash = function(d){return "play splash sound"};
+exports.playSoundSplash = function(d){return "csobbanás hangjának lejátszása"};
 
-exports.playSoundLaser = function(d){return "play laser sound"};
+exports.playSoundLaser = function(d){return "lézer hangjának lejátszása"};
 
-exports.playSoundTooltip = function(d){return "Play a sound."};
+exports.playSoundTooltip = function(d){return "Kiválasztott hang lejátszása."};
 
-exports.reinfFeedbackMsg = function(d){return "You can press the \"Try again\" button to go back to playing your game."};
+exports.reinfFeedbackMsg = function(d){return "Nyomja meg a \"Játszd újra\" gombot hogy visszatérj a saját játékodhoz."};
 
-exports.scoreText = function(d){return "Score: "+v(d,"playerScore")+" : "+v(d,"opponentScore")};
+exports.scoreText = function(d){return "Pontszám: "+v(d,"playerScore")};
 
-exports.setBackgroundRandom = function(d){return "set scene Random"};
+exports.setBackgroundRandom = function(d){return "Jelenet kiválasztása: Véletlen"};
 
-exports.setBackgroundFlappy = function(d){return "set scene City (day)"};
+exports.setBackgroundFlappy = function(d){return "Jelenet kiválasztása: Város (nappal)"};
 
-exports.setBackgroundNight = function(d){return "set scene City (night)"};
+exports.setBackgroundNight = function(d){return "Jelenet kiválasztása: Város (éjjel)"};
 
-exports.setBackgroundSciFi = function(d){return "set scene Sci-Fi"};
+exports.setBackgroundSciFi = function(d){return "Jelenet kiválasztása: Sci-fi"};
 
-exports.setBackgroundUnderwater = function(d){return "set scene Underwater"};
+exports.setBackgroundUnderwater = function(d){return "Jelenet kiválasztása: Vízalatti"};
 
-exports.setBackgroundCave = function(d){return "set scene Cave"};
+exports.setBackgroundCave = function(d){return "Jelenet kiválasztása: Barlang"};
 
-exports.setBackgroundSanta = function(d){return "set scene Santa"};
+exports.setBackgroundSanta = function(d){return "Jelenet kiválasztása: Santa"};
 
-exports.setBackgroundTooltip = function(d){return "Sets the background image"};
+exports.setBackgroundTooltip = function(d){return "Adja meg a háttér képet"};
 
-exports.setGapRandom = function(d){return "set a random gap"};
+exports.setGapRandom = function(d){return "rés beállítása : Véletlen"};
 
-exports.setGapVerySmall = function(d){return "set a very small gap"};
+exports.setGapVerySmall = function(d){return "rés beállítása : Nagyon kicsi"};
 
-exports.setGapSmall = function(d){return "set a small gap"};
+exports.setGapSmall = function(d){return "rés beállítása : Kicsi"};
 
-exports.setGapNormal = function(d){return "set a normal gap"};
+exports.setGapNormal = function(d){return "rés beállítása : Normál"};
 
-exports.setGapLarge = function(d){return "set a large gap"};
+exports.setGapLarge = function(d){return "rés beállítása : Nagy"};
 
-exports.setGapVeryLarge = function(d){return "set a very large gap"};
+exports.setGapVeryLarge = function(d){return "rés beállítása : Nagyon nagy"};
 
 exports.setGapHeightTooltip = function(d){return "Sets the vertical gap in an obstacle"};
 
-exports.setGravityRandom = function(d){return "set gravity random"};
+exports.setGravityRandom = function(d){return "Véletlenszerű gravitáció beállítása"};
 
-exports.setGravityVeryLow = function(d){return "set gravity very low"};
+exports.setGravityVeryLow = function(d){return "Nagyon gyenge gravitáció beállítása"};
 
-exports.setGravityLow = function(d){return "set gravity low"};
+exports.setGravityLow = function(d){return "Gyenge gravitáció beállítása"};
 
-exports.setGravityNormal = function(d){return "set gravity normal"};
+exports.setGravityNormal = function(d){return "Normál gravitáció beállítása"};
 
-exports.setGravityHigh = function(d){return "set gravity high"};
+exports.setGravityHigh = function(d){return "Erős gravitáció beállítása"};
 
-exports.setGravityVeryHigh = function(d){return "set gravity very high"};
+exports.setGravityVeryHigh = function(d){return "Nagyon erős gravitáció beállítása"};
 
-exports.setGravityTooltip = function(d){return "Sets the level's gravity"};
+exports.setGravityTooltip = function(d){return "A pálya gravitációjának beállítása"};
 
-exports.setGroundRandom = function(d){return "set ground Random"};
+exports.setGroundRandom = function(d){return "Véletlenszerű talaj beállítása"};
 
-exports.setGroundFlappy = function(d){return "set ground Ground"};
+exports.setGroundFlappy = function(d){return "Talaj beállítása: Föld"};
 
-exports.setGroundSciFi = function(d){return "set ground Sci-Fi"};
+exports.setGroundSciFi = function(d){return "Talaj beállítása: Sci-Fi"};
 
-exports.setGroundUnderwater = function(d){return "set ground Underwater"};
+exports.setGroundUnderwater = function(d){return "Talaj beállítása: Vízalatti"};
 
-exports.setGroundCave = function(d){return "set ground Cave"};
+exports.setGroundCave = function(d){return "Talaj beállítása: Barlang"};
 
 exports.setGroundSanta = function(d){return "set ground Santa"};
 
@@ -4961,99 +4961,99 @@ exports.setGroundTooltip = function(d){return "Sets the ground image"};
 
 exports.setObstacleRandom = function(d){return "set obstacle Random"};
 
-exports.setObstacleFlappy = function(d){return "set obstacle Pipe"};
+exports.setObstacleFlappy = function(d){return "Akadály beállítása: cső"};
 
-exports.setObstacleSciFi = function(d){return "set obstacle Sci-Fi"};
+exports.setObstacleSciFi = function(d){return "Akadály beállítása: Sci-Fi"};
 
-exports.setObstacleUnderwater = function(d){return "set obstacle Plant"};
+exports.setObstacleUnderwater = function(d){return "Akadály beállítása: Növény"};
 
-exports.setObstacleCave = function(d){return "set obstacle Cave"};
+exports.setObstacleCave = function(d){return "Akadály beállítása: Barlang"};
 
-exports.setObstacleSanta = function(d){return "set obstacle Chimney"};
+exports.setObstacleSanta = function(d){return "Akadály beállítása: Kémény"};
 
-exports.setObstacleLaser = function(d){return "set obstacle Laser"};
+exports.setObstacleLaser = function(d){return "Akadály beállítása: Lézer"};
 
 exports.setObstacleTooltip = function(d){return "Sets the obstacle image"};
 
-exports.setPlayerRandom = function(d){return "set player Random"};
+exports.setPlayerRandom = function(d){return "Karakter beállítása: Véletlenszerű"};
 
-exports.setPlayerFlappy = function(d){return "set player Yellow Bird"};
+exports.setPlayerFlappy = function(d){return "Karakter beállítása: Sárga madár"};
 
-exports.setPlayerRedBird = function(d){return "set player Red Bird"};
+exports.setPlayerRedBird = function(d){return "Karakter beállítása: Piros madár"};
 
-exports.setPlayerSciFi = function(d){return "set player Spaceship"};
+exports.setPlayerSciFi = function(d){return "Karakter beállítása: Űrhajó"};
 
-exports.setPlayerUnderwater = function(d){return "set player Fish"};
+exports.setPlayerUnderwater = function(d){return "Karakter beállítása: Hal"};
 
-exports.setPlayerCave = function(d){return "set player Bat"};
+exports.setPlayerCave = function(d){return "Karakter beállítása: Denevér"};
 
-exports.setPlayerSanta = function(d){return "set player Santa"};
+exports.setPlayerSanta = function(d){return "Karakter beállítása: Mikulás"};
 
-exports.setPlayerShark = function(d){return "set player Shark"};
+exports.setPlayerShark = function(d){return "Karakter beállítása: Cápa"};
 
-exports.setPlayerEaster = function(d){return "set player Easter Bunny"};
+exports.setPlayerEaster = function(d){return "Karakter beállítása: Húsvéti nyuszi"};
 
 exports.setPlayerBatman = function(d){return "set player Bat guy"};
 
-exports.setPlayerSubmarine = function(d){return "set player Submarine"};
+exports.setPlayerSubmarine = function(d){return "Karakter beállítása: Tengeralattjáró"};
 
-exports.setPlayerUnicorn = function(d){return "set player Unicorn"};
+exports.setPlayerUnicorn = function(d){return "Karakter beállítása: Egyszarvú"};
 
-exports.setPlayerFairy = function(d){return "set player Fairy"};
+exports.setPlayerFairy = function(d){return "Karakter beállítása: Tündér"};
 
-exports.setPlayerSuperman = function(d){return "set player Flappyman"};
+exports.setPlayerSuperman = function(d){return "Karakter beállítása: Madárember"};
 
-exports.setPlayerTurkey = function(d){return "set player Turkey"};
+exports.setPlayerTurkey = function(d){return "Karakter beállítása: Pulyka"};
 
 exports.setPlayerTooltip = function(d){return "Sets the player image"};
 
-exports.setScore = function(d){return "set score"};
+exports.setScore = function(d){return "Pontszám beállítása"};
 
-exports.setScoreTooltip = function(d){return "Sets the player's score"};
+exports.setScoreTooltip = function(d){return "Játékos pontszámának beállítása"};
 
-exports.setSpeed = function(d){return "set speed"};
+exports.setSpeed = function(d){return "Sebesség beállítása"};
 
-exports.setSpeedTooltip = function(d){return "Sets the levels speed"};
+exports.setSpeedTooltip = function(d){return "A szint sebességének beállítása"};
 
-exports.share = function(d){return "Share"};
+exports.share = function(d){return "Megosztás"};
 
-exports.shareFlappyTwitter = function(d){return "Check out the Flappy game I made. I wrote it myself with @codeorg"};
+exports.shareFlappyTwitter = function(d){return "Nézd meg ezt a Flappy Bird játékot csináltam. Én magam írtam a @codeorg oldalon."};
 
-exports.shareGame = function(d){return "Share your game:"};
+exports.shareGame = function(d){return "Oszd meg a játékod:"};
 
-exports.speedRandom = function(d){return "set speed random"};
+exports.speedRandom = function(d){return "Véletlenszerű sebesség beállítása"};
 
-exports.speedVerySlow = function(d){return "set speed very slow"};
+exports.speedVerySlow = function(d){return "Nagyon alacsony sebesség beállítása"};
 
-exports.speedSlow = function(d){return "set speed slow"};
+exports.speedSlow = function(d){return "Alacsony sebesség beállítása"};
 
-exports.speedNormal = function(d){return "set speed normal"};
+exports.speedNormal = function(d){return "Normál sebesség beállítása"};
 
-exports.speedFast = function(d){return "set speed fast"};
+exports.speedFast = function(d){return "Magas sebesség beállítása"};
 
-exports.speedVeryFast = function(d){return "set speed very fast"};
+exports.speedVeryFast = function(d){return "Nagyon magas sebesség beállítása"};
 
-exports.whenClick = function(d){return "when click"};
+exports.whenClick = function(d){return "Klikkelésre"};
 
-exports.whenClickTooltip = function(d){return "Execute the actions below when a click event occurs."};
+exports.whenClickTooltip = function(d){return "Végrehajtja a lenti műveletet klikkelésre."};
 
-exports.whenCollideGround = function(d){return "when hit the ground"};
+exports.whenCollideGround = function(d){return "ha becsapódik a talajba"};
 
-exports.whenCollideGroundTooltip = function(d){return "Execute the actions below when Flappy hits the ground."};
+exports.whenCollideGroundTooltip = function(d){return "Végrehajtja a lenti műveletet ha Flappy becsapódik a talajba."};
 
-exports.whenCollideObstacle = function(d){return "when hit an obstacle"};
+exports.whenCollideObstacle = function(d){return "ha akadálynak ütközik"};
 
-exports.whenCollideObstacleTooltip = function(d){return "Execute the actions below when Flappy hits an obstacle."};
+exports.whenCollideObstacleTooltip = function(d){return "Végrehajtja a lenti utasítást, ha Flappy beleütközik egy akadályba."};
 
-exports.whenEnterObstacle = function(d){return "when pass obstacle"};
+exports.whenEnterObstacle = function(d){return "ha átjut egy akadályon"};
 
 exports.whenEnterObstacleTooltip = function(d){return "Execute the actions below when Flappy enters an obstacle."};
 
-exports.whenRunButtonClick = function(d){return "when Run is clicked"};
+exports.whenRunButtonClick = function(d){return "amikor a játék elindul"};
 
 exports.whenRunButtonClickTooltip = function(d){return "Execute the actions below when the run button is pressed."};
 
-exports.yes = function(d){return "igen"};
+exports.yes = function(d){return "Igen"};
 
 
 },{"messageformat":45}],34:[function(require,module,exports){

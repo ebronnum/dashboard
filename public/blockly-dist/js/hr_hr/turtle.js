@@ -5719,7 +5719,7 @@ exports.dialogOK = function(d){return "U redu"};
 
 exports.emptyBlocksErrorMsg = function(d){return "Da bi blok \"Ponovi\" ili \"Ako\" radio, u njega treba ugraditi druge blokove. Provjeri uklapa li se unutarnji blok pravilno u vanjski blok."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Imaš viška blokova koji nisu povezani za \"događaj\" blokom."};
 
 exports.finalStage = function(d){return "Čestitamo! Posljednja etapa je završena."};
 
@@ -5737,7 +5737,7 @@ exports.levelIncompleteError = function(d){return "Koristiš sve potrebne vrste 
 
 exports.listVariable = function(d){return "popis"};
 
-exports.makeYourOwnFlappy = function(d){return "Make Your Own Flappy Game"};
+exports.makeYourOwnFlappy = function(d){return "Napravi vlastitu Flappy igricu"};
 
 exports.missingBlocksErrorMsg = function(d){return "Za rješavanje ovog zadatka isprobaj jedan ili više blokova koji se nalaze ispod."};
 
@@ -5775,7 +5775,7 @@ exports.tooManyBlocksMsg = function(d){return "Ovaj zadatak se može riješiti s
 
 exports.tooMuchWork = function(d){return "Napravio si puno posla za mene! Možeš li manje puta ponavljati?"};
 
-exports.flappySpecificFail = function(d){return "Your code looks good - it will flap with each click. But you need to click many times to flap to the target."};
+exports.flappySpecificFail = function(d){return "Tvoj kod izgleda dobro - na svaki klik će poletjeti. Ali trebaš kliknuti puno puta do cilja."};
 
 exports.toolboxHeader = function(d){return "Blokovi"};
 
@@ -5843,7 +5843,7 @@ exports.catTurtle = function(d){return "Akcije"};
 
 exports.catVariables = function(d){return "Varijable"};
 
-exports.catLogic = function(d){return "Logic"};
+exports.catLogic = function(d){return "Logika"};
 
 exports.colourTooltip = function(d){return "Mijenja boju olovke."};
 
@@ -5895,13 +5895,13 @@ exports.penTooltip = function(d){return "Podiže ili spušta olovku da bi počeo
 
 exports.penUp = function(d){return "podigni olovku"};
 
-exports.reinfFeedbackMsg = function(d){return "Does this look like what you want? You can press the \"Try again\" button to see your drawing."};
+exports.reinfFeedbackMsg = function(d){return "Izgleda li ovo onako kako želiš? Za prikaz svoje slike klikni na gumb \"Pokušaj ponovno\"."};
 
 exports.setColour = function(d){return "postavi boju"};
 
 exports.setWidth = function(d){return "postavi širinu"};
 
-exports.shareDrawing = function(d){return "Share your drawing:"};
+exports.shareDrawing = function(d){return "Podijeli svoj crtež:"};
 
 exports.showMe = function(d){return "Pokaži mi"};
 

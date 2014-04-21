@@ -5340,35 +5340,35 @@ exports.repeatUntilFinish = function(d){return "ponavljaj dok ne završiš"};
 
 exports.scoreText = function(d){return "Score: "+v(d,"playerScore")+" : "+v(d,"opponentScore")};
 
-exports.setBackgroundRandom = function(d){return "set random scene"};
+exports.setBackgroundRandom = function(d){return "postavi nasumičnu scenu"};
 
 exports.setBackgroundHardcourt = function(d){return "set hardcourt scene"};
 
-exports.setBackgroundRetro = function(d){return "set retro scene"};
+exports.setBackgroundRetro = function(d){return "postavi retro scenu"};
 
-exports.setBackgroundTooltip = function(d){return "Sets the background image"};
+exports.setBackgroundTooltip = function(d){return "Postavlja sliku pozadine"};
 
-exports.setBallRandom = function(d){return "set random ball"};
+exports.setBallRandom = function(d){return "postavi proizvoljno loptu"};
 
 exports.setBallHardcourt = function(d){return "set hardcourt ball"};
 
-exports.setBallRetro = function(d){return "set retro ball"};
+exports.setBallRetro = function(d){return "postavi retro loptu"};
 
-exports.setBallTooltip = function(d){return "Sets the ball image"};
+exports.setBallTooltip = function(d){return "Postavlja sliku lopte"};
 
-exports.setBallSpeedRandom = function(d){return "set random ball speed"};
+exports.setBallSpeedRandom = function(d){return "postavi proizvoljnu brzinu lopte"};
 
-exports.setBallSpeedVerySlow = function(d){return "set very slow ball speed"};
+exports.setBallSpeedVerySlow = function(d){return "postavi najmanju brzinu lopte"};
 
-exports.setBallSpeedSlow = function(d){return "set slow ball speed"};
+exports.setBallSpeedSlow = function(d){return "postavi malu brzinu lopte"};
 
-exports.setBallSpeedNormal = function(d){return "set normal ball speed"};
+exports.setBallSpeedNormal = function(d){return "postavi srednju brzinu lopte"};
 
-exports.setBallSpeedFast = function(d){return "set fast ball speed"};
+exports.setBallSpeedFast = function(d){return "postavi veliku brzinu lopte"};
 
-exports.setBallSpeedVeryFast = function(d){return "set very fast ball speed"};
+exports.setBallSpeedVeryFast = function(d){return "postavi najveću brzinu lopte"};
 
-exports.setBallSpeedTooltip = function(d){return "Sets the speed of the ball"};
+exports.setBallSpeedTooltip = function(d){return "Postavlja brzinu lopte"};
 
 exports.setPaddleRandom = function(d){return "set random paddle"};
 
@@ -5416,9 +5416,9 @@ exports.whenDown = function(d){return "when Down arrow"};
 
 exports.whenDownTooltip = function(d){return "Execute the actions below when the Down arrow button is pressed."};
 
-exports.whenGameStarts = function(d){return "when game starts"};
+exports.whenGameStarts = function(d){return "kada igra započne"};
 
-exports.whenGameStartsTooltip = function(d){return "Execute the actions below when the game starts."};
+exports.whenGameStartsTooltip = function(d){return "Izvršava dolje navedene radnje kada igra započne."};
 
 exports.whenLeft = function(d){return "when Left arrow"};
 
@@ -5492,7 +5492,7 @@ exports.dialogOK = function(d){return "U redu"};
 
 exports.emptyBlocksErrorMsg = function(d){return "Da bi blok \"Ponovi\" ili \"Ako\" radio, u njega treba ugraditi druge blokove. Provjeri uklapa li se unutarnji blok pravilno u vanjski blok."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Imaš viška blokova koji nisu povezani za \"događaj\" blokom."};
 
 exports.finalStage = function(d){return "Čestitamo! Posljednja etapa je završena."};
 
@@ -5510,7 +5510,7 @@ exports.levelIncompleteError = function(d){return "Koristiš sve potrebne vrste 
 
 exports.listVariable = function(d){return "popis"};
 
-exports.makeYourOwnFlappy = function(d){return "Make Your Own Flappy Game"};
+exports.makeYourOwnFlappy = function(d){return "Napravi vlastitu Flappy igricu"};
 
 exports.missingBlocksErrorMsg = function(d){return "Za rješavanje ovog zadatka isprobaj jedan ili više blokova koji se nalaze ispod."};
 
@@ -5548,7 +5548,7 @@ exports.tooManyBlocksMsg = function(d){return "Ovaj zadatak se može riješiti s
 
 exports.tooMuchWork = function(d){return "Napravio si puno posla za mene! Možeš li manje puta ponavljati?"};
 
-exports.flappySpecificFail = function(d){return "Your code looks good - it will flap with each click. But you need to click many times to flap to the target."};
+exports.flappySpecificFail = function(d){return "Tvoj kod izgleda dobro - na svaki klik će poletjeti. Ali trebaš kliknuti puno puta do cilja."};
 
 exports.toolboxHeader = function(d){return "Blokovi"};
 

@@ -4715,15 +4715,15 @@ var MessageFormat = require("messageformat");MessageFormat.locale.sr = function 
 };
 exports.blocklyMessage = function(d){return "Blockly"};
 
-exports.catActions = function(d){return "акција"};
+exports.catActions = function(d){return "Акције"};
 
-exports.catColour = function(d){return "боја"};
+exports.catColour = function(d){return "Боја"};
 
-exports.catLogic = function(d){return "логика"};
+exports.catLogic = function(d){return "Логика"};
 
-exports.catLists = function(d){return "листе"};
+exports.catLists = function(d){return "Листе"};
 
-exports.catLoops = function(d){return "петље"};
+exports.catLoops = function(d){return "Понављања"};
 
 exports.catMath = function(d){return "Математика"};
 
@@ -4733,21 +4733,21 @@ exports.catText = function(d){return "Текст"};
 
 exports.catVariables = function(d){return "Променљиве"};
 
-exports.codeTooltip = function(d){return "Погледајте генерисани код JavaScript-е."};
+exports.codeTooltip = function(d){return "Погледајте генерисани код JavaScript-а."};
 
-exports.continue = function(d){return "Наставите"};
+exports.continue = function(d){return "Настави"};
 
 exports.dialogCancel = function(d){return "Откажи"};
 
 exports.dialogOK = function(d){return "У реду"};
 
-exports.emptyBlocksErrorMsg = function(d){return "\"Repeat\" или  \"If\" блок мора имати још један блок у себи како би функционисао. Постарајте се да је унутрашнји блок правилно убачен у ванјски блок."};
+exports.emptyBlocksErrorMsg = function(d){return "Да би блок \"Понављај\" или  \"Ако\" радио, у њега треба уградити друге блокове. Постарајте се да је унутрашњи блок правилно убачен у спољни блок."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Имаш блокове који нису повезани са основним блоком."};
 
-exports.finalStage = function(d){return "Честитамо! Завршили сте последнју етапу."};
+exports.finalStage = function(d){return "Честитамо! Завршили сте последњу етапу."};
 
-exports.finalStageTrophies = function(d){return "Честитамо! Завршили сте последнју етапу и освојили  "+p(d,"numTrophies",0,"sr",{"one":"трофеј","other":n(d,"numTrophies")+" трофеја"})+"."};
+exports.finalStageTrophies = function(d){return "Честитамо! Завршио-ла си последњи ниво и освојио-ла  "+p(d,"numTrophies",0,"sr",{"one":"трофеј","other":n(d,"numTrophies")+" трофеја"})+"."};
 
 exports.generatedCodeInfo = function(d){return "Блокови за ваш програм се такође могу репрезентовати у јава скрипту, светском најшире прихваћеном програмском језику:"};
 
@@ -4755,57 +4755,57 @@ exports.hashError = function(d){return "Жао нам је, '%1' не одгов
 
 exports.help = function(d){return "Помоћ"};
 
-exports.hintTitle = function(d){return "Предлог:"};
+exports.hintTitle = function(d){return "Савет:"};
 
-exports.levelIncompleteError = function(d){return "Ви користите све неопходне типове блокова, али не правилно."};
+exports.levelIncompleteError = function(d){return "Користиш све неопходне типове блокова, али не на прави начин."};
 
-exports.listVariable = function(d){return "Листа"};
+exports.listVariable = function(d){return "листа"};
 
-exports.makeYourOwnFlappy = function(d){return "Make Your Own Flappy Game"};
+exports.makeYourOwnFlappy = function(d){return "Направи своју Flappy игру"};
 
-exports.missingBlocksErrorMsg = function(d){return "Пробајте један или више блокова испод како би решили слагалицу."};
+exports.missingBlocksErrorMsg = function(d){return "Пробај један или више понуђених блокова како би решио-ла мозгалицу."};
 
-exports.nextLevel = function(d){return "Честитамо! Решили сте Puzzle "+v(d,"puzzleNumber")+"."};
+exports.nextLevel = function(d){return "Честитамо! Решио-ла си мозгалицу "+v(d,"puzzleNumber")+"."};
 
-exports.nextLevelTrophies = function(d){return "Честитамо! Решили сте  Puzzle "+v(d,"puzzleNumber")+" и освојили "+p(d,"numTrophies",0,"sr",{"one":"a trophy","other":n(d,"numTrophies")+" trophies"})+"."};
+exports.nextLevelTrophies = function(d){return "Честитамо! Решили сте Слагалицу "+v(d,"puzzleNumber")+" и освојили "+p(d,"numTrophies",0,"sr",{"one":"трофеј","other":n(d,"numTrophies")+" трофеја"})+"."};
 
 exports.nextStage = function(d){return "Честитамо! Решили сте  Stage "+v(d,"stageNumber")+"."};
 
 exports.nextStageTrophies = function(d){return "Честитамо! Решили сте  Stage "+v(d,"stageNumber")+" и освојили "+p(d,"numTrophies",0,"sr",{"one":"a trophy","other":n(d,"numTrophies")+" trophies"})+"."};
 
-exports.numBlocksNeeded = function(d){return "Честитамо! Решили сте Puzzle "+v(d,"puzzleNumber")+". (Међутим, ипак сте могли само користити "+p(d,"numBlocks",0,"sr",{"one":"1 block","other":n(d,"numBlocks")+" blocks"})+".)"};
+exports.numBlocksNeeded = function(d){return "Честитамо! Решио-ла си мозгалицу "+v(d,"puzzleNumber")+". (Међутим, постоји програм са само "+p(d,"numBlocks",0,"sr",{"one":"једним блоком","other":n(d,"numBlocks")+" блокова"})+".)"};
 
-exports.numLinesOfCodeWritten = function(d){return "Управо сте написали "+p(d,"numLines",0,"sr",{"one":"1 line","other":n(d,"numLines")+" lines"})+" кода!"};
+exports.numLinesOfCodeWritten = function(d){return "Управо си написао-ла "+p(d,"numLines",0,"sr",{"one":"1 линију","other":n(d,"numLines")+" линија"})+" кода!"};
 
-exports.puzzleTitle = function(d){return "Puzzle "+v(d,"puzzle_number")+" of "+v(d,"stage_total")};
+exports.puzzleTitle = function(d){return "Мозгалица "+v(d,"puzzle_number")+" од "+v(d,"stage_total")};
 
-exports.resetProgram = function(d){return "Ресетирати"};
+exports.resetProgram = function(d){return "Почни поново"};
 
 exports.runProgram = function(d){return "Покрени програм"};
 
-exports.runTooltip = function(d){return "Покренути програм који сте написали уз помоћ блокова у радном простору."};
+exports.runTooltip = function(d){return "Покрени програм састављен уз помоћ блокова у радном простору."};
 
-exports.showCodeHeader = function(d){return "Покажи Програмски код"};
+exports.showCodeHeader = function(d){return "Покажи код програма"};
 
-exports.showGeneratedCode = function(d){return "Покажи Програмски код"};
+exports.showGeneratedCode = function(d){return "Покажи код програма"};
 
-exports.subtitle = function(d){return "Окруженје визуалног програмиранја"};
+exports.subtitle = function(d){return "графичко окружење за програмирање"};
 
 exports.textVariable = function(d){return "текст"};
 
-exports.tooFewBlocksMsg = function(d){return "Ви користите све неопходне типове блокова, али покушајте користити више ове типове блокова како би завршили ову слагалицу."};
+exports.tooFewBlocksMsg = function(d){return "Користиш све неопходне типове блокова, али покушај да искористиш више ових блокова да завршиш мозгалицу."};
 
-exports.tooManyBlocksMsg = function(d){return "Ова се слагалица може решити са <x id='START_SPAN'/><x id='END_SPAN'/> блоковима."};
+exports.tooManyBlocksMsg = function(d){return "Ова мозгалица може да се реши са <x id='START_SPAN'/><x id='END_SPAN'/> блокова."};
 
-exports.tooMuchWork = function(d){return "Чините да ја радим пуно посла! Можете ли покушати понавлјати више пута?"};
+exports.tooMuchWork = function(d){return "Задао си ми много посла! Покушај са мање понављања."};
 
-exports.flappySpecificFail = function(d){return "Your code looks good - it will flap with each click. But you need to click many times to flap to the target."};
+exports.flappySpecificFail = function(d){return "Твој програм изледа добро - замахнуће крилима на сваки клик, али треба да кликнеш много пута да долетиш до циља."};
 
 exports.toolboxHeader = function(d){return "Блокови"};
 
 exports.openWorkspace = function(d){return "Како то ради"};
 
-exports.totalNumLinesOfCodeWritten = function(d){return "Укупно : "+p(d,"numLines",0,"sr",{"one":"1 line","other":n(d,"numLines")+" lines"})+" кода."};
+exports.totalNumLinesOfCodeWritten = function(d){return "Укупно : "+p(d,"numLines",0,"sr",{"one":"1 линија","other":n(d,"numLines")+" линија"})+" кода."};
 
 exports.tryAgain = function(d){return "Покушај поново"};
 
@@ -4813,27 +4813,27 @@ exports.backToPreviousLevel = function(d){return "Натраг на претхо
 
 exports.saveToGallery = function(d){return "Save to your gallery"};
 
-exports.typeCode = function(d){return "Откуцајте ваш JavaScript код испод ових инструкција."};
+exports.typeCode = function(d){return "Напиши свој JavaScript код испод ових инструкција."};
 
 exports.typeFuncs = function(d){return "Доступне функције:%1"};
 
-exports.typeHint = function(d){return "Неопходне су заграде и тачка-зарези."};
+exports.typeHint = function(d){return "Уочи да су неопходне заграде и тачка-зарези."};
 
-exports.workspaceHeader = function(d){return "Скупи своје блокове овде: "};
+exports.workspaceHeader = function(d){return "Склопи своје блокове овде: "};
 
-exports.infinity = function(d){return "бесконачност"};
+exports.infinity = function(d){return "Бесконачно"};
 
 exports.rotateText = function(d){return "Окрените ваш уређај."};
 
-exports.orientationLock = function(d){return "Угасите оријентациону браву у подешаванјима уређаја."};
+exports.orientationLock = function(d){return "У подешавањима уређаја искључи блокаду оријентације."};
 
-exports.wantToLearn = function(d){return "Желиш научити да програмираш?"};
+exports.wantToLearn = function(d){return "Желиш да научиш да програмираш?"};
 
 exports.watchVideo = function(d){return "Погледај видео"};
 
-exports.tryHOC = function(d){return "Пробај Сат Програмирања"};
+exports.tryHOC = function(d){return "Испробај \"Hour of Code\""};
 
-exports.signup = function(d){return "Региструј се за почетни курс"};
+exports.signup = function(d){return "Региструј се за уводни курс"};
 
 exports.hintHeader = function(d){return "Here's a tip:"};
 
@@ -5041,7 +5041,7 @@ exports.setSpeed = function(d){return "set speed"};
 
 exports.setSpeedTooltip = function(d){return "Sets the levels speed"};
 
-exports.share = function(d){return "Share"};
+exports.share = function(d){return "Подели"};
 
 exports.shareFlappyTwitter = function(d){return "Check out the Flappy game I made. I wrote it myself with @codeorg"};
 

@@ -4843,61 +4843,61 @@ var MessageFormat = require("messageformat");MessageFormat.locale.sk = function 
   }
   return 'other';
 };
-exports.continue = function(d){return "Continue"};
+exports.continue = function(d){return "Pokračovať"};
 
-exports.doCode = function(d){return "do"};
+exports.doCode = function(d){return "vykonaj"};
 
-exports.elseCode = function(d){return "else"};
+exports.elseCode = function(d){return "inak"};
 
-exports.endGame = function(d){return "end game"};
+exports.endGame = function(d){return "koniec hry"};
 
-exports.endGameTooltip = function(d){return "Ends the game."};
+exports.endGameTooltip = function(d){return "Ukončí hru."};
 
-exports.finalLevel = function(d){return "Congratulations! You have solved the final puzzle."};
+exports.finalLevel = function(d){return "Gratulujem! Vyriešil si poslednú úlohu."};
 
-exports.flap = function(d){return "flap"};
+exports.flap = function(d){return "mávni"};
 
-exports.flapRandom = function(d){return "flap a random amount"};
+exports.flapRandom = function(d){return "mávni náhodný počet krát"};
 
-exports.flapVerySmall = function(d){return "flap a very small amount"};
+exports.flapVerySmall = function(d){return "mávni veľmi malý počet krát"};
 
-exports.flapSmall = function(d){return "flap a small amount"};
+exports.flapSmall = function(d){return "mávni malý počet krát"};
 
-exports.flapNormal = function(d){return "flap a normal amount"};
+exports.flapNormal = function(d){return "mávni normálny počet krát"};
 
-exports.flapLarge = function(d){return "flap a large amount"};
+exports.flapLarge = function(d){return "mávni veľký počet krát"};
 
-exports.flapVeryLarge = function(d){return "flap a very large amount"};
+exports.flapVeryLarge = function(d){return "mávni veľmi veľký počet krát"};
 
-exports.flapTooltip = function(d){return "Fly Flappy upwards."};
+exports.flapTooltip = function(d){return "Leť Flappym smerom nahor."};
 
-exports.incrementPlayerScore = function(d){return "increment player score"};
+exports.incrementPlayerScore = function(d){return "získaj bod"};
 
-exports.incrementPlayerScoreTooltip = function(d){return "Add one to the current player score."};
+exports.incrementPlayerScoreTooltip = function(d){return "Pridaj jednu k aktuálnemu skóre."};
 
-exports.nextLevel = function(d){return "Congratulations! You have completed this puzzle."};
+exports.nextLevel = function(d){return "Gratulujem! Vyriešil si túto úlohu."};
 
 exports.no = function(d){return "Nie"};
 
-exports.numBlocksNeeded = function(d){return "This puzzle can be solved with %1 blocks."};
+exports.numBlocksNeeded = function(d){return "Táto hádanka môže byť vyriešená s %1 blokmi."};
 
-exports.oneTopBlock = function(d){return "For this puzzle, you need to stack together all of the blocks in the white workspace."};
+exports.oneTopBlock = function(d){return "Pre túto hádanku, budeš potrebovať nahromadiť všetky bloky v bielom priestore."};
 
-exports.playSoundRandom = function(d){return "play random sound"};
+exports.playSoundRandom = function(d){return "prehrať náhodný zvuk"};
 
-exports.playSoundBounce = function(d){return "play bounce sound"};
+exports.playSoundBounce = function(d){return "prehrať zvuk odrazenia"};
 
-exports.playSoundCrunch = function(d){return "play crunch sound"};
+exports.playSoundCrunch = function(d){return "prehrať zvuk chrumnutia"};
 
-exports.playSoundDie = function(d){return "play sad sound"};
+exports.playSoundDie = function(d){return "prehrať zvuk smútku"};
 
-exports.playSoundHit = function(d){return "play smash sound"};
+exports.playSoundHit = function(d){return "prehrať zvuk rozbitia"};
 
-exports.playSoundPoint = function(d){return "play point sound"};
+exports.playSoundPoint = function(d){return "prehrať zvuk získania bodu"};
 
 exports.playSoundSwoosh = function(d){return "play swoosh sound"};
 
-exports.playSoundWing = function(d){return "play wing sound"};
+exports.playSoundWing = function(d){return "prehrať zvuk krídiel"};
 
 exports.playSoundJet = function(d){return "play jet sound"};
 
