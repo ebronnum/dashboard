@@ -133,7 +133,7 @@ class Level < ActiveRecord::Base
   end
 
   def self.custom_levels
-    where("user_id IS NOT NULL").select(:game_id, :name, :skin, :user_id, :instructions, :maze, :x, :y, :start_direction, :start_blocks, :toolbox_blocks)
+    where("user_id IS NOT NULL")
   end
 
   def write_custom_levels_to_file

@@ -146,7 +146,7 @@ module LevelsHelper
           (local_assigns[dash].presence) ||
           (@level[dash].presence) ||
           (instance_variable_get('@'+dash.to_s).presence)
-      level[block] ||= escape_javascript(param) if param.present?
+      level[block] ||= escape_javascript(param.to_s) if param.present?
     end
 
     # Set some values that Blockly expects on the root of its options string
