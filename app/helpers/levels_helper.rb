@@ -121,13 +121,6 @@ module LevelsHelper
     level[:puzzle_number] = @script_level ? @script_level.game_chapter : 1
     level[:stage_total] = @script ? @script.script_levels_from_game(@level.game_id).length : @level.game.levels.count
 
-    # Fetch localized strings for specified symbols
-    [:instructions, :levelIncompleteError, :other1StarError, :tooFewBlocksMsg].each do |label|
-      level[label] = [@level.game.app, @level.game.name].map { |name|
-        data_t('level.'+label.to_s, name+'_'+@level.level_num)
-      }.compact!.first
-    end
-
     # Copy Dashboard-style names from local_assigns or @level parameters to Blockly-style names in level object.
     # Keys are Dashboard names, values are Blockly's expected names.
     {:startBlocks => :start_blocks,
@@ -145,7 +138,14 @@ module LevelsHelper
       property = local_assigns[dash].presence ||
         @level[dash].presence ||
         instance_variable_get('@'+dash.to_s).presence
-      level[block] ||= escape_javascript(property.to_s) if property.present?
+      level[block] ||= property.to_s if property.present?
+    end
+
+    # Fetch localized strings for specified symbols
+    [:instructions, :levelIncompleteError, :other1StarError, :tooFewBlocksMsg].each do |label|
+      level[label] ||= [@level.game.app, @level.game.name].map { |name|
+        data_t('level.'+label.to_s, name+'_'+@level.level_num)
+      }.compact!.first
     end
 
     # Set some values that Blockly expects on the root of its options string

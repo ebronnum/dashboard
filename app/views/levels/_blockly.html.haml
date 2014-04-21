@@ -143,5 +143,5 @@
       position: { blockYCoordinateInterval: 25 }
     };
     $.extend(appOptions, #{app_options.to_json});
-    //console.log(appOptions);
+    #{'console.log(appOptions)' if Rails.env.development?};
     #{app}Main(appOptions);

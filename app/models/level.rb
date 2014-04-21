@@ -11,6 +11,12 @@ class Level < ActiveRecord::Base
 
   after_save :write_custom_levels_to_file if Rails.env.in?(["staging", "development"])
 
+  after_initialize :init
+
+  def init
+    self.properties  ||= {}
+  end
+
   def self.builder
     @@level_builder ||= find_by_name('builder')
   end
