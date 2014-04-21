@@ -10,6 +10,7 @@
  *
  *= require jquery.ui.all
  *= require jquery.qtip.min
+ *= require video-js
  *= require_self
  *= require_tree .
  */
@@ -384,6 +385,21 @@ a.level_link:active { color: white; font-weight: 400; background-color: black; }
   width: 100%;
   height: 100%;
   margin: 0;
+}
+
+.fallback-video-player-failed {
+  video, div {
+    visibility: hidden;
+  }
+  p {
+    font-size: 22px;
+    line-height: 26px;
+    padding: 5px;
+
+    a {
+      color: white;
+    }
+  }
 }
 
 .video-modal {

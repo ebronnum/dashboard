@@ -13,6 +13,8 @@ class Level < ActiveRecord::Base
 
   validates_length_of :name, within: 1..70
 
+  validates_uniqueness_of :name, conditions: -> { where.not(user_id: nil) }, on: :create
+
   def self.builder
     @@level_builder ||= find_by_name('builder')
   end
@@ -20,6 +22,7 @@ class Level < ActiveRecord::Base
   def videos
     ([game.intro_video] + concepts.map(&:video)).reject(&:nil?)
   end
+
   def complete_toolbox
     case self.game.app
     when 'turtle'
@@ -130,6 +133,27 @@ class Level < ActiveRecord::Base
       </xml>'
     else
       '<xml></xml>'
+    end
+  end
+
+  def self.custom_levels
+    Level.where("user_id IS NOT NULL")
+  end
+
+  def to_csv(columns)
+    solution = self.solution_level_source.data rescue ""
+    (columns.map { |column| self[column] }).push(self.game.name, solution)
+  end
+
+  def self.write_custom_levels_to_file
+    headers = %w[name instructions skin maze x y start_direction start_blocks]
+
+    CSV.open(Rails.root.join("config", "scripts", "custom_levels.csv"), 'w+') do |file|
+      file << (headers + ["game", "solution"]).map { |header| header.capitalize }
+
+      custom_levels.each do |custom_level|
+        file << custom_level.to_csv(headers)
+      end
     end
   end
 end

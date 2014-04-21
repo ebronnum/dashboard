@@ -1119,12 +1119,7 @@ exports.displayFeedback = function(options) {
   // Update the background color if it is set to be in special design.
   if (options.response && options.response.design &&
       isFeedbackMessageCustomized(options)) {
-    if (options.response.design == "yellow_background") {
-      document.getElementById('feedback-dialog')
-          .className += " yellow-background";
-      document.getElementById('feedback-content')
-          .className += " white-background";
-    } else if (options.response.design == "white_background") {
+    if (options.response.design == "white_background") {
       document.getElementById('feedback-dialog')
           .className += " white-background";
       document.getElementById('feedback-content')
@@ -2093,6 +2088,7 @@ BlocklyApps.CHECK_FOR_EMPTY_BLOCKS = true;
 BlocklyApps.NUM_REQUIRED_BLOCKS_TO_FLAG = 1;
 
 Blockly.BlockSvg.NOTCH_WIDTH = 50;
+Blockly.SNAP_RADIUS = 90;
 
 var notchHeight = 8;
 var notchWidthA = 6;
@@ -2186,8 +2182,6 @@ Jigsaw.init = function(config) {
      * Blockly's default is 0.45.
      */
     Blockly.HSV_SATURATION = 0.6;
-
-    Blockly.SNAP_RADIUS *= Jigsaw.scale.snapRadius;
 
     drawMap();
   };

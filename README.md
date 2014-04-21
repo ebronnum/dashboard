@@ -81,10 +81,10 @@ If you won't be making modifications to blockly code, you can just skip the syml
 ### Starting the Server
 
 1. Start [mailcatcher](http://mailcatcher.me/) (installed during core gem install phase)
-    - `mailcatcher`
+    - `mailcatcher --ip=0.0.0.0`
 
 2. Start rails.
-    - `rails s`
+    - `bundle exec rails s`
     - Go to [http://localhost:3000](http://localhost:3000) to see the Blockly running within Dashboard.
 
 ### Sending mail
@@ -100,8 +100,8 @@ mailcatcher
 
 ### Adding an Admin Account
 
-1. Create a user (be sure to have `mailcatcher` running during signup)
-2. `rails c`
+1. Create a first user which will be your admin (be sure to have `mailcatcher` running during signup)
+2. `bundle exec rails c`
 3. `User.first.update(admin: true)`
 
 ### Windows-specific notes

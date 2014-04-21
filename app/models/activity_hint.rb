@@ -4,7 +4,7 @@ class ActivityHint < ActiveRecord::Base
 
   private
   # Experiments
-  @is_experimenting_feedback = false
+  @is_experimenting_feedback = true
 
   def self.is_experimenting_feedback?
     @is_experimenting_feedback

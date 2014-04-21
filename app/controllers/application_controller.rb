@@ -162,10 +162,8 @@ class ApplicationController < ActionController::Base
       end
     end
 
-    # Set up hint design experiment
-    if ExperimentActivity.is_experimenting_feedback_design? && options[:activity]
-      response[:design] = ExperimentActivity.get_feedback_design(options[:activity].id)
-    end
+    # Set up the background design
+    response[:design] = ExperimentActivity::TYPE_FEEDBACK_DESIGN_WHITE
 
     response
   end

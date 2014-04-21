@@ -1110,12 +1110,7 @@ exports.displayFeedback = function(options) {
   // Update the background color if it is set to be in special design.
   if (options.response && options.response.design &&
       isFeedbackMessageCustomized(options)) {
-    if (options.response.design == "yellow_background") {
-      document.getElementById('feedback-dialog')
-          .className += " yellow-background";
-      document.getElementById('feedback-content')
-          .className += " white-background";
-    } else if (options.response.design == "white_background") {
+    if (options.response.design == "white_background") {
       document.getElementById('feedback-dialog')
           .className += " white-background";
       document.getElementById('feedback-content')
@@ -4536,12 +4531,7 @@ module.exports = {
       {'func': 'turnleft', 'alias': 'Maze.turnLeft();'},
       {'func': 'turnright', 'alias': 'Maze.turnRight();'},
     ],
-    'requiredBlocks': [
-      [{'test': 'moveForward', 'type': 'maze_moveForward'}],
-      [{'test': 'turnLeft',
-       'type': 'maze_turn',
-       'titles': {'DIR': 'turnLeft'}}]
-    ],
+    'requiredBlocks': [],
     'startDirection': Direction.EAST,
     'map': [
       [0, 0, 0, 0, 0, 0, 0, 0],

@@ -26,7 +26,7 @@ class ScriptLevel < ActiveRecord::Base
   end
 
   def stage_or_game_position
-    self.game_chapter || self.position
+    self.stage ? self.position : self.game_chapter
   end
 
   def self.cache_find(id)
