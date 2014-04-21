@@ -5,9 +5,11 @@ class GalleryActivitiesController < ApplicationController
 
   before_action :set_gallery_activity, only: [:destroy]
 
+  INDEX_PER_PAGE = 25
   def index
-    @gallery_activities = GalleryActivity.order(id: :desc).page(params[:page]).per(25)
-    @days = (Date.today - Date.new(2014, 4, 9)).to_i # days since we turned this feature on
+    @gallery_activities = GalleryActivity.order(id: :desc).page(params[:page]).per(INDEX_PER_PAGE)
+    gallery_feature_ship_date = Date.new(2014, 4, 9)
+    @days = (Date.today - gallery_feature_ship_date).to_i
   end
 
   # POST /gallery_activities
