@@ -49,7 +49,7 @@ class HomeControllerTest < ActionController::TestCase
     get :index
 
     assert_select 'h4', "Gallery:" # title of the gallery section
-    assert_select 'ul.gallery li', 2 # 2 gallery items
+    assert_select 'div.gallery_activity img', 2 # 2 gallery items
 
   end
 

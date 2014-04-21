@@ -11,6 +11,8 @@
         locale: Nyelv
         gender: Nem
         edit_header: Felhasználói Adatok Szerkesztése
+        error:
+          future: can't be in the future
   hello: Helló világ
   welcome_back: Üdv újra, %{name}
   add_teacher_form:
@@ -32,7 +34,7 @@
   try_hoc: 'Próbálja ki a Kódolás Óráját, kattintson ide >> '
   try_k8intro: Próbálja ki a K-8 bevezetőnket a Számítógép Tudomány Tanfolyamhoz (15-25
     óra)
-  k8intro: K-8 Intro to Computer Science Course (15-25 hours)
+  k8intro: K-8 Bevezető tanfolyam a  számítógép tudományhoz  (15-25 óra)
   already_started: Már elkezdted? Folytasd itt >>
   demos: 'Admin: Minden demó'
   continue: Tovább
@@ -51,10 +53,9 @@
     need_confirmation: Nem kapta meg a megerősítéshez instrukciókat?
     need_unlock: Nem kaptál a zárolás megszüntetéséhez útmutatót?
   signup_form:
-    overview: Ez a 20 órás kurzus bemutatja a  számítástechnika és programozás alap
-      fogalmait. A kurzus általános iskolásoknak lett kitalálva, de mindenki számára
-      jó időtöltés lehet.
-    no_signup_header: Nem akar regisztrálni?
+    overview_student: Sign up for an account to track your progress.
+    overview_teacher: Teach computer science in your classroom by signing up for an
+      account.<p/> You'll be able to track your students' progress and get rewards.
     no_signup_message: <a target="_blank" href="http://learn.code.org">Böngészhetsz
       a különböző szintek és feladatok között</a>, de regisztrálnod kell, hogy elmenthesd,
       hogy hol tartassz.
@@ -76,7 +77,7 @@
     teacher_title: Tanár regisztrálás
     student_pitch: 'Túl az egy órán: próbáld ki a K-8 bevezetést a számítástechnika
       tudományába'
-    student_title: Regisztrálás
+    student_title: Belépés (diák)
     school_name: Iskola neve (nem kötelező)
     school_address: Iskola címe (nem kötelező)
     address_placeholder: cím, város, állam(megye), irányítószám
@@ -101,6 +102,7 @@
     remember: Emlékezz rám
     submit: Bejelentkezés
   signin:
+    try_heading: Want to try coding without signing up?
     try_hoc: Először próbáld meg a Kódolás Órája-t
     try_20hours: Próbálja ki a 20 órás bevezetőt a számítógép-tudományhoz
   password:
@@ -148,6 +150,8 @@
     provider: 'Provider:'
     code: 'Code:'
     redeem_header: 'To redeem:'
+    donorschoose_register: Register as a teacher on DonorsChoose.org
+    donorschoose_project: Post a project
     donorschoose_how_to: Hogyan használhatja a kódját
     success: Your prize was succesfully redeemed, see code below.
     error: Your prize could not be redeemed, please try again.
@@ -262,14 +266,14 @@
       manage: Diákok kezelése
       add: Diákok hozzáadása
     sections:
-      manage: Manage sections
+      manage: Vezetési szakasz
     rollup: Fejlődés tájékoztató
     activity: Mostanában osztály aktivitás
     user_not_found: A tanár, vagy a diák nem ismert
-    cant_remove_student_no_email: '%{student_name} cannot be removed as your student
-      because %{student_name} has not registered an e-mail address'
-    cant_remove_teacher_no_email: '%{teacher_name} cannot be removed as your teacher
-      because you have not registered an e-mail address'
+    cant_remove_student_no_email: '%{student_name} nem törölhető a tanulói sorából,
+      mert, mert %{student_name}-nek nincs regisztrált e-mail címe'
+    cant_remove_teacher_no_email: '%{teacher_name} nem törolhető, mint az Ön tanára,
+      mert Ön még nem regisztrált  e-mail címet'
     student_teacher_disassociated: '%{teacher_name}, mint a %{student_name} tanáraként
       el lett bocsátva'
   user:
@@ -288,7 +292,7 @@
     recent_activity: Mostani tevékenységek
     show_more: Mutass többet
   home:
-    signin_message: Vagy ha már regisztrált, %{link}
+    signin_message: Már regisztrált? %{link}
     student_reg_link: Diák Bejelentkezés
     teacher_reg_link: Tanár Bejelentkezés
     signin_directions: Use an account to track progress and get rewards.<br/> Teachers,
@@ -318,8 +322,12 @@
     see_details: Részletek
     prize_info: 'Részvétel (csak USA) díjak: 10$ -os ajándék kártya diákoknak a befejezésért,
       és akár 1,000$ az állami iskolákban a tanítóknak'
-    tryfirst: 'Or, you can try it first, and sign up later:'
-    trynow: Try now
+    tryfirst: 'Akár ki is próbálhatja, és csak utána jelentkezik be:'
+    trynow: Póbálja ki
+    add_hint_help: Please help us to add smart hints to Code.org tutorials
+    20hour_overview: This 20-hour course introduces core computer science and programming
+      concepts. The course is designed for use in classrooms for grades K-8, but it
+      is fun to learn at all ages.
   gender:
     male: Férfi
     female: Nő
@@ -348,6 +356,8 @@
     subtitle: Nézd meg ezeket a videókat és tanácsokat
     teacher: Megoldás megtekintése
     auth_error: Nem vagy jogosult a megoldás megtekintésére.
+    submit: Update Artist Location
+    direction: Start Direction
   video:
     tab: Videó.
     notes: Nem látszik a videó? Olvassa el a szöveges magyarázatot!
@@ -363,15 +373,27 @@
   download_pdf: Nyitott óravázlat
   share_code:
     title: Kattints a 'Program futtatása'  gombra, hogy lásd, hogyan működik
-    flappy_og_title: Check out my Flappy Game
-    og_description: I wrote the code myself with Code.org
+    bounce_og_title: Check out my Bounce Game
+    flappy_og_title: Jelentkezzen ki az én Flappy játékomból
+    og_description: A kódját magam írtam a Code.org segítségével
   builder:
-    created: You created a new script.
-    destroyed: You destroyed a script.
+    created: Létrehozott egy új parancsfájlt.
+    destroyed: Elpusztult a parancsfájlt.
     manage: Manage Scripts
-    view: View
-    back: Back to scripts
+    view: Nézet
+    back: Vissza a parancsfájlokhoz
     level:
-      create: Create new level
-      current: Current Levels
-      unused: Unused Levels
+      create: Hozzon létre új szintet
+      current: Aktuális szintek
+      unused: Nem használt szintek
+  upsell:
+    hoc:
+      title: The Hour of Code
+      body: Try the basics of computer science. Millions have given it a shot.
+    flappy:
+      title: Flappy Code
+      body: Wanna write your own game in less than 10 minutes? Try our Flappy Code
+        tutorial!
+    20hour:
+      title: Intro Course
+      body: Try our 20-hour Intro to Computer Science course.

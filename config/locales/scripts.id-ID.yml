@@ -1,0 +1,9 @@
+"id":
+  data:
+    script:
+      name:
+        sample_level_builder:
+          desc: A custom script
+          Introduction to Computer Science: Introduction to Computer Science
+          The Maze: The Maze
+          The Coffee: The Coffee

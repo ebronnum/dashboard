@@ -11,6 +11,8 @@
         locale: Tungumál
         gender: Kyn
         edit_header: Breyta upplýsingum reiknings
+        error:
+          future: can't be in the future
   hello: Halló heimur
   welcome_back: Velkomin(n) aftur, %{name}
   add_teacher_form:
@@ -31,7 +33,7 @@
   less: MINNA
   try_hoc: 'Prófaðu Kóðun í klukkustund, smelltu hér >> '
   try_k8intro: Prófaðu námskeiðið okkar K-8 Inngangur að tölvunarfræði (11-25 klst.)
-  k8intro: K-8 Intro to Computer Science Course (15-25 hours)
+  k8intro: K-8 Kynningarnámskeið í tölvunarfræði (15-25 klst.)
   already_started: 'Ekki að byrja núna? Taktu upp þráðinn hér >> '
   demos: 'Umsjón: Öll sýnidæmi'
   continue: Halda áfram
@@ -50,10 +52,9 @@
     need_confirmation: Fékkstu ekki sendar leiðbeiningar um staðfestingu?
     need_unlock: Fékkstu ekki leiðbeiningar um opnun?
   signup_form:
-    overview: Þetta 20 klst. námskeið kynnir grundvallarhugtök í tölvunarfræði og
-      forritun. Námskeiðið er hannað fyrir notkun í skólastofu með aldurshópi K-8,
-      en er skemmtilegt fyrir alla aldurshópa.
-    no_signup_header: Viltu ekki skrá þig?
+    overview_student: Sign up for an account to track your progress.
+    overview_teacher: Teach computer science in your classroom by signing up for an
+      account.<p/> You'll be able to track your students' progress and get rewards.
     no_signup_message: Þú getur <a target="_blank" href="http://learn.code.org">skoðað
       hina ýmsu áfanga og þrautir</a>, en þú verður að skrá þig til að geta vistað
       árangur þinn.
@@ -74,7 +75,7 @@
     teacher_pitch: Kenndu nemendum þínum K8 Inngang að tölvunarfræði
     teacher_title: Nýskráning kennara
     student_pitch: 'Að lokinni 1 klst: prófaðu K-8 Intro to Computer Science'
-    student_title: Skrá sig
+    student_title: Innskráning nemenda
     school_name: Nafn skóla (valfrjálst)
     school_address: Heimilisfang skóla (valfrjálst)
     address_placeholder: götuheiti, borg, fylki, póstfang
@@ -99,6 +100,7 @@
     remember: Muna eftir mér
     submit: Innskráning
   signin:
+    try_heading: Want to try coding without signing up?
     try_hoc: Prófaðu Kóðun í klukkustund fyrst
     try_20hours: Prófaðu 20 klst. Inngang að tölvunarfræði
   password:
@@ -149,6 +151,8 @@
     provider: 'Veitandi:'
     code: 'Kóði:'
     redeem_header: 'Til að innleysa:'
+    donorschoose_register: Register as a teacher on DonorsChoose.org
+    donorschoose_project: Post a project
     donorschoose_how_to: Hvernig á að nota kóða þinn
     success: Verðlaunin voru innleyst, sjá kóða fyrir neðan.
     error: Ekki tókst að innleysa verðlaunin, vinsamlegast reyndu aftur.
@@ -266,14 +270,14 @@
       manage: Umsjón nemenda
       add: Bæta við nemendum
     sections:
-      manage: Manage sections
+      manage: Umsjón áfanga
     rollup: Mælaborð árangurs
     activity: Nýleg virkni bekkjar
     user_not_found: Kennarinn eða nemandinn fannst ekki
-    cant_remove_student_no_email: '%{student_name} cannot be removed as your student
-      because %{student_name} has not registered an e-mail address'
-    cant_remove_teacher_no_email: '%{teacher_name} cannot be removed as your teacher
-      because you have not registered an e-mail address'
+    cant_remove_student_no_email: Ekki hægt að afskrá %{student_name} sem nemanda
+      þinn vegna þess að %{student_name} hefur ekki skráð tölvupóstfang
+    cant_remove_teacher_no_email: Ekki hægt að afskrá %{teacher_name} sem kennara
+      þinn vegna þess að þú hefur ekki skráð tölvupóstfang
     student_teacher_disassociated: '%{teacher_name} hefur verið fjarlægð(ur) sem kennari
       %{student_name}'
   user:
@@ -293,7 +297,7 @@
     recent_activity: Nýleg virkni
     show_more: Sýna meira
   home:
-    signin_message: eða ef þú er þegar skráð(ur) %{link}
+    signin_message: Þegar skráð(ur)? %{link}
     student_reg_link: Skráning nemanda
     teacher_reg_link: Skráning kennara
     signin_directions: Use an account to track progress and get rewards.<br/> Teachers,
@@ -321,8 +325,12 @@
     see_details: Sjá nánar
     prize_info: 'Prizes for participation (U.S. only): $10 gift cards for student
       completion and up to $1,000 in classroom rewards for public school teachers'
-    tryfirst: 'Or, you can try it first, and sign up later:'
-    trynow: Try now
+    tryfirst: 'Eða þú getur prófað fyrst og skráð þig seinna:'
+    trynow: Prófa núna
+    add_hint_help: Please help us to add smart hints to Code.org tutorials
+    20hour_overview: This 20-hour course introduces core computer science and programming
+      concepts. The course is designed for use in classrooms for grades K-8, but it
+      is fun to learn at all ages.
   gender:
     male: Karlkyns
     female: Kvenkyns
@@ -351,6 +359,8 @@
     subtitle: Skoðaðu þessi myndbönd og vísbendingar
     teacher: Sjá lausnina
     auth_error: Þú hefur ekki heimild til að sjá lausnina.
+    submit: Update Artist Location
+    direction: Start Direction
   video:
     tab: Myndbönd.
     notes: Ekkert myndband? Sýna útskýringar.
@@ -365,15 +375,27 @@
   download_pdf: Opin kennsluáætlun
   share_code:
     title: Smelltu á 'Keyra forrit' til að prófa forritið mitt
-    flappy_og_title: Check out my Flappy Game
-    og_description: I wrote the code myself with Code.org
+    bounce_og_title: Check out my Bounce Game
+    flappy_og_title: Prófaðu leikinn minn Flappy
+    og_description: Ég skrifaði kóðann sjálf(ur) með Code.org
   builder:
-    created: You created a new script.
-    destroyed: You destroyed a script.
+    created: Þú bjóst til nýja skriftu.
+    destroyed: Þú eyddir skriftu.
     manage: Manage Scripts
-    view: View
-    back: Back to scripts
+    view: Sýna
+    back: Aftur í skriftur
     level:
-      create: Create new level
-      current: Current Levels
-      unused: Unused Levels
+      create: Búa til nýjan áfanga
+      current: Núverandi áfangar
+      unused: Ónotaðir áfangar
+  upsell:
+    hoc:
+      title: The Hour of Code
+      body: Try the basics of computer science. Millions have given it a shot.
+    flappy:
+      title: Flappy Code
+      body: Wanna write your own game in less than 10 minutes? Try our Flappy Code
+        tutorial!
+    20hour:
+      title: Intro Course
+      body: Try our 20-hour Intro to Computer Science course.

@@ -7,6 +7,7 @@ if (typeof global !== 'undefined') {
 }
 
 var addReadyListener = require('./dom').addReadyListener;
+var blocksCommon = require('./blocksCommon');
 
 function StubDialog() {
   for (var argument in arguments) {
@@ -53,6 +54,7 @@ module.exports = function(app, levels, options) {
   };
 
   options.skin = options.skinsModule.load(BlocklyApps.assetUrl, options.skinId);
+  blocksCommon.install(Blockly);
   options.blocksModule.install(Blockly, options.skin);
 
   addReadyListener(function() {
@@ -69,7 +71,7 @@ module.exports = function(app, levels, options) {
 };
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./base":2,"./dom":6}],2:[function(require,module,exports){
+},{"./base":2,"./blocksCommon":4,"./dom":7}],2:[function(require,module,exports){
 /**
  * Blockly Apps: Common code
  *
@@ -869,7 +871,7 @@ var getIdealBlockNumberMsg = function() {
       msg.infinity() : BlocklyApps.IDEAL_BLOCK_NUM;
 };
 
-},{"../locale/nl_nl/common":34,"./builder":4,"./dom":6,"./feedback.js":7,"./slider":10,"./templates/buttons.html":12,"./templates/instructions.html":14,"./templates/learn.html":15,"./templates/makeYourOwn.html":16,"./utils":32,"./xml":33}],3:[function(require,module,exports){
+},{"../locale/nl_nl/common":35,"./builder":5,"./dom":7,"./feedback.js":8,"./slider":11,"./templates/buttons.html":13,"./templates/instructions.html":15,"./templates/learn.html":16,"./templates/makeYourOwn.html":17,"./utils":33,"./xml":34}],3:[function(require,module,exports){
 exports.createToolbox = function(blocks) {
   return '<xml id="toolbox" style="display: none;">' + blocks + '</xml>';
 };
@@ -879,6 +881,43 @@ exports.blockOfType = function(type) {
 };
 
 },{}],4:[function(require,module,exports){
+/**
+ * Defines blocks useful in multiple blockly apps
+ */
+'use strict';
+
+var REPEAT_IMAGE_URL = 'media/sharedBlocks/repeat.png';
+var REPEAT_IMAGE_WIDTH = 53;
+var REPEAT_IMAGE_HEIGHT = 57;
+
+/**
+ * Install extensions to Blockly's language and JavaScript generator
+ * @param blockly instance of Blockly
+ */
+exports.install = function(blockly) {
+  // Re-uses the repeat block generator from core
+  blockly.JavaScript.controls_repeat_simplified = blockly.JavaScript.controls_repeat;
+
+  blockly.Blocks.controls_repeat_simplified = {
+    // Repeat n times (internal number) with simplified UI
+    init: function() {
+      this.setHelpUrl(blockly.Msg.CONTROLS_REPEAT_HELPURL);
+      this.setHSV(322, 0.90, 0.95);
+      this.appendStatementInput('DO')
+        .appendTitle(new blockly.FieldImage(
+          blockly.assetUrl(REPEAT_IMAGE_URL), REPEAT_IMAGE_WIDTH, REPEAT_IMAGE_HEIGHT));
+      this.appendDummyInput()
+        .appendTitle(blockly.Msg.CONTROLS_REPEAT_TITLE_REPEAT)
+        .appendTitle(new Blockly.FieldTextInput('10',
+          blockly.FieldTextInput.nonnegativeIntegerValidator), 'TIMES');
+      this.setPreviousStatement(true);
+      this.setNextStatement(true);
+      this.setTooltip(blockly.Msg.CONTROLS_REPEAT_TOOLTIP);
+    }
+  };
+};
+
+},{}],5:[function(require,module,exports){
 var feedback = require('./feedback.js');
 var dom = require('./dom.js');
 var utils = require('./utils.js');
@@ -908,7 +947,7 @@ exports.builderForm = function(onAttemptCallback) {
   dialog.show({ backdrop: 'static' });
 };
 
-},{"./dom.js":6,"./feedback.js":7,"./templates/builder.html":11,"./utils.js":32,"url":46}],5:[function(require,module,exports){
+},{"./dom.js":7,"./feedback.js":8,"./templates/builder.html":12,"./utils.js":33,"url":47}],6:[function(require,module,exports){
 var INFINITE_LOOP_TRAP = '  BlocklyApps.checkTimeout();\n';
 var INFINITE_LOOP_TRAP_RE =
     new RegExp(INFINITE_LOOP_TRAP.replace(/\(.*\)/, '\\(.*\\)'), 'g');
@@ -988,7 +1027,7 @@ exports.functionFromCode = function(code, options) {
   return new ctor();
 };
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 exports.addReadyListener = function(callback) {
   if (document.readyState === "complete") {
     setTimeout(callback, 1);
@@ -1062,7 +1101,7 @@ exports.isMobile = function() {
   return reg.test(window.navigator.userAgent);
 };
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 var trophy = require('./templates/trophy.html');
 var utils = require('./utils');
 var readonly = require('./templates/readonly.html');
@@ -1842,7 +1881,7 @@ var generateXMLForBlocks = function(blocks) {
 };
 
 
-},{"../locale/nl_nl/common":34,"./codegen":5,"./dom":6,"./templates/buttons.html":12,"./templates/code.html":13,"./templates/readonly.html":18,"./templates/showCode.html":19,"./templates/trophy.html":20,"./utils":32}],8:[function(require,module,exports){
+},{"../locale/nl_nl/common":35,"./codegen":6,"./dom":7,"./templates/buttons.html":13,"./templates/code.html":14,"./templates/readonly.html":19,"./templates/showCode.html":20,"./templates/trophy.html":21,"./utils":33}],9:[function(require,module,exports){
 // Functions for checking required blocks.
 
 /**
@@ -1901,7 +1940,7 @@ exports.define = function(name) {
   };
 };
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 // avatar: A 1029x51 set of 21 avatar images.
 
 exports.load = function(assetUrl, id) {
@@ -1941,7 +1980,7 @@ exports.load = function(assetUrl, id) {
   return skin;
 };
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /**
  * Blockly Apps: SVG Slider
  *
@@ -2146,7 +2185,7 @@ Slider.bindEvent_ = function(element, name, func) {
 
 module.exports = Slider;
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2167,7 +2206,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":36}],12:[function(require,module,exports){
+},{"ejs":37}],13:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2188,7 +2227,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/nl_nl/common":34,"ejs":36}],13:[function(require,module,exports){
+},{"../../locale/nl_nl/common":35,"ejs":37}],14:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2209,7 +2248,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":36}],14:[function(require,module,exports){
+},{"ejs":37}],15:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2230,7 +2269,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/nl_nl/common":34,"ejs":36}],15:[function(require,module,exports){
+},{"../../locale/nl_nl/common":35,"ejs":37}],16:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2253,7 +2292,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/nl_nl/common":34,"ejs":36}],16:[function(require,module,exports){
+},{"../../locale/nl_nl/common":35,"ejs":37}],17:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2274,7 +2313,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/nl_nl/common":34,"ejs":36}],17:[function(require,module,exports){
+},{"../../locale/nl_nl/common":35,"ejs":37}],18:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2296,7 +2335,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/nl_nl/common":34,"ejs":36}],18:[function(require,module,exports){
+},{"../../locale/nl_nl/common":35,"ejs":37}],19:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2318,7 +2357,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":36}],19:[function(require,module,exports){
+},{"ejs":37}],20:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2339,7 +2378,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/nl_nl/common":34,"ejs":36}],20:[function(require,module,exports){
+},{"../../locale/nl_nl/common":35,"ejs":37}],21:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2360,7 +2399,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":36}],21:[function(require,module,exports){
+},{"ejs":37}],22:[function(require,module,exports){
 /**
  * Blockly Demo: Turtle Graphics
  *
@@ -2711,7 +2750,7 @@ exports.answer = function(page, level) {
   return BlocklyApps.log;
 };
 
-},{"../base":2,"./api":22}],22:[function(require,module,exports){
+},{"../base":2,"./api":23}],23:[function(require,module,exports){
 var BlocklyApps = require('../base');
 
 exports.moveForward = function(distance, id) {
@@ -2794,7 +2833,7 @@ exports.showTurtle = function(id) {
   BlocklyApps.log.push(['ST', id]);
 };
 
-},{"../base":2}],23:[function(require,module,exports){
+},{"../base":2}],24:[function(require,module,exports){
 /**
  * Blockly Demo: Turtle Graphics
  *
@@ -3320,7 +3359,6 @@ exports.install = function(blockly, skin) {
     }
   };
 
-  
   generator.simple_move_length_short = function () {
     return [SimpleMove.SHORT_MOVE_LENGTH, generator.ORDER_ATOMIC];
   };
@@ -3482,7 +3520,7 @@ exports.install = function(blockly, skin) {
 
 };
 
-},{"../../locale/nl_nl/turtle":35,"./core":25}],24:[function(require,module,exports){
+},{"../../locale/nl_nl/turtle":36,"./core":26}],25:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -3503,7 +3541,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":36}],25:[function(require,module,exports){
+},{"ejs":37}],26:[function(require,module,exports){
 // Create a limited colour palette to avoid overwhelming new users
 // and to make colour checking easier.  These definitions cannot be
 // moved to blocks.js, which is loaded later, since they are used in
@@ -3524,7 +3562,7 @@ exports.Colours = {
   PLUM: '#843179'
 };
 
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 var levelBase = require('../level_base');
 var Colours = require('./core').Colours;
 var answer = require('./answers').answer;
@@ -4364,7 +4402,8 @@ module.exports = {
         blocks.simpleJumpBlocks() +
         blocks.simpleMoveLengthBlocks() +
         blocks.simpleJumpLengthBlocks() +
-        blocks.simpleLengthBlocks()
+        blocks.simpleLengthBlocks() +
+        blockUtils.blockOfType('controls_repeat_simplified')
       ),
     startBlocks: '',
     startDirection: 0,
@@ -4372,7 +4411,7 @@ module.exports = {
   }
 };
 
-},{"../../locale/nl_nl/turtle":35,"../block_utils":3,"../level_base":8,"./answers":21,"./core":25,"./requiredBlocks":28,"./startBlocks.xml":29,"./toolbox.xml":30}],27:[function(require,module,exports){
+},{"../../locale/nl_nl/turtle":36,"../block_utils":3,"../level_base":9,"./answers":22,"./core":26,"./requiredBlocks":29,"./startBlocks.xml":30,"./toolbox.xml":31}],28:[function(require,module,exports){
 var appMain = require('../appMain');
 window.Turtle = require('./turtle');
 var blocks = require('./blocks');
@@ -4385,7 +4424,7 @@ window.turtleMain = function(options) {
   appMain(window.Turtle, levels, options);
 };
 
-},{"../appMain":1,"../skins":9,"./blocks":23,"./levels":26,"./turtle":31}],28:[function(require,module,exports){
+},{"../appMain":1,"../skins":10,"./blocks":24,"./levels":27,"./turtle":32}],29:[function(require,module,exports){
 /**
  * Sets BlocklyApp constants that depend on the page and level.
  * This encapsulates many functions used for BlocklyApps.REQUIRED_BLOCKS.
@@ -4618,7 +4657,7 @@ module.exports = {
   SET_COLOUR_RANDOM: SET_COLOUR_RANDOM,
   defineWithArg: defineWithArg
 };
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4685,7 +4724,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/nl_nl/turtle":35,"ejs":36}],30:[function(require,module,exports){
+},{"../../locale/nl_nl/turtle":36,"ejs":37}],31:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4809,7 +4848,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/nl_nl/turtle":35,"ejs":36}],31:[function(require,module,exports){
+},{"../../locale/nl_nl/turtle":36,"ejs":37}],32:[function(require,module,exports){
 /**
  * Blockly Demo: Turtle Graphics
  *
@@ -5565,7 +5604,7 @@ var getFeedbackImage = function() {
       feedbackCanvas.toDataURL("image/png").split(',')[1]);
 };
 
-},{"../../locale/nl_nl/turtle":35,"../base":2,"../codegen":5,"../skins":9,"../templates/page.html":17,"./api":22,"./controls.html":24,"./core":25,"./levels":26}],32:[function(require,module,exports){
+},{"../../locale/nl_nl/turtle":36,"../base":2,"../codegen":6,"../skins":10,"../templates/page.html":18,"./api":23,"./controls.html":25,"./core":26,"./levels":27}],33:[function(require,module,exports){
 exports.shallowCopy = function(source) {
   var result = {};
   for (var prop in source) {
@@ -5607,7 +5646,7 @@ exports.mod = function(number, mod) {
   return ((number % mod) + mod) % mod;
 };
 
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 // Serializes an XML DOM node to a string.
 exports.serialize = function(node) {
   var serializer = new XMLSerializer();
@@ -5635,7 +5674,7 @@ exports.parseElement = function(text) {
   return element;
 };
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.nl=function(n){return n===1?"one":"other"}
 exports.blocklyMessage = function(d){return "Blockly"};
 
@@ -5762,7 +5801,7 @@ exports.signup = function(d){return "Neem deel aan de introductie cursus"};
 exports.hintHeader = function(d){return "Here's a tip:"};
 
 
-},{"messageformat":47}],35:[function(require,module,exports){
+},{"messageformat":48}],36:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.nl=function(n){return n===1?"one":"other"}
 exports.blocksUsed = function(d){return "Blokken gebruikt: %1"};
 
@@ -5859,7 +5898,7 @@ exports.widthTooltip = function(d){return "Verandert de dikte van het potlood."}
 exports.wrongColour = function(d){return "Je plaatje is de verkeerde kleur. Voor deze puzzel moet het %1 zijn."};
 
 
-},{"messageformat":47}],36:[function(require,module,exports){
+},{"messageformat":48}],37:[function(require,module,exports){
 
 /*!
  * EJS
@@ -6218,7 +6257,7 @@ if (require.extensions) {
   });
 }
 
-},{"./filters":37,"./utils":38,"fs":39,"path":41}],37:[function(require,module,exports){
+},{"./filters":38,"./utils":39,"fs":40,"path":42}],38:[function(require,module,exports){
 /*!
  * EJS - Filters
  * Copyright(c) 2010 TJ Holowaychuk <tj@vision-media.ca>
@@ -6421,7 +6460,7 @@ exports.json = function(obj){
   return JSON.stringify(obj);
 };
 
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 
 /*!
  * EJS
@@ -6447,9 +6486,9 @@ exports.escape = function(html){
 };
  
 
-},{}],39:[function(require,module,exports){
-
 },{}],40:[function(require,module,exports){
+
+},{}],41:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -6504,7 +6543,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -6732,7 +6771,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require("/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":40}],42:[function(require,module,exports){
+},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":41}],43:[function(require,module,exports){
 (function (global){
 /*! http://mths.be/punycode v1.2.4 by @mathias */
 ;(function(root) {
@@ -7243,7 +7282,7 @@ var substr = 'ab'.substr(-1) === 'b'
 }(this));
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],43:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -7329,7 +7368,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],44:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -7416,13 +7455,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],45:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":43,"./encode":44}],46:[function(require,module,exports){
+},{"./decode":44,"./encode":45}],47:[function(require,module,exports){
 /*jshint strict:true node:true es5:true onevar:true laxcomma:true laxbreak:true eqeqeq:true immed:true latedef:true*/
 (function () {
   "use strict";
@@ -8055,7 +8094,7 @@ function parseHost(host) {
 
 }());
 
-},{"punycode":42,"querystring":45}],47:[function(require,module,exports){
+},{"punycode":43,"querystring":46}],48:[function(require,module,exports){
 /**
  * messageformat.js
  *
@@ -9638,4 +9677,4 @@ function parseHost(host) {
 
 })( this );
 
-},{}]},{},[27])
+},{}]},{},[28])

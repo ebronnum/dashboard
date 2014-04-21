@@ -96,16 +96,16 @@
     flappy_intro:
       1:
         image: notes/flappy01.jpg
-        text: Hola, me llamo Katie! Una de las cosas más excitantes de la informática
+        text: Hola, ¡Soy Katie! Una de las cosas más excitantes de la computación
           es que un programa de computadora puede ser interactivo.
       2:
         image: notes/flappy02.jpg
-        text: Todo el tempo que alguien hace clic en grifos o letras en un ordenador
-          o un teléfono, genera un evento, y hay algún código que decide qué hacer
-          cuando se produce un evento.
+        text: Todo el tempo que alguien hace clic o toca o escribe en un ordenador
+          o un teléfono, que genera un EVENTO, y hay algún código que decide qué hacer
+          cuando un EVENTO ocurre.
       3:
         image: notes/flappy03.jpg
-        text: 'Por ejemplo, tienes un controlador de eventos que dice "cuando se hace
+        text: 'Por ejemplo, tienes un CONTROLADOR DE EVENTOS que dice "cuando se hace
           clic en el ratón, reproducir un sonido" '
       4:
         image: notes/flappy04.jpg
@@ -123,9 +123,9 @@
           que son rellenados por ti - son "los controladores de eventos" '
       7:
         image: notes/flappy07.jpg
-        text: Si desea que el pájaro aletee cuando haces clic en el ratón, puedes
-          hacerlo colocando el bloque "FLAP (aletear)" al controlador de eventos adecuado,
-          y ahora en su juego cada vez que hace clic en el ratón, el pájaro volará.
+        text: Si deseas que el pájaro ALETEE cuando haces CLIC en el ratón, puedes
+          hacerlo uniendo el bloque "ALETEAR" al manejador de eventos adecuado, y
+          ahora en tu juego cada vez que haces clic en el ratón, el pájaro aleteará.
       8:
         image: notes/flappy08.jpg
         text: En cada puzzle de esta actividad te presentamos nuevos tipos de eventos

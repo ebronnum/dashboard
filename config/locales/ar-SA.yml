@@ -11,6 +11,8 @@
         locale: اللغة
         gender: الجنس
         edit_header: تعديل تفاصيل الحساب
+        error:
+          future: can't be in the future
   hello: مرحباً بالعالم
   welcome_back: أهلا بكم من جديد, %{name}
   add_teacher_form:
@@ -51,10 +53,9 @@
     need_confirmation: لم استلم تعليمات تأكيد الحساب؟
     need_unlock: لم أستلم تعليمات فتح الحساب؟
   signup_form:
-    overview: هذا الكورس 20 ساعة حول مقدمة عن علوم الكمبيوتر ومفاهيم البرمجة. تم تصميم
-      هذا الكورس للاستخدام في الفصول الدراسية للصفوف الابتدائية والمتوسطة، ولكن أنها
-      متعة للتعلم لكل الإعمار.
-    no_signup_header: لاترغب بالتسجيل؟
+    overview_student: Sign up for an account to track your progress.
+    overview_teacher: Teach computer science in your classroom by signing up for an
+      account.<p/> You'll be able to track your students' progress and get rewards.
     no_signup_message: يمكنك<a target="_blank" href="http://learn.code.org"> تصفح
       مختلف المراحل والالغاز</a>, ولكن سوف تحتاج إلى التسجيل لحفظ تقدمك.
     prizes_header: The first students to complete the course win prizes! (U.S. students
@@ -70,14 +71,14 @@
       في المدارس الحكومية في الولايات المتحدة الامريكية الذين يقومون بتدريس على الاقل
       15 طالب خلال هذا الكورس <a href="http://code.org/educate/20hr"> لمزيد من المعلومات
       انظر دليل المعلم </a>
-    teacher_prize_limits: '(Limit: $1,000 per teacher. <a target="_blank" href="http://help.donorschoose.org/app/answers/detail/a_id/454/kw/code.org">See
-      FAQ for more limits</a>)'
+    teacher_prize_limits: '(الحد: 1،000 دولار لكل الاستاذ<a target="_blank" href="http://help.donorschoose.org/app/answers/detail/a_id/454/kw/code.org">انظر
+      التعليمات لمزيد من القيود</a>)'
     teacher_pitch: اعطاء مقدمة عن علوم الكمبيوتر للمستوى المبتدئ والمتوسط في فصلك
       الدراسي
     teacher_title: تسجيل حساب المعلم
     student_pitch: 'بعد اتمامك ساعة واحدة من البرمجة : جرب مقدمة عن علوم الكمبيوتر
       للمستوئ المبتدئ والمتوسط'
-    student_title: تسجيل
+    student_title: التسجيل كطالب
     school_name: اسم المدرسة (اختياري)
     school_address: عنوان المدرسة (اختياري)
     address_placeholder: العنوان، المدينة، الدولة، الرمز البريدي
@@ -96,14 +97,15 @@
       الإذن باستخدام خدمات Code.org.
     teacher_terms: أوافق على أن اكون ملتزم بشروط الخدمة من Code.org.
   signin_form:
-    title: تسجيل الدخول
+    title: لديك حساب بالفعل؟ تسجيل الدخول
     login: البريد الإلكتروني أو اسم المستخدم
     password: كلمة المرور
     remember: تذكرني
     submit: تسجيل الدخول
   signin:
-    try_hoc: Try one Hour of Code first
-    try_20hours: Try our 20 hour Intro to Computer Science
+    try_heading: Want to try coding without signing up?
+    try_hoc: حاول ساعة واحدة "من التعليمات البرمجية" أولاً
+    try_20hours: جرب لدينا 20 ساعة مقدمة "علوم الحاسب الآلي"
   password:
     reset_form:
       title: نسيت كلمة المرور؟
@@ -149,7 +151,9 @@
     provider: 'المزود:'
     code: 'الكود البرمجي :'
     redeem_header: 'To redeem:'
-    donorschoose_how_to: How to use your code
+    donorschoose_register: Register as a teacher on DonorsChoose.org
+    donorschoose_project: Post a project
+    donorschoose_how_to: كيفية استخدام التعليمات البرمجية الخاصة بك
     success: تم استرداد جائزتك بنجاح, راجع الكود البرمجي ادناه.
     error: لم يتم استرداد جائزتك بنجاح, الرجاء المحاولة مرة اخرى.
     error_us_only: عرض الجائزة صالحة فقط للمستخدمين في الولايات المتحدة.
@@ -224,8 +228,8 @@
     confirm: هل أنت متأكد؟
     created: تم بنجاح إنشاء %{model}.
     updated: تم بنجاح تحديث %{model}.
-    destroyed: '%{model} was successfully deleted.'
-    access_denied: You do not have access to this %{model}.
+    destroyed: تم بنجاح حذف %{model}.
+    access_denied: ليس لديك حق الوصول إلى هذا %{model}.
   nav:
     header:
       finished_hoc: 'لقد انهيت ساعة من البرمجة '
@@ -251,20 +255,20 @@
       prizes_link: مزيد من المعلومات
   teacher:
     title:
-      one: معلمك هو %{name}
+      one: 'المعلم الخاص بك:'
       other: 'معلميك:'
     remove: (إحذف المعلم)
     confirm:
-      remove: Are you sure you want to remove this teacher?
+      remove: هل أنت متأكد من أنك تريد إزالة هذا المعلم ؟
     tools: أدوات المعلم
     students:
       manage: إدارة الطلاب
       add: إضف الطلاب
     sections:
-      manage: Manage sections
+      manage: إدارة الأقسام
     rollup: لوحة معلومات التقدم
     activity: آخر نشاطات الصف
-    user_not_found: The teacher or student could not be found
+    user_not_found: تعذر العثور على المعلم أو الطالب
     cant_remove_student_no_email: '%{student_name} cannot be removed as your student
       because %{student_name} has not registered an e-mail address'
     cant_remove_teacher_no_email: '%{teacher_name} cannot be removed as your teacher
@@ -272,7 +276,7 @@
     student_teacher_disassociated: '%{teacher_name} has been removed as a teacher
       for %{student_name}'
   user:
-    email_confirm_needed: 'Email address has not been confirmed:'
+    email_confirm_needed: 'لم يتم تأكيد عنوان البريد الإلكتروني:'
     email_resend_confirm: Resend confirmation instructions
     new_password_hint: (اتركه فارغاً إذا كنت لا ترغب في تغييره)
     current_password_hint: (أدخل كلمة المرور الحالية لتأكيد التغييرات الخاصة بحسابك)
@@ -287,9 +291,9 @@
     recent_activity: آخر النشاطات
     show_more: إظهار المزيد
   home:
-    signin_message: أو إذا كنت مسجلا مسبقا %{link}
-    student_reg_link: الطالب
-    teacher_reg_link: المعلم
+    signin_message: مسجل مسبقاً؟ %{link}
+    student_reg_link: تسجيل كطالب
+    teacher_reg_link: تسجيل كمعلم
     signin_directions: Use an account to track progress and get rewards.<br/> Teachers,
       track your entire class.
     teacher_dashboard: انظر على لوحة معلومات التقدم
@@ -314,8 +318,12 @@
     see_details: مشاهدة التفاصيل
     prize_info: 'Prizes for participation (U.S. only): $10 gift cards for student
       completion and up to $1,000 in classroom rewards for public school teachers'
-    tryfirst: 'Or, you can try it first, and sign up later:'
-    trynow: Try now
+    tryfirst: 'أو، يمكنك تجربة لأول مرة، والتسجيل في وقت لاحق:'
+    trynow: جرب الآن
+    add_hint_help: Please help us to add smart hints to Code.org tutorials
+    20hour_overview: This 20-hour course introduces core computer science and programming
+      concepts. The course is designed for use in classrooms for grades K-8, but it
+      is fun to learn at all ages.
   gender:
     male: ذكر
     female: أنثى
@@ -344,6 +352,8 @@
     subtitle: مشاهدة اشرطة الفيديو والتلميحات
     teacher: انظر الى الحل
     auth_error: انت غير مسموح لك برؤية الحل.
+    submit: Update Artist Location
+    direction: Start Direction
   video:
     tab: فيديو.
     notes: لا يوجد فيديو؟ اظهر الملاحظات.
@@ -358,15 +368,27 @@
   download_pdf: افتح خطة الدرس
   share_code:
     title: اضغط " تنفيذ البرنامج " لرؤية برنامجك في العمل
-    flappy_og_title: Check out my Flappy Game
+    bounce_og_title: Check out my Bounce Game
+    flappy_og_title: تحقق من لعبة Flappy
     og_description: I wrote the code myself with Code.org
   builder:
-    created: You created a new script.
-    destroyed: You destroyed a script.
+    created: لقد أنشأت برنامج نصي جديد.
+    destroyed: أنت دمرت البرنامج النصي.
     manage: Manage Scripts
-    view: View
-    back: Back to scripts
+    view: عرض
+    back: العودة إلى البرامج النصية
     level:
-      create: Create new level
-      current: Current Levels
-      unused: Unused Levels
+      create: إنشاء مستوى جديد
+      current: المستويات الحالية
+      unused: المستويات غير المستخدمة
+  upsell:
+    hoc:
+      title: The Hour of Code
+      body: Try the basics of computer science. Millions have given it a shot.
+    flappy:
+      title: Flappy Code
+      body: Wanna write your own game in less than 10 minutes? Try our Flappy Code
+        tutorial!
+    20hour:
+      title: Intro Course
+      body: Try our 20-hour Intro to Computer Science course.

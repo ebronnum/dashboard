@@ -7,6 +7,7 @@ if (typeof global !== 'undefined') {
 }
 
 var addReadyListener = require('./dom').addReadyListener;
+var blocksCommon = require('./blocksCommon');
 
 function StubDialog() {
   for (var argument in arguments) {
@@ -53,6 +54,7 @@ module.exports = function(app, levels, options) {
   };
 
   options.skin = options.skinsModule.load(BlocklyApps.assetUrl, options.skinId);
+  blocksCommon.install(Blockly);
   options.blocksModule.install(Blockly, options.skin);
 
   addReadyListener(function() {
@@ -69,7 +71,7 @@ module.exports = function(app, levels, options) {
 };
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./base":2,"./dom":6}],2:[function(require,module,exports){
+},{"./base":2,"./blocksCommon":4,"./dom":7}],2:[function(require,module,exports){
 /**
  * Blockly Apps: Common code
  *
@@ -869,7 +871,7 @@ var getIdealBlockNumberMsg = function() {
       msg.infinity() : BlocklyApps.IDEAL_BLOCK_NUM;
 };
 
-},{"../locale/lt_lt/common":34,"./builder":4,"./dom":6,"./feedback.js":7,"./slider":10,"./templates/buttons.html":12,"./templates/instructions.html":14,"./templates/learn.html":15,"./templates/makeYourOwn.html":16,"./utils":32,"./xml":33}],3:[function(require,module,exports){
+},{"../locale/lt_lt/common":35,"./builder":5,"./dom":7,"./feedback.js":8,"./slider":11,"./templates/buttons.html":13,"./templates/instructions.html":15,"./templates/learn.html":16,"./templates/makeYourOwn.html":17,"./utils":33,"./xml":34}],3:[function(require,module,exports){
 exports.createToolbox = function(blocks) {
   return '<xml id="toolbox" style="display: none;">' + blocks + '</xml>';
 };
@@ -879,6 +881,43 @@ exports.blockOfType = function(type) {
 };
 
 },{}],4:[function(require,module,exports){
+/**
+ * Defines blocks useful in multiple blockly apps
+ */
+'use strict';
+
+var REPEAT_IMAGE_URL = 'media/sharedBlocks/repeat.png';
+var REPEAT_IMAGE_WIDTH = 53;
+var REPEAT_IMAGE_HEIGHT = 57;
+
+/**
+ * Install extensions to Blockly's language and JavaScript generator
+ * @param blockly instance of Blockly
+ */
+exports.install = function(blockly) {
+  // Re-uses the repeat block generator from core
+  blockly.JavaScript.controls_repeat_simplified = blockly.JavaScript.controls_repeat;
+
+  blockly.Blocks.controls_repeat_simplified = {
+    // Repeat n times (internal number) with simplified UI
+    init: function() {
+      this.setHelpUrl(blockly.Msg.CONTROLS_REPEAT_HELPURL);
+      this.setHSV(322, 0.90, 0.95);
+      this.appendStatementInput('DO')
+        .appendTitle(new blockly.FieldImage(
+          blockly.assetUrl(REPEAT_IMAGE_URL), REPEAT_IMAGE_WIDTH, REPEAT_IMAGE_HEIGHT));
+      this.appendDummyInput()
+        .appendTitle(blockly.Msg.CONTROLS_REPEAT_TITLE_REPEAT)
+        .appendTitle(new Blockly.FieldTextInput('10',
+          blockly.FieldTextInput.nonnegativeIntegerValidator), 'TIMES');
+      this.setPreviousStatement(true);
+      this.setNextStatement(true);
+      this.setTooltip(blockly.Msg.CONTROLS_REPEAT_TOOLTIP);
+    }
+  };
+};
+
+},{}],5:[function(require,module,exports){
 var feedback = require('./feedback.js');
 var dom = require('./dom.js');
 var utils = require('./utils.js');
@@ -908,7 +947,7 @@ exports.builderForm = function(onAttemptCallback) {
   dialog.show({ backdrop: 'static' });
 };
 
-},{"./dom.js":6,"./feedback.js":7,"./templates/builder.html":11,"./utils.js":32,"url":46}],5:[function(require,module,exports){
+},{"./dom.js":7,"./feedback.js":8,"./templates/builder.html":12,"./utils.js":33,"url":47}],6:[function(require,module,exports){
 var INFINITE_LOOP_TRAP = '  BlocklyApps.checkTimeout();\n';
 var INFINITE_LOOP_TRAP_RE =
     new RegExp(INFINITE_LOOP_TRAP.replace(/\(.*\)/, '\\(.*\\)'), 'g');
@@ -988,7 +1027,7 @@ exports.functionFromCode = function(code, options) {
   return new ctor();
 };
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 exports.addReadyListener = function(callback) {
   if (document.readyState === "complete") {
     setTimeout(callback, 1);
@@ -1062,7 +1101,7 @@ exports.isMobile = function() {
   return reg.test(window.navigator.userAgent);
 };
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 var trophy = require('./templates/trophy.html');
 var utils = require('./utils');
 var readonly = require('./templates/readonly.html');
@@ -1842,7 +1881,7 @@ var generateXMLForBlocks = function(blocks) {
 };
 
 
-},{"../locale/lt_lt/common":34,"./codegen":5,"./dom":6,"./templates/buttons.html":12,"./templates/code.html":13,"./templates/readonly.html":18,"./templates/showCode.html":19,"./templates/trophy.html":20,"./utils":32}],8:[function(require,module,exports){
+},{"../locale/lt_lt/common":35,"./codegen":6,"./dom":7,"./templates/buttons.html":13,"./templates/code.html":14,"./templates/readonly.html":19,"./templates/showCode.html":20,"./templates/trophy.html":21,"./utils":33}],9:[function(require,module,exports){
 // Functions for checking required blocks.
 
 /**
@@ -1901,7 +1940,7 @@ exports.define = function(name) {
   };
 };
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 // avatar: A 1029x51 set of 21 avatar images.
 
 exports.load = function(assetUrl, id) {
@@ -1941,7 +1980,7 @@ exports.load = function(assetUrl, id) {
   return skin;
 };
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /**
  * Blockly Apps: SVG Slider
  *
@@ -2146,7 +2185,7 @@ Slider.bindEvent_ = function(element, name, func) {
 
 module.exports = Slider;
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2167,7 +2206,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":36}],12:[function(require,module,exports){
+},{"ejs":37}],13:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2188,7 +2227,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/lt_lt/common":34,"ejs":36}],13:[function(require,module,exports){
+},{"../../locale/lt_lt/common":35,"ejs":37}],14:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2209,7 +2248,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":36}],14:[function(require,module,exports){
+},{"ejs":37}],15:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2230,7 +2269,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/lt_lt/common":34,"ejs":36}],15:[function(require,module,exports){
+},{"../../locale/lt_lt/common":35,"ejs":37}],16:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2253,7 +2292,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/lt_lt/common":34,"ejs":36}],16:[function(require,module,exports){
+},{"../../locale/lt_lt/common":35,"ejs":37}],17:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2274,7 +2313,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/lt_lt/common":34,"ejs":36}],17:[function(require,module,exports){
+},{"../../locale/lt_lt/common":35,"ejs":37}],18:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2296,7 +2335,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/lt_lt/common":34,"ejs":36}],18:[function(require,module,exports){
+},{"../../locale/lt_lt/common":35,"ejs":37}],19:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2318,7 +2357,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":36}],19:[function(require,module,exports){
+},{"ejs":37}],20:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2339,7 +2378,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/lt_lt/common":34,"ejs":36}],20:[function(require,module,exports){
+},{"../../locale/lt_lt/common":35,"ejs":37}],21:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2360,7 +2399,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":36}],21:[function(require,module,exports){
+},{"ejs":37}],22:[function(require,module,exports){
 /**
  * Blockly Demo: Turtle Graphics
  *
@@ -2711,7 +2750,7 @@ exports.answer = function(page, level) {
   return BlocklyApps.log;
 };
 
-},{"../base":2,"./api":22}],22:[function(require,module,exports){
+},{"../base":2,"./api":23}],23:[function(require,module,exports){
 var BlocklyApps = require('../base');
 
 exports.moveForward = function(distance, id) {
@@ -2794,7 +2833,7 @@ exports.showTurtle = function(id) {
   BlocklyApps.log.push(['ST', id]);
 };
 
-},{"../base":2}],23:[function(require,module,exports){
+},{"../base":2}],24:[function(require,module,exports){
 /**
  * Blockly Demo: Turtle Graphics
  *
@@ -3320,7 +3359,6 @@ exports.install = function(blockly, skin) {
     }
   };
 
-  
   generator.simple_move_length_short = function () {
     return [SimpleMove.SHORT_MOVE_LENGTH, generator.ORDER_ATOMIC];
   };
@@ -3482,7 +3520,7 @@ exports.install = function(blockly, skin) {
 
 };
 
-},{"../../locale/lt_lt/turtle":35,"./core":25}],24:[function(require,module,exports){
+},{"../../locale/lt_lt/turtle":36,"./core":26}],25:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -3503,7 +3541,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":36}],25:[function(require,module,exports){
+},{"ejs":37}],26:[function(require,module,exports){
 // Create a limited colour palette to avoid overwhelming new users
 // and to make colour checking easier.  These definitions cannot be
 // moved to blocks.js, which is loaded later, since they are used in
@@ -3524,7 +3562,7 @@ exports.Colours = {
   PLUM: '#843179'
 };
 
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 var levelBase = require('../level_base');
 var Colours = require('./core').Colours;
 var answer = require('./answers').answer;
@@ -4364,7 +4402,8 @@ module.exports = {
         blocks.simpleJumpBlocks() +
         blocks.simpleMoveLengthBlocks() +
         blocks.simpleJumpLengthBlocks() +
-        blocks.simpleLengthBlocks()
+        blocks.simpleLengthBlocks() +
+        blockUtils.blockOfType('controls_repeat_simplified')
       ),
     startBlocks: '',
     startDirection: 0,
@@ -4372,7 +4411,7 @@ module.exports = {
   }
 };
 
-},{"../../locale/lt_lt/turtle":35,"../block_utils":3,"../level_base":8,"./answers":21,"./core":25,"./requiredBlocks":28,"./startBlocks.xml":29,"./toolbox.xml":30}],27:[function(require,module,exports){
+},{"../../locale/lt_lt/turtle":36,"../block_utils":3,"../level_base":9,"./answers":22,"./core":26,"./requiredBlocks":29,"./startBlocks.xml":30,"./toolbox.xml":31}],28:[function(require,module,exports){
 var appMain = require('../appMain');
 window.Turtle = require('./turtle');
 var blocks = require('./blocks');
@@ -4385,7 +4424,7 @@ window.turtleMain = function(options) {
   appMain(window.Turtle, levels, options);
 };
 
-},{"../appMain":1,"../skins":9,"./blocks":23,"./levels":26,"./turtle":31}],28:[function(require,module,exports){
+},{"../appMain":1,"../skins":10,"./blocks":24,"./levels":27,"./turtle":32}],29:[function(require,module,exports){
 /**
  * Sets BlocklyApp constants that depend on the page and level.
  * This encapsulates many functions used for BlocklyApps.REQUIRED_BLOCKS.
@@ -4618,7 +4657,7 @@ module.exports = {
   SET_COLOUR_RANDOM: SET_COLOUR_RANDOM,
   defineWithArg: defineWithArg
 };
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4685,7 +4724,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/lt_lt/turtle":35,"ejs":36}],30:[function(require,module,exports){
+},{"../../locale/lt_lt/turtle":36,"ejs":37}],31:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4809,7 +4848,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/lt_lt/turtle":35,"ejs":36}],31:[function(require,module,exports){
+},{"../../locale/lt_lt/turtle":36,"ejs":37}],32:[function(require,module,exports){
 /**
  * Blockly Demo: Turtle Graphics
  *
@@ -5565,7 +5604,7 @@ var getFeedbackImage = function() {
       feedbackCanvas.toDataURL("image/png").split(',')[1]);
 };
 
-},{"../../locale/lt_lt/turtle":35,"../base":2,"../codegen":5,"../skins":9,"../templates/page.html":17,"./api":22,"./controls.html":24,"./core":25,"./levels":26}],32:[function(require,module,exports){
+},{"../../locale/lt_lt/turtle":36,"../base":2,"../codegen":6,"../skins":10,"../templates/page.html":18,"./api":23,"./controls.html":25,"./core":26,"./levels":27}],33:[function(require,module,exports){
 exports.shallowCopy = function(source) {
   var result = {};
   for (var prop in source) {
@@ -5607,7 +5646,7 @@ exports.mod = function(number, mod) {
   return ((number % mod) + mod) % mod;
 };
 
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 // Serializes an XML DOM node to a string.
 exports.serialize = function(node) {
   var serializer = new XMLSerializer();
@@ -5635,7 +5674,7 @@ exports.parseElement = function(text) {
   return element;
 };
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.lt = function (n) {
   if ((n % 10) == 1 && ((n % 100) < 11 || (n % 100) > 19)) {
     return 'one';
@@ -5656,7 +5695,7 @@ exports.catLogic = function(d){return "Logika"};
 
 exports.catLists = function(d){return "Sąrašai"};
 
-exports.catLoops = function(d){return "Kilpos"};
+exports.catLoops = function(d){return "Ciklai"};
 
 exports.catMath = function(d){return "Matematika"};
 
@@ -5666,7 +5705,7 @@ exports.catText = function(d){return "Tekstas"};
 
 exports.catVariables = function(d){return "Kintamieji"};
 
-exports.codeTooltip = function(d){return "Žr. sukurtas JavaScript kodas."};
+exports.codeTooltip = function(d){return "Žiūrėti sukurtą JavaScript kodą."};
 
 exports.continue = function(d){return "Tęsti"};
 
@@ -5674,104 +5713,104 @@ exports.dialogCancel = function(d){return "Atšaukti"};
 
 exports.dialogOK = function(d){return "gerai"};
 
-exports.emptyBlocksErrorMsg = function(d){return "\"Kartoti\" arba \"If\" blokuoti turi turėti kitų kvartalų viduje ji veikia. Įsitikinkite, kad vidinis blokas tinkamai tinka su bloke."};
+exports.emptyBlocksErrorMsg = function(d){return "„Kartojimo“ arba „Jei“ blokelių viduje reikia įdėti kitus blokelius, kad jie veiktų. Įsitikink, kad jie yra gerai sukibę vienas su kitu."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Tu panaudojai keletą blokų, kurie nėra sujungti su būtinuoju blokeliu."};
 
-exports.finalStage = function(d){return "Sveikinu! Jūs baigėte galutiniame etape."};
+exports.finalStage = function(d){return "Sveikinu! Tu baigei paskutinį etapą."};
 
-exports.finalStageTrophies = function(d){return "Congratulations! You have completed the final stage and won "+p(d,"numTrophies",0,"lt",{"one":"a trophy","other":n(d,"numTrophies")+" trophies"})+"."};
+exports.finalStageTrophies = function(d){return "Sveikinu! Tu užbaigei paskutinį lygį ir laimėjai "+p(d,"numTrophies",0,"lt",{"one":"a trophy","other":n(d,"numTrophies")+" trophies"})+"."};
 
 exports.generatedCodeInfo = function(d){return "Jūsų programa blokus gali taip pat atstovauti JavaScript, pasaulyje labiausiai plačiai naudojama programavimo kalba:"};
 
-exports.hashError = function(d){return "Atsiprašome, '%1' nesutampa su bet kurią įrašytą programą."};
+exports.hashError = function(d){return "Atsiprašome, '%1' nesutampa su jokia įrašyta programa."};
 
 exports.help = function(d){return "pagalba"};
 
 exports.hintTitle = function(d){return "Patarimas:"};
 
-exports.levelIncompleteError = function(d){return "Jūs naudojate visų būtinų tipų blokų, bet ne į teisingą kelią."};
+exports.levelIncompleteError = function(d){return "Tu naudoji visus būtinus blokelius, tačiau netinkamai."};
 
 exports.listVariable = function(d){return "sąrašas"};
 
-exports.makeYourOwnFlappy = function(d){return "Make Your Own Flappy Game"};
+exports.makeYourOwnFlappy = function(d){return "Sukurk savo Flappy žaidimą"};
 
-exports.missingBlocksErrorMsg = function(d){return "Pabandykite atlikti vieną ar daugiau blokų žemiau norint  išspręsti šį galvosūkį."};
+exports.missingBlocksErrorMsg = function(d){return "Išmėgink vieną ar daugiau blokelių, esančių žemiau, kad išspręstum šią užduotį."};
 
-exports.nextLevel = function(d){return "Sveikinu! Jūs baigėte galvosūkį "+v(d,"puzzleNumber")+"."};
+exports.nextLevel = function(d){return "Sveikinu! Tu išsprendei galvosūkį "+v(d,"puzzleNumber")+"."};
 
-exports.nextLevelTrophies = function(d){return "Congratulations! You completed Puzzle "+v(d,"puzzleNumber")+" and won "+p(d,"numTrophies",0,"lt",{"one":"a trophy","other":n(d,"numTrophies")+" trophies"})+"."};
+exports.nextLevelTrophies = function(d){return "Sveikinu! Užbaigėte galvosūkį "+v(d,"puzzleNumber")+" ir laimėjote "+p(d,"numTrophies",0,"lt",{"one":"trofėju","other":n(d,"numTrophies")+" trofėjų"})+"."};
 
 exports.nextStage = function(d){return "Sveikinu! Užbaigėte lygį "+v(d,"stageNumber")+"."};
 
 exports.nextStageTrophies = function(d){return "Congratulations! You completed "+v(d,"stageName")+" and won "+p(d,"numTrophies",0,"lt",{"one":"a trophy","other":n(d,"numTrophies")+" trophies"})+"."};
 
-exports.numBlocksNeeded = function(d){return "Congratulations! You completed Puzzle "+v(d,"puzzleNumber")+". (However, you could have used only "+p(d,"numBlocks",0,"lt",{"one":"1 block","other":n(d,"numBlocks")+" blocks"})+".)"};
+exports.numBlocksNeeded = function(d){return "Sveikinu! Tu išsprendei "+v(d,"puzzleNumber")+" užduotį. (Beje, galėjai panaudoti tik "+p(d,"numBlocks",0,"lt",{"vieną":"1 block","other":n(d,"numBlocks")+" blocks"})+".)"};
 
-exports.numLinesOfCodeWritten = function(d){return "You just wrote "+p(d,"numLines",0,"lt",{"one":"1 line","other":n(d,"numLines")+" lines"})+" of code!"};
+exports.numLinesOfCodeWritten = function(d){return "Tu parašei  "+p(d,"numLines",0,"lt",{"one":"1 line","other":n(d,"numLines")+" lines"})+" kodo!"};
 
-exports.puzzleTitle = function(d){return "Puzzle "+v(d,"puzzle_number")+" of "+v(d,"stage_total")};
+exports.puzzleTitle = function(d){return "Užduotis "+v(d,"puzzle_number")+" iš "+v(d,"stage_total")};
 
-exports.resetProgram = function(d){return "Reset"};
+exports.resetProgram = function(d){return "Iš naujo"};
 
-exports.runProgram = function(d){return "Run Program"};
+exports.runProgram = function(d){return "Paleisti programą"};
 
-exports.runTooltip = function(d){return "Run the program defined by the blocks in the workspace."};
+exports.runTooltip = function(d){return "Paleisk programą, naudodamasis blokeliais."};
 
-exports.showCodeHeader = function(d){return "Show Code"};
+exports.showCodeHeader = function(d){return "Rodyti kodą"};
 
-exports.showGeneratedCode = function(d){return "Show code"};
+exports.showGeneratedCode = function(d){return "Rodyti kodą"};
 
-exports.subtitle = function(d){return "a visual programming environment"};
+exports.subtitle = function(d){return "Vizuali programavimo aplinka"};
 
-exports.textVariable = function(d){return "text"};
+exports.textVariable = function(d){return "tekstas"};
 
-exports.tooFewBlocksMsg = function(d){return "You are using all of the necessary types of blocks, but try using more  of these types of blocks to complete this puzzle."};
+exports.tooFewBlocksMsg = function(d){return "Tu panaudojai visus būtinus blokus, tačiau kad išspręstum šią užduotį, jų reikia panaudoti daugiau."};
 
-exports.tooManyBlocksMsg = function(d){return "This puzzle can be solved with <x id='START_SPAN'/><x id='END_SPAN'/> blocks."};
+exports.tooManyBlocksMsg = function(d){return "Ši užduotis gali būti išspręsta su <x id='START_SPAN'/><x id='END_SPAN'/> blokais."};
 
-exports.tooMuchWork = function(d){return "You made me do a lot of work!  Could you try repeating fewer times?"};
+exports.tooMuchWork = function(d){return "Tu privertei mane tiek daug dirbti! Ar galėtum atlikti užduotį su mažiau kartojimų?"};
 
-exports.flappySpecificFail = function(d){return "Your code looks good - it will flap with each click. But you need to click many times to flap to the target."};
+exports.flappySpecificFail = function(d){return "Tavo kodas atrodo gerai - jis plasnos su kiekvienu paspaudimu. Tačiau tau reikia nuspausti daug kartų, kad jis nuplasnotų į tikslą."};
 
-exports.toolboxHeader = function(d){return "Blocks"};
+exports.toolboxHeader = function(d){return "Blokeliai"};
 
-exports.openWorkspace = function(d){return "How It Works"};
+exports.openWorkspace = function(d){return "Kaip tai veikia"};
 
-exports.totalNumLinesOfCodeWritten = function(d){return "All-time total: "+p(d,"numLines",0,"lt",{"one":"1 line","other":n(d,"numLines")+" lines"})+" of code."};
+exports.totalNumLinesOfCodeWritten = function(d){return "Iš viso: "+p(d,"numLines",0,"lt",{"one":"1 line","other":n(d,"numLines")+" lines"})+" kodo."};
 
-exports.tryAgain = function(d){return "Try again"};
+exports.tryAgain = function(d){return "Pabandyk dar kartą"};
 
-exports.backToPreviousLevel = function(d){return "Back to previous level"};
+exports.backToPreviousLevel = function(d){return "Grįžti į ankstesnį lygį"};
 
 exports.saveToGallery = function(d){return "Save to your gallery"};
 
-exports.typeCode = function(d){return "Type your JavaScript code below these instructions."};
+exports.typeCode = function(d){return "Įvesk savo JavaScript kodą žemiau šių instrukcijų."};
 
-exports.typeFuncs = function(d){return "Available functions:%1"};
+exports.typeFuncs = function(d){return "Galimos funkcijos:%1"};
 
-exports.typeHint = function(d){return "Note that the parentheses and semicolons are required."};
+exports.typeHint = function(d){return "Įsidėmėk, kad skliausteliai ir kabliataškiai yra būtini."};
 
-exports.workspaceHeader = function(d){return "Assemble your blocks here: "};
+exports.workspaceHeader = function(d){return "Sudėliok savo blokelius čia: "};
 
-exports.infinity = function(d){return "Infinity"};
+exports.infinity = function(d){return "Begalybė"};
 
-exports.rotateText = function(d){return "Rotate your device."};
+exports.rotateText = function(d){return "Pasuk savo įrenginį."};
 
-exports.orientationLock = function(d){return "Turn off orientation lock in device settings."};
+exports.orientationLock = function(d){return "Išjunk savo įrenginio ekrano pasukimą."};
 
-exports.wantToLearn = function(d){return "Want to learn to code?"};
+exports.wantToLearn = function(d){return "Nori išmokti programuoti?"};
 
-exports.watchVideo = function(d){return "Watch the Video"};
+exports.watchVideo = function(d){return "Peržiūrėk šį vaizdo įrašą"};
 
-exports.tryHOC = function(d){return "Try the Hour of Code"};
+exports.tryHOC = function(d){return "Išmėgink Vienos Valandos Kodą"};
 
-exports.signup = function(d){return "Sign up for the intro course"};
+exports.signup = function(d){return "Užsiregistruok į kursą pradedantiesiems"};
 
 exports.hintHeader = function(d){return "Here's a tip:"};
 
 
-},{"messageformat":47}],35:[function(require,module,exports){
+},{"messageformat":48}],36:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.lt = function (n) {
   if ((n % 10) == 1 && ((n % 100) < 11 || (n % 100) > 19)) {
     return 'one';
@@ -5782,102 +5821,102 @@ var MessageFormat = require("messageformat");MessageFormat.locale.lt = function 
   }
   return 'other';
 };
-exports.blocksUsed = function(d){return "Blocks used: %1"};
+exports.blocksUsed = function(d){return "Panaudota blokelių: %1"};
 
-exports.catColour = function(d){return "Color"};
+exports.catColour = function(d){return "Spalva"};
 
-exports.catControl = function(d){return "Loops"};
+exports.catControl = function(d){return "Ciklai"};
 
-exports.catMath = function(d){return "Math"};
+exports.catMath = function(d){return "Matematika"};
 
-exports.catProcedures = function(d){return "Functions"};
+exports.catProcedures = function(d){return "Funkcijos"};
 
-exports.catTurtle = function(d){return "Actions"};
+exports.catTurtle = function(d){return "Veiksmai"};
 
-exports.catVariables = function(d){return "Variables"};
+exports.catVariables = function(d){return "Kintamieji"};
 
-exports.catLogic = function(d){return "Logic"};
+exports.catLogic = function(d){return "Logika"};
 
-exports.colourTooltip = function(d){return "Changes the color of the pencil."};
+exports.colourTooltip = function(d){return "Pakeičia pieštuko spalvą."};
 
-exports.degrees = function(d){return "degrees"};
+exports.degrees = function(d){return "laipsniai"};
 
-exports.dots = function(d){return "pixels"};
+exports.dots = function(d){return "pikselių"};
 
-exports.drawASquare = function(d){return "draw a square"};
+exports.drawASquare = function(d){return "nubrėžk kvadratą"};
 
-exports.drawATriangle = function(d){return "draw a triangle"};
+exports.drawATriangle = function(d){return "nubrėžk trikampį"};
 
-exports.drawACircle = function(d){return "draw a circle"};
+exports.drawACircle = function(d){return "nubrėžk apskritimą"};
 
-exports.drawAHouse = function(d){return "draw a house"};
+exports.drawAHouse = function(d){return "nupiešk namą"};
 
-exports.drawATree = function(d){return "draw a tree"};
+exports.drawATree = function(d){return "nupiešk medį"};
 
-exports.drawASnowman = function(d){return "draw a snowman"};
+exports.drawASnowman = function(d){return "nupiešk sniego senį"};
 
-exports.heightParameter = function(d){return "height"};
+exports.heightParameter = function(d){return "aukštis"};
 
-exports.hideTurtle = function(d){return "hide artist"};
+exports.hideTurtle = function(d){return "slėpti menininką"};
 
-exports.jumpBackward = function(d){return "jump backward by"};
+exports.jumpBackward = function(d){return "peršok atgal per"};
 
-exports.jumpForward = function(d){return "jump forward by"};
+exports.jumpForward = function(d){return "peršok į priekį per"};
 
-exports.jumpTooltip = function(d){return "Moves the artist without leaving any marks."};
+exports.jumpTooltip = function(d){return "Pajudina menininką jam nieko nepiešiant."};
 
-exports.lengthParameter = function(d){return "length"};
+exports.lengthParameter = function(d){return "ilgis"};
 
-exports.loopVariable = function(d){return "counter"};
+exports.loopVariable = function(d){return "skaitiklis"};
 
-exports.moveBackward = function(d){return "move backward by"};
+exports.moveBackward = function(d){return "judėk atgal per"};
 
-exports.moveForward = function(d){return "move forward by"};
+exports.moveForward = function(d){return "judėk į priekį per"};
 
-exports.moveForwardTooltip = function(d){return "Moves the artist forward."};
+exports.moveForwardTooltip = function(d){return "Pajudina menininką į priekį."};
 
-exports.moveTooltip = function(d){return "Moves the artist forward or backward by the specified amount."};
+exports.moveTooltip = function(d){return "Pajudina menininką į priekį arba atgal per nustatytą atstumą."};
 
-exports.notBlackColour = function(d){return "You need to set a color other than black for this puzzle."};
+exports.notBlackColour = function(d){return "Šios užduoties atlikimui reikia pasirinkti bet kurią spalvą, išskyrus juodą."};
 
-exports.numBlocksNeeded = function(d){return "This puzzle can be solved with %1 blocks.  You used %2."};
+exports.numBlocksNeeded = function(d){return "Ši užduotis yra išsprendžiama su %1 blokais. Tu panaudojai %2."};
 
-exports.penDown = function(d){return "pencil down"};
+exports.penDown = function(d){return "nuleisk pieštuką"};
 
-exports.penTooltip = function(d){return "Lifts or lowers the pencil, to start or stop drawing."};
+exports.penTooltip = function(d){return "Pakelia arba nuleidžia pieštuką, kad pradėtų arba sustotų piešti."};
 
-exports.penUp = function(d){return "pencil up"};
+exports.penUp = function(d){return "pakelk pieštuką"};
 
-exports.reinfFeedbackMsg = function(d){return "Does this look like what you want? You can press the \"Try again\" button to see your drawing."};
+exports.reinfFeedbackMsg = function(d){return "Ar tai atrodo taip, kaip norėjai? Gali nuspausti mygtuką „Pamėginti iš naujo“, kad pamatytum savo piešinį."};
 
-exports.setColour = function(d){return "set color"};
+exports.setColour = function(d){return "nustatyk spalvą"};
 
-exports.setWidth = function(d){return "set width"};
+exports.setWidth = function(d){return "nustatyk plotį"};
 
-exports.shareDrawing = function(d){return "Share your drawing:"};
+exports.shareDrawing = function(d){return "Pasidalink savo piešiniu:"};
 
-exports.showMe = function(d){return "Show me"};
+exports.showMe = function(d){return "Parodyk man"};
 
-exports.showTurtle = function(d){return "show artist"};
+exports.showTurtle = function(d){return "rodyti menininką"};
 
-exports.tooFewColours = function(d){return "You need to use at least %1 different colors for this puzzle.  You used only %2."};
+exports.tooFewColours = function(d){return "Reikia panaudoti bent %1 skirtingas spalvas šiai užduočiai atlikti. Tu panaudojai tik %2."};
 
-exports.turnLeft = function(d){return "turn left by"};
+exports.turnLeft = function(d){return "pasisuk į kairę per"};
 
-exports.turnRight = function(d){return "turn right by"};
+exports.turnRight = function(d){return "pasisuk į dešinę per"};
 
-exports.turnRightTooltip = function(d){return "Turns the artist right by the specified angle."};
+exports.turnRightTooltip = function(d){return "Pasuka menininką į dešinę pasirinktu kampu."};
 
-exports.turnTooltip = function(d){return "Turns the artist left or right by the specified number of degrees."};
+exports.turnTooltip = function(d){return "Pasuka menininką į kairę pasirinktu kampu laipsniais."};
 
-exports.turtleVisibilityTooltip = function(d){return "Makes the artist visible or invisible."};
+exports.turtleVisibilityTooltip = function(d){return "Padaro menininką matomą arba nematomą."};
 
-exports.widthTooltip = function(d){return "Changes the width of the pencil."};
+exports.widthTooltip = function(d){return "Pakeičia pieštuko plotį."};
 
-exports.wrongColour = function(d){return "Your picture is the wrong color.  For this puzzle, it needs to be %1."};
+exports.wrongColour = function(d){return "Tavo piešinys yra ne tokios spalvos. Šiai užduočiai atlikti, ji turi būti %1."};
 
 
-},{"messageformat":47}],36:[function(require,module,exports){
+},{"messageformat":48}],37:[function(require,module,exports){
 
 /*!
  * EJS
@@ -6236,7 +6275,7 @@ if (require.extensions) {
   });
 }
 
-},{"./filters":37,"./utils":38,"fs":39,"path":41}],37:[function(require,module,exports){
+},{"./filters":38,"./utils":39,"fs":40,"path":42}],38:[function(require,module,exports){
 /*!
  * EJS - Filters
  * Copyright(c) 2010 TJ Holowaychuk <tj@vision-media.ca>
@@ -6439,7 +6478,7 @@ exports.json = function(obj){
   return JSON.stringify(obj);
 };
 
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 
 /*!
  * EJS
@@ -6465,9 +6504,9 @@ exports.escape = function(html){
 };
  
 
-},{}],39:[function(require,module,exports){
-
 },{}],40:[function(require,module,exports){
+
+},{}],41:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -6522,7 +6561,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -6750,7 +6789,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require("/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":40}],42:[function(require,module,exports){
+},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":41}],43:[function(require,module,exports){
 (function (global){
 /*! http://mths.be/punycode v1.2.4 by @mathias */
 ;(function(root) {
@@ -7261,7 +7300,7 @@ var substr = 'ab'.substr(-1) === 'b'
 }(this));
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],43:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -7347,7 +7386,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],44:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -7434,13 +7473,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],45:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":43,"./encode":44}],46:[function(require,module,exports){
+},{"./decode":44,"./encode":45}],47:[function(require,module,exports){
 /*jshint strict:true node:true es5:true onevar:true laxcomma:true laxbreak:true eqeqeq:true immed:true latedef:true*/
 (function () {
   "use strict";
@@ -8073,7 +8112,7 @@ function parseHost(host) {
 
 }());
 
-},{"punycode":42,"querystring":45}],47:[function(require,module,exports){
+},{"punycode":43,"querystring":46}],48:[function(require,module,exports){
 /**
  * messageformat.js
  *
@@ -9656,4 +9695,4 @@ function parseHost(host) {
 
 })( this );
 
-},{}]},{},[27])
+},{}]},{},[28])

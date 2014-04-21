@@ -50,8 +50,8 @@
       11:
         image: notes/hoc1_11.jpg
         text: Per fare più di un'azione, sposta più blocchi nell'area di lavoro e
-          mettili uno sotto l'altro. L'uccello eseguirà le istruzioni associate ai
-          blocchi procedendo dall'alto verso il basso.
+          attaccali uno sotto l'altro. L'uccello eseguirà le istruzioni associate
+          ai blocchi procedendo dall'alto verso il basso.
       12:
         image: notes/hoc1_12.jpg
         text: Se dopo aver eseguito un programma vuoi cambiarlo ed eseguirlo di nuovo,
@@ -80,26 +80,27 @@
           "gira" nel puzzle del labirinto.
       5:
         image: notes/stage5_5.jpg
-        text: Se in questi blocchi fai clic sul triangolo con la punta verso il basso
-          puoi cambiare di quanto l'artista si sposta in avanti o gira. Fai qualche
-          prova per prendere confidenza con questi nuovi blocchi.
+        text: Se in questi blocchi fai clic sui numeri puoi cambiare di quanto l'artista
+          si sposta in avanti o gira. Fai qualche prova per prendere confidenza con
+          questi nuovi blocchi.
     farmer_intro:
       1:
         image: notes/stage9_1.jpg
-        text: Ciao, sono Paola! In questi puzzle, tu sei un contadino che deve completamente
-          livellare il suo terreno per iniziare a seminarlo.
+        text: Ciao, sono Paola! In questi puzzle devi aiutare una contadina che deve
+          completamente livellare il suo terreno per iniziare a seminarlo.
       2:
         image: notes/stage9_2.jpg
-        text: Devi aiutarlo a rimuovere tutti i mucchi di terra e a riempire tutte
+        text: Devi aiutarla a rimuovere tutti i mucchi di terra e a riempire tutte
           le buche.
       3:
         image: notes/stage9_3.jpg
-        text: I nuovi blocchi rimuovono 1 palata di terra da un mucchio e riempiono
-          una buca con 1 palata di terra.
+        text: Il nuovo blocco "rimuovi 1" (remove 1) toglie 1 palata di terra da un
+          mucchio. Il nuovo blocco "riempi 1" (fill 1) mette 1 palata di terra dentro
+          una buca.
       4:
         image: notes/stage9_4.jpg
         text: I mucchi e le buche sono di dimensioni differenti, quindi devi dire
-          al contadino quante palate deve  utilizzare.
+          alla contadina quante palate deve utilizzare.
     flappy_intro:
       1:
         image: notes/flappy01.jpg
@@ -130,7 +131,7 @@
       7:
         image: notes/flappy07.jpg
         text: Se desideri che l'uccello SBATTA LE ALI quando tu CLICCHI il mouse,
-          puoi farlo collegando il blocco "sbatti le ali" (flap) al gestore di eventi
+          puoi farlo attaccando il blocco "sbatti le ali" (flap) al gestore di eventi
           appropriato, ed adesso nel tuo gioco ogni volta che si clicca il mouse,
           l'uccello sbatterà le ali.
       8:
@@ -140,9 +141,9 @@
           i blocchi appropriati da aggiungere in risposta a questi eventi.
       9:
         image: notes/flappy09.jpg
-        text: Quando vedi una freccia in giù come questa, significa che è possibile
-          modificare le impostazioni - come il suono da riprodurre quando l'uccello
-          colpisce il suolo.
+        text: Quando vedi un triangolino con la punta in basso come qui, significa
+          che è possibile modificare le impostazioni - come il suono da riprodurre
+          quando l'uccello precipita a terra.
       10:
         image: notes/flappy10.jpg
         text: Nel puzzle finale sarai in grado di creare il tuo gioco e condividerlo
@@ -257,10 +258,10 @@
     function:
       1:
         image: notes/stage13_1.jpg
-        text: Ciao, sono Brina, un ingegnere di Instagram. Una funzione è fatta da
+        text: Ciao, sono Brina, un'ingegnera di Instagram. Una funzione è fatta da
           alcune righe di codice che vuoi utilizzare più e più volte. Se hai definito
-          una funzione, invece di scrivere ogni volta le stesse righe puoi usare solo
-          un blocco.
+          una funzione, invece di scrivere ogni volta le stesse righe puoi usare un
+          unico blocco.
       2:
         image: notes/stage13_2.jpg
         text: Adesso impariamo come definire le funzioni. Le definizioni di funzioni
@@ -269,13 +270,14 @@
       3:
         image: notes/stage13_3.jpg
         text: I blocchi che vanno all'interno della definizione ci dicono che cosa
-          viene eseguito. Questa definizione di funzione è chiamata "riempi di 5"
-          e si compone di un blocco di ripetizione "ripeti" e di un blocco "riempi".
+          viene eseguito. Questa definizione di funzione è chiamata "riempi 5" (fill
+          5) e si compone di un blocco di ripetizione "ripeti ... volte" (repeat ...
+          times) e di un blocco "riempi 1" (fill 1).
       4:
         image: notes/stage13_4.jpg
         text: La definizione si trova nell'area di lavoro, ma per far eseguire la
-          funzione al contadino devi spostar fuori dalla categoria "Funzioni"  il
-          blocco funzione "riempi di 5".
+          funzione alla contadina devi prendere  il blocco funzione "riempi 5" dalla
+          categoria "Funzioni" ed unirlo al blocco "vai avanti" (move forward).
       5:
         image: notes/stage13_5.jpg
         text: Mettiamo il "divertimento" in "FUNZIONE!" 
@@ -285,13 +287,13 @@
         text: Ciao, sono Makinde! Impariamo il blocco di ripetizione "mentre" 
       2:
         image: notes/stage9_6.jpg
-        text: Il blocco "mentre" farà qualunque cosa si trova all'interno di esso
-          PER TUTTO IL TEMPO IN CUI la condizione presente all'inizio è VERA.
+        text: Il blocco "mentre" (while) farà qualunque cosa si trova all'interno
+          di esso PER TUTTO IL TEMPO IN CUI la condizione presente all'inizio è VERA.
       3:
         image: notes/stage9_7.jpg
-        text: Ad esempio, se il contadino è sopra un mucchio, il blocco "mentre" gli
-          farà rimuovere 1 palata PER TUTTO IL TEMPO IN CUI c'è ancora un mucchio
-          (while there is a pile) sotto di lui.
+        text: In questo esempio, se la contadina è sopra un mucchio, il blocco "mentre"
+          gli farà rimuovere 1 palata di terra (remove 1) PER TUTTO IL TEMPO IN CUI
+          c'è ancora un mucchio (while there is a pile) sotto di lei.
     loop_for:
       1:
         image: notes/stage11_1.jpg
@@ -299,56 +301,58 @@
           cui Shrek.
       2:
         image: notes/stage11_2.jpg
-        text: Questo è il nuovo blocco "contatore". Si usa per eseguire le azioni
-          più e più volte e si può fare in modo che ogni volta le azioni cambino un
-          po'.
+        text: Questo è il nuovo blocco di ripetizione "ripeti con contatore" (count
+          with counter). Si usa per eseguire alcune azioni più e più volte facendo
+          in modo che ogni volta le azioni cambino un po'.
       3:
         image: notes/stage11_3.jpg
-        text: In questo esempio, il blocco "contatore" dice "contare 10 per volta
-          con il contatore che va da 50 a 90" e all'interno di esso, abbiamo il blocco
-          "disegna un quadrato". Sposta il blocco "contatore" dalla sezione "Variabili"
-          al posto di "lunghezza".
+        text: In questo esempio, il blocco "ripeti con contatore" dice "ripeti con
+          il contatore che va da 50 a 90 aumentando di 10 per volta" e all'interno
+          di esso abbiamo il blocco "disegna un quadrato" (draw a a square). Se prendi
+          il blocco "contatore" (counter) dalla categoria "Variabili" (Variables)
+          e lo inserisci al fianco di "lunghezza" (length) ...
       4:
         image: notes/stage11_4.jpg
-        text: Questo significa che il nostro artista sta per disegnare un quadrato
+        text: '...questo significa che il nostro artista inizia disegnando un quadrato
           con lati lunghi 50 pixel. Poi aggiungerà 10 e disegnerà un quadrato con
           lati lunghi 60 pixel. Poi continuerà ad aggiungere 10 e disegnare quadrati
           con lati sempre più lunghi fino a quando raggiungerà 90. Così avremo quadrati
-          di 50, 60, 70, 80 e 90 pixel.
+          di 50, 60, 70, 80 e 90 pixel.'
     parameters:
       1:
         image: notes/stage15_1.jpg
-        text: Ciao, sono Janete, e sono un ingegnere a Zynga.
+        text: Ciao, sono Janete, e sono un'ingegnera di Zynga.
       2:
         image: notes/stage15_2.jpg
-        text: E se vogliamo disegnare un mucchio di triangoli che hanno i loro lati
-          di dimensioni differenti?
+        text: E se vuoi disegnare un po' di triangoli con lati di differenti lunghezze?
       3:
         image: notes/stage15_3.jpg
-        text: Possiamo scrivere tutto questo codice a mano o possiamo utilizzare una
-          funzione con parametri.
+        text: Puoi scrivere esplicitamente tutto il codice o puoi utilizzare una funzione
+          con parametri.
       4:
         image: notes/stage15_4.jpg
-        text: Per fare ciò, clicca la stella blu sulla definizione della funzione
-          "disegna un triangolo". Poi sposta "nome dell'ingresso" nel blocco "ingresso".
+        text: Per fare ciò, clicca la stella bianca su sfondo blu nella definizione
+          della funzione "disegna un triangolo" (draw a triangle). Poi sposta il blocco
+          "nome del parametro" (input name) nel blocco "parametri" (inputs).
       5:
         image: notes/stage15_5.jpg
-        text: Poi se scrivi "lunghezza" nel punto dove dice "x" e premi "Invio", creerai
-          un ingresso per la "lunghezza" della tua funzione.
+        text: Poi se scrivi "lunghezza" (length) nel punto dove c'è la "X" e premi
+          "Invio" creerai il parametro "lunghezza" per la tua funzione.
       6:
         image: notes/stage15_6.jpg
-        text: Poi clicca sulla stella. Ora, clicca sulla categoria "Variabili" e sposta
-          il blocco "lunghezza" nel blocco "vai avanti" della tua definizione di funzione.
-          E sposta via il vecchio blocco col numero.
+        text: Poi clicca sulla stella per terminare la definizione del parametro.
+          Ora, clicca sulla categoria "Variabili" (Variables) e sposta il blocco "lunghezza"
+          nel blocco "vai avanti" (move forward) della tua definizione di funzione.
+          E trascina via il vecchio blocco col numero.
       7:
         image: notes/stage15_7.jpg
         text: Per usare la tua funzione con parametri, fai clic sulla categoria "Funzioni"
-          e sposta la tua funzione "disegna un triangolo con lunghezza" nell'area
-          di lavoro.
+          (Functions) e sposta la tua funzione "disegna un triangolo di lunghezza"
+          nell'area di lavoro.
       8:
         image: notes/stage15_8.jpg
-        text: Ora puoi utilizzare il blocco di matematica per inserire numeri diversi
-          e disegnare triangoli di dimensioni diverse.
+        text: Ora puoi usare i blocchi nella categoria "Matematica" (Math) per inserire
+          numeri diversi e disegnare triangoli di dimensioni diverse.
     hoc_wrapup:
       1:
         image: notes/hoc6_1.jpg
@@ -366,9 +370,9 @@
         image: notes/hoc6_3.jpg
         text: Se ti è piaciuta la tua prima Ora di Codice, visita code.org per continuare
           la tua formazione sull'informatica! Dopo che avrai completato il nostro
-          corso di 20 ore, avrai imparato le basi della programmazione e potrai iniziare
-          ad imparare come scrivere applicazioni per smart-phone, programmi per robot,
-          giochi, e molto altro.
+          corso in 20 lezioni, avrai imparato le basi della programmazione e potrai
+          iniziare ad imparare come scrivere applicazioni per smart-phone, programmi
+          per robot, giochi, e molto altro.
       4:
         image: notes/hoc6_4.jpg
         text: 'La tecnologia sta cambiando tutto ciò che facciamo e non importa se

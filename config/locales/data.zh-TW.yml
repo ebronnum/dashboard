@@ -32,10 +32,16 @@
           MazeEC: 階段 1
         2014 Levels:
           desc: 2014 關卡 （測試版）
-          MazeEC: 階段 1
+          Bounce: Stage 1
+        Builder Levels:
+          desc: User-Created Puzzles (beta)
+          Custom: Stage 1
         Flappy Levels:
           desc: Flappy Bird
-          MazeEC: 階段 1
+          Flappy: Stage 1
+        Jigsaw Levels:
+          desc: Jigsaw (beta)
+          Jigsaw: Stage 1
     game:
       name:
         Unplug1: 電腦科學導論
@@ -61,6 +67,7 @@
         MazeEC: 迷宮
         Bounce: 彈跳
         Flappy: Flappy Bird
+        Jigsaw: Jigsaw
     trophy:
       name:
         Bronze: 銅牌
@@ -186,36 +193,42 @@
         maze_3_2: 給我寫一個程式，所以我可以用它抓到那頭豬。
         maze_3_3: 我應該如何抓到那頭豬？確保我不會碰到那 TNT 的盒子！
         maze_3_4: 阿！給我一個程式讓我可以繞過那些TNT炸藥，然後抓到那隻豬。
-        bounce_1: 放置"當左方向鍵"積木塊，然後按下"執行程式"，並使用左方向鍵移動槳來完成目標。
-        bounce_2: 放置"當右方向鍵"和"當左方向鍵"積木塊，然後"執行"，並移動左右方向鍵移動槳來完成目標。
+        bounce_1: 新增一個程式積木到"當左箭頭按下"程式積木，然後按下"執行程式"。接下來使用向左的鍵頭將球拍移動到達目標區。
+        bounce_2: 新增一個程式積木到"當右箭頭按下"以及"當左箭頭按下"程式積木。接著使用左右鍵頭將球拍移動到達兩個目標區。
         bounce_3: 現在，嘗試與"當向上箭頭"程式積木類似的東西。將槳移動到頂部以完成目標。
         bounce_4: 現在你需要加入四個程式積木塊。移動槳到這四個積木塊來達成目標並完成題目。
         bounce_5: 我們打算把球丟向槳。夾放一個"當球打中槳"的積木塊來確保球有達成目標。
         bounce_6: 現在要完成的目標在最上方。您需要將附加積木到兩個"當球擊中"積木上，來解決這一關卡。
-        bounce_7: Now it is getting crazy!
-        bounce_10: 現在有一個目標在頂端。附加"遞增得分"程式積木到"當球在目標中"，還有附加"當球未命中槳"程式積木，讓遊戲能夠玩。
+        bounce_7: 新增一個程式積木到"當"程式積木中。試著將球反彈，直到球碰到目標區為止。
+        bounce_10: 現在畫面上方有個目標區。新增"得分點數"及"對手得分點數"程式積木到"當球命中目標"及"當揮拍落空"程式積木中來完成一個新遊戲。試看看在對手得到兩倍分數前，你能得到幾分。
         bounce_11: You can now attach blocks to the "when game starts" block. Try
           changing the speed of the paddle and the ball and see how many points you
           can score before your opponent scores twice.
+        bounce_12: Create your own Bounce game. You can change all the visuals and
+          the rules. When you're done, click Share to let friends try your game on
+          their phones.
         Custom_builder: 將程式積木從工具箱中拖動到工作區中來描繪您想要創建的級別。當您準備好時，按下"執行程式"。
         flappy_1: 將一個程式積木附加到"當點擊時"程式積木中，然後按下"運行程式"。按一下或點擊螢幕將 Flappy 移動到目標。
-        flappy_2: Now we've added some ground.  Attach a block to the "when hit the
-          ground" block, then press "Run Program". To pass this puzzle, your code
-          needs to 'END GAME' when Flappy crashes into the ground.
+        flappy_2: 現在我們已經添加了一些地面。將一個程式積木附加到"撞到地面時"程式積木上。當 Flappy 掛點時您的程式碼要能夠'結束遊戲'。
         flappy_3: '"當遊戲開始"程式積木允許您在遊戲開始時運行程式碼。嘗試設置級別速度和撲向目標。'
-        flappy_4: Flappy 會飛越障礙，除非你寫的程式碼讓它崩潰。附加一個程式積木到 "當命中障礙" 程式積木。 當 Flappy 撞掉第一組水管時，您的程式碼必須能夠
-          '結束遊戲' 。
+        flappy_4: Flappy 會飛過障礙物，除非你寫程式讓它掉下來。接下來，試著新增一個程式積木到"當碰到障礙物"程式積木中。你的程式碼必須在Flappy因撞到第一組水管而掉下來的時候，同時將遊戲結束掉。
         flappy_5: 讓我們添加記分牌，在 Flappy 越過障礙時可以記分。添加"當通過障礙"積木，然後當 Flappy 飛過第一組水管障礙時計分。
         flappy_6: 看看你在讓 Flappy 拍動更小或更大的數值時，是否仍能得分。
-        flappy_7: Next, try changing the scene by attaching another block to the "when
-          Run is clicked".
-        flappy_8: You can set visuals anytime, not just when the game starts. Try
-          setting a RANDOM scene when other events happen, for example, when passing
-          an obstacle.
-        flappy_9: To mix things up, when hitting an obstacle or the ground, instead
-          of ending the game try setting the score back to 0.
-        flappy_11: 創建您自己的 Flappy 遊戲並分享它。您可以更改視覺效果甚至更改規則。請試著在 Flappy 每次越過障礙後，更改視覺效果。或令
-          Flappy 立於不敗之地，使它永遠不死。
+        flappy_7: 接下來，試著透過將另一個程式積木加到"當遊戲啟動"程式積木中，試著用它來改變場景。
+        flappy_8: 不單只有在遊戲開始時，事實上你可以隨時設定想要的視覺效果。試著在某些事件發生的時候，例如：當通過障礙物的時候，隨機變換一個場景。
+        flappy_9: 現在我們要將前面學的全部混在一起囉，現在當碰到障礙物或地面時，請將分數設為0分，而不要將遊戲結束。
+        flappy_11: 現在開始建立屬於你自己的Flappy遊戲。你可以改變所有的視覺效果及規則，甚至連還包括重力。當你完成的時候，記得按下分享按鈕，讓你的朋友們可以在手機上試試你所完成的遊戲喔。
+        jigsaw_1: Click the block
+        jigsaw_2: Drag the block to the target
+        jigsaw_3: Arrange the blocks to form the image
+        jigsaw_4: Arrange the blocks to form the image
+        jigsaw_5: Arrange the blocks to form the image
+        jigsaw_6: Arrange the blocks to form the image
+        jigsaw_7: Arrange the blocks to form the image
+        jigsaw_8: Arrange the blocks to form the image
+        jigsaw_9: Arrange the blocks to form the image
+        jigsaw_10: Arrange the blocks to form the image
+        jigsaw_11: Arrange the blocks to form the image
       levelIncompleteError:
         maze_2_8: '要解決這個關卡，請找出重覆的片斷。使用"重覆"程式積木將: 前進，前進，右轉 這三個程式積木包在其中。'
       other1StarError:
@@ -238,3 +251,15 @@
         parameters: 具有參數的函數
         hoc_wrapup: 一小時程式碼總結
         20_wrapup: 20小時課程總結
+    callout:
+      text:
+        drag_blocks: Drag a "move" block and snap it below the other block
+        run: Hit "Run" to try your program
+        watch_again: Click here to watch the video again
+        gray_block_explanation: Blocks that are grey can't be moved or deleted. Can
+          you solve the puzzle anyway?
+        show_code_explanation: Click here to see the code for the program you're making
+        instructions_repeat_explanation: The instructions for each puzzle are repeated
+          here
+        category_explanation: You have all the same blocks but they've now been arranged
+          in categories

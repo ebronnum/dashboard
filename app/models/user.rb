@@ -265,4 +265,10 @@ SQL
     
     errors.add(:birthday, I18n.t('activerecord.attributes.user.error.future')) if birthday > Date.today
   end
+
+  def short_name
+    return username if name.blank? # we don't always have a name but we should always have a username
+    
+    name.split.first # 'first name'
+  end
 end

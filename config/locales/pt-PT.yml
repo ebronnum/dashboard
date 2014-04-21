@@ -11,6 +11,8 @@
         locale: Língua
         gender: Género
         edit_header: Editar detalhes da Conta
+        error:
+          future: can't be in the future
   hello: Olá mundo
   welcome_back: Bem-vindo, % {name}
   add_teacher_form:
@@ -51,10 +53,9 @@
     need_confirmation: Não recebeste as instruções de confirmação?
     need_unlock: Não recebeste as instruções de desbloqueio?
   signup_form:
-    overview: Este curso de 20 horas apresenta o informática de núcleo e conceitos
-      de programação. O curso é projetado para uso em salas de aula para os graus
-      K-8, mas é divertido de aprender em todos os tempos.
-    no_signup_header: Não te queres registar?
+    overview_student: Sign up for an account to track your progress.
+    overview_teacher: Teach computer science in your classroom by signing up for an
+      account.<p/> You'll be able to track your students' progress and get rewards.
     no_signup_message: Tu podes <a target="_blank" href="http://learn.code.org"> consultar
       as várias fases e quebra-cabeças</a>, mas precisarás de te inscrever para guardar
       o teu progresso.
@@ -101,6 +102,7 @@
     remember: Lembrar-se de mim
     submit: Entrar
   signin:
+    try_heading: Want to try coding without signing up?
     try_hoc: Try one Hour of Code first
     try_20hours: Try our 20 hour Intro to Computer Science
   password:
@@ -149,6 +151,8 @@
     provider: 'Fornecedor:'
     code: 'Código:'
     redeem_header: 'To redeem:'
+    donorschoose_register: Register as a teacher on DonorsChoose.org
+    donorschoose_project: Post a project
     donorschoose_how_to: How to use your code
     success: O teu prémio foi recolhido com êxito, vê o código abaixo.
     error: O teu prémio não pôde ser recolhido, por favor tenta novamente.
@@ -323,6 +327,10 @@
       completion and up to $1,000 in classroom rewards for public school teachers'
     tryfirst: 'Or, you can try it first, and sign up later:'
     trynow: Try now
+    add_hint_help: Please help us to add smart hints to Code.org tutorials
+    20hour_overview: This 20-hour course introduces core computer science and programming
+      concepts. The course is designed for use in classrooms for grades K-8, but it
+      is fun to learn at all ages.
   gender:
     male: Masculino
     female: Feminino
@@ -352,6 +360,8 @@
     subtitle: Vê estes vídeos e dicas
     teacher: Ver a solução
     auth_error: Você não está autorizado a ver a solução.
+    submit: Update Artist Location
+    direction: Start Direction
   video:
     tab: Vídeo.
     notes: Nenhum vídeo? Mostrar notas.
@@ -366,6 +376,7 @@
   download_pdf: Abre o plano de aula
   share_code:
     title: Clique em 'Executar programa' para ver o meu programa em ação
+    bounce_og_title: Check out my Bounce Game
     flappy_og_title: Check out my Flappy Game
     og_description: I wrote the code myself with Code.org
   builder:
@@ -378,3 +389,14 @@
       create: Create new level
       current: Current Levels
       unused: Unused Levels
+  upsell:
+    hoc:
+      title: The Hour of Code
+      body: Try the basics of computer science. Millions have given it a shot.
+    flappy:
+      title: Flappy Code
+      body: Wanna write your own game in less than 10 minutes? Try our Flappy Code
+        tutorial!
+    20hour:
+      title: Intro Course
+      body: Try our 20-hour Intro to Computer Science course.

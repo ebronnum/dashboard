@@ -32,10 +32,16 @@
           MazeEC: 1. szakasz
         2014 Levels:
           desc: 2014 Puzzle-k (beta)
-          MazeEC: 1. szakasz
+          Bounce: Stage 1
+        Builder Levels:
+          desc: User-Created Puzzles (beta)
+          Custom: Stage 1
         Flappy Levels:
-          desc: Flappy Bird
-          MazeEC: Stage 1
+          desc: Flappy madár
+          Flappy: Stage 1
+        Jigsaw Levels:
+          desc: Jigsaw (beta)
+          Jigsaw: Stage 1
     game:
       name:
         Unplug1: Bevezetés a számítógép tudományába
@@ -61,6 +67,7 @@
         MazeEC: A labirintus
         Bounce: Ugrál
         Flappy: Flappy Bird
+        Jigsaw: Jigsaw
     trophy:
       name:
         Bronze: Bronz
@@ -327,53 +334,74 @@
           TNT-be!
         maze_3_4: Ahh! Írj nekem egy programot amivel megkerülhetem a TNT-t és eljuthatok
           a malachoz.
-        bounce_1: Csatoljon egy blokkot  a "Mikor bal nyíl" blokkhoz, majd nyomja
-          meg a "Futtatás"-t, és mozgassa a lapátot a bal nyíl gombbal, hogy elérje
-          a célt.
-        bounce_2: Csatoljon egy blokkot  a "Mikor jobb nyíl" blokkhoz, majd nyomja
-          meg a "Futtatás"-t, és mozgassa a lapátot a mindkét nyíl gombbal, hogy elérje
-          mindkét célt.
+        bounce_1: Csatolja a blokkot  az "Amkor bal nyíl" blokkhoz, és nyomja meg
+          a "Program futtatásá"-t. Mozgassa a lapátot a bal nyíl segítségével hogy
+          elérje célját.
+        bounce_2: Csatolja a blokkot  az "Amkor jobb nyíl" blokkhoz, és nyomja meg
+          a "Program futtatásá"-t. Mozgassa a lapátot a bal nyíl segítségével hogy
+          elérje célját.
         bounce_3: Most csinálja meg ugyanezt  a "Mikor fel nyíl" blokkal, és mozgassa
           a lapátot a, hogy elérje fent a célt.
-        bounce_4: TBD
-        bounce_5: Attach a blocks to the "when right arrow", "when left arrow", "when
-          ball hits wall", and "when ball hits paddle" blocks.
-        bounce_6: Try again with more balls.
-        bounce_7: Now it is getting crazy!
-        bounce_10: There is a now a goal at the top. Attach "increment score" blocks
-          to the the "when ball in goal" and "when ball misses paddle" blocks to make
-          a game.
+        bounce_4: Itt az idő, hogy bevezessen négy új blokkot. Mozgassa a lapátot
+          mind a négy irányba, hogy befejezze ezt a feladatot.
+        bounce_5: El szeretnénk dobni a labdát az ütő felé. Csatoljunk egy blokkot
+          az "amikor a labda hozzáér az ütőhöz" (esemény-)blokkhoz, ami végtehajtódik
+          amikor a labda eléri a célját.
+        bounce_6: Most a végső cél a fontos. Szükséges egy blokkot csatolni mind a
+          két  "Amikor labda találat" blokkhoz, hogy megoldja ezt rejtvényt.
+        bounce_7: Csatoljon blokkok minden a "Amikor" blokkhoz. A labda addig pattog,
+          amíg eléri a célt.
+        bounce_10: A felső részen jelenjenek meg a gólok. Kapcsolja a "megszerzett
+          pontok" -at és az ellenfél pontjait a "amikor a labda gól" és az "amikor
+          a labda nem érte az ütőt" blokkhoz, hogy elkészüljön a játék. Próbálja ki,
+          hány pontot tud szerezni, amig az ellenfele a dupláját.
         bounce_11: You can now attach blocks to the "when game starts" block. Try
           changing the speed of the paddle and the ball and see how many points you
           can score before your opponent scores twice.
-        Custom_builder: Drag blocks from the toolbox to the workspace to draw the
-          level you wish to create. Press "Run Program" when you are ready.
-        flappy_1: Attach a block to the "when click" block, then press "Run Program"
-          and click or tap to move Flappy to the target.
-        flappy_2: Now we've added some ground.  Attach a block to the "when hit the
-          ground" block, then press "Run Program". To pass this puzzle, your code
-          needs to 'END GAME' when Flappy crashes into the ground.
-        flappy_3: The "when Run is clicked" block allows you to run code when your
-          game first starts.  Try setting the level speed and flapping to the target.
-        flappy_4: Flappy will fly through obstacles unless you write code to make
-          him crash. Attach a block to the "when hit an obstacle" block. To pass the
-          puzzle, your code needs to 'END GAME' and make Flappy crash into the first
-          pipe so he can reach the target.
-        flappy_5: Let's add a scoreboard, and count points when Flappy makes it past
-          obstacles. Add to the "when pass an obstacle" block, and then score a point
-          by flying Flappy through the first set of pipes.
+        bounce_12: Create your own Bounce game. You can change all the visuals and
+          the rules. When you're done, click Share to let friends try your game on
+          their phones.
+        Custom_builder: Huzzon egy blokkot az eszköztárból a munkaterületre és állítsa
+          be rajta szintet. Nyonja meg a "Futtatás" -t amikor kész.
+        flappy_1: Csatoljon egy blokkot a "klikkelés" eseményhez, és nyomja meg a
+          "Futtatás" gombot. Kattintson, vagy érintse meg a képernyőt, és mozgassa
+          Flappy-t a célba.
+        flappy_2: Nos mi hozzáadtuk a talajt. Csatolj egy blokkot a "ha becsapódik
+          a talajba" blokkhoz. Ha Flappy ütközik, itt a "VÉGE A JÁTÉKNAK".
+        flappy_3: A "amikor a játék elindul" blokk megengedi neked, hogy parancsokat
+          futtass, amikor a játék elindul. Próbáld meg beállítani a játék sebességét,
+          és szárnycsapkodással elérni a célt.
+        flappy_4: Flappy át fog repülni az akadályokon, hacsak te nem írsz egy olyan
+          parancsot, amitől nekik ütközik. Csatolj  egy blokkot a "amikor akadálynak
+          ütközik" blokkhoz. Ha Flappy nekiütközik az első csöveknek, akkor itt a
+          "VÉGE A JÁTÉKNAK".
+        flappy_5: Adjunk hozzá egy eredményjelzőt, és számoljuk  pontokat, amikor
+          Flappy áthalad egy akadályon. Adjuk az "amikor áthalad egy akadályon" blokkhoz,
+          és azután szerezzünk pontot Flappy-vel átrepülve az első csövek között.
         flappy_6: See if you can still score a point after making Flappy flap either
           a smaller or larger amount.
-        flappy_7: Next, try changing the scene by attaching another block to the "when
-          Run is clicked".
+        flappy_7: A következőkben próbáljunk meg hátteret változtatni új parancs hozzáadásával
+          az "amikor elkezdődik a játék" blokkhoz.
         flappy_8: You can set visuals anytime, not just when the game starts. Try
           setting a RANDOM scene when other events happen, for example, when passing
           an obstacle.
         flappy_9: To mix things up, when hitting an obstacle or the ground, instead
           of ending the game try setting the score back to 0.
-        flappy_11: Create your own Flappy game and share it. You can change the visuals,
-          or even the rules. Try changing visuals each time Flappy passes an obstacle.
-          Or make Flappy invincible so he never dies.
+        flappy_11: Készítsd el a saját Flappy-bird játékod. Megváltoztathatod minden
+          elem kinézetét, megváltoztathatsz minden szabályt, akár a gravitációét is.
+          Amikor kész vagy, klikkelj a Megosztásra, hogy a barátaid kipróbálhassák
+          saját telefonjaikon.
+        jigsaw_1: Click the block
+        jigsaw_2: Drag the block to the target
+        jigsaw_3: Arrange the blocks to form the image
+        jigsaw_4: Arrange the blocks to form the image
+        jigsaw_5: Arrange the blocks to form the image
+        jigsaw_6: Arrange the blocks to form the image
+        jigsaw_7: Arrange the blocks to form the image
+        jigsaw_8: Arrange the blocks to form the image
+        jigsaw_9: Arrange the blocks to form the image
+        jigsaw_10: Arrange the blocks to form the image
+        jigsaw_11: Arrange the blocks to form the image
       levelIncompleteError:
         maze_2_8: 'Hogy ezt megoldhasd, találd meg az ismétlődő mintát. Használj egy
           "ismételd amíg" blokkot, benne ezzel a 3 blokkal: előrelépni, előrelépni,
@@ -390,7 +418,7 @@
         maze_intro: Labirintus Intro
         artist_intro: Művész Intro
         farmer_intro: Farmer Intro
-        flappy_intro: Flappy Intro
+        flappy_intro: Flappy intró
         loop_times: Ismételje szor blokk
         loop_until: Ismételd amíg, blokk
         if: Ha blokk
@@ -401,3 +429,15 @@
         parameters: Paraméterezett függvények
         hoc_wrapup: A kódolás órája összefoglaló
         20_wrapup: 20 órás összefoglaló
+    callout:
+      text:
+        drag_blocks: Drag a "move" block and snap it below the other block
+        run: Hit "Run" to try your program
+        watch_again: Click here to watch the video again
+        gray_block_explanation: Blocks that are grey can't be moved or deleted. Can
+          you solve the puzzle anyway?
+        show_code_explanation: Click here to see the code for the program you're making
+        instructions_repeat_explanation: The instructions for each puzzle are repeated
+          here
+        category_explanation: You have all the same blocks but they've now been arranged
+          in categories

@@ -231,6 +231,7 @@ en:
         'jigsaw_9': "Arrange the blocks to form the image"
         'jigsaw_10': "Arrange the blocks to form the image"
         'jigsaw_11': "Arrange the blocks to form the image"
+        'jigsaw_12': "Arrange the blocks to form the image"
       levelIncompleteError:
         # Keyed by "#{game.name}_#{level.level_num}" with fallback "#{game.app}_#{level.level_num}"
         'maze_2_8': "To solve this, find the pattern that repeats. Use a \"repeat\" block with these 3 blocks inside it: move, move, turn right."

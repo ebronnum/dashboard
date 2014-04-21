@@ -358,4 +358,8 @@ en:
     20hour:
       title: 'Intro Course'
       body: 'Try our 20-hour Intro to Computer Science course.'
-
+  gallery:
+    students_drew_these_with_code: "Students drew these with code!"
+    picture_count: "In the past <b>%{days}</b> days, students have drawn <b>%{count}</b> pictures by writing their own computer programs. Click on the pictures to see each program in action."
+    want_to_make_your_own: "Want to make your own?"
+    more: "More &rarr;"
