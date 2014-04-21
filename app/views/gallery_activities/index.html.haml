@@ -1,22 +1,18 @@
 .row
   %h1{style: 'text-align:center;'}
-    Students drew these with code!
+    = t('gallery.students_drew_these_with_code')
 
 .row
   .span2
   .span8.infobox
-    In the past
-    %b= @days
-    days, students have drawn
-    %b= number_to_human(GalleryActivity.count)
-    pictures by writing their own computer programs.
-    Click on the pictures to see each program in action.
+    = t('gallery.picture_count', days: @days, count: number_to_human(GalleryActivity.count)).html_safe
   .span2
 
 .span{style: 'float:right;'}
-  = link_to_next_page @gallery_activities, 'More &rarr;'.html_safe
+  = link_to_next_page @gallery_activities,  t('gallery.more').html_safe
 
 %br{clear: :all}
+
 
 - @gallery_activities.each do |gallery_activity|
   %div.gallery_activity
@@ -31,13 +27,12 @@
       ago
 
 .span{style: 'float:right;'}
-  = link_to_next_page @gallery_activities, 'More &rarr;'.html_safe
+  = link_to_next_page @gallery_activities, t('gallery.more').html_safe
 
 %br{clear: :all}
 
 .row
-  %h2.lesson{style: 'text-align:center'}
-    Want to make your own?    
+  %h2.lesson{style: 'text-align:center'}= t('gallery.want_to_make_your_own')
 .row
   = render partial: 'shared/course_mini_block', locals: { id: "hoc" }
   = render partial: 'shared/course_mini_block', locals: { id: "20hour" }
