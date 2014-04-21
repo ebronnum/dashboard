@@ -32,10 +32,16 @@
           MazeEC: Áfangi 1
         2014 Levels:
           desc: 2014 þrautir (beta)
-          MazeEC: Áfangi 1
+          Bounce: Stage 1
+        Builder Levels:
+          desc: User-Created Puzzles (beta)
+          Custom: Stage 1
         Flappy Levels:
-          desc: Flappy Bird
-          MazeEC: Stage 1
+          desc: Fuglinn Flappy
+          Flappy: Stage 1
+        Jigsaw Levels:
+          desc: Jigsaw (beta)
+          Jigsaw: Stage 1
     game:
       name:
         Unplug1: Kynning á tölvunarfræði
@@ -53,14 +59,15 @@
         Farmer2: Bóndinn 2
         Unplug8: Kjarni
         Artist4: Listamaðurinn 4
-        Unplug9: Rásaforritun
+        Unplug9: Boðhlaupsforritun
         Farmer3: Bóndinn 3
         Unplug10: Internetið
         Artist5: Listamaðurinn 5
         Unplug11: Samantekt
         MazeEC: Völundarhúsið
         Bounce: Skopp
-        Flappy: Flappy Bird
+        Flappy: Fuglinn Flappy
+        Jigsaw: Jigsaw
     trophy:
       name:
         Bronze: Brons
@@ -320,10 +327,10 @@
           sprengiefnið!
         maze_3_4: Arrg! Skrifaðu forrit fyrir mig sem kemur mér í kringum TNT sprengiefnið
           og til svínsins.
-        bounce_1: Tengdu kubb við kubbinn "þegar vinstri ör". Ýttu svo á Keyra forrit
-          og færðu spaðann með vinstri örvarlykli að endamarki.
-        bounce_2: Tengdu kubb við kubbana "þegar hægri ör" og "þegar vinstri ör".
-          Keyrðu svo forritið og færðu spaðann með örvarlyklunum að báðum endamörkum.
+        bounce_1: Tengdu kubb við "þegar vinstri ör" kubb og ýttu á "Keyra forrit".
+          Færðu spaðann með vinstri ör til að komast að endamarkinu.
+        bounce_2: Tengdu kubb við "þegar til hægri" og "þegar til vinstri" kubbana.
+          Færðu spaðann til að ná báðum endamörkum.
         bounce_3: Reyndu nú eitthvað svipað með kubbnum "þegar upp ör". Færðu spaðann
           upp að endamarkinu.
         bounce_4: Í þetta sinn þarft þú að bæta við fjórum kubbum. Færðu spaðann að
@@ -333,42 +340,55 @@
           að endamarkinu.
         bounce_6: Nú er endamarkið að ofanverðu. Þú þarft að tengja kubba við báða
           "þegar bolti hittir" kubbana til að leysa þrautina.
-        bounce_7: Tengdu kubba við kubbana "þegar upp ör", "þegar vinstri ör", "þegar
-          bolti hittir vegg" og "þegar bolti hittir spaða".
-        bounce_10: Nú er mark efst uppi. Tengdu "bæta við skor" kubba við kubbana
-          "þegar bolti í marki" og "þegar bolti hittir ekki spaða" til að búa til
-          leik.
+        bounce_7: Tengdu kubba við hvern "þegar" kubb. Láttu boltann skoppa þar til
+          hann hittir í endamarkið.
+        bounce_10: Nú er mark efst. Tengdu kubbana "skora stig" og "skora stig andstæðings"
+          við kubbana "þegar bolti í marki" og "þegar bolti hittir ekki spaða" til
+          að búa til leik. Reyndu að skora sem flest stig áður en andstæðingurinn
+          skorar tvisvar.
         bounce_11: You can now attach blocks to the "when game starts" block. Try
           changing the speed of the paddle and the ball and see how many points you
           can score before your opponent scores twice.
+        bounce_12: Create your own Bounce game. You can change all the visuals and
+          the rules. When you're done, click Share to let friends try your game on
+          their phones.
         Custom_builder: Dragðu kubba úr verkfærakassanum inn á vinnusvæðið til að
           teikna áfangann sem þú vilt búa til. Ýttu svo á Keyra forrit.
-        flappy_1: Attach a block to the "when click" block, then press "Run Program"
-          and click or tap to move Flappy to the target.
-        flappy_2: Now we've added some ground.  Attach a block to the "when hit the
-          ground" block, then press "Run Program". To pass this puzzle, your code
-          needs to 'END GAME' when Flappy crashes into the ground.
-        flappy_3: The "when Run is clicked" block allows you to run code when your
-          game first starts.  Try setting the level speed and flapping to the target.
-        flappy_4: Flappy will fly through obstacles unless you write code to make
-          him crash. Attach a block to the "when hit an obstacle" block. To pass the
-          puzzle, your code needs to 'END GAME' and make Flappy crash into the first
-          pipe so he can reach the target.
-        flappy_5: Let's add a scoreboard, and count points when Flappy makes it past
-          obstacles. Add to the "when pass an obstacle" block, and then score a point
-          by flying Flappy through the first set of pipes.
-        flappy_6: See if you can still score a point after making Flappy flap either
-          a smaller or larger amount.
-        flappy_7: Next, try changing the scene by attaching another block to the "when
-          Run is clicked".
-        flappy_8: You can set visuals anytime, not just when the game starts. Try
-          setting a RANDOM scene when other events happen, for example, when passing
-          an obstacle.
-        flappy_9: To mix things up, when hitting an obstacle or the ground, instead
-          of ending the game try setting the score back to 0.
-        flappy_11: Create your own Flappy game and share it. You can change the visuals,
-          or even the rules. Try changing visuals each time Flappy passes an obstacle.
-          Or make Flappy invincible so he never dies.
+        flappy_1: Tengdu kubb til "þegar smellt" kubbinn og ýttu svo á "Keyra forrit".
+          Smelltu eða sláðu á skjáinn til að færa Flappy að markinu.
+        flappy_2: Nú höfum bætt við jörð. Tengdu kubb við kubbinn "þegar rekst á jörð".
+          Kóðinn þinn verður að "LJÚKA LEIK" þegar Flappy hrapar til jarðar.
+        flappy_3: Með kubbnum "þegar leikur byrjar" getur þú keyrt kóða þegar leikurinn
+          byrjar. Prófaðu að stilla hraðann og fljúga að markinu.
+        flappy_4: Flappy mun fljúga í gegnum hindranir nema þú skrifir kóða til að
+          láta hann rekast á. Tengdu kubb við kubbinn "þegar rekst á hindrun". Kóðinn
+          þinn verður að "LJÚKA LEIK" þegar Flappy rekst á fyrstu pípurnar.
+        flappy_5: Nú skulum við bæta við stigagjöf og telja stig þegar Flappy kemst
+          fram hjá hindrunum. Bættu við kubbinn "þegar framhjá hindrun" og skoraðu
+          stig með því að fljúga Flappy framhjá fyrstu pípunum.
+        flappy_6: Prófaðu hvort þú getir enn skorað stig eftir að þú lætur Flappy
+          blaka vængjunum meira eða minna.
+        flappy_7: Prófaðu nú að breyta umhverfinu með því að tengja annan kubb við
+          kubbinn "þegar leikur byrjar".
+        flappy_8: Þú getur stillt umhverfið hvenær sem er, ekki bara í byrjun. Prófaðu
+          að still umhverfið á HANDAHÓF þegar aðrir atburðir gerast, t.d. þegar farið
+          er framhjá hindrun.
+        flappy_9: Prófaðu nú aðra útfærslu með því að ljúka ekki leiknum heldur núllstilla
+          skorið þegar rekist er á hindrun eða jörð.
+        flappy_11: Búðu nú til þinn eiginn Flappy leik. Þú getur breytt öllu umhverfi
+          og reglum, jafnvel þyngdaraflinu. Smelltu svo á Deila til að vinir þínir
+          geti prófað leikinn í símunum sínum.
+        jigsaw_1: Click the block
+        jigsaw_2: Drag the block to the target
+        jigsaw_3: Arrange the blocks to form the image
+        jigsaw_4: Arrange the blocks to form the image
+        jigsaw_5: Arrange the blocks to form the image
+        jigsaw_6: Arrange the blocks to form the image
+        jigsaw_7: Arrange the blocks to form the image
+        jigsaw_8: Arrange the blocks to form the image
+        jigsaw_9: Arrange the blocks to form the image
+        jigsaw_10: Arrange the blocks to form the image
+        jigsaw_11: Arrange the blocks to form the image
       levelIncompleteError:
         maze_2_8: 'Til að leysa þarf að nota endurtekið hreyfingamynstur. Notaðu "endurtaka"
           kubb sem inniheldur þessa þrjá: færa, færa, snúa til hægri.'
@@ -383,7 +403,7 @@
         maze_intro: Kynning á Völundarhúsi
         artist_intro: Kynning á listamanni
         farmer_intro: Kynning á bónda
-        flappy_intro: Flappy Intro
+        flappy_intro: Kynning á Flappy
         loop_times: Endurtaka X kubbur
         loop_until: Endurtaka þar til kubbur
         if: Ef kubbur
@@ -394,3 +414,15 @@
         parameters: Föll með stikum
         hoc_wrapup: Samantekt á Kóðun í klukkustund
         20_wrapup: Samantekt 20 klukkustunda
+    callout:
+      text:
+        drag_blocks: Drag a "move" block and snap it below the other block
+        run: Hit "Run" to try your program
+        watch_again: Click here to watch the video again
+        gray_block_explanation: Blocks that are grey can't be moved or deleted. Can
+          you solve the puzzle anyway?
+        show_code_explanation: Click here to see the code for the program you're making
+        instructions_repeat_explanation: The instructions for each puzzle are repeated
+          here
+        category_explanation: You have all the same blocks but they've now been arranged
+          in categories

@@ -11,15 +11,15 @@
           and drop blocks to write code.
       3:
         image: notes/hoc1_3.jpg
-        text: Most code is typed, but Blockly is visual. Each blocks corresponds to
-          a line of "real" code.
+        text: Uglavnom se kod piše, ali Blockly je vizualan. Svaki blok odgovara jednoj
+          liniji "pravog" koda.
       4:
         image: notes/hoc1_4.jpg
-        text: You'll learn the foundations of computer science, concepts which are
-          used anywhere from making apps to controlling the Mars rover.
+        text: Naučit ćeš osnove računalstva, koncepta koji se koriste bilo gdje od
+          izrade aplikacija do upravljanja robotom na Marsu.
       5:
         image: notes/hoc1_5.jpg
-        text: A program is a set of instructions for your computer to follow.
+        text: Program je niz naredbi koje vaše računalo izvršava.
       6:
         image: notes/hoc1_6.jpg
         text: The goal of your first program is to get an Angry Bird through a maze
@@ -30,25 +30,25 @@
           for each puzzle are below the maze.
       8:
         image: notes/hoc1_8.jpg
-        text: The middle toolbox has the commands for the Angry Bird. You'll use these
-          to build your code.
+        text: Alatna traka u sredini sadrži naredbe za igru Angry Bird. Njih ćeš koristiti
+          kako bi napisao svoj kod igre.
       9:
         image: notes/hoc1_9.jpg
         text: On the right is your workspace where you'll drag blocks from the toolbox
           to build your program. To delete a block, drag it to the trash in the corner.
       10:
         image: notes/hoc1_10.jpg
-        text: Each block is one instruction. If you drag a "move forward" block to
-          your workspace and press "Run Program", the bird moves one space on the
-          maze.
+        text: Svaki blok je jedna naredba. Ako povučeš "pomakni naprijed" blok na
+          svoju radnu površinu i pritisneš "Pokreni program", ptica se pomiče za jedno
+          mjesto na podlozi.
       11:
         image: notes/hoc1_11.jpg
-        text: To do more than one action, you can drag many block to your workspace
-          and attach them together. The bird will do the commands from top to bottom.
+        text: Da izvršiš više od jedne radnje, povuci nekoliko naredbi na svoju radnu
+          površinu i spoji ih zajedno. Ptica će slijediti naredbe odozgo prema dolje.
       12:
         image: notes/hoc1_12.jpg
-        text: If you run a program and want to fix it and try again, press the "Reset"
-          button.
+        text: Ako si pokrenuo program i želiš ispraviti pogreške i pokušati ponovo,
+          pritisni "Reset" tipku.
       13:
         image: notes/hoc1_13.jpg
         text: Let's go get those pigs!
@@ -63,8 +63,8 @@
           everywhere they go.
       3:
         image: notes/stage5_3.jpg
-        text: This block says "move forward by 100 pixels." Pixels are just really
-          tiny dots on your screen.
+        text: Ovaj naredba kaže "pomakni naprijed" za 100 piksela. Pikseli su jako
+          male točkice na tvom zaslonu.
       4:
         image: notes/stage5_4.jpg
         text: This block says "turn right by 90 degrees." This will turn your artist
@@ -139,27 +139,27 @@
     loop_times:
       1:
         image: notes/hoc2_1.jpg
-        text: Hi, I'm Mark! Let's learn about loops. Using loops you can tell a computer
-          to repeat any set of actions over and over, thousands or even billions of
-          times.
+        text: Bok, ja sam Mark. Naučimo sada petlje. Koristeći petlje možete reći
+          računalu da ponavlja bilo koju grupu radnji iznova, tisuću ili čak milijardu
+          puta.
       2:
         image: notes/hoc2_2.jpg
         text: In this puzzle, we want to make the bird move forward 5 spaces to get
           to the pig.
       3:
         image: notes/hoc2_3.jpg
-        text: We can use the new "repeat" block to help us out.
+        text: Za pomoć možemo koristiti novi "ponovi" blok.
       4:
         image: notes/hoc2_4.jpg
-        text: Instead of dragging out 5 "move forward" blocks...
+        text: Umjesto korištenja 5 "pomakni naprijed" blokova ...
       5:
         image: notes/hoc2_5.jpg
-        text: We can put the "move forward" block inside the "repeat" block and write
-          a number in the block to tell it how many times to repeat.
+        text: Možemo umetnuti "pomakni naprijed" blok u "ponovi" blok i upisati broj
+          koji govori koliko se puta blok ponavlja.
       6:
         image: notes/hoc2_6.jpg
-        text: 'And this is important: you can put more than one command inside a "repeat"
-          block.'
+        text: 'Ovo je važno : moguće je umetnuti više od jedne naredbe u "ponovi"
+          blok.'
       7:
         image: notes/hoc2_7.jpg
         text: Enjoy using your new "repeat" block!
@@ -225,12 +225,12 @@
           and OTHERWISE (there isn't a path ahead), the zombie will turn left.
       3:
         image: notes/hoc5_3.jpg
-        text: Just like the "if" block, we can put "if else" blocks inside a "repeat"
-          blocks so that the zombie keeps moving and the "if else" block will keep
-          checking if there's somewhere to turn.
+        text: Poput "ako" bloka, moguće je umetnuti "ako inače" blok unutar "ponovi"
+          bloka tako da zombi se nastavi kretati i "ako inače" blok će nastaviti provjeravati
+          postoji li mogućnost skretanja zombija.
       4:
         image: notes/hoc5_4.jpg
-        text: Now, get those zombies where they belong!
+        text: Sada, odvedi tog zombija kamo pripada!
     function:
       1:
         image: notes/stage13_1.jpg
@@ -288,7 +288,7 @@
     parameters:
       1:
         image: notes/stage15_1.jpg
-        text: Hi, I'm Janete, and I'm an engineer at Zynga.
+        text: Cao ja sam Janete, i ja sam inzinjer na Zynga.
       2:
         image: notes/stage15_2.jpg
         text: What if we want to draw a bunch of triangles and have their lengths

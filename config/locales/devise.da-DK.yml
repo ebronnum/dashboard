@@ -1,7 +1,7 @@
 "da":
   devise:
     confirmations:
-      confirmed: Kontoen blev korrekt bekræftet. Du er nu logget på.
+      confirmed: Din e-mailadresse blev bekræftet.
       send_instructions: Du vil modtage en e-mail med instruktioner om, hvordan du
         bekræfter din konto om et par minutter.
       send_paranoid_instructions: Hvis din e-mail-adresse findes i vores database,
@@ -19,9 +19,9 @@
       unconfirmed: Du skal bekræfte din konto, før du fortsætter.
     mailer:
       confirmation_instructions:
-        subject: Bekræftelses instrukser
+        subject: Code.org bekræftelsesinstruktioner
       reset_password_instructions:
-        subject: Nulstil adgangskode instruktioner
+        subject: Instruktioner til at nulstille adgangskoden til Code.org
       unlock_instructions:
         subject: Lås op instruktioner
     omniauth_callbacks:
@@ -30,12 +30,12 @@
     passwords:
       no_token: Du kan ikke få adgang til denne side uden at komme fra en password
         reset e-mail. Hvis du kommer fra en password reset e-mail, skal du sørge for
-        at du brugte den fulde webadresse tildelt.
+        at du brugte den fulde webadresse du fik.
       send_instructions: Du vil modtage en e-mail med instruktioner om hvordan du
         nulstiller din adgangskode om et par minutter.
       send_paranoid_instructions: Hvis din e-mail-adresse findes i vores database,
-        vil du modtage et link til at lave en nyt adgangskode på din e-mail-adresse
-        om et par minutter.
+        vil du om et par minutter modtage et link til at lave en ny adgangskode i
+        din e-mail.
       updated: Adgangskoden blev ændret succesfuldt. Du er nu logget på.
       updated_not_active: Adgangskoden blev ændret succesfuldt.
     registrations:
@@ -46,10 +46,10 @@
       signed_up_but_locked: Du har tilmeldt dig succesfuldt. Men vi kunne ikke logge
         dig fordi din konto er låst.
       signed_up_but_unconfirmed: En besked med et bekræftelses link er sendt til din
-        e-mail-adresse. Åbn linket for at aktivere din konto.
+        e-mailadresse. Åbn linket for at aktivere din konto.
       update_needs_confirmation: Du opdaterede din konto, men vi har brug for at bekræfte
         din nye e-mail adresse. Kontroller din e-mail, og klik på bekræft linket for
-        endeligt at bekræfte din nye e-mail-adresse.
+        endeligt at bekræfte din nye e-mailadresse.
       updated: Du opdaterede din konto succesfuldt.
     sessions:
       signed_in: Logged på succesfuldt.

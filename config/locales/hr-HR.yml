@@ -10,17 +10,19 @@
         current_password: Trenutna zaporka
         locale: Jezik
         gender: Spol
-        edit_header: Edit Account Details
+        edit_header: Uredi podatke o računu
+        error:
+          future: can't be in the future
   hello: Pozdrav svima
   welcome_back: Dobrodošao natrag, %{name}
   add_teacher_form:
     code_or_email:
-      label: 'Add a teacher by code or email address:'
+      label: 'Dodaj učitelja koristeći kod ili adresu elektroničke pošte:'
       placeholder: Code (ABCDEF) or email (teacher@school.edu)
     submit: Dodaj učitelja
   add_hint_form:
     placeholder: Please enter your hint here
-    submit: Add hint
+    submit: Dodaj pomoć
   appname: Code.org
   stage: Nivo
   puzzle: Zadatak
@@ -50,10 +52,9 @@
     need_confirmation: Nisi primio upute za potvrdu?
     need_unlock: Nisi primio upute za otključavanje?
   signup_form:
-    overview: Ovaj 20-satni tečaj objašnjava iosnovne koncepte programiranja i nformatike.
-      Tečaj je namijenjen za korištenje u nižim razredima osnovne škole, ali je zabavan
-      za učenje bez obzira na dob polaznika.
-    no_signup_header: Želiš li se prijaviti?
+    overview_student: Sign up for an account to track your progress.
+    overview_teacher: Teach computer science in your classroom by signing up for an
+      account.<p/> You'll be able to track your students' progress and get rewards.
     no_signup_message: Možeš <a target="_blank" href="http://learn.code.org">pregledati
       razne nivoe i zadatke</a>, ali da bi tvoj napredak bio spremljen trebaš se prijaviti.
     prizes_header: The first students to complete the course win prizes! (U.S. students
@@ -71,47 +72,48 @@
     teacher_prize_limits: '(Limit: $1,000 per teacher. <a target="_blank" href="http://help.donorschoose.org/app/answers/detail/a_id/454/kw/code.org">See
       FAQ for more limits</a>)'
     teacher_pitch: Teach the K-8 Intro to Computer Science in your classroom
-    teacher_title: Teacher sign up
+    teacher_title: Prijava učitelja
     student_pitch: 'Beyond 1 hour: try our K-8 Intro to Computer Science'
-    student_title: Prijava
-    school_name: School Name (optional)
-    school_address: School Address (optional)
-    address_placeholder: address, city, state, zip
-    gender: Gender (optional)
-    birthday: Birthday (optional)
+    student_title: Prijava učenika
+    school_name: Naziv škole (nije obavezno)
+    school_address: Adresa škole (nije obavezno)
+    address_placeholder: adresa, grad, država, poštanski broj
+    gender: Spol (nije obavezno)
+    birthday: Datum rođenja (nije obavezno)
     submit: Prijava
     teacher: Jeste li učitelj?
     valid_username: Dostupno!
     invalid_username: Korisničko ime mora imati barem 5 znakova
     taken_username: Korisničko ime je već zauzeto
-    valid_password: Valid password!
-    invalid_password: Password must be at least 6 characters
+    valid_password: Valjana lozinka !
+    invalid_password: Lozinka mora biti duga najmanje 6 znakova
     mismatch_password: The two passwords you entered do not match
     student_terms: I agree to be bound by the Code.org terms of service. If I am under
       13 years of age, I confirm by submitting this form that I have my parent or
       legal guardian's permission to use the Code.org services.
     teacher_terms: I agree to be bound by the Code.org terms of service.
   signin_form:
-    title: Prijava
+    title: Imate već račun? Prijavi se
     login: E-mail ili korisničko ime
     password: Lozinka
     remember: Zapamti me
     submit: Prijava
   signin:
-    try_hoc: Try one Hour of Code first
+    try_heading: Want to try coding without signing up?
+    try_hoc: Isprobaj prvo Sat programiranja
     try_20hours: Try our 20 hour Intro to Computer Science
   password:
     reset_form:
       title: Zaboravio si lozinku?
       email: E-mail adresa
-      submit: Send me reset password instructions
+      submit: Pošalji mi upute za poništavanje lozinke
     change_form:
-      title: Change your password
+      title: Promijenite svoju lozinku
       new_password: Nova lozinka
-      confirm_password: Confirm new password
-      submit: Change my password
+      confirm_password: Potvrdi novu lozinku
+      submit: Promijeni lozinku
   welcome_email:
-    subject: Join my class (on Code.org)
+    subject: Pridruži se mom razredu (na Code.org)
     body: |
       Click the link below to sign up for computer science tutorials on Code.org (with me as your "teacher"):
 
@@ -121,12 +123,12 @@
 
       %{name}
   follower:
-    invite_sent: Invite sent
+    invite_sent: Pozivnica poslana
     added_teacher: '%{name} added as your teacher'
     registered: You've registered for %{section_name}.
     error:
-      signed_in: Please signout before proceeding
-      username_not_found: Username %{username} not found
+      signed_in: Molimo vas da se odjavite prije nastavka
+      username_not_found: Korisničko ime %{username} nije pronađeno
       username_in_use: '%{username} is already taken, please pick another'
       no_teacher: Could not find anyone signed in with '%{teacher_email_or_code}'.
         Please ask them to sign up here and then try adding them again
@@ -148,6 +150,8 @@
     provider: 'Provider:'
     code: 'Code:'
     redeem_header: 'To redeem:'
+    donorschoose_register: Register as a teacher on DonorsChoose.org
+    donorschoose_project: Post a project
     donorschoose_how_to: How to use your code
     success: Your prize was succesfully redeemed, see code below.
     error: Your prize could not be redeemed, please try again.
@@ -317,6 +321,10 @@
       completion and up to $1,000 in classroom rewards for public school teachers'
     tryfirst: 'Or, you can try it first, and sign up later:'
     trynow: Try now
+    add_hint_help: Please help us to add smart hints to Code.org tutorials
+    20hour_overview: This 20-hour course introduces core computer science and programming
+      concepts. The course is designed for use in classrooms for grades K-8, but it
+      is fun to learn at all ages.
   gender:
     male: Muško
     female: Žensko
@@ -345,6 +353,8 @@
     subtitle: See these videos and hints
     teacher: See the solution
     auth_error: You are not authorized to see the solution.
+    submit: Update Artist Location
+    direction: Start Direction
   video:
     tab: Video.
     notes: No video? Show notes.
@@ -359,6 +369,7 @@
   download_pdf: Open Lesson Plan
   share_code:
     title: Click 'Run program' to see my program in action
+    bounce_og_title: Check out my Bounce Game
     flappy_og_title: Check out my Flappy Game
     og_description: I wrote the code myself with Code.org
   builder:
@@ -371,3 +382,14 @@
       create: Create new level
       current: Current Levels
       unused: Unused Levels
+  upsell:
+    hoc:
+      title: The Hour of Code
+      body: Try the basics of computer science. Millions have given it a shot.
+    flappy:
+      title: Flappy Code
+      body: Wanna write your own game in less than 10 minutes? Try our Flappy Code
+        tutorial!
+    20hour:
+      title: Intro Course
+      body: Try our 20-hour Intro to Computer Science course.
