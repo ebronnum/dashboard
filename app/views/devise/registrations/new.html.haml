@@ -2,7 +2,7 @@
 
 #signup
   .row
-    .span12
+    .span9
       %h1= resource.student? ? t('signup_form.student_pitch') : t('signup_form.teacher_pitch')
       - if resource.student?
         %p
@@ -16,10 +16,9 @@
           = link_to t('signup_form.teacher_educator_guide'), 'http://code.org/educate/20hr', :target => '_blank'
 
         - if eligible_for_prize?
-          %h4= sanitize(t('signup_form.teacher_prize_header').html_safe, tags: %w(a), attributes: %w(href target))
           = sanitize(t('signup_form.teacher_prize_message').html_safe, tags: %w(a), attributes: %w(href target))
           %br/
-          = sanitize(t('signup_form.teacher_prize_limits').html_safe, tags: %w(a), attributes: %w(href target))
+          %br/
 
   .row
     .span8.signupblock
