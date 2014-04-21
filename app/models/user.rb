@@ -267,11 +267,8 @@ SQL
   end
 
   def short_name
-    if name.present?
-      name.strip.gsub(/\s.*$/, '') # "first name"
-    else
-      # we always have a username
-      username
-    end
+    return username if name.blank? # we don't always have a name but we should always have a username
+    
+    name.split.first # 'first name'
   end
 end
