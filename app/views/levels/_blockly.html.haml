@@ -142,7 +142,6 @@
       no_padding: #{local[:no_padding]},
       position: { blockYCoordinateInterval: 25 }
     };
-    var appOptions2 = #{app_options.to_json};
-    $.extend(appOptions,appOptions2);
+    $.extend(appOptions, #{app_options.to_json});
     //console.log(appOptions);
     #{app}Main(appOptions);

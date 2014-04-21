@@ -101,7 +101,7 @@ module LevelsHelper
     if app == 'flappy'
       request.protocol + request.host_with_port + ActionController::Base.helpers.asset_path('flappy_sharing_drawing.png')
     elsif app == 'bounce'
-      request.protocol + request.host_with_port + ActionController::Base.helpers.asset_path('bounce_sharing_drawing.png')    
+      request.protocol + request.host_with_port + ActionController::Base.helpers.asset_path('bounce_sharing_drawing.png')
     else
       level_source_image = LevelSourceImage.find_by_level_source_id(level_source.id)
       if !level_source_image.nil? && !level_source_image.image.nil?
@@ -124,8 +124,8 @@ module LevelsHelper
     # Fetch localized strings for specified symbols
     [:instructions, :levelIncompleteError, :other1StarError, :tooFewBlocksMsg].each do |label|
       level[label] = [@level.game.app, @level.game.name].map { |name|
-          data_t('level.'+label.to_s, name+'_'+@level.level_num)
-        }.compact!.first
+        data_t('level.'+label.to_s, name+'_'+@level.level_num)
+      }.compact!.first
     end
 
     # Copy Dashboard-style names from local_assigns or @level parameters to Blockly-style names in level object.
@@ -142,11 +142,10 @@ module LevelsHelper
       :builder => :artist_builder}.each do |block, dash|
       # Select first valid value from 1. local_assigns, 2. property of @level object, and 3. named instance variable
       # Don't override existing valid (non-nil/empty) values
-      param =
-          (local_assigns[dash].presence) ||
-          (@level[dash].presence) ||
-          (instance_variable_get('@'+dash.to_s).presence)
-      level[block] ||= escape_javascript(param.to_s) if param.present?
+      property = local_assigns[dash].presence ||
+        @level[dash].presence ||
+        instance_variable_get('@'+dash.to_s).presence
+      level[block] ||= escape_javascript(property.to_s) if property.present?
     end
 
     # Set some values that Blockly expects on the root of its options string
