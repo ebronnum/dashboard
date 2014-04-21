@@ -1869,6 +1869,11 @@ exports.load = function(assetUrl, id) {
     downArrow: skinUrl('down.png'),
     upArrow: skinUrl('up.png'),
     rightArrow: skinUrl('right.png'),
+    leftJumpArrow: skinUrl('left_jump.png'),
+    downJumpArrow: skinUrl('down_jump.png'),
+    upJumpArrow: skinUrl('up_jump.png'),
+    rightJumpArrow: skinUrl('right_jump.png'),
+    offsetLineSlice: skinUrl('offset_line_slice.png'),
     // Sounds
     startSound: [skinUrl('start.mp3'), skinUrl('start.ogg')],
     winSound: [skinUrl('win.mp3'), skinUrl('win.ogg')],
@@ -2679,8 +2684,8 @@ exports.install = function(blockly, skin) {
   generator.studio_saySprite = function() {
     // Generate JavaScript for saying.
     return 'Studio.saySprite(\'block_id_' + this.id + '\', ' +
-               this.getTitleValue('SPRITE') + ', ' + '\'' +
-               this.getTitleValue('TEXT') + '\');\n';
+               this.getTitleValue('SPRITE') + ', ' +
+               blockly.JavaScript.quote_(this.getTitleValue('TEXT')) + ');\n';
   };
   
   delete blockly.Blocks.procedures_defreturn;
@@ -2840,6 +2845,7 @@ module.exports = {
       'downButton',
       'upButton'
     ],
+    'minWorkspaceHeight': 800,
     'freePlay': true,
     'showScore': true,
     'map': [
@@ -3067,6 +3073,7 @@ var loadLevel = function() {
   // Load maps.
   Studio.map = level.map;
   Studio.timeoutFailureTick = level.timeoutFailureTick || Infinity;
+  Studio.minWorkspaceHeight = level.minWorkspaceHeight;
   Studio.softButtons_ = level.softButtons || [];
 
   // Override scalars.
@@ -3111,6 +3118,10 @@ var drawMap = function() {
   visualization.style.width = Studio.MAZE_WIDTH + 'px';
   var belowVisualization = document.getElementById('belowVisualization');
   belowVisualization.style.width = Studio.MAZE_WIDTH + 'px';
+  if (Studio.minWorkspaceHeight > Studio.MAZE_HEIGHT) {
+    belowVisualization.style.minHeight =
+      (Studio.minWorkspaceHeight - Studio.MAZE_HEIGHT) + 'px';
+  }
 
   // Adjust button table width.
   var buttonTable = document.getElementById('gameButtons');
@@ -4348,6 +4359,16 @@ exports.escapeHtml = function(unsafe) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
+};
+
+/**
+ * Version of modulo which, unlike javascript's `%` operator,
+ * will always return a positive remainder.
+ * @param number
+ * @param mod
+ */
+exports.mod = function(number, mod) {
+  return ((number % mod) + mod) % mod;
 };
 
 },{}],30:[function(require,module,exports){

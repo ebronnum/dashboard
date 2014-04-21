@@ -1928,6 +1928,11 @@ exports.load = function(assetUrl, id) {
     downArrow: skinUrl('down.png'),
     upArrow: skinUrl('up.png'),
     rightArrow: skinUrl('right.png'),
+    leftJumpArrow: skinUrl('left_jump.png'),
+    downJumpArrow: skinUrl('down_jump.png'),
+    upJumpArrow: skinUrl('up_jump.png'),
+    rightJumpArrow: skinUrl('right_jump.png'),
+    offsetLineSlice: skinUrl('offset_line_slice.png'),
     // Sounds
     startSound: [skinUrl('start.mp3'), skinUrl('start.ogg')],
     winSound: [skinUrl('win.mp3'), skinUrl('win.ogg')],
@@ -2733,6 +2738,22 @@ exports.moveRight = function(distance, id) {
   BlocklyApps.log.push(['MV', distance, 90, id]);
 };
 
+exports.jumpUp = function(distance, id) {
+  BlocklyApps.log.push(['JD', distance, 0, id]);
+};
+
+exports.jumpDown = function(distance, id) {
+  BlocklyApps.log.push(['JD', distance, 180, id]);
+};
+
+exports.jumpLeft = function(distance, id) {
+  BlocklyApps.log.push(['JD', distance, 270, id]);
+};
+
+exports.jumpRight = function(distance, id) {
+  BlocklyApps.log.push(['JD', distance, 90, id]);
+};
+
 exports.jumpForward = function(distance, id) {
   BlocklyApps.log.push(['JF', distance, id]);
 };
@@ -3215,82 +3236,97 @@ exports.install = function(blockly, skin) {
     }
   };
 
-  blockly.Blocks.simple_move = {
-    DIRECTIONS: {
-      left: {
-        moveFunction: 'moveLeft',
-        image: skin.leftArrow,
-        image_width: 84,
-        image_height: 84
-      },
-      right: {
-        moveFunction: 'moveRight',
-        image: skin.rightArrow,
-        image_width: 84,
-        image_height: 84
-      },
-      up: {
-        moveFunction: 'moveUp',
-        image: skin.upArrow,
-        image_width: 84,
-        image_height: 84
-      },
-      down: {
-        moveFunction: 'moveDown',
-        image: skin.downArrow,
-        image_width: 84,
-        image_height: 84
-      }
+  var SimpleMove = {
+    DEFAULT_MOVE_LENGTH: 50,
+    SHORT_MOVE_LENGTH: 25,
+    LONG_MOVE_LENGTH: 100,
+    DIRECTION_CONFIGS: {
+      left: { letter: 'W', moveFunction: 'moveLeft', image: skin.leftArrow, image_width: 42, image_height: 42 },
+      right: { letter: 'E', moveFunction: 'moveRight', image: skin.rightArrow, image_width: 42, image_height: 42 },
+      up: { letter: 'N', moveFunction: 'moveUp', image: skin.upArrow, image_width: 42, image_height: 42 },
+      down: { letter: 'S', moveFunction: 'moveDown', image: skin.downArrow, image_width: 42, image_height: 42 },
+      jump_left: { letter: 'W', moveFunction: 'jumpLeft', image: skin.leftJumpArrow, image_width: 42, image_height: 42 },
+      jump_right: { letter: 'E', moveFunction: 'jumpRight', image: skin.rightJumpArrow, image_width: 42, image_height: 42 },
+      jump_up: { letter: 'N', moveFunction: 'jumpUp', image: skin.upJumpArrow, image_width: 42, image_height: 42 },
+      jump_down: { letter: 'S', moveFunction: 'jumpDown', image: skin.downJumpArrow, image_width: 42, image_height: 42 }
     },
-    generate_block: function(direction) {
-      var direction_config = blockly.Blocks.simple_move.DIRECTIONS[direction];
-
+    generateBlocksForAllDirections: function() {
+      SimpleMove.generateBlocksForDirection("up");
+      SimpleMove.generateBlocksForDirection("down");
+      SimpleMove.generateBlocksForDirection("left");
+      SimpleMove.generateBlocksForDirection("right");
+    },
+    generateBlocksForDirection: function(direction) {
+      generator["simple_move_" + direction] = SimpleMove.generateCodeGenerator(direction);
+      generator["simple_jump_" + direction] = SimpleMove.generateCodeGenerator('jump_' + direction);
+      generator["simple_move_" + direction + "_length"] = SimpleMove.generateCodeGenerator(direction, true);
+      generator["simple_jump_" + direction + "_length"] = SimpleMove.generateCodeGenerator('jump_' + direction, true);
+      blockly.Blocks['simple_move_' + direction + '_length'] = SimpleMove.generateBlock(direction, true);
+      blockly.Blocks['simple_jump_' + direction + '_length'] = SimpleMove.generateBlock('jump_' + direction, true);
+      blockly.Blocks['simple_move_' + direction] = SimpleMove.generateBlock(direction);
+      blockly.Blocks['simple_jump_' + direction] = SimpleMove.generateBlock('jump_' + direction);
+    },
+    generateBlock: function(direction, hasLengthInput) {
+      var directionConfig = SimpleMove.DIRECTION_CONFIGS[direction];
       return {
         helpUrl: '',
         init: function () {
           this.setHSV(184, 1.00, 0.74);
           this.appendDummyInput()
-            .appendTitle(new blockly.FieldImage(direction_config.image, direction_config.image_width, direction_config.image_height));
+            .appendTitle(directionConfig.letter)
+            .appendTitle(new blockly.FieldImage(directionConfig.image, directionConfig.image_width, directionConfig.image_height));
           this.setPreviousStatement(true);
           this.setNextStatement(true);
           this.setTooltip(msg.jumpTooltip());
+          if (hasLengthInput) {
+            this.setInputsInline(true);
+            this.appendValueInput("length").setCheck("Number");
+          }
         }
       };
+    },
+    generateCodeGenerator: function(direction, hasLengthInput) {
+      return function() {
+        var length = SimpleMove.DEFAULT_MOVE_LENGTH;
+
+        if (hasLengthInput) {
+          var lengthInputResult = generator.valueToCode(this, 'length', generator.ORDER_ATOMIC);
+          length = lengthInputResult || length; // Allow empty input
+        }
+        return 'Turtle.' + SimpleMove.DIRECTION_CONFIGS[direction].moveFunction + '(' + length + ',' + '\'block_id_' + this.id + '\');\n';
+      };
+    },
+    stretchedLine: function(width) {
+      var lineImage = new blockly.FieldImage(skin.offsetLineSlice, width, 9);
+      lineImage.setPreserveAspectRatio("none");
+      return lineImage;
     }
   };
-  
-  blockly.Blocks.simple_move_up = blockly.Blocks.simple_move.generate_block('up');
-  blockly.Blocks.simple_move_down = blockly.Blocks.simple_move.generate_block('down');
-  blockly.Blocks.simple_move_left = blockly.Blocks.simple_move.generate_block('left');
-  blockly.Blocks.simple_move_right = blockly.Blocks.simple_move.generate_block('right');
 
-  generator.generate_simple_move = function(direction) {
-    return function() {
-      return 'Turtle.' + blockly.Blocks.simple_move.DIRECTIONS[direction].moveFunction + '(50,' + '\'block_id_' + this.id + '\');\n';
-    };
-  };
+  SimpleMove.generateBlocksForAllDirections();
 
-  generator.simple_move_up = generator.generate_simple_move('up');
-  generator.simple_move_left = generator.generate_simple_move('left');
-  generator.simple_move_right = generator.generate_simple_move('right');
-  generator.simple_move_down = generator.generate_simple_move('down'); 
-  
-  blockly.Blocks.simple_jump = {
-    helpUrl: '',
+  blockly.Blocks.simple_move_length_short = {
     init: function() {
-      this.setHSV(184, 1.00, 0.74);
-      this.appendDummyInput().appendTitle('JUMP')
-        .appendTitle(new blockly.FieldImage(skin.downArrow, 84, 84));
-      this.setPreviousStatement(true);
-      this.setNextStatement(true);
-      this.setTooltip(msg.jumpTooltip());
+      this.setHSV(258, 0.35, 0.62);
+      this.appendDummyInput().appendTitle(SimpleMove.stretchedLine(SimpleMove.SHORT_MOVE_LENGTH));
+      this.setOutput(true, 'Number');
+    }
+  };
+  blockly.Blocks.simple_move_length_long = {
+    init: function() {
+      this.setHSV(258, 0.35, 0.62);
+      this.appendDummyInput().appendTitle(SimpleMove.stretchedLine(SimpleMove.LONG_MOVE_LENGTH));
+      this.setOutput(true, 'Number');
     }
   };
 
-  generator.simple_jump = function() {
-    return 'Turtle.jumpForward(50,' + '\'block_id_' + this.id + '\');\n';
+  
+  generator.simple_move_length_short = function () {
+    return [SimpleMove.SHORT_MOVE_LENGTH, generator.ORDER_ATOMIC];
   };
-
+  generator.simple_move_length_long = function () {
+    return [SimpleMove.LONG_MOVE_LENGTH, generator.ORDER_ATOMIC];
+  };
 
   blockly.Blocks.jump.DIRECTIONS =
       [[msg.jumpForward(), 'jumpForward'],
@@ -3537,11 +3573,47 @@ var blocks = {
   SIMPLE_MOVE_DOWN: blockUtils.blockOfType('simple_move_down'),
   SIMPLE_MOVE_LEFT: blockUtils.blockOfType('simple_move_left'),
   SIMPLE_MOVE_RIGHT: blockUtils.blockOfType('simple_move_right'),
-  simple_move_blocks: function() {
+  SIMPLE_JUMP_UP: blockUtils.blockOfType('simple_jump_up'),
+  SIMPLE_JUMP_DOWN: blockUtils.blockOfType('simple_jump_down'),
+  SIMPLE_JUMP_LEFT: blockUtils.blockOfType('simple_jump_left'),
+  SIMPLE_JUMP_RIGHT: blockUtils.blockOfType('simple_jump_right'),
+  SIMPLE_MOVE_UP_LENGTH: blockUtils.blockOfType('simple_move_up_length'),
+  SIMPLE_MOVE_DOWN_LENGTH: blockUtils.blockOfType('simple_move_down_length'),
+  SIMPLE_MOVE_LEFT_LENGTH: blockUtils.blockOfType('simple_move_left_length'),
+  SIMPLE_MOVE_RIGHT_LENGTH: blockUtils.blockOfType('simple_move_right_length'),
+  SIMPLE_JUMP_UP_LENGTH: blockUtils.blockOfType('simple_jump_up_length'),
+  SIMPLE_JUMP_DOWN_LENGTH: blockUtils.blockOfType('simple_jump_down_length'),
+  SIMPLE_JUMP_LEFT_LENGTH: blockUtils.blockOfType('simple_jump_left_length'),
+  SIMPLE_JUMP_RIGHT_LENGTH: blockUtils.blockOfType('simple_jump_right_length'),
+  SIMPLE_MOVE_LENGTH_SHORT: blockUtils.blockOfType('simple_move_length_short'),
+  SIMPLE_MOVE_LENGTH_LONG: blockUtils.blockOfType('simple_move_length_long'),
+  simpleMoveBlocks: function() {
     return this.SIMPLE_MOVE_UP +
       this.SIMPLE_MOVE_DOWN +
       this.SIMPLE_MOVE_LEFT +
       this.SIMPLE_MOVE_RIGHT;
+  },
+  simpleJumpBlocks: function() {
+    return this.SIMPLE_JUMP_UP +
+      this.SIMPLE_JUMP_DOWN +
+      this.SIMPLE_JUMP_LEFT +
+      this.SIMPLE_JUMP_RIGHT;
+  },
+  simpleMoveLengthBlocks: function() {
+    return this.SIMPLE_MOVE_UP_LENGTH +
+      this.SIMPLE_MOVE_DOWN_LENGTH +
+      this.SIMPLE_MOVE_LEFT_LENGTH +
+      this.SIMPLE_MOVE_RIGHT_LENGTH;
+  },
+  simpleJumpLengthBlocks: function() {
+    return this.SIMPLE_JUMP_UP_LENGTH +
+      this.SIMPLE_JUMP_DOWN_LENGTH +
+      this.SIMPLE_JUMP_LEFT_LENGTH +
+      this.SIMPLE_JUMP_RIGHT_LENGTH;
+  },
+  simpleLengthBlocks: function() {
+    return this.SIMPLE_MOVE_LENGTH_SHORT +
+      this.SIMPLE_MOVE_LENGTH_LONG;
   }
 };
 
@@ -4287,7 +4359,13 @@ module.exports = {
     answer: [],
     freePlay: false,
     initialY: 300,
-    toolbox: blockUtils.createToolbox(blocks.simple_move_blocks()),
+    toolbox: blockUtils.createToolbox(
+        blocks.simpleMoveBlocks() +
+        blocks.simpleJumpBlocks() +
+        blocks.simpleMoveLengthBlocks() +
+        blocks.simpleJumpLengthBlocks() +
+        blocks.simpleLengthBlocks()
+      ),
     startBlocks: '',
     startDirection: 0,
     sliderSpeed: 1.0
@@ -5115,11 +5193,17 @@ Turtle.step = function(command, values) {
     case 'JF':  // Jump forward
       Turtle.moveForward_(values[0]);
       break;
-    case 'MV':  // Move
+    case 'MV':  // Move (direction)
       var distance = values[0];
       var heading = values[1];
       Turtle.setHeading_(heading);
       Turtle.moveForwardAndDraw_(distance);
+      break;
+    case 'JD':  // Jump (direction)
+      distance = values[0];
+      heading = values[1];
+      Turtle.setHeading_(heading);
+      Turtle.moveForward_(distance);
       break;
     case 'RT':  // Right Turn
       Turtle.turnByDegrees_(values[0]);
@@ -5511,6 +5595,16 @@ exports.escapeHtml = function(unsafe) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
+};
+
+/**
+ * Version of modulo which, unlike javascript's `%` operator,
+ * will always return a positive remainder.
+ * @param number
+ * @param mod
+ */
+exports.mod = function(number, mod) {
+  return ((number % mod) + mod) % mod;
 };
 
 },{}],33:[function(require,module,exports){

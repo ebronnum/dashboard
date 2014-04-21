@@ -1,25 +1,3 @@
-:css
-  div.gallery_activity {
-    float: left;
-    width: 174px;
-    padding-bottom: 5px;
-    margin: 10px 10px 5px 10px;
-  }
-  .gallery_activity img {
-    width: 154px;
-    height: 154px;
-    border: 10px groove lightgray;
-  }
-  .gallery_activity div {
-    color: #666;
-    margin: 0 auto;
-    clear: both;
-    max-width: 154px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
 %h3 Recent drawings that students have saved to their gallery
 = paginate @gallery_activities
 - @gallery_activities.each do |gallery_activity|
@@ -27,9 +5,17 @@
     - activity = gallery_activity.activity
     - level_source = activity.level_source
     = link_to image_tag(original_image_level_source_path(level_source)), level_source
-    %div
+    %div.caption
       by
       = activity.user.name
-    %div
+    %div.caption
       = time_ago_in_words activity.created_at
       ago
+    %div.caption
+      = link_to "delete", gallery_activity_path(gallery_activity), method: :delete, remote: true, class: 'delete-gallery-activity', data: {confirm: 'Are you sure?' }
+      
+:javascript
+  $('.delete-gallery-activity').on('ajax:complete', function(event, xhr, status) {
+    $(this).parent().parent().css('opacity', '0.5')
+    $(this).replaceWith('<b>Deleted!</b>')
+  });
