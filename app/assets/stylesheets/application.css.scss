@@ -958,7 +958,54 @@ a.download-video {
       font-weight:400;
     }
   }
+  .itemblock {
+    display:inline-block;
+    width:600px
+  }
+  .labelblock {
+    display:inline-block;
+    width:140px
+  }
 }
+
+#signup {
+  .signupblock {
+    background-color: #fafafa;
+  }
+  .signupform {
+    padding:20px;
+    margin-bottom:0px
+  }
+  .itemblock {
+    display:inline-block;
+  }
+  .labelblock {
+    display:inline-block;
+    width:140px
+  }
+  .fieldblock {
+    width:220px;
+  }
+  #labelusername {
+    vertical-align:top;
+    padding-top:7px
+  }
+  #usernamefield {
+    vertical-align:top
+  }
+  #usernamemessage {
+    display:inline-block;
+    width:180px;
+    vertical-align:top
+  }
+  #user_gender {
+    width:234px
+  }
+  .field_with_errors {
+    display:inline-block
+  }
+}
+
 
 #current-script-levels, #all-levels {
   min-height: 50px;
