@@ -37,7 +37,7 @@ source = File.expand_path(ARGV.fetch(0, Deploy.dir('dashboard/config/scripts/*.s
 
 Dir.glob(source).each do |script|
   $script_name = script.gsub(/.*\/(\w+).script$/, '\1')
-  $hash["en"]["data"]["script"]["name"][$script_name] = {"desc" => "A custom script"}
+  $hash["en"]["data"]["script"]["name"][$script_name] = {"desc" => "Custom script #{$script_name}"}
 
   $stdout.reopen("#{script}.csv", "w")
   puts %w(Stage Concepts Name).join("\t")
