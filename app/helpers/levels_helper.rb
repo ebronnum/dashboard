@@ -133,11 +133,12 @@ module LevelsHelper
       :initialX => :x,
       :initialY => :y,
       :builder => :artist_builder}.each do |block, dash|
-      # Select first valid value from 1. local_assigns, 2. property of @level object, and 3. named instance variable
+      # Select first valid value from 1. local_assigns, 2. property of @level object, 3. named instance variable, 4. properties json
       # Don't override existing valid (non-nil/empty) values
       property = local_assigns[dash].presence ||
         @level[dash].presence ||
-        instance_variable_get('@'+dash.to_s).presence
+        instance_variable_get("@#{dash}").presence ||
+        level[dash.to_s].presence
       level[block] ||= property if property.present?
     end
 
