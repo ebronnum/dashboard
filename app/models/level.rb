@@ -27,6 +27,24 @@ class Level < ActiveRecord::Base
     when 'turtle'
       '<xml id="toolbox" style="display: none;">
         <category id="actions" name="Actions">
+          <block type="simple_move_up"></block>
+          <block type="simple_move_down"></block>
+          <block type="simple_move_left"></block>
+          <block type="simple_move_right"></block>
+          <block type="simple_jump_up"></block>
+          <block type="simple_jump_down"></block>
+          <block type="simple_jump_left"></block>
+          <block type="simple_jump_right"></block>
+          <block type="simple_move_up_length"></block>
+          <block type="simple_move_down_length"></block>
+          <block type="simple_move_left_length"></block>
+          <block type="simple_move_right_length"></block>
+          <block type="simple_jump_up_length"></block>
+          <block type="simple_jump_down_length"></block>
+          <block type="simple_jump_left_length"></block>
+          <block type="simple_jump_right_length"></block>
+          <block type="simple_move_length_short"></block>
+          <block type="simple_move_length_long"></block>
           <block type="draw_move">
             <value name="VALUE">
               <block type="math_number">
@@ -63,6 +81,7 @@ class Level < ActiveRecord::Base
         </category>
         <category name="Functions" custom="PROCEDURE"></category>
         <category name="Loops">
+          <block type="controls_repeat_simplified"></block>
           <block type="controls_for_counter">
             <value name="FROM">
               <block type="math_number">
