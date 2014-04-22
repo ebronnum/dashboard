@@ -21,15 +21,10 @@ class Script < ActiveRecord::Base
     @@hoc_script ||= Script.includes(script_levels: { level: [:game, :concepts] }).find(HOC_ID)
   end
 
- def self.flappy_script
-    @@flappy_script ||= Script.includes(script_levels: { level: [:game, :concepts] }).find(FLAPPY_ID)
-  end
-
   def self.get_from_cache(id)
     case id
       when TWENTY_HOUR_ID then twenty_hour_script
       when HOC_ID then hoc_script
-      when FLAPPY_ID then flappy_script
       else Script.includes(script_levels: { level: [:game, :concepts] }).find(id)
     end
   end
