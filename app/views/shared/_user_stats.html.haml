@@ -2,10 +2,16 @@
 - script_levels = user ? user.levels_from_script(script) : script.script_levels
 - concept_progress = user ? user.concept_progress : nil
 
--if (!defined? trophies_on_right) || !trophies_on_right
-  =render partial: 'shared/concept_trophy_block', locals: { concept_progress: concept_progress, user: user, added_style: 'padding-right:10px;' }
+-if (!defined? hide_trophies)
+  -if (!defined? trophies_on_right) || !trophies_on_right
+    =render partial: 'shared/concept_trophy_block', locals: { concept_progress: concept_progress, user: user, added_style: 'padding-right:10px;' }
 
-%div{style:"display:inline-block;width:315px;position:relative;overflow:hidden;float:left;"}
+-if (!defined? hide_trophies)
+  -width=315
+-else
+  -width=600
+
+%div{style:"display:inline-block;width:#{width}px;position:relative;overflow:hidden;float:left;"}
   %h4 #{t('nav.popup.puzzle_map')}
 
   - script_levels.group_by{ |sl| sl.stage ? sl.stage : sl.level.game }.each_pair do |game, sl_group|
@@ -32,5 +38,11 @@
 
     .stage_separator
 
--if (defined? trophies_on_right) && trophies_on_right
-  =render partial: 'shared/concept_trophy_block', locals: { concept_progress: concept_progress, user: user, added_style: 'padding-left:30px;' }
+-if (!defined? hide_trophies)
+  -if (defined? trophies_on_right) && trophies_on_right
+    =render partial: 'shared/concept_trophy_block', locals: { concept_progress: concept_progress, user: user, added_style: 'padding-left:30px;' }
+
+%div{:style=>"clear:both"}
+%br/
+%br/
+%br/

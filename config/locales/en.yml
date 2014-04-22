@@ -359,4 +359,5 @@ en:
     20hour:
       title: 'Intro Course'
       body: 'Try our 20-hour Intro to Computer Science course.'
-
+  landing:
+    prerelease: "This page is still under development."

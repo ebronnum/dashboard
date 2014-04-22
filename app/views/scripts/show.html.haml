@@ -1,2 +1,2 @@
-= render partial: 'shared/course_mini_block', locals: { id: "flappy" }
-= render partial: 'shared/user_stats', locals: { user: current_user, trophies_on_right: false }
+%h3= t('landing.prerelease')
+= render partial: 'shared/user_stats', locals: { user: current_user, hide_trophies: true}
