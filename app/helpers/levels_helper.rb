@@ -138,8 +138,11 @@ module LevelsHelper
       property = local_assigns[dash].presence ||
         @level[dash].presence ||
         instance_variable_get('@'+dash.to_s).presence
-      level[block] ||= property.to_s if property.present?
+      level[block] ||= property if property.present?
     end
+
+    # Blockly requires startDirection as an integer not a string
+    level[:startDirection] = level[:startDirection].to_i if level[:startDirection].present?
 
     # Fetch localized strings for specified symbols
     [:instructions, :levelIncompleteError, :other1StarError, :tooFewBlocksMsg].each do |label|
