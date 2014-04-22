@@ -11,8 +11,8 @@ When /^I click block "([^"]*)"$/ do |block|
 end
 
 # Note: this is an offset relative to the current position of the block
-When /^I drag block "([^"]*)" to offset "([^"]*), ([^"]*)"$/ do |from, dx, dy|
-  dragBlockRelative(from, dx, dy)
+When /^I drag block "([^"]*)" to offset "([^"]*), ([^"]*)"$/ do |blockId, dx, dy|
+  dragBlockRelative(blockId, dx, dy)
 end
 
 When /^I begin to drag block "([^"]*)" to offset "([^"]*), ([^"]*)"$/ do |from, dx, dy|
