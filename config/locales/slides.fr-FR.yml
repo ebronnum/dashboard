@@ -99,48 +99,51 @@
     flappy_intro:
       1:
         image: notes/flappy01.jpg
-        text: Hi, I'm Katie! One of the most exciting things about computer science
-          is that a computer program can be interactive.
+        text: Salut, je suis Katie! Une des choses les plus excitantes à propos de
+          l'informatique est qu'un programme informatique peut être interactif.
       2:
         image: notes/flappy02.jpg
-        text: Any time somebody clicks or taps or types on a computer or phone, that
-          generates an EVENT, and there's some code that decides what to do when an
-          EVENT occurs.
+        text: Chaque fois que quelqu'un clique ou appuie ou tape sur un ordinateur
+          ou un téléphone, ça génère un EVENEMENT, et il y a un code qui décide quoi
+          faire quand un EVENEMENT a lieu.
       3:
         image: notes/flappy03.jpg
-        text: 'For example, you could have an EVENT-HANDLER that says "when the mouse
-          is clicked, play a sound" '
+        text: 'Par exemple, tu pourrais avoir un GESTIONNAIRE d''EVENEMENTS qui dit
+          "quand la souris est cliquée, joues un son" '
       4:
         image: notes/flappy04.jpg
-        text: Have you ever heard of the game FlappyBird? By using Event handlers,
-          we're going to learn to program our own custom version of FlappyBird!
+        text: Tu as déjà entendu parler du jeu FlappyBird? En utilisant les gestionnaires
+          d'Evénements, nous allons apprendre à programmer notre propre version personnalisée
+          de FlappyBird!
       5:
         image: notes/flappy05.jpg
-        text: The code you'll write involves dragging and dropping blocks that represent
-          commands for the computer. Under the hood, each of these blocks is represented
-          by real code.
+        text: Le code que tu vas écrire implique de glisser et placer les blocs qui
+          représentent les commandes pour l'ordinateur. Sous la capuche, chacun de
+          ses blocs est représenté par un code réel.
       6:
         image: notes/flappy06.jpg
-        text: 'If you take a look at the workspace, there are some green blocks that
-          are filled in for you - these are "event handlers" '
+        text: 'Si tu regardes au lieu de travail, il y a quelques blocs verts qui
+          sont remplies pour toi - ce sont des "gestionnaires d''événements" '
       7:
         image: notes/flappy07.jpg
-        text: If you want the bird to FLAP when you CLICK the mouse, you can do that
-          by attaching the "FLAP" block to the appropriate event handler, and now
-          in your game whenever you click the mouse, the bird will flap.
+        text: Si tu veux que l'oiseau BATTE DES AILES quand tu CLIQUES sur la souris,
+          tu peux faire ça en attachant le bloc " BATTRE DES AILES" au gestionnaire
+          d'événements approprié, et maintenant dans ton jeu chaque fois que tu cliques
+          sur la souris, l'oiseau va battre des ailes.
       8:
         image: notes/flappy08.jpg
-        text: In each puzzle of this activity we'll introduce new types of events
-          as green blocks on the workspace, and you can decide the appropriate blocks
-          to add in response to those events.
+        text: Dans chaque puzzle de cette activité, nous allons introduire des nouveaux
+          types d'événements comme des blocs verts au lieu de travail, et tu peux
+          décider le bloc approprié à ajouter en réponse à ces événements.
       9:
         image: notes/flappy09.jpg
-        text: When you see a drop down arrow like this, that means you can change
-          the settings - like what sound to play when flappy hits the ground.
+        text: Quand tu vois une flèche déroulante comme ça, ça veut dire que tu peux
+          changer les paramètres - comme par exemple, quel son jouer quand flappy
+          touche le sol.
       10:
         image: notes/flappy10.jpg
-        text: In the final puzzle you'll be able to create your own game and share
-          it with your friends. Have fun!
+        text: Dans le puzzle final, tu seras capable de créer ton propre jeu et de
+          le partager avec tes amis. Bon amusement!
     loop_times:
       1:
         image: notes/hoc2_1.jpg

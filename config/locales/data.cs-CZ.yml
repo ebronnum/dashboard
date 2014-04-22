@@ -32,10 +32,16 @@
           MazeEC: Fáze 1
         2014 Levels:
           desc: 2014 Puzzles (beta)
-          MazeEC: Stage 1
+          Bounce: Stage 1
+        Builder Levels:
+          desc: User-Created Puzzles (beta)
+          Custom: Stage 1
         Flappy Levels:
           desc: Flappy Bird
-          MazeEC: Stage 1
+          Flappy: Stage 1
+        Jigsaw Levels:
+          desc: Jigsaw (beta)
+          Jigsaw: Stage 1
     game:
       name:
         Unplug1: Úvod do Počítačových Věd
@@ -59,8 +65,9 @@
         Artist5: Malíř 5
         Unplug11: Shrnutí
         MazeEC: Bludiště
-        Bounce: Bounce
+        Bounce: Odraz
         Flappy: Flappy Bird
+        Jigsaw: Jigsaw
     trophy:
       name:
         Bronze: Bronzová
@@ -314,50 +321,68 @@
         maze_3_3: Jak se jen dostanu k tomu prasátku? Ujisti se, že nenarazím do krabice
           s TNT!
         maze_3_4: Grrr! Napiš mi program, který mě dostane kolem TNT k tomu praseti.
-        bounce_1: Attach a block to the "when left arrow" block, then run and move
-          the paddle with the left arrow key to the finish target.
-        bounce_2: Attach a block to the "when right arrow" and "when left arrow" blocks,
-          then run and move the paddle with the both arrow key to both finish targets.
-        bounce_3: TBD
-        bounce_4: TBD
-        bounce_5: Attach a blocks to the "when right arrow", "when left arrow", "when
-          ball hits wall", and "when ball hits paddle" blocks.
-        bounce_6: Try again with more balls.
-        bounce_7: Now it is getting crazy!
-        bounce_10: There is a now a goal at the top. Attach "increment score" blocks
-          to the the "when ball in goal" and "when ball misses paddle" blocks to make
-          a game.
+        bounce_1: Připoj blok k bloku "šipka vlevo" a stiskni tlačítko "Spustit Program".
+          Přesunuj pálku pomocí šipky vlevo k dosažení cíle.
+        bounce_2: Připoj blok k blokům "šipka vpravo" a "šipka vpravo". Přesunuj pálku
+          k dosažení obou cílů.
+        bounce_3: Teď zkus něco podobného s blokem "šipka nahoru". Přesunuj pálku
+          k dokončení úkolu nahoře.
+        bounce_4: Tentokrát, je třeba přidat čtyři bloky. Přesunuj pálku k dokončení
+          všech čtyř úkolů a dokončení hádanky.
+        bounce_5: Pošleme míč směrem dolů k pálce. Přidej blok k bloku "když míč dopadne
+          na pálku", abys zajistil, že se míč dostane ke konečnému terči.
+        bounce_6: Teď je splněný úkol nahoře. Potřebuješ spojit oba bloky "když se
+          míč dotkne", abys dokončil hádanku.
+        bounce_7: Připoj bloky ke každému bloku "když". Odrážej míč dokud nenarazí
+          do konečného terče.
+        bounce_10: Nyní je cíl na vrcholu. Spoj bloky "skóre" a "skóre protihráče"
+          s bloky "když je míč v cíli" a "když míč mine pálku", abys vytvořil hru.
+          Podívej se, kolik bodů můžeš získat předtím, než tvůj protihráč skóruje
+          dvakrát.
         bounce_11: You can now attach blocks to the "when game starts" block. Try
           changing the speed of the paddle and the ball and see how many points you
           can score before your opponent scores twice.
-        Custom_builder: Drag blocks from the toolbox to the workspace to draw the
-          level you wish to create. Press "Run Program" when you are ready.
-        flappy_1: Attach a block to the "when click" block, then press "Run Program"
-          and click or tap to move Flappy to the target.
-        flappy_2: Now we've added some ground.  Attach a block to the "when hit the
-          ground" block, then press "Run Program". To pass this puzzle, your code
-          needs to 'END GAME' when Flappy crashes into the ground.
-        flappy_3: The "when Run is clicked" block allows you to run code when your
-          game first starts.  Try setting the level speed and flapping to the target.
-        flappy_4: Flappy will fly through obstacles unless you write code to make
-          him crash. Attach a block to the "when hit an obstacle" block. To pass the
-          puzzle, your code needs to 'END GAME' and make Flappy crash into the first
-          pipe so he can reach the target.
-        flappy_5: Let's add a scoreboard, and count points when Flappy makes it past
-          obstacles. Add to the "when pass an obstacle" block, and then score a point
-          by flying Flappy through the first set of pipes.
-        flappy_6: See if you can still score a point after making Flappy flap either
-          a smaller or larger amount.
-        flappy_7: Next, try changing the scene by attaching another block to the "when
-          Run is clicked".
-        flappy_8: You can set visuals anytime, not just when the game starts. Try
-          setting a RANDOM scene when other events happen, for example, when passing
-          an obstacle.
-        flappy_9: To mix things up, when hitting an obstacle or the ground, instead
-          of ending the game try setting the score back to 0.
-        flappy_11: Create your own Flappy game and share it. You can change the visuals,
-          or even the rules. Try changing visuals each time Flappy passes an obstacle.
-          Or make Flappy invincible so he never dies.
+        bounce_12: Create your own Bounce game. You can change all the visuals and
+          the rules. When you're done, click Share to let friends try your game on
+          their phones.
+        Custom_builder: Přetáhni bloky z panelu nástrojů na pracovní plochu, abys
+          nakreslil úroveň, kterou chceš vytvořit. Jakmile budeš připraven, stiskni
+          tlačítko "Spustit program".
+        flappy_1: Spoj blok s blokem "když kliknu" a potom stiskni "Spustit program".
+          Klikej nebo ťukej na obrazovku, abys dostal Flappyho do cíle.
+        flappy_2: Teď jsme přidali terén. Připoj blok k bloku "když se dotkne země".
+          Tvůj kód musí 'UKONČIT HRU', když Flappy narazí.
+        flappy_3: Blok "když hra začíná" ti umožňuje spuštění kódu, když hra začne.
+          Vyzkoušej nastavení rychlosti úrovně a házení na cíl.
+        flappy_4: Flappy proletí skrz překážky, pokud nenapíšeš kód, aby naboural.
+          Připoj blok k bloku "když vrazí do překážky". Tvůj kód musí 'UKONČIT HRU',
+          když Flappy narazí do první sady trubek.
+        flappy_5: Přidej tabulku s přehledem skóre a počítej body, když Flappy proletí
+          překážkama. Přidej to k bloku "když proletí překážkami" a potom získej body,
+          když Flappy proletí první sadou trubek.
+        flappy_6: Podívejme se, jestli můžeš pořád získat body i potom, co Flappy
+          uletí menší či větší vzdálenost.
+        flappy_7: Potom zkus změnit scénu připojením jiného bloku do bloku "když hra
+          začne".
+        flappy_8: Obraz můžeš nastavit kdykoliv, ne jen při začátku hry. Vyzkoušej
+          anstavení NÁHODNÉ scény, když dojde k jiným událostem, například, když proletí
+          překážkou.
+        flappy_9: Aby se to ještě zkomplikovalo, když Flappy vrazí do překážky nebo
+          do země, zkus místo ukončení hry nastavit skóre na 0.
+        flappy_11: Vytvoř si vlastní Flappy hru. Můžeš měnit všechny obrazy a všechna
+          pravidla, včetně gravitace. Až budeš hotov, klikni na tlačítko 'Sdílet'
+          a nech své přátele vyzkoušet tvou hru na jejich mobilech.
+        jigsaw_1: Click the block
+        jigsaw_2: Drag the block to the target
+        jigsaw_3: Arrange the blocks to form the image
+        jigsaw_4: Arrange the blocks to form the image
+        jigsaw_5: Arrange the blocks to form the image
+        jigsaw_6: Arrange the blocks to form the image
+        jigsaw_7: Arrange the blocks to form the image
+        jigsaw_8: Arrange the blocks to form the image
+        jigsaw_9: Arrange the blocks to form the image
+        jigsaw_10: Arrange the blocks to form the image
+        jigsaw_11: Arrange the blocks to form the image
       levelIncompleteError:
         maze_2_8: 'K vyřešení této hádanky, najdi vzorec, který se opakuje. Použij
           blok "opakovat" a do něj vlož tyto 3 bloky: posunout, posunout, otočit vpravo.'
@@ -372,7 +397,7 @@
         maze_intro: Úvod Bludiště
         artist_intro: Úvod Malíř
         farmer_intro: Úvod Farmářka
-        flappy_intro: Flappy Intro
+        flappy_intro: Úvod do Flappy
         loop_times: Blok Opakovat n-krát
         loop_until: Blok Opakovat Dokud
         if: Blok Pokud
@@ -383,3 +408,15 @@
         parameters: Funkce s Parametry
         hoc_wrapup: Shrnutí Hodiny Kódu
         20_wrapup: Shrnutí 20 Hodin
+    callout:
+      text:
+        drag_blocks: Drag a "move" block and snap it below the other block
+        run: Hit "Run" to try your program
+        watch_again: Click here to watch the video again
+        gray_block_explanation: Blocks that are grey can't be moved or deleted. Can
+          you solve the puzzle anyway?
+        show_code_explanation: Click here to see the code for the program you're making
+        instructions_repeat_explanation: The instructions for each puzzle are repeated
+          here
+        category_explanation: You have all the same blocks but they've now been arranged
+          in categories

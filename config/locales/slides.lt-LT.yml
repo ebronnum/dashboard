@@ -3,171 +3,175 @@
     maze_intro:
       1:
         image: notes/hoc1_1.jpg
-        text: Welcome to your first hour of code! Let's dive right into your first
-          taste of programming.
+        text: Sveiki atvykę į savo pirmąjį Vienos Valandos Kodą! Pamėginkime pažiūrėti,
+          kaip atrodo programavimas.
       2:
         image: notes/hoc1_2.jpg
-        text: We'll be using Blockly, a visual programming language where you drag
-          and drop blocks to write code.
+        text: Naudosime Blockly, vizualią programavimo kalbą, kurioje reikia vilkti
+          ir sujungti blokelius, kad parašyti programos kodą.
       3:
         image: notes/hoc1_3.jpg
-        text: Most code is typed, but Blockly is visual. Each blocks corresponds to
-          a line of "real" code.
+        text: Dažniausiai kodas yra rašomas ranka, tačiau Blockly turi vizualią aplinką.
+          Kiekvienas blokelis atitinką vieną eilutę tikro rašomo kodo.
       4:
         image: notes/hoc1_4.jpg
-        text: You'll learn the foundations of computer science, concepts which are
-          used anywhere from making apps to controlling the Mars rover.
+        text: 'Susipažinsite su informatikos pagrindais, programavimo koncepcijomis,
+          kurios yra naudojamos visur: nuo programėlių kūrimo iki robotų valdymo.'
       5:
         image: notes/hoc1_5.jpg
-        text: A program is a set of instructions for your computer to follow.
+        text: Programa yra instrukcijų sąrašas, kurias turi įvykdyti Jūsų kompiuteris.
       6:
         image: notes/hoc1_6.jpg
-        text: The goal of your first program is to get an Angry Bird through a maze
-          to hit a Green Pig.
+        text: Jūsų pirmosios programos tikslas yra nuvesti paukštį per labirintą iki
+          žalios kiaulės.
       7:
         image: notes/hoc1_7.jpg
-        text: The left side is the maze where your program is run. The instructions
-          for each puzzle are below the maze.
+        text: Kairėje yra labirintas, kuriame veikia Jūsų programa. Kiekvienos užduoties
+          instrukcijos yra matomos labirinto apačioje.
       8:
         image: notes/hoc1_8.jpg
-        text: The middle toolbox has the commands for the Angry Bird. You'll use these
-          to build your code.
+        text: Labirinto dešinėje yra priemonės, su kuriomis galima valdyti paukštį.
+          Jomis reikės naudotis rašant savo programas.
       9:
         image: notes/hoc1_9.jpg
-        text: On the right is your workspace where you'll drag blocks from the toolbox
-          to build your program. To delete a block, drag it to the trash in the corner.
+        text: Dešinėje yra baltas darbo laukas, į kurį reikės nuvilkti blokelius,
+          kad sudėlioti programą. Jeigu norite pašalinti blokelį, jį reikia nuvilkti
+          į šiukšlinę kampe.
       10:
         image: notes/hoc1_10.jpg
-        text: Each block is one instruction. If you drag a "move forward" block to
-          your workspace and press "Run Program", the bird moves one space on the
-          maze.
+        text: Kiekvienas blokelis yra viena instrukcija. Jeigu baltame lauke bus vienas
+          blokelis „judėk į priekį“ ir nuspausite mygtuką „Paleisti programą“, paukštis
+          pajudės per vieną laukelį į priekį.
       11:
         image: notes/hoc1_11.jpg
-        text: To do more than one action, you can drag many block to your workspace
-          and attach them together. The bird will do the commands from top to bottom.
+        text: Kad paukštis padarytų daugiau veiksmų, reikia sulipdyti su blokelius
+          baltame darbo lauke. Paukštis atliks visas sulipdytas komandas iš eilės
+          vieną po kitos.
       12:
         image: notes/hoc1_12.jpg
-        text: If you run a program and want to fix it and try again, press the "Reset"
-          button.
+        text: Jeigu jau paleidote programą vieną kartą, galite ją pataisyti ir paspausti
+          mygtuką „Iš naujo“.
       13:
         image: notes/hoc1_13.jpg
-        text: Let's go get those pigs!
+        text: Einam ir pagaudykim kiaules!
     artist_intro:
       1:
         image: notes/stage5_1.jpg
-        text: Hi, I'm JR! Every race car team need computer scientists to win. They
-          analyze data from the car to make it go faster.
+        text: Labas, aš esu JR! Kiekvienai lenktyninių automobilių komandai reikia
+          bent vieno kompiuteristo, kad laimėtų lenktynes. Jis analizuoja automobilio
+          duomenis ir gali padaryti, kad ji veiktų greičiau.
       2:
         image: notes/stage5_2.jpg
-        text: In these puzzles, you'll be an artist that draws a line behind them
-          everywhere they go.
+        text: Šiose užduotyse reikės valdyti menininką, kuris piešia liniją ten, kur
+          jis eina.
       3:
         image: notes/stage5_3.jpg
-        text: This block says "move forward by 100 pixels." Pixels are just really
-          tiny dots on your screen.
+        text: Šis blokelis yra pavadintas „Judėk į priekį per 100 pikselių.“ Pikselis
+          yra mažytis taškelis tavo ekrane.
       4:
         image: notes/stage5_4.jpg
-        text: This block says "turn right by 90 degrees." This will turn your artist
-          the same amount as the "turn" blocks in the maze puzzles.
+        text: Šis blokelis yra pavadintas „Pasisuk į dešinę per 90 laipsnių“. Jis
+          pasuks menininką tokiu pat kampu kaip ir paukštis labirinto užduotyse.
       5:
         image: notes/stage5_5.jpg
-        text: Click on the arrow in either of these blocks to change the amount the
-          artist moves forward or turns. Play around to get familiar with these new
-          blocks.
+        text: Nuspaudus rodyklėlę ant bet kurio iš šių blokelių, galima pakeisti skaičių,
+          per kiek pikselių menininkas pajudės į priekį arba kiek laipsnių pasisuks.
+          Siūlau šiek tiek pažaisti su šiais blokais, kol taps aišku, kaip jie veikia.
     farmer_intro:
       1:
         image: notes/stage9_1.jpg
-        text: Hi, I'm Paola! In these puzzles, you're a farmer who has to get her
-          field completely flat to start planting crops.
+        text: Labas, aš esu Paola! Šiose užduotyse tu valdysi ūkininkę, kuriai reikia
+          paruošti lauką, kad galėtų pradėti sodinti augalus.
       2:
         image: notes/stage9_2.jpg
-        text: You have to help her remove all the piles of dirt and fill in all the
-          holes.
+        text: Jai reikės padėti nukasti visas purvo krūvas lauke arba užpildyti duobes
+          žemėmis.
       3:
         image: notes/stage9_3.jpg
-        text: The new blocks remove 1 shovelful of dirt from a pile and fill in 1
-          shovelful of dirt to a hole.
+        text: 'Nauji blokeliai veikia štai taip: nukasa vieną kastuvą, pilną purvo,
+          jei tai yra purvo krūva arba suverčia vieną kastuvą, pilną žemių, į duobę.'
       4:
         image: notes/stage9_4.jpg
-        text: The piles and holes are different sizes, so you have to tell the farmer
-          how many shovelfuls to use.
+        text: Krūvos ir duobės yra skirtingų dydžių. Ūkininkei reikia nurodyti, kiek
+          kastuvų reikės panaudoti.
     flappy_intro:
       1:
-        image: notes/flappy01.jpg
-        text: Hi, I'm Katie! One of the most exciting things about computer science
-          is that a computer program can be interactive.
+        image: pastabos/flappy01.jpg
+        text: Labas, aš esu Katie! Vienas smagiausių dalykų informatikoje yra tai,
+          kad kompiuterio programa gali būti interaktyvi.
       2:
-        image: notes/flappy02.jpg
-        text: Any time somebody clicks or taps or types on a computer or phone, that
-          generates an EVENT, and there's some code that decides what to do when an
-          EVENT occurs.
+        image: pastabos/flappy02.jpg
+        text: Kiekvieną kartą, kai žmogus nuspaudžia, baksteli pirštu ar ką nors parašo
+          kompiuteryje ar telefone, nutinka koks nors veiksmas. Koks veiksmas yra
+          atliekamas, priklauso nuo kodo, koks yra parašytas programoje.
       3:
-        image: notes/flappy03.jpg
-        text: 'For example, you could have an EVENT-HANDLER that says "when the mouse
-          is clicked, play a sound" '
+        image: pastabos/flappy03.jpg
+        text: 'Pavyzdžiui, gali būti suprogramuotas toks įvykis: „kai bus nuspaustas
+          pelės klavišas, grok garsą“ '
       4:
-        image: notes/flappy04.jpg
-        text: Have you ever heard of the game FlappyBird? By using Event handlers,
-          we're going to learn to program our own custom version of FlappyBird!
+        image: pastabos/flappy04.jpg
+        text: Ar kada nors teko girdėti apie žaidimą FlappyBird? Naudodami įvykius,
+          išmoksime suprogramuoti savo asmeninę FlappyBird žaidimo versiją!
       5:
-        image: notes/flappy05.jpg
+        image: pastabos/flappy05.jpg
         text: The code you'll write involves dragging and dropping blocks that represent
           commands for the computer. Under the hood, each of these blocks is represented
           by real code.
       6:
-        image: notes/flappy06.jpg
+        image: pastabos/flappy06.jpg
         text: 'If you take a look at the workspace, there are some green blocks that
           are filled in for you - these are "event handlers" '
       7:
-        image: notes/flappy07.jpg
+        image: pastabos/flappy07.jpg
         text: If you want the bird to FLAP when you CLICK the mouse, you can do that
           by attaching the "FLAP" block to the appropriate event handler, and now
           in your game whenever you click the mouse, the bird will flap.
       8:
-        image: notes/flappy08.jpg
+        image: pastabos/flappy08.jpg
         text: In each puzzle of this activity we'll introduce new types of events
           as green blocks on the workspace, and you can decide the appropriate blocks
           to add in response to those events.
       9:
-        image: notes/flappy09.jpg
+        image: pastabos/flappy09.jpg
         text: When you see a drop down arrow like this, that means you can change
           the settings - like what sound to play when flappy hits the ground.
       10:
-        image: notes/flappy10.jpg
+        image: pastabos/flappy10.jpg
         text: In the final puzzle you'll be able to create your own game and share
           it with your friends. Have fun!
     loop_times:
       1:
         image: notes/hoc2_1.jpg
-        text: Hi, I'm Mark! Let's learn about loops. Using loops you can tell a computer
-          to repeat any set of actions over and over, thousands or even billions of
-          times.
+        text: Labas, aš esu Markas! Pasimokykime apie ciklus. Naudojant ciklus, galima
+          nurodyti kompiuteriui, kad jis pakartotų bet kurias pasirinktas komandas
+          iš naujo ir iš naujo, tūkstančius ar net milijonus kartų.
       2:
         image: notes/hoc2_2.jpg
-        text: In this puzzle, we want to make the bird move forward 5 spaces to get
-          to the pig.
+        text: Šioje užduotyje reikia pajudinti paukštį per 5 laukelius, kad jis pagautų
+          kiaulę.
       3:
         image: notes/hoc2_3.jpg
-        text: We can use the new "repeat" block to help us out.
+        text: Panaudokime naują blokelį „Kartok“.
       4:
         image: notes/hoc2_4.jpg
-        text: Instead of dragging out 5 "move forward" blocks...
+        text: Užduot sulipdę 5 blokelius „judėk į priekį“...
       5:
         image: notes/hoc2_5.jpg
-        text: We can put the "move forward" block inside the "repeat" block and write
-          a number in the block to tell it how many times to repeat.
+        text: Mes galime įdėti blokelį „judėk į priekį“ į blokelio „kartok“ vidų.
+          Taip pat reikia nurodyti skaičių kartojimo blokelyje, kad paukštis žinotų,
+          kiek kartų kartoti šį veiksmą.
       6:
         image: notes/hoc2_6.jpg
-        text: 'And this is important: you can put more than one command inside a "repeat"
-          block.'
+        text: 'Dar vienas svarbus dalykas: į blokelio „kartok“ vidų galima įdėti daugiau
+          nei vieną komandą.'
       7:
         image: notes/hoc2_7.jpg
-        text: Enjoy using your new "repeat" block!
+        text: Sėkmės naudojant kartojimo blokelį!
     loop_until:
       1:
         image: notes/hoc3_1.jpg
-        text: Hi, I'm Chris. Before joining the Miami Heat, I went to Georgia Tech
-          to study Computer Science. Let's try our new block, the "repeat until" block.
+        text: Labas, aš esu Chris. Gruzijoje aš studijavau informatiką. Išmėginkime
+          kartu naują blokelį „Kartok, kol“.
       2:
         image: notes/hoc3_2.jpg
         text: What if we didn't know how far the bird had to move to get to the pig?

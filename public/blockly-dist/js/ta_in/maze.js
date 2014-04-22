@@ -7,6 +7,7 @@ if (typeof global !== 'undefined') {
 }
 
 var addReadyListener = require('./dom').addReadyListener;
+var blocksCommon = require('./blocksCommon');
 
 function StubDialog() {
   for (var argument in arguments) {
@@ -53,6 +54,7 @@ module.exports = function(app, levels, options) {
   };
 
   options.skin = options.skinsModule.load(BlocklyApps.assetUrl, options.skinId);
+  blocksCommon.install(Blockly);
   options.blocksModule.install(Blockly, options.skin);
 
   addReadyListener(function() {
@@ -69,7 +71,7 @@ module.exports = function(app, levels, options) {
 };
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./base":2,"./dom":5}],2:[function(require,module,exports){
+},{"./base":2,"./blocksCommon":4,"./dom":7}],2:[function(require,module,exports){
 /**
  * Blockly Apps: Common code
  *
@@ -151,6 +153,9 @@ BlocklyApps.init = function(config) {
 
   BlocklyApps.share = config.share;
   BlocklyApps.noPadding = config.no_padding;
+
+  BlocklyApps.IDEAL_BLOCK_NUM = config.level.ideal || Infinity;
+  BlocklyApps.REQUIRED_BLOCKS = config.level.requiredBlocks || [];
 
   // enableShowCode defaults to true if not defined
   BlocklyApps.enableShowCode = (config.enableShowCode === false) ? false : true;
@@ -525,7 +530,10 @@ BlocklyApps.arrangeBlockPosition = function(startBlocks, arrangement) {
 };
 
 var showInstructions = function(level) {
-  level.instructions = level.instructions || '';
+  if (!level.instructions) {
+    // Skip instructions if empty
+    return;
+  }
 
   var instructionsDiv = document.createElement('div');
   instructionsDiv.innerHTML = require('./templates/instructions.html')(level);
@@ -866,7 +874,53 @@ var getIdealBlockNumberMsg = function() {
       msg.infinity() : BlocklyApps.IDEAL_BLOCK_NUM;
 };
 
-},{"../locale/ta_in/common":38,"./builder":3,"./dom":5,"./feedback.js":6,"./slider":25,"./templates/buttons.html":27,"./templates/instructions.html":29,"./templates/learn.html":30,"./templates/makeYourOwn.html":31,"./utils":36,"./xml":37}],3:[function(require,module,exports){
+},{"../locale/ta_in/common":40,"./builder":5,"./dom":7,"./feedback.js":8,"./slider":27,"./templates/buttons.html":29,"./templates/instructions.html":31,"./templates/learn.html":32,"./templates/makeYourOwn.html":33,"./utils":38,"./xml":39}],3:[function(require,module,exports){
+exports.createToolbox = function(blocks) {
+  return '<xml id="toolbox" style="display: none;">' + blocks + '</xml>';
+};
+
+exports.blockOfType = function(type) {
+  return '<block type="' + type + '"></block>';
+};
+
+},{}],4:[function(require,module,exports){
+/**
+ * Defines blocks useful in multiple blockly apps
+ */
+'use strict';
+
+var REPEAT_IMAGE_URL = 'media/sharedBlocks/repeat.png';
+var REPEAT_IMAGE_WIDTH = 53;
+var REPEAT_IMAGE_HEIGHT = 57;
+
+/**
+ * Install extensions to Blockly's language and JavaScript generator
+ * @param blockly instance of Blockly
+ */
+exports.install = function(blockly) {
+  // Re-uses the repeat block generator from core
+  blockly.JavaScript.controls_repeat_simplified = blockly.JavaScript.controls_repeat;
+
+  blockly.Blocks.controls_repeat_simplified = {
+    // Repeat n times (internal number) with simplified UI
+    init: function() {
+      this.setHelpUrl(blockly.Msg.CONTROLS_REPEAT_HELPURL);
+      this.setHSV(322, 0.90, 0.95);
+      this.appendStatementInput('DO')
+        .appendTitle(new blockly.FieldImage(
+          blockly.assetUrl(REPEAT_IMAGE_URL), REPEAT_IMAGE_WIDTH, REPEAT_IMAGE_HEIGHT));
+      this.appendDummyInput()
+        .appendTitle(blockly.Msg.CONTROLS_REPEAT_TITLE_REPEAT)
+        .appendTitle(new Blockly.FieldTextInput('10',
+          blockly.FieldTextInput.nonnegativeIntegerValidator), 'TIMES');
+      this.setPreviousStatement(true);
+      this.setNextStatement(true);
+      this.setTooltip(blockly.Msg.CONTROLS_REPEAT_TOOLTIP);
+    }
+  };
+};
+
+},{}],5:[function(require,module,exports){
 var feedback = require('./feedback.js');
 var dom = require('./dom.js');
 var utils = require('./utils.js');
@@ -896,7 +950,7 @@ exports.builderForm = function(onAttemptCallback) {
   dialog.show({ backdrop: 'static' });
 };
 
-},{"./dom.js":5,"./feedback.js":6,"./templates/builder.html":26,"./utils.js":36,"url":50}],4:[function(require,module,exports){
+},{"./dom.js":7,"./feedback.js":8,"./templates/builder.html":28,"./utils.js":38,"url":52}],6:[function(require,module,exports){
 var INFINITE_LOOP_TRAP = '  BlocklyApps.checkTimeout();\n';
 var INFINITE_LOOP_TRAP_RE =
     new RegExp(INFINITE_LOOP_TRAP.replace(/\(.*\)/, '\\(.*\\)'), 'g');
@@ -976,7 +1030,7 @@ exports.functionFromCode = function(code, options) {
   return new ctor();
 };
 
-},{}],5:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 exports.addReadyListener = function(callback) {
   if (document.readyState === "complete") {
     setTimeout(callback, 1);
@@ -1050,7 +1104,7 @@ exports.isMobile = function() {
   return reg.test(window.navigator.userAgent);
 };
 
-},{}],6:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 var trophy = require('./templates/trophy.html');
 var utils = require('./utils');
 var readonly = require('./templates/readonly.html');
@@ -1830,7 +1884,7 @@ var generateXMLForBlocks = function(blocks) {
 };
 
 
-},{"../locale/ta_in/common":38,"./codegen":4,"./dom":5,"./templates/buttons.html":27,"./templates/code.html":28,"./templates/readonly.html":33,"./templates/showCode.html":34,"./templates/trophy.html":35,"./utils":36}],7:[function(require,module,exports){
+},{"../locale/ta_in/common":40,"./codegen":6,"./dom":7,"./templates/buttons.html":29,"./templates/code.html":30,"./templates/readonly.html":35,"./templates/showCode.html":36,"./templates/trophy.html":37,"./utils":38}],9:[function(require,module,exports){
 // Functions for checking required blocks.
 
 /**
@@ -1889,9 +1943,11 @@ exports.define = function(name) {
   };
 };
 
-},{}],8:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 var tiles = require('./tiles');
 var Direction = tiles.Direction;
+var MoveDirection = tiles.MoveDirection;
+var TurnDirection = tiles.TurnDirection;
 var SquareType = tiles.SquareType;
 
 //TODO: This file should be void of logic like turtle/api.js
@@ -1909,7 +1965,7 @@ var isPath = function(direction, id) {
   var effectiveDirection = Maze.pegmanD + direction;
   var square;
   var command;
-  switch (Maze.constrainDirection4(effectiveDirection)) {
+  switch (tiles.constrainDirection4(effectiveDirection)) {
     case Direction.NORTH:
       square = Maze.map[Maze.pegmanY - 1] &&
           Maze.map[Maze.pegmanY - 1][Maze.pegmanX];
@@ -1952,7 +2008,7 @@ var move = function(direction, id) {
   // If moving backward, flip the effective direction.
   var effectiveDirection = Maze.pegmanD + direction;
   var command;
-  switch (Maze.constrainDirection4(effectiveDirection)) {
+  switch (tiles.constrainDirection4(effectiveDirection)) {
     case Direction.NORTH:
       Maze.pegmanY--;
       command = 'north';
@@ -1980,51 +2036,110 @@ var move = function(direction, id) {
  * @param {string} id ID of block that triggered this action.
  */
 var turn = function(direction, id) {
-  if (direction) {
+  if (direction == TurnDirection.RIGHT) {
     // Right turn (clockwise).
-    Maze.pegmanD++;
+    Maze.pegmanD += TurnDirection.RIGHT;
     BlocklyApps.log.push(['right', id]);
   } else {
     // Left turn (counterclockwise).
-    Maze.pegmanD--;
+    Maze.pegmanD += TurnDirection.LEFT;
     BlocklyApps.log.push(['left', id]);
   }
-  Maze.pegmanD = Maze.constrainDirection4(Maze.pegmanD);
+  Maze.pegmanD = tiles.constrainDirection4(Maze.pegmanD);
 };
 
+/**
+ * Turn pegman towards a given direction, turning through stage front (south)
+ * when possible.
+ * @param {number} newDirection Direction to turn to (e.g., Direction.NORTH)
+ * @param {string} id ID of block that triggered this action.
+ */
+var turnTo = function(newDirection, id) {
+  var currentDirection = Maze.pegmanD;
+  if (isTurnAround(currentDirection, newDirection)) {
+    var shouldTurnCWToPreferStageFront = currentDirection - newDirection < 0;
+    var relativeTurnDirection = shouldTurnCWToPreferStageFront ? TurnDirection.RIGHT : TurnDirection.LEFT;
+    turn(relativeTurnDirection, id);
+    turn(relativeTurnDirection, id);
+  } else if (isRightTurn(currentDirection, newDirection)) {
+    turn(TurnDirection.RIGHT, id);
+  } else if (isLeftTurn(currentDirection, newDirection)) {
+    turn(TurnDirection.LEFT, id);
+  }
+};
+
+function isLeftTurn(direction, newDirection) {
+  return newDirection === tiles.constrainDirection4(direction + TurnDirection.LEFT);
+}
+
+function isRightTurn(direction, newDirection) {
+  return newDirection === tiles.constrainDirection4(direction + TurnDirection.RIGHT);
+}
+
+/**
+ * Returns whether turning from direction to newDirection would be a 180° turn
+ * @param {number} direction
+ * @param {number} newDirection
+ * @returns {boolean}
+ */
+function isTurnAround(direction, newDirection) {
+  return Math.abs(direction - newDirection) == MoveDirection.BACKWARD;
+}
+
+function moveAbsoluteDirection(direction, id) {
+  turnTo(direction, id);
+  move(MoveDirection.FORWARD, id);
+}
+
 exports.moveForward = function(id) {
-  move(0, id);
+  move(MoveDirection.FORWARD, id);
 };
 
 exports.moveBackward = function(id) {
-  move(2, id);
+  move(MoveDirection.BACKWARD, id);
+};
+
+exports.moveNorth = function(id) {
+  moveAbsoluteDirection(Direction.NORTH, id);
+};
+
+exports.moveSouth = function(id) {
+  moveAbsoluteDirection(Direction.SOUTH, id);
+};
+
+exports.moveEast = function(id) {
+  moveAbsoluteDirection(Direction.EAST, id);
+};
+
+exports.moveWest = function(id) {
+  moveAbsoluteDirection(Direction.WEST, id);
 };
 
 exports.turnLeft = function(id) {
-  turn(0, id);
+  turn(TurnDirection.LEFT, id);
 };
 
 exports.turnRight = function(id) {
-  turn(1, id);
+  turn(TurnDirection.RIGHT, id);
 };
 
 exports.isPathForward = function(id) {
-  return isPath(0, id);
+  return isPath(MoveDirection.FORWARD, id);
 };
 exports.noPathForward = function(id) {
-  return !isPath(0, id);
+  return !isPath(MoveDirection.FORWARD, id);
 };
 
 exports.isPathRight = function(id) {
-  return isPath(1, id);
+  return isPath(MoveDirection.RIGHT, id);
 };
 
 exports.isPathBackward = function(id) {
-  return isPath(2, id);
+  return isPath(MoveDirection.BACKWARD, id);
 };
 
 exports.isPathLeft = function(id) {
-  return isPath(3, id);
+  return isPath(MoveDirection.LEFT, id);
 };
 
 exports.pilePresent = function(id) {
@@ -2063,7 +2178,7 @@ exports.notFinished = function() {
   return !Maze.checkSuccess();
 };
 
-},{"./tiles":18}],9:[function(require,module,exports){
+},{"./tiles":20}],11:[function(require,module,exports){
 /**
  * Blockly Demo: Maze
  *
@@ -2115,6 +2230,46 @@ exports.install = function(blockly, skin) {
     // Generate JavaScript for moving forward.
     return 'Maze.moveForward(\'block_id_' + this.id + '\');\n';
   };
+
+  var SimpleMove = {
+    DIRECTION_CONFIGS: {
+      West: { letter: 'W' },
+      East: { letter: 'E' },
+      North: { letter: 'N' },
+      South: { letter: 'S' },
+    },
+    generateBlocksForAllDirections: function() {
+      SimpleMove.generateBlocksForDirection("North");
+      SimpleMove.generateBlocksForDirection("South");
+      SimpleMove.generateBlocksForDirection("West");
+      SimpleMove.generateBlocksForDirection("East");
+    },
+    generateBlocksForDirection: function(direction) {
+      generator["maze_move" + direction] = SimpleMove.generateCodeGenerator(direction);
+      blockly.Blocks['maze_move' + direction] = SimpleMove.generateBlock(direction);
+    },
+    generateBlock: function(direction) {
+      var directionConfig = SimpleMove.DIRECTION_CONFIGS[direction];
+      return {
+        helpUrl: '',
+        init: function () {
+          this.setHSV(184, 1.00, 0.74);
+          this.appendDummyInput()
+            .appendTitle(directionConfig.letter);
+          this.setPreviousStatement(true);
+          this.setNextStatement(true);
+          this.setTooltip(msg.moveForwardTooltip());
+        }
+      };
+    },
+    generateCodeGenerator: function(direction) {
+      return function() {
+        return 'Maze.move' + direction + '(\'block_id_' + this.id + '\');\n';
+      };
+    }
+  };
+
+  SimpleMove.generateBlocksForAllDirections();
 
   blockly.Blocks.maze_fill = {
     // Block for putting dirt on to a tile.
@@ -2430,7 +2585,7 @@ exports.install = function(blockly, skin) {
 
 };
 
-},{"../../locale/ta_in/maze":39,"../codegen":4}],10:[function(require,module,exports){
+},{"../../locale/ta_in/maze":41,"../codegen":6}],12:[function(require,module,exports){
 var levelBase = require('../level_base');
 var Direction = require('./tiles').Direction;
 var msg = require('../../locale/ta_in/maze');
@@ -3931,7 +4086,7 @@ module.exports = {
   }
 };
 
-},{"../../locale/ta_in/maze":39,"../level_base":7,"./karelStartBlocks.xml":11,"./tiles":18,"./toolboxes/karel1.xml":19,"./toolboxes/karel2.xml":20,"./toolboxes/karel3.xml":21}],11:[function(require,module,exports){
+},{"../../locale/ta_in/maze":41,"../level_base":9,"./karelStartBlocks.xml":13,"./tiles":20,"./toolboxes/karel1.xml":21,"./toolboxes/karel2.xml":22,"./toolboxes/karel3.xml":23}],13:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -3963,10 +4118,11 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/ta_in/maze":39,"ejs":40}],12:[function(require,module,exports){
+},{"../../locale/ta_in/maze":41,"ejs":42}],14:[function(require,module,exports){
 var Direction = require('./tiles').Direction;
 var karelLevels = require('./karelLevels');
 var reqBlocks = require('./requiredBlocks');
+var blockUtils = require('../block_utils');
 
 //TODO: Fix hacky level-number-dependent toolbox.
 var toolbox = function(page, level) {
@@ -3993,6 +4149,31 @@ module.exports = {
 
   '2_1': {
     'toolbox': toolbox(2, 1),
+    'ideal': 3,
+    'requiredBlocks': [
+      [reqBlocks.MOVE_FORWARD],
+    ],
+    'startDirection': Direction.EAST,
+    'map': [
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 2, 1, 1, 3, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0]
+    ],
+    'startBlocks': startBlocks(2, 1)
+  },
+  'k1_demo': {
+    'toolbox': blockUtils.createToolbox(
+      blockUtils.blockOfType('maze_moveNorth') +
+      blockUtils.blockOfType('maze_moveSouth') +
+      blockUtils.blockOfType('maze_moveEast') +
+      blockUtils.blockOfType('maze_moveWest') +
+      blockUtils.blockOfType('controls_repeat_simplified')
+    ),
     'ideal': 3,
     'requiredBlocks': [
       [reqBlocks.MOVE_FORWARD],
@@ -4525,18 +4706,12 @@ module.exports = {
   },
   'custom': {
     'toolbox': toolbox(3, 4),
-    'ideal': 7,
     'codeFunctions': [
       {'func': 'move', 'alias': 'Maze.moveForward();'},
       {'func': 'turnleft', 'alias': 'Maze.turnLeft();'},
       {'func': 'turnright', 'alias': 'Maze.turnRight();'},
     ],
-    'requiredBlocks': [
-      [{'test': 'moveForward', 'type': 'maze_moveForward'}],
-      [{'test': 'turnLeft',
-       'type': 'maze_turn',
-       'titles': {'DIR': 'turnLeft'}}]
-    ],
+    'requiredBlocks': [],
     'startDirection': Direction.EAST,
     'map': [
       [0, 0, 0, 0, 0, 0, 0, 0],
@@ -4556,7 +4731,7 @@ for (var levelId in karelLevels) {
   module.exports['karel_' + levelId] = karelLevels[levelId];
 }
 
-},{"./karelLevels":10,"./requiredBlocks":15,"./startBlocks.xml":17,"./tiles":18,"./toolboxes/maze.xml":22}],13:[function(require,module,exports){
+},{"../block_utils":3,"./karelLevels":12,"./requiredBlocks":17,"./startBlocks.xml":19,"./tiles":20,"./toolboxes/maze.xml":24}],15:[function(require,module,exports){
 (function (global){
 var appMain = require('../appMain');
 window.Maze = require('./maze');
@@ -4574,7 +4749,7 @@ window.mazeMain = function(options) {
 };
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../appMain":1,"./blocks":9,"./levels":12,"./maze":14,"./skins":16}],14:[function(require,module,exports){
+},{"../appMain":1,"./blocks":11,"./levels":14,"./maze":16,"./skins":18}],16:[function(require,module,exports){
 /**
  * Blockly Apps: Maze
  *
@@ -4613,6 +4788,7 @@ var dom = require('../dom');
 
 var Direction = tiles.Direction;
 var SquareType = tiles.SquareType;
+var TurnDirection = tiles.TurnDirection;
 
 /**
  * Create a namespace for the application.
@@ -4648,11 +4824,9 @@ Maze.scale = {
 var loadLevel = function() {
   // Load maps.
   Maze.map = level.maze ? JSON.parse(level.maze) : level.map;
-  BlocklyApps.IDEAL_BLOCK_NUM = level.ideal || Infinity;
   Maze.initialDirtMap = level.initialDirt;
   Maze.finalDirtMap = level.finalDirt;
   Maze.startDirection = level.startDirection;
-  BlocklyApps.REQUIRED_BLOCKS = level.requiredBlocks;
 
   // Override scalars.
   for (var key in level.scale) {
@@ -5249,13 +5423,13 @@ BlocklyApps.reset = function(first) {
     Maze.scheduleFinish(false);
     Maze.pidList.push(window.setTimeout(function() {
       stepSpeed = 100;
-      Maze.schedule([Maze.pegmanX, Maze.pegmanY, Maze.pegmanD * 4],
-                    [Maze.pegmanX, Maze.pegmanY, Maze.pegmanD * 4 - 4]);
+      Maze.schedule([Maze.pegmanX, Maze.pegmanY, tiles.direction4to16(Maze.pegmanD)],
+                    [Maze.pegmanX, Maze.pegmanY, tiles.direction4to16(Maze.pegmanD + TurnDirection.LEFT)]);
       Maze.pegmanD++;
     }, stepSpeed * 5));
   } else {
     Maze.pegmanD = Maze.startDirection;
-    Maze.displayPegman(Maze.pegmanX, Maze.pegmanY, Maze.pegmanD * 4);
+    Maze.displayPegman(Maze.pegmanX, Maze.pegmanY, tiles.direction4to16(Maze.pegmanD));
   }
 
   var svg = document.getElementById('svgMaze');
@@ -5564,24 +5738,16 @@ Maze.animate = function() {
 
   switch (action[0]) {
     case 'north':
-      Maze.schedule([Maze.pegmanX, Maze.pegmanY, Maze.pegmanD * 4],
-                    [Maze.pegmanX, Maze.pegmanY - 1, Maze.pegmanD * 4]);
-      Maze.pegmanY--;
+      Maze.animatedMove(Direction.NORTH);
       break;
     case 'east':
-      Maze.schedule([Maze.pegmanX, Maze.pegmanY, Maze.pegmanD * 4],
-                    [Maze.pegmanX + 1, Maze.pegmanY, Maze.pegmanD * 4]);
-      Maze.pegmanX++;
+      Maze.animatedMove(Direction.EAST);
       break;
     case 'south':
-      Maze.schedule([Maze.pegmanX, Maze.pegmanY, Maze.pegmanD * 4],
-                    [Maze.pegmanX, Maze.pegmanY + 1, Maze.pegmanD * 4]);
-      Maze.pegmanY++;
+      Maze.animatedMove(Direction.SOUTH);
       break;
     case 'west':
-      Maze.schedule([Maze.pegmanX, Maze.pegmanY, Maze.pegmanD * 4],
-                    [Maze.pegmanX - 1, Maze.pegmanY, Maze.pegmanD * 4]);
-      Maze.pegmanX--;
+      Maze.animatedMove(Direction.WEST);
       break;
     case 'look_north':
       Maze.scheduleLook(Direction.NORTH);
@@ -5602,14 +5768,16 @@ Maze.animate = function() {
       Maze.scheduleFail(false);
       break;
     case 'left':
-      Maze.schedule([Maze.pegmanX, Maze.pegmanY, Maze.pegmanD * 4],
-                    [Maze.pegmanX, Maze.pegmanY, Maze.pegmanD * 4 - 4]);
-      Maze.pegmanD = Maze.constrainDirection4(Maze.pegmanD - 1);
+      var newDirection = Maze.pegmanD + TurnDirection.LEFT;
+      Maze.schedule([Maze.pegmanX, Maze.pegmanY, tiles.direction4to16(Maze.pegmanD)],
+                    [Maze.pegmanX, Maze.pegmanY, tiles.direction4to16(newDirection)]);
+      Maze.pegmanD = tiles.constrainDirection4(newDirection);
       break;
     case 'right':
-      Maze.schedule([Maze.pegmanX, Maze.pegmanY, Maze.pegmanD * 4],
-                    [Maze.pegmanX, Maze.pegmanY, Maze.pegmanD * 4 + 4]);
-      Maze.pegmanD = Maze.constrainDirection4(Maze.pegmanD + 1);
+      newDirection = Maze.pegmanD + TurnDirection.RIGHT;
+      Maze.schedule([Maze.pegmanX, Maze.pegmanY, tiles.direction4to16(Maze.pegmanD)],
+                    [Maze.pegmanX, Maze.pegmanY, tiles.direction4to16(newDirection)]);
+      Maze.pegmanD = tiles.constrainDirection4(newDirection);
       break;
     case 'finish':
       // Only schedule victory animation for certain conditions:
@@ -5644,6 +5812,17 @@ Maze.animate = function() {
   var scaledStepSpeed =
       stepSpeed * Maze.scale.stepSpeed * skin.movePegmanAnimationSpeedScale;
   Maze.pidList.push(window.setTimeout(Maze.animate, scaledStepSpeed));
+};
+
+Maze.animatedMove = function (direction) {
+  var positionChange = tiles.directionToDxDy(direction);
+  var newX = Maze.pegmanX + positionChange.dx;
+  var newY = Maze.pegmanY + positionChange.dy;
+  Maze.schedule(
+    [Maze.pegmanX, Maze.pegmanY, tiles.direction4to16(Maze.pegmanD)],
+    [newX, newY, tiles.direction4to16(Maze.pegmanD)]);
+  Maze.pegmanX = newX;
+  Maze.pegmanY = newY;
 };
 
 /**
@@ -5688,7 +5867,7 @@ Maze.schedule = function(startPos, endPos) {
       movePegmanIcon.setAttribute('visibility', 'hidden');
       pegmanIcon.setAttribute('visibility', 'visible');
       Maze.displayPegman(endPos[0], endPos[1],
-                         Maze.constrainDirection16(endPos[2]));
+                         tiles.constrainDirection16(endPos[2]));
     }, stepSpeed * 6 / numFrames * frameIdx));
   } else {
     numFrames = 4;
@@ -5697,22 +5876,22 @@ Maze.schedule = function(startPos, endPos) {
     deltaDirection = (endPos[2] - startPos[2]) / numFrames;
     Maze.displayPegman(startPos[0] + deltaX,
                        startPos[1] + deltaY,
-                       Maze.constrainDirection16(startPos[2] + deltaDirection));
+                       tiles.constrainDirection16(startPos[2] + deltaDirection));
     Maze.pidList.push(window.setTimeout(function() {
         Maze.displayPegman(
             startPos[0] + deltaX * 2,
             startPos[1] + deltaY * 2,
-            Maze.constrainDirection16(startPos[2] + deltaDirection * 2));
+            tiles.constrainDirection16(startPos[2] + deltaDirection * 2));
     }, stepSpeed));
     Maze.pidList.push(window.setTimeout(function() {
         Maze.displayPegman(
             startPos[0] + deltaX * 3,
             startPos[1] + deltaY * 3,
-            Maze.constrainDirection16(startPos[2] + deltaDirection * 3));
+            tiles.constrainDirection16(startPos[2] + deltaDirection * 3));
     }, stepSpeed * 2));
       Maze.pidList.push(window.setTimeout(function() {
           Maze.displayPegman(endPos[0], endPos[1],
-                             Maze.constrainDirection16(endPos[2]));
+                             tiles.constrainDirection16(endPos[2]));
     }, stepSpeed * 3));
   }
 
@@ -5732,7 +5911,7 @@ Maze.schedule = function(startPos, endPos) {
 };
 
 /**
- * Replace the tiles surronding the obstacle with broken tiles.
+ * Replace the tiles surrounding the obstacle with broken tiles.
  */
 Maze.updateSurroundingTiles = function(obstacleY, obstacleX, brokenTiles) {
   var tileCoords = [
@@ -5761,22 +5940,10 @@ Maze.updateSurroundingTiles = function(obstacleY, obstacleX, brokenTiles) {
  * @param {boolean} forward True if forward, false if backward.
  */
 Maze.scheduleFail = function(forward) {
-  var deltaX = 0;
-  var deltaY = 0;
-  switch (Maze.pegmanD) {
-    case Direction.NORTH:
-      deltaY = -1;
-      break;
-    case Direction.EAST:
-      deltaX = 1;
-      break;
-    case Direction.SOUTH:
-      deltaY = 1;
-      break;
-    case Direction.WEST:
-      deltaX = -1;
-      break;
-  }
+  var dxDy = tiles.directionToDxDy(Maze.pegmanD);
+  var deltaX = dxDy.dx;
+  var deltaY = dxDy.dy;
+
   if (!forward) {
     deltaX = -deltaX;
     deltaY = -deltaY;
@@ -5784,7 +5951,7 @@ Maze.scheduleFail = function(forward) {
 
   var targetX = Maze.pegmanX + deltaX;
   var targetY = Maze.pegmanY + deltaY;
-  var direction16 = Maze.constrainDirection16(Maze.pegmanD * 4);
+  var direction16 = tiles.constrainDirection16(tiles.direction4to16(Maze.pegmanD));
   Maze.displayPegman(Maze.pegmanX + deltaX / 4,
                      Maze.pegmanY + deltaY / 4,
                      direction16);
@@ -5909,7 +6076,7 @@ Maze.setTileTransparent = function() {
  * @param {boolean} sound Play the victory sound.
  */
 Maze.scheduleFinish = function(sound) {
-  var direction16 = Maze.constrainDirection16(Maze.pegmanD * 4);
+  var direction16 = tiles.constrainDirection16(tiles.direction4to16(Maze.pegmanD));
   Maze.displayPegman(Maze.pegmanX, Maze.pegmanY, 16);
 
   // Setting the tiles to be transparent
@@ -6056,34 +6223,6 @@ Maze.scheduleLookStep = function(path, delay) {
   }, delay));
 };
 
-/**
- * Keep the direction within 0-3, wrapping at both ends.
- * @param {number} d Potentially out-of-bounds direction value.
- * @return {number} Legal direction value.
- */
-Maze.constrainDirection4 = function(d) {
-  if (d < 0) {
-    d += 4;
-  } else if (d > 3) {
-    d -= 4;
-  }
-  return d;
-};
-
-/**
- * Keep the direction within 0-15, wrapping at both ends.
- * @param {number} d Potentially out-of-bounds direction value.
- * @return {number} Legal direction value.
- */
-Maze.constrainDirection16 = function(d) {
-  if (d < 0) {
-    d += 16;
-  } else if (d > 15) {
-    d -= 16;
-  }
-  return d;
-};
-
 var atFinish = function() {
   return !Maze.finish_ ||
       (Maze.pegmanX == Maze.finish_.x && Maze.pegmanY == Maze.finish_.y);
@@ -6109,7 +6248,7 @@ Maze.checkSuccess = function() {
   return false;
 };
 
-},{"../../locale/ta_in/common":38,"../../locale/ta_in/maze":39,"../base":2,"../codegen":4,"../dom":5,"../feedback.js":6,"../skins":24,"../templates/page.html":32,"./api":8,"./tiles":18,"./visualization.html":23}],15:[function(require,module,exports){
+},{"../../locale/ta_in/common":40,"../../locale/ta_in/maze":41,"../base":2,"../codegen":6,"../dom":7,"../feedback.js":8,"../skins":26,"../templates/page.html":34,"./api":10,"./tiles":20,"./visualization.html":25}],17:[function(require,module,exports){
 var MOVE_FORWARD = {'test': 'moveForward', 'type': 'maze_moveForward'};
 var TURN_LEFT = {'test': 'turnLeft', 'type': 'maze_turn', 'titles': {'DIR': 'turnLeft'}};
 var TURN_RIGHT = {'test': 'turnRight', 'type': 'maze_turn', 'titles': {'DIR': 'turnRight'}};
@@ -6129,7 +6268,7 @@ module.exports = {
   IS_PATH_FORWARD: IS_PATH_FORWARD,
   FOR_LOOP: FOR_LOOP
 };
-},{}],16:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 /**
  * Load Skin for Maze.
  */
@@ -6252,7 +6391,7 @@ exports.load = function(assetUrl, id) {
   return skin;
 };
 
-},{"../skins":24}],17:[function(require,module,exports){
+},{"../skins":26}],19:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6273,15 +6412,19 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":40}],18:[function(require,module,exports){
+},{"ejs":42}],20:[function(require,module,exports){
 'use strict';
+
+var utils = require('../utils');
+
+var Tiles = module.exports;
 
 /**
  * Constants for cardinal directions.  Subsequent code assumes these are
  * in the range 0..3 and that opposites have an absolute difference of 2.
  * @enum {number}
  */
-exports.Direction = {
+Tiles.Direction = {
   NORTH: 0,
   EAST: 1,
   SOUTH: 2,
@@ -6289,11 +6432,11 @@ exports.Direction = {
 };
 
 /**
- * The types of squares in the maze, which is represented
+ * The types of squares in the Maze, which is represented
  * as a 2D array of SquareType values.
  * @enum {number}
  */
-exports.SquareType = {
+Tiles.SquareType = {
   WALL: 0,
   OPEN: 1,
   START: 2,
@@ -6302,7 +6445,46 @@ exports.SquareType = {
   STARTANDFINISH: 5
 };
 
-},{}],19:[function(require,module,exports){
+Tiles.TurnDirection = { LEFT: -1, RIGHT: 1};
+Tiles.MoveDirection = { FORWARD: 0, RIGHT: 1, BACKWARD: 2, LEFT: 3};
+
+Tiles.directionToDxDy = function(direction) {
+  switch (direction) {
+    case Tiles.Direction.NORTH:
+      return {dx: 0, dy: -1};
+    case Tiles.Direction.EAST:
+      return {dx: 1, dy: 0};
+    case Tiles.Direction.SOUTH:
+      return {dx: 0, dy: 1};
+    case Tiles.Direction.WEST:
+      return {dx: -1, dy: 0};
+  }
+  throw new Error('Invalid direction value' + direction);
+};
+
+Tiles.direction4to16 = function(direction4) {
+  return direction4 * 4;
+};
+
+/**
+ * Keep the direction within 0-3, wrapping at both ends.
+ * @param {number} d Potentially out-of-bounds direction value.
+ * @return {number} Legal direction value.
+ */
+Tiles.constrainDirection4 = function(d) {
+  return utils.mod(d, 4);
+};
+
+/**
+ * Keep the direction within 0-15, wrapping at both ends.
+ * @param {number} d Potentially out-of-bounds direction value.
+ * @return {number} Legal direction value.
+ */
+Tiles.constrainDirection16 = function(d) {
+  return utils.mod(d, 16);
+};
+
+},{"../utils":38}],21:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6323,7 +6505,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":40}],20:[function(require,module,exports){
+},{"ejs":42}],22:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6349,7 +6531,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../../locale/ta_in/common":38,"../../../locale/ta_in/maze":39,"ejs":40}],21:[function(require,module,exports){
+},{"../../../locale/ta_in/common":40,"../../../locale/ta_in/maze":41,"ejs":42}],23:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6383,7 +6565,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../../locale/ta_in/common":38,"ejs":40}],22:[function(require,module,exports){
+},{"../../../locale/ta_in/common":40,"ejs":42}],24:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6404,7 +6586,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":40}],23:[function(require,module,exports){
+},{"ejs":42}],25:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6425,7 +6607,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":40}],24:[function(require,module,exports){
+},{"ejs":42}],26:[function(require,module,exports){
 // avatar: A 1029x51 set of 21 avatar images.
 
 exports.load = function(assetUrl, id) {
@@ -6452,6 +6634,11 @@ exports.load = function(assetUrl, id) {
     downArrow: skinUrl('down.png'),
     upArrow: skinUrl('up.png'),
     rightArrow: skinUrl('right.png'),
+    leftJumpArrow: skinUrl('left_jump.png'),
+    downJumpArrow: skinUrl('down_jump.png'),
+    upJumpArrow: skinUrl('up_jump.png'),
+    rightJumpArrow: skinUrl('right_jump.png'),
+    offsetLineSlice: skinUrl('offset_line_slice.png'),
     // Sounds
     startSound: [skinUrl('start.mp3'), skinUrl('start.ogg')],
     winSound: [skinUrl('win.mp3'), skinUrl('win.ogg')],
@@ -6460,7 +6647,7 @@ exports.load = function(assetUrl, id) {
   return skin;
 };
 
-},{}],25:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 /**
  * Blockly Apps: SVG Slider
  *
@@ -6665,7 +6852,7 @@ Slider.bindEvent_ = function(element, name, func) {
 
 module.exports = Slider;
 
-},{}],26:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6686,7 +6873,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":40}],27:[function(require,module,exports){
+},{"ejs":42}],29:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6707,7 +6894,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/ta_in/common":38,"ejs":40}],28:[function(require,module,exports){
+},{"../../locale/ta_in/common":40,"ejs":42}],30:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6728,7 +6915,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":40}],29:[function(require,module,exports){
+},{"ejs":42}],31:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6749,7 +6936,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/ta_in/common":38,"ejs":40}],30:[function(require,module,exports){
+},{"../../locale/ta_in/common":40,"ejs":42}],32:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6772,7 +6959,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/ta_in/common":38,"ejs":40}],31:[function(require,module,exports){
+},{"../../locale/ta_in/common":40,"ejs":42}],33:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6793,7 +6980,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/ta_in/common":38,"ejs":40}],32:[function(require,module,exports){
+},{"../../locale/ta_in/common":40,"ejs":42}],34:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6815,7 +7002,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/ta_in/common":38,"ejs":40}],33:[function(require,module,exports){
+},{"../../locale/ta_in/common":40,"ejs":42}],35:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6837,7 +7024,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":40}],34:[function(require,module,exports){
+},{"ejs":42}],36:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6858,7 +7045,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/ta_in/common":38,"ejs":40}],35:[function(require,module,exports){
+},{"../../locale/ta_in/common":40,"ejs":42}],37:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6879,7 +7066,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":40}],36:[function(require,module,exports){
+},{"ejs":42}],38:[function(require,module,exports){
 exports.shallowCopy = function(source) {
   var result = {};
   for (var prop in source) {
@@ -6911,7 +7098,17 @@ exports.escapeHtml = function(unsafe) {
     .replace(/'/g, "&#039;");
 };
 
-},{}],37:[function(require,module,exports){
+/**
+ * Version of modulo which, unlike javascript's `%` operator,
+ * will always return a positive remainder.
+ * @param number
+ * @param mod
+ */
+exports.mod = function(number, mod) {
+  return ((number % mod) + mod) % mod;
+};
+
+},{}],39:[function(require,module,exports){
 // Serializes an XML DOM node to a string.
 exports.serialize = function(node) {
   var serializer = new XMLSerializer();
@@ -6939,7 +7136,7 @@ exports.parseElement = function(text) {
   return element;
 };
 
-},{}],38:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.ta=function(n){return n===1?"one":"other"}
 exports.blocklyMessage = function(d){return "Blockly"};
 
@@ -7066,7 +7263,7 @@ exports.signup = function(d){return "ஆரம்ப பாடத்திற்
 exports.hintHeader = function(d){return "Here's a tip:"};
 
 
-},{"messageformat":51}],39:[function(require,module,exports){
+},{"messageformat":53}],41:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.ta=function(n){return n===1?"one":"other"}
 exports.avoidCowAndRemove = function(d){return "avoid the cow and remove 1"};
 
@@ -7169,7 +7366,7 @@ exports.whileTooltip = function(d){return "Repeat the enclosed actions until fin
 exports.yes = function(d){return "ஆம்"};
 
 
-},{"messageformat":51}],40:[function(require,module,exports){
+},{"messageformat":53}],42:[function(require,module,exports){
 
 /*!
  * EJS
@@ -7528,7 +7725,7 @@ if (require.extensions) {
   });
 }
 
-},{"./filters":41,"./utils":42,"fs":43,"path":45}],41:[function(require,module,exports){
+},{"./filters":43,"./utils":44,"fs":45,"path":47}],43:[function(require,module,exports){
 /*!
  * EJS - Filters
  * Copyright(c) 2010 TJ Holowaychuk <tj@vision-media.ca>
@@ -7731,7 +7928,7 @@ exports.json = function(obj){
   return JSON.stringify(obj);
 };
 
-},{}],42:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 
 /*!
  * EJS
@@ -7757,9 +7954,9 @@ exports.escape = function(html){
 };
  
 
-},{}],43:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 
-},{}],44:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -7814,7 +8011,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],45:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -8042,7 +8239,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require("/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":44}],46:[function(require,module,exports){
+},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":46}],48:[function(require,module,exports){
 (function (global){
 /*! http://mths.be/punycode v1.2.4 by @mathias */
 ;(function(root) {
@@ -8553,7 +8750,7 @@ var substr = 'ab'.substr(-1) === 'b'
 }(this));
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],47:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -8639,7 +8836,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],48:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -8726,13 +8923,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],49:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":47,"./encode":48}],50:[function(require,module,exports){
+},{"./decode":49,"./encode":50}],52:[function(require,module,exports){
 /*jshint strict:true node:true es5:true onevar:true laxcomma:true laxbreak:true eqeqeq:true immed:true latedef:true*/
 (function () {
   "use strict";
@@ -9365,7 +9562,7 @@ function parseHost(host) {
 
 }());
 
-},{"punycode":46,"querystring":49}],51:[function(require,module,exports){
+},{"punycode":48,"querystring":51}],53:[function(require,module,exports){
 /**
  * messageformat.js
  *
@@ -10948,4 +11145,4 @@ function parseHost(host) {
 
 })( this );
 
-},{}]},{},[13])
+},{}]},{},[15])

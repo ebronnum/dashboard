@@ -7,6 +7,7 @@ if (typeof global !== 'undefined') {
 }
 
 var addReadyListener = require('./dom').addReadyListener;
+var blocksCommon = require('./blocksCommon');
 
 function StubDialog() {
   for (var argument in arguments) {
@@ -53,6 +54,7 @@ module.exports = function(app, levels, options) {
   };
 
   options.skin = options.skinsModule.load(BlocklyApps.assetUrl, options.skinId);
+  blocksCommon.install(Blockly);
   options.blocksModule.install(Blockly, options.skin);
 
   addReadyListener(function() {
@@ -69,7 +71,7 @@ module.exports = function(app, levels, options) {
 };
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./base":2,"./dom":6}],2:[function(require,module,exports){
+},{"./base":2,"./blocksCommon":4,"./dom":7}],2:[function(require,module,exports){
 /**
  * Blockly Apps: Common code
  *
@@ -151,6 +153,9 @@ BlocklyApps.init = function(config) {
 
   BlocklyApps.share = config.share;
   BlocklyApps.noPadding = config.no_padding;
+
+  BlocklyApps.IDEAL_BLOCK_NUM = config.level.ideal || Infinity;
+  BlocklyApps.REQUIRED_BLOCKS = config.level.requiredBlocks || [];
 
   // enableShowCode defaults to true if not defined
   BlocklyApps.enableShowCode = (config.enableShowCode === false) ? false : true;
@@ -525,7 +530,10 @@ BlocklyApps.arrangeBlockPosition = function(startBlocks, arrangement) {
 };
 
 var showInstructions = function(level) {
-  level.instructions = level.instructions || '';
+  if (!level.instructions) {
+    // Skip instructions if empty
+    return;
+  }
 
   var instructionsDiv = document.createElement('div');
   instructionsDiv.innerHTML = require('./templates/instructions.html')(level);
@@ -866,7 +874,7 @@ var getIdealBlockNumberMsg = function() {
       msg.infinity() : BlocklyApps.IDEAL_BLOCK_NUM;
 };
 
-},{"../locale/es_es/common":31,"./builder":4,"./dom":6,"./feedback.js":7,"./slider":9,"./templates/buttons.html":20,"./templates/instructions.html":22,"./templates/learn.html":23,"./templates/makeYourOwn.html":24,"./utils":29,"./xml":30}],3:[function(require,module,exports){
+},{"../locale/es_es/common":32,"./builder":5,"./dom":7,"./feedback.js":8,"./slider":10,"./templates/buttons.html":21,"./templates/instructions.html":23,"./templates/learn.html":24,"./templates/makeYourOwn.html":25,"./utils":30,"./xml":31}],3:[function(require,module,exports){
 exports.createToolbox = function(blocks) {
   return '<xml id="toolbox" style="display: none;">' + blocks + '</xml>';
 };
@@ -876,6 +884,43 @@ exports.blockOfType = function(type) {
 };
 
 },{}],4:[function(require,module,exports){
+/**
+ * Defines blocks useful in multiple blockly apps
+ */
+'use strict';
+
+var REPEAT_IMAGE_URL = 'media/sharedBlocks/repeat.png';
+var REPEAT_IMAGE_WIDTH = 53;
+var REPEAT_IMAGE_HEIGHT = 57;
+
+/**
+ * Install extensions to Blockly's language and JavaScript generator
+ * @param blockly instance of Blockly
+ */
+exports.install = function(blockly) {
+  // Re-uses the repeat block generator from core
+  blockly.JavaScript.controls_repeat_simplified = blockly.JavaScript.controls_repeat;
+
+  blockly.Blocks.controls_repeat_simplified = {
+    // Repeat n times (internal number) with simplified UI
+    init: function() {
+      this.setHelpUrl(blockly.Msg.CONTROLS_REPEAT_HELPURL);
+      this.setHSV(322, 0.90, 0.95);
+      this.appendStatementInput('DO')
+        .appendTitle(new blockly.FieldImage(
+          blockly.assetUrl(REPEAT_IMAGE_URL), REPEAT_IMAGE_WIDTH, REPEAT_IMAGE_HEIGHT));
+      this.appendDummyInput()
+        .appendTitle(blockly.Msg.CONTROLS_REPEAT_TITLE_REPEAT)
+        .appendTitle(new Blockly.FieldTextInput('10',
+          blockly.FieldTextInput.nonnegativeIntegerValidator), 'TIMES');
+      this.setPreviousStatement(true);
+      this.setNextStatement(true);
+      this.setTooltip(blockly.Msg.CONTROLS_REPEAT_TOOLTIP);
+    }
+  };
+};
+
+},{}],5:[function(require,module,exports){
 var feedback = require('./feedback.js');
 var dom = require('./dom.js');
 var utils = require('./utils.js');
@@ -905,7 +950,7 @@ exports.builderForm = function(onAttemptCallback) {
   dialog.show({ backdrop: 'static' });
 };
 
-},{"./dom.js":6,"./feedback.js":7,"./templates/builder.html":19,"./utils.js":29,"url":43}],5:[function(require,module,exports){
+},{"./dom.js":7,"./feedback.js":8,"./templates/builder.html":20,"./utils.js":30,"url":44}],6:[function(require,module,exports){
 var INFINITE_LOOP_TRAP = '  BlocklyApps.checkTimeout();\n';
 var INFINITE_LOOP_TRAP_RE =
     new RegExp(INFINITE_LOOP_TRAP.replace(/\(.*\)/, '\\(.*\\)'), 'g');
@@ -985,7 +1030,7 @@ exports.functionFromCode = function(code, options) {
   return new ctor();
 };
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 exports.addReadyListener = function(callback) {
   if (document.readyState === "complete") {
     setTimeout(callback, 1);
@@ -1059,7 +1104,7 @@ exports.isMobile = function() {
   return reg.test(window.navigator.userAgent);
 };
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 var trophy = require('./templates/trophy.html');
 var utils = require('./utils');
 var readonly = require('./templates/readonly.html');
@@ -1839,7 +1884,7 @@ var generateXMLForBlocks = function(blocks) {
 };
 
 
-},{"../locale/es_es/common":31,"./codegen":5,"./dom":6,"./templates/buttons.html":20,"./templates/code.html":21,"./templates/readonly.html":26,"./templates/showCode.html":27,"./templates/trophy.html":28,"./utils":29}],8:[function(require,module,exports){
+},{"../locale/es_es/common":32,"./codegen":6,"./dom":7,"./templates/buttons.html":21,"./templates/code.html":22,"./templates/readonly.html":27,"./templates/showCode.html":28,"./templates/trophy.html":29,"./utils":30}],9:[function(require,module,exports){
 // avatar: A 1029x51 set of 21 avatar images.
 
 exports.load = function(assetUrl, id) {
@@ -1866,6 +1911,11 @@ exports.load = function(assetUrl, id) {
     downArrow: skinUrl('down.png'),
     upArrow: skinUrl('up.png'),
     rightArrow: skinUrl('right.png'),
+    leftJumpArrow: skinUrl('left_jump.png'),
+    downJumpArrow: skinUrl('down_jump.png'),
+    upJumpArrow: skinUrl('up_jump.png'),
+    rightJumpArrow: skinUrl('right_jump.png'),
+    offsetLineSlice: skinUrl('offset_line_slice.png'),
     // Sounds
     startSound: [skinUrl('start.mp3'), skinUrl('start.ogg')],
     winSound: [skinUrl('win.mp3'), skinUrl('win.ogg')],
@@ -1874,7 +1924,7 @@ exports.load = function(assetUrl, id) {
   return skin;
 };
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 /**
  * Blockly Apps: SVG Slider
  *
@@ -2079,7 +2129,7 @@ Slider.bindEvent_ = function(element, name, func) {
 
 module.exports = Slider;
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 
 exports.SpriteSpeed = {
   VERY_SLOW: 0.04,
@@ -2094,6 +2144,10 @@ exports.random = function (values) {
   return values[key];
 };
 
+exports.acquireEventHandlerNum = function() {
+  return Studio.eventHandlerNumber++;
+};
+
 exports.setBackground = function (id, value) {
   BlocklyApps.highlight(id);
   Studio.setBackground(value);
@@ -2104,9 +2158,9 @@ exports.setSprite = function (id, spriteIndex, value) {
   Studio.setSprite(spriteIndex, value);
 };
 
-exports.saySprite = function (id, spriteIndex, text) {
+exports.saySprite = function (id, numHandler, spriteIndex, text) {
   BlocklyApps.highlight(id);
-  Studio.saySprite(spriteIndex, text);
+  Studio.saySprite(numHandler, spriteIndex, text);
 };
 
 exports.setBackground = function (id, value) {
@@ -2144,7 +2198,7 @@ exports.incrementScore = function(id, player) {
   Studio.displayScore();
 };
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 /**
  * Blockly App: Studio
  *
@@ -2188,6 +2242,10 @@ exports.install = function(blockly, skin) {
 
   var generator = blockly.Generator.get('JavaScript');
   blockly.JavaScript = generator;
+  
+  generator.studio_eventHandlerPrologue = function() {
+    return 'var numHandler = Studio.acquireEventHandlerNum();\n\n';
+  };
 
   blockly.Blocks.studio_spriteCount = 6;
   
@@ -2204,10 +2262,7 @@ exports.install = function(blockly, skin) {
     }
   };
   
-  generator.studio_whenLeft = function() {
-    // Generate JavaScript for handling Left arrow button event.
-    return '\n';
-  };
+  generator.studio_whenLeft = generator.studio_eventHandlerPrologue;
   
   blockly.Blocks.studio_whenRight = {
     // Block to handle event when the Right arrow button is pressed.
@@ -2222,10 +2277,7 @@ exports.install = function(blockly, skin) {
     }
   };
   
-  generator.studio_whenRight = function() {
-    // Generate JavaScript for handling Right arrow button event.
-    return '\n';
-  };
+  generator.studio_whenRight = generator.studio_eventHandlerPrologue;
   
   blockly.Blocks.studio_whenUp = {
     // Block to handle event when the Up arrow button is pressed.
@@ -2240,10 +2292,7 @@ exports.install = function(blockly, skin) {
     }
   };
   
-  generator.studio_whenUp = function() {
-    // Generate JavaScript for handling Up arrow button event.
-    return '\n';
-  };
+  generator.studio_whenUp = generator.studio_eventHandlerPrologue;
   
   blockly.Blocks.studio_whenDown = {
     // Block to handle event when the Down arrow button is pressed.
@@ -2258,10 +2307,7 @@ exports.install = function(blockly, skin) {
     }
   };
   
-  generator.studio_whenDown = function() {
-    // Generate JavaScript for handling Down arrow button event.
-    return '\n';
-  };
+  generator.studio_whenDown = generator.studio_eventHandlerPrologue;
   
   blockly.Blocks.studio_whenGameStarts = {
     // Block to handle event when the game starts
@@ -2276,10 +2322,7 @@ exports.install = function(blockly, skin) {
     }
   };
 
-  generator.studio_whenGameStarts = function () {
-    // Generate JavaScript for handling run button click
-    return '\n';
-  };
+  generator.studio_whenGameStarts = generator.studio_eventHandlerPrologue;
 
   blockly.Blocks.studio_whenGameIsRunning = {
     // Block to handle the repeating tick event while the game is running.
@@ -2294,10 +2337,7 @@ exports.install = function(blockly, skin) {
     }
   };
 
-  generator.studio_whenGameIsRunning = function () {
-    // Generate JavaScript for handling the repeating tick event
-    return '\n';
-  };
+  generator.studio_whenGameIsRunning = generator.studio_eventHandlerPrologue;
 
   blockly.Blocks.studio_whenSpriteClicked = {
     // Block to handle event when sprite is clicked.
@@ -2323,10 +2363,7 @@ exports.install = function(blockly, skin) {
      [msg.whenSpriteClicked5(), '4'],
      [msg.whenSpriteClicked6(), '5']];
   
-  generator.studio_whenSpriteClicked = function() {
-    // Generate JavaScript for handle when a sprite is clicked event.
-    return '\n';
-  };
+  generator.studio_whenSpriteClicked = generator.studio_eventHandlerPrologue;
 
   blockly.Blocks.studio_whenSpriteCollided = {
     // Block to handle event when sprite collides with another sprite.
@@ -2367,10 +2404,7 @@ exports.install = function(blockly, skin) {
        [msg.whenSpriteCollidedWith5(), '4'],
        [msg.whenSpriteCollidedWith6(), '5']];
   
-  generator.studio_whenSpriteCollided = function() {
-    // Generate JavaScript for handle when a sprite collision event.
-    return '\n';
-  };
+  generator.studio_whenSpriteCollided = generator.studio_eventHandlerPrologue;
 
   blockly.Blocks.studio_move = {
     // Block for moving one frame a time.
@@ -2675,16 +2709,16 @@ exports.install = function(blockly, skin) {
 
   generator.studio_saySprite = function() {
     // Generate JavaScript for saying.
-    return 'Studio.saySprite(\'block_id_' + this.id + '\', ' +
-               this.getTitleValue('SPRITE') + ', ' + '\'' +
-               this.getTitleValue('TEXT') + '\');\n';
+    return 'Studio.saySprite(\'block_id_' + this.id + '\', numHandler || 0, ' +
+               this.getTitleValue('SPRITE') + ', ' +
+               blockly.JavaScript.quote_(this.getTitleValue('TEXT')) + ');\n';
   };
   
   delete blockly.Blocks.procedures_defreturn;
   delete blockly.Blocks.procedures_ifreturn;
 };
 
-},{"../../locale/es_es/studio":32,"../codegen":5,"./tiles":17}],12:[function(require,module,exports){
+},{"../../locale/es_es/studio":33,"../codegen":6,"./tiles":18}],13:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2705,7 +2739,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/es_es/studio":32,"ejs":33}],13:[function(require,module,exports){
+},{"../../locale/es_es/studio":33,"ejs":34}],14:[function(require,module,exports){
 /*jshint multistr: true */
 
 var Direction = require('./tiles').Direction;
@@ -2837,6 +2871,7 @@ module.exports = {
       'downButton',
       'upButton'
     ],
+    'minWorkspaceHeight': 800,
     'freePlay': true,
     'showScore': true,
     'map': [
@@ -2870,7 +2905,7 @@ module.exports = {
   },
 };
 
-},{"../block_utils":3,"./tiles":17}],14:[function(require,module,exports){
+},{"../block_utils":3,"./tiles":18}],15:[function(require,module,exports){
 (function (global){
 var appMain = require('../appMain');
 window.Studio = require('./studio');
@@ -2888,7 +2923,7 @@ window.studioMain = function(options) {
 };
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../appMain":1,"./blocks":11,"./levels":13,"./skins":15,"./studio":16}],15:[function(require,module,exports){
+},{"../appMain":1,"./blocks":12,"./levels":14,"./skins":16,"./studio":17}],16:[function(require,module,exports){
 /**
  * Load Skin for Studio.
  */
@@ -2907,6 +2942,9 @@ exports.load = function(assetUrl, id) {
   var skin = skinsBase.load(assetUrl, id);
   var config = CONFIGS[skin.id];
 
+  skin.hardcourt = {
+    background: skin.assetUrl('background.png'),
+  };
   skin.retro = {
     background: skin.assetUrl('retro_background.png'),
   };
@@ -2976,7 +3014,7 @@ exports.load = function(assetUrl, id) {
   return skin;
 };
 
-},{"../skins":8}],16:[function(require,module,exports){
+},{"../skins":9}],17:[function(require,module,exports){
 /**
  * Blockly App: Studio
  *
@@ -3055,6 +3093,8 @@ Studio.scale = {
   'stepSpeed': 33
 };
 
+Studio.SPEECH_BUBBLE_TIMEOUT = 3000;
+
 var twitterOptions = {
   text: studioMsg.shareStudioTwitter(),
   hashtag: "StudioCode"
@@ -3064,9 +3104,8 @@ var loadLevel = function() {
   // Load maps.
   Studio.map = level.map;
   Studio.timeoutFailureTick = level.timeoutFailureTick || Infinity;
+  Studio.minWorkspaceHeight = level.minWorkspaceHeight;
   Studio.softButtons_ = level.softButtons || [];
-  BlocklyApps.IDEAL_BLOCK_NUM = level.ideal || Infinity;
-  BlocklyApps.REQUIRED_BLOCKS = level.requiredBlocks;
 
   // Override scalars.
   for (var key in level.scale) {
@@ -3110,6 +3149,10 @@ var drawMap = function() {
   visualization.style.width = Studio.MAZE_WIDTH + 'px';
   var belowVisualization = document.getElementById('belowVisualization');
   belowVisualization.style.width = Studio.MAZE_WIDTH + 'px';
+  if (Studio.minWorkspaceHeight > Studio.MAZE_HEIGHT) {
+    belowVisualization.style.minHeight =
+      (Studio.minWorkspaceHeight - Studio.MAZE_HEIGHT) + 'px';
+  }
 
   // Adjust button table width.
   var buttonTable = document.getElementById('gameButtons');
@@ -3255,6 +3298,29 @@ var performQueuedMoves = function(i)
   }
 };
 
+//
+// Show speech bubbles queued in sayQueues (called from inside onTick)
+//
+
+var showSpeechBubbles = function() {
+  for (var i = 0; i < Studio.eventHandlerNumber; i++) {
+    var sayCmd;
+    var sayQueue = Studio.sayQueues[i];
+    while (sayQueue &&
+           (sayCmd = sayQueue[0]) && sayCmd.tickCount <= Studio.tickCount) {
+      // Remove this item from the queue
+      sayQueue.shift();
+      var speechBubble = document.getElementById('speechBubble' + sayCmd.index);
+      speechBubble.textContent = sayCmd.text;
+      speechBubble.setAttribute('visibility', 'visible');
+      window.clearTimeout(Studio.sprite[sayCmd.index].bubbleTimeout);
+      Studio.sprite[sayCmd.index].bubbleTimeout = window.setTimeout(
+          delegate(this, Studio.hideSpeechBubble, sayCmd.index),
+          Studio.SPEECH_BUBBLE_TIMEOUT);
+    }
+  }
+};
+
 Studio.onTick = function() {
   Studio.tickCount++;
 
@@ -3333,6 +3399,8 @@ Studio.onTick = function() {
     // Display sprite:
     Studio.displaySprite(i);
   }
+  
+  showSpeechBubbles();
   
   if (checkFinished()) {
     Studio.onPuzzleComplete();
@@ -3558,6 +3626,10 @@ BlocklyApps.reset = function(first) {
 
   // Reset configurable variables
   Studio.setBackground('cave');
+  
+  // Reset the eventHandlerNumber
+  Studio.eventHandlerNumber = 0;
+  Studio.sayQueues = [];
 
   var spriteStartingSkins = [ "green", "purple", "pink", "orange" ];
   var numStartingSkins = spriteStartingSkins.length;
@@ -3930,14 +4002,32 @@ Studio.hideSpeechBubble = function (index) {
   speechBubble.setAttribute('visibility', 'hidden');
 };
 
-Studio.saySprite = function (index, text) {
-  var speechBubble = document.getElementById('speechBubble' + index);
-  speechBubble.textContent = text;
-  speechBubble.setAttribute('visibility', 'visible');
-  window.clearTimeout(Studio.sprite[index].bubbleTimeout);
-  Studio.sprite[index].bubbleTimeout = window.setTimeout(
-      delegate(this, Studio.hideSpeechBubble, index),
-      3000);
+var stampNextQueuedSayTick = function (numHandler) {
+  var tickCount = Studio.tickCount;
+  var sayQueue = Studio.sayQueues[numHandler];
+  if (sayQueue) {
+    // Use the last item in this event handler's queue of say commands,
+    // clone that tickCount and add the SPEECH_BUBBLE_TIMEOUT (in ticks)
+    var sayCmd = sayQueue.slice(-1)[0];
+    if (sayCmd) {
+      tickCount = sayCmd.tickCount +
+          Math.round(Studio.SPEECH_BUBBLE_TIMEOUT / Studio.scale.stepSpeed);
+    }
+  }
+  return tickCount;
+};
+
+Studio.saySprite = function (numHandler, index, text) {
+  if (!Studio.sayQueues[numHandler]) {
+    Studio.sayQueues[numHandler] = [];
+  }
+  
+  var sayCmd = {
+      'tickCount': stampNextQueuedSayTick(numHandler),
+      'index': index,
+      'text': text
+  };
+  Studio.sayQueues[numHandler].push(sayCmd);
 };
 
 Studio.moveSingle = function (spriteIndex, dir) {
@@ -4052,7 +4142,7 @@ var checkFinished = function () {
   return false;
 };
 
-},{"../../locale/es_es/common":31,"../../locale/es_es/studio":32,"../base":2,"../codegen":5,"../dom":6,"../feedback.js":7,"../skins":8,"../templates/page.html":25,"./api":10,"./blocks":11,"./controls.html":12,"./tiles":17,"./visualization.html":18}],17:[function(require,module,exports){
+},{"../../locale/es_es/common":32,"../../locale/es_es/studio":33,"../base":2,"../codegen":6,"../dom":7,"../feedback.js":8,"../skins":9,"../templates/page.html":26,"./api":11,"./blocks":12,"./controls.html":13,"./tiles":18,"./visualization.html":19}],18:[function(require,module,exports){
 'use strict';
 
 /**
@@ -4082,7 +4172,7 @@ exports.SquareType = {
   SPRITESTART: 16,
 };
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4103,7 +4193,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":33}],19:[function(require,module,exports){
+},{"ejs":34}],20:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4124,7 +4214,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":33}],20:[function(require,module,exports){
+},{"ejs":34}],21:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4145,7 +4235,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/es_es/common":31,"ejs":33}],21:[function(require,module,exports){
+},{"../../locale/es_es/common":32,"ejs":34}],22:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4166,7 +4256,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":33}],22:[function(require,module,exports){
+},{"ejs":34}],23:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4187,7 +4277,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/es_es/common":31,"ejs":33}],23:[function(require,module,exports){
+},{"../../locale/es_es/common":32,"ejs":34}],24:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4210,7 +4300,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/es_es/common":31,"ejs":33}],24:[function(require,module,exports){
+},{"../../locale/es_es/common":32,"ejs":34}],25:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4231,7 +4321,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/es_es/common":31,"ejs":33}],25:[function(require,module,exports){
+},{"../../locale/es_es/common":32,"ejs":34}],26:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4253,7 +4343,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/es_es/common":31,"ejs":33}],26:[function(require,module,exports){
+},{"../../locale/es_es/common":32,"ejs":34}],27:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4275,7 +4365,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":33}],27:[function(require,module,exports){
+},{"ejs":34}],28:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4296,7 +4386,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/es_es/common":31,"ejs":33}],28:[function(require,module,exports){
+},{"../../locale/es_es/common":32,"ejs":34}],29:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4317,7 +4407,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":33}],29:[function(require,module,exports){
+},{"ejs":34}],30:[function(require,module,exports){
 exports.shallowCopy = function(source) {
   var result = {};
   for (var prop in source) {
@@ -4349,7 +4439,17 @@ exports.escapeHtml = function(unsafe) {
     .replace(/'/g, "&#039;");
 };
 
-},{}],30:[function(require,module,exports){
+/**
+ * Version of modulo which, unlike javascript's `%` operator,
+ * will always return a positive remainder.
+ * @param number
+ * @param mod
+ */
+exports.mod = function(number, mod) {
+  return ((number % mod) + mod) % mod;
+};
+
+},{}],31:[function(require,module,exports){
 // Serializes an XML DOM node to a string.
 exports.serialize = function(node) {
   var serializer = new XMLSerializer();
@@ -4377,7 +4477,7 @@ exports.parseElement = function(text) {
   return element;
 };
 
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.es=function(n){return n===1?"one":"other"}
 exports.blocklyMessage = function(d){return "Blockly"};
 
@@ -4409,7 +4509,7 @@ exports.dialogOK = function(d){return "OK"};
 
 exports.emptyBlocksErrorMsg = function(d){return "Los bloques \"repetir\" o \"si\" deben tener otros bloques dentro de ellos para funcionar. Asegúrate que el bloque interno quede correctamente dentro del bloque que lo contiene."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Tienes bloques adicionales que no están conectados a un bloque de evento."};
 
 exports.finalStage = function(d){return "¡Felicidades! Has completado la etapa final."};
 
@@ -4427,7 +4527,7 @@ exports.levelIncompleteError = function(d){return "Estás utilizando todos los t
 
 exports.listVariable = function(d){return "lista"};
 
-exports.makeYourOwnFlappy = function(d){return "Crea tu propio juego Flappy"};
+exports.makeYourOwnFlappy = function(d){return "Crea tu propio juego Flappy Bird"};
 
 exports.missingBlocksErrorMsg = function(d){return "Trata de resolver este puzzle usando uno o más de los bloques de abajo."};
 
@@ -4465,7 +4565,7 @@ exports.tooManyBlocksMsg = function(d){return "Puedes resolver este puzzle con <
 
 exports.tooMuchWork = function(d){return "¡Me has hecho trabajar mucho!  ¿Podrías tratar de repetir menos veces?"};
 
-exports.flappySpecificFail = function(d){return "Tú código se ve bien - aleteará con cada clic. Pero tienes que hacer clic varias veces para aletear a la meta."};
+exports.flappySpecificFail = function(d){return "Tú código se ve bien - aleteará con cada clic. Pero tienes que hacer clic varias veces para aletear hacia la meta."};
 
 exports.toolboxHeader = function(d){return "Bloques"};
 
@@ -4504,7 +4604,7 @@ exports.signup = function(d){return "Únete al curso de introducción"};
 exports.hintHeader = function(d){return "Here's a tip:"};
 
 
-},{"messageformat":44}],32:[function(require,module,exports){
+},{"messageformat":45}],33:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.es=function(n){return n===1?"one":"other"}
 exports.continue = function(d){return "Continuar"};
 
@@ -4755,7 +4855,7 @@ exports.whenUpTooltip = function(d){return "Realiza las instrucciones de abajo c
 exports.yes = function(d){return "Sí"};
 
 
-},{"messageformat":44}],33:[function(require,module,exports){
+},{"messageformat":45}],34:[function(require,module,exports){
 
 /*!
  * EJS
@@ -5114,7 +5214,7 @@ if (require.extensions) {
   });
 }
 
-},{"./filters":34,"./utils":35,"fs":36,"path":38}],34:[function(require,module,exports){
+},{"./filters":35,"./utils":36,"fs":37,"path":39}],35:[function(require,module,exports){
 /*!
  * EJS - Filters
  * Copyright(c) 2010 TJ Holowaychuk <tj@vision-media.ca>
@@ -5317,7 +5417,7 @@ exports.json = function(obj){
   return JSON.stringify(obj);
 };
 
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 
 /*!
  * EJS
@@ -5343,9 +5443,9 @@ exports.escape = function(html){
 };
  
 
-},{}],36:[function(require,module,exports){
-
 },{}],37:[function(require,module,exports){
+
+},{}],38:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -5400,7 +5500,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -5628,7 +5728,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require("/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":37}],39:[function(require,module,exports){
+},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":38}],40:[function(require,module,exports){
 (function (global){
 /*! http://mths.be/punycode v1.2.4 by @mathias */
 ;(function(root) {
@@ -6139,7 +6239,7 @@ var substr = 'ab'.substr(-1) === 'b'
 }(this));
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -6225,7 +6325,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -6312,13 +6412,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],42:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":40,"./encode":41}],43:[function(require,module,exports){
+},{"./decode":41,"./encode":42}],44:[function(require,module,exports){
 /*jshint strict:true node:true es5:true onevar:true laxcomma:true laxbreak:true eqeqeq:true immed:true latedef:true*/
 (function () {
   "use strict";
@@ -6951,7 +7051,7 @@ function parseHost(host) {
 
 }());
 
-},{"punycode":39,"querystring":42}],44:[function(require,module,exports){
+},{"punycode":40,"querystring":43}],45:[function(require,module,exports){
 /**
  * messageformat.js
  *
@@ -8534,4 +8634,4 @@ function parseHost(host) {
 
 })( this );
 
-},{}]},{},[14])
+},{}]},{},[15])

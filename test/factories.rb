@@ -54,6 +54,7 @@ FactoryGirl.define do
     script
     level
     chapter 1
+    sequence(:game_chapter)
   end
 
   factory :stage do

@@ -16,17 +16,15 @@
   %body{ style: 'padding  :0px;' }
     - if !phone? || !@level
       = render partial: 'layouts/header'
+    - page = yield
     - if @full_width
       .full_container{ style: @no_padding ? 'padding: 0px 0px 25px 0px;' : '' }
-        = yield
+        = page
     - else
       .container.main{ style: 'padding: 10px;'}
-        - if notice
-          %p#notice= notice
-        - if alert
-          %p#alert= alert
+        = show_flashes.html_safe
 
-        = yield
+        = page
     = render partial: 'layouts/footer'
 
     = yield :body_scripts

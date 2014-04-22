@@ -10,19 +10,21 @@
         current_password: Nuværende adgangskode
         locale: Sprog
         gender: Køn
-        edit_header: Redigere kontooplysninger
+        edit_header: Rediger kontooplysninger
+        error:
+          future: can't be in the future
   hello: Hej verden
   welcome_back: Velkommen tilbage %{name}
   add_teacher_form:
     code_or_email:
-      label: 'Tilføj en lærer med kode eller e-mail-adresse:'
+      label: 'Tilføj en lærer med kode eller e-mailadresse:'
       placeholder: Kode (ABCDEF) eller e-mail (teacher@school.edu)
     submit: Tilføj lærer
   add_hint_form:
-    placeholder: Please enter your hint here
-    submit: Add hint
+    placeholder: Skriv dit huske-ord her
+    submit: Skriv huske-ord
   appname: Code.org
-  stage: Fase
+  stage: Trin
   puzzle: Puslespil
   trophies: Trofæer
   courses: Kurser
@@ -30,14 +32,13 @@
   more: MERE
   less: MINDRE
   try_hoc: 'Prøv En Times Kodning, klik her >> '
-  try_k8intro: Eller prøv vores Folkeskole Intro til Computer Videnskabs Kursus (15-25
-    timer)
-  k8intro: K-8 Intro to Computer Science Course (15-25 hours)
+  try_k8intro: Prøv vores grundskole introduktion til datalogi kurset (15-25 timer)
+  k8intro: Grundskole introduktion til datalogi kursus (15-25 timer)
   already_started: 'Allerede startet? Fortsæt her >> '
   demos: 'Admin: Alle demoer'
   continue: Fortsæt
   prize: præmie
-  more_info: Mere info
+  more_info: Mere information
   auth:
     sign_in_with: Log ind med %{provider}
     signed_in: Logget ind!
@@ -51,18 +52,17 @@
     need_confirmation: Har ikke modtaget bekræftelses instruktioner?
     need_unlock: Ikke modtaget lås op instruktioner?
   signup_form:
-    overview: Dette 20-timers kursus introducerer centrale computer videnskabs og
-      programmering begreber. Kurset er designet til brug i folkeskolens klasseværelser,
-      men det er sjovt at lære i alle aldre.
-    no_signup_header: Ønsker du ikke at tilmelde dig?
+    overview_student: Sign up for an account to track your progress.
+    overview_teacher: Teach computer science in your classroom by signing up for an
+      account.<p/> You'll be able to track your students' progress and get rewards.
     no_signup_message: Du kan <a target="_blank" href="http://learn.code.org">gennemse
       de forskellige faser og gåder</a>, men du bliver nødt til at tilmelde dig for
       at gemme dine fremskridt.
     prizes_header: The first students to complete the course win prizes! (U.S. students
       only)
-    prizes_message: U.S. students who earn all %{num_trophies} concept trophies can
-      select a variety of prizes including free Dropbox space, Skype credits, and
-      downloadable games from Electronic Arts.
+    prizes_message: Amerikanske studerende, der tjener alle %{num_trophies} koncept
+      trofæer kan vælge en række præmier, herunder gratis Dropbox plads, Skype credits
+      og kan downloade spil fra Electronic Arts og Valve.
     teacher_educator_guide: Se lærerens guide
     teacher_prize_header: Vind $1.000 i <a target="_blank" href="http://DonorsChoose.org">
       DonorsChoose.org</a> belønninger
@@ -71,12 +71,12 @@
       de amerikanske offentlige skolelærere, der fører mindst 15 studerende gennem
       dette kursus. <a href="http://code.org/educate/20hr"> Se pædagogisk guide for
       mere info.</a> '
-    teacher_prize_limits: '(Limit: $1,000 per teacher. <a target="_blank" href="http://help.donorschoose.org/app/answers/detail/a_id/454/kw/code.org">See
-      FAQ for more limits</a>)'
+    teacher_prize_limits: '(Begrænsning: $1.000 pr. lærer. <a target="_blank" href="http://help.donorschoose.org/app/answers/detail/a_id/454/kw/code.org">
+      Se FAQ for flere grænser</a>)'
     teacher_pitch: Undervis Folkeskole Intro til Computer Videnskab i dit klasselokale
     teacher_title: Lærer tilmelding
     student_pitch: 'Ud over 1 time: Prøv vores Folkeskole Intro til Computer Videnskab'
-    student_title: Tilmeld
+    student_title: Tilmelding for studerende
     school_name: Skolens navn (valgfrit)
     school_address: Skolens adresse (valgfri)
     address_placeholder: adresse, by, stat, postnummer
@@ -95,14 +95,15 @@
       mine forældres eller værges tilladelse til at benytte Code.org.
     teacher_terms: Jeg accepterer at være underlagt Code.org servicevilkårene.
   signin_form:
-    title: Log ind
+    title: Har allerede en konto? Log på
     login: Email eller Brugernavn
     password: Adgangskode
     remember: Husk mig
     submit: Log ind
   signin:
-    try_hoc: Try one Hour of Code first
-    try_20hours: Try our 20 hour Intro to Computer Science
+    try_heading: Want to try coding without signing up?
+    try_hoc: Prøv En Times Kodning først
+    try_20hours: Prøv vores 20 timers Introduktion til datalogi
   password:
     reset_form:
       title: Glemt din adgangskode?
@@ -139,28 +140,30 @@
       invite_student:
         subject: Tilmeld dig en klasse med %{teacher_name} på Code.org!
       student_disassociated:
-        subject: 'Code.org notification: %{student_name} is no longer associated as
-          your student.'
+        subject: 'Code.org anmeldelse: %{student_name} er ikke længere tilknyttet
+          som dine studerende.'
       teacher_disassociated:
-        subject: 'Code.org notification: %{teacher_name} is no longer associated as
-          your teacher.'
+        subject: 'Code.org anmeldelse: %{teacher_name} er ikke længere tilknyttet
+          som din lærer.'
   reports:
     error:
-      access_denied: Du har ikke adgang til denne persons statestikker
+      access_denied: Du har ikke adgang til denne persons statistikker
   redeem_prizes:
     title: 'Redeem Prizes: %{name}'
     provider: 'Provider:'
     code: 'Code:'
     redeem_header: 'To redeem:'
-    donorschoose_how_to: How to use your code
+    donorschoose_register: Register as a teacher on DonorsChoose.org
+    donorschoose_project: Post a project
+    donorschoose_how_to: Sådan bruger du din kode
     success: Your prize was succesfully redeemed, see code below.
     error: Your prize could not be redeemed, please try again.
-    error_us_only: Prisen er kun mulig for gyldige amerikanske brugere.
+    error_us_only: Præmien er kun tilgængelig for amerikanske brugere.
     error_not_earned: Du har endnu ikke optjent denne præmie.
     error_already_redeemed: Din præmie er allerede blevet indløst.
     no_prizes_available: Vi beklager, men vi har i øjeblikket ingen tilgængelige præmier.
-    teacher_info_required: 'Teacher prizes require school name and address information:'
-    teacher_email_required: 'Teacher prizes require a confirmed email address:'
+    teacher_info_required: 'Lærerpræmier kræver skolens navn og adresse oplysninger:'
+    teacher_email_required: 'Lærerpræmier kræver en bekræftet email-adresse:'
     confirm:
       title: Please Confirm
       'no': false
@@ -183,15 +186,15 @@
     msg:
       choose: 'Choose a prize:'
       choose_teacher: 'Click on the logo below to claim your prize:'
-      earned: Du har opnået en pris! (Kun for amerikanske studerende)
+      earned: Du har opnået en præmie! (Kun for amerikanske studerende)
       not_earned_title: Finish the tutorial, earn rewards (U.S. students only)
       not_earned: 'Lær alle datalogi begreberne, indsaml alle %{num_trophies} trofæer,
         og vind præmier. Du kan vælge mellem 10GB gratis Dropbox plads, $10 i Skype
         credits, og gratis spil downloads. Bemærk: gælder kun amerikanske studerende,
         og kun så længe lager haves.'
       teacher:
-        earned: 10 eller flere studerende har indsamlet alle %{num_trophies} trofæer.
-          Du har vundet en $750 lærer præmie! (gælder kun amerikanske lærere)
+        earned: 15 eller flere studerende har indsamlet alle %{num_trophies} trofæer.
+          Du har vundet en lærerpræmie! (dog kun for amerikanske lærere)
         not_earned_title: Teach the class, earn up to $1,000 in <a target="_blank"
           href="http://DonorsChoose.org">DonorsChoose.org</a> credits (U.S. teachers
           only)
@@ -230,8 +233,8 @@
     confirm: Er du sikker?
     created: '%{model} blev oprettet.'
     updated: '%{model} blev opdateret.'
-    destroyed: '%{model} was successfully deleted.'
-    access_denied: You do not have access to this %{model}.
+    destroyed: '%{model} blev slettet.'
+    access_denied: Du har ikke adgang til denne %{model}.
   nav:
     header:
       finished_hoc: Jeg har afsluttet min En Times Kodning
@@ -257,29 +260,29 @@
       prizes_link: mere info
   teacher:
     title:
-      one: Din lærer er %{name}
+      one: 'Din lærer:'
       other: 'Dine lærere:'
-    remove: (remove teacher)
+    remove: (Fjern lærer)
     confirm:
-      remove: Are you sure you want to remove this teacher?
+      remove: Er du sikker på, at du vil fjerne denne lærer?
     tools: Lærer redskaber
     students:
       manage: Administrer studerende
       add: Tilføje studerende
     sections:
-      manage: Manage sections
+      manage: Administrere sektioner
     rollup: Fremskridts oversigt
-    activity: Senest klasse aktivitet
-    user_not_found: The teacher or student could not be found
-    cant_remove_student_no_email: '%{student_name} cannot be removed as your student
-      because %{student_name} has not registered an e-mail address'
-    cant_remove_teacher_no_email: '%{teacher_name} cannot be removed as your teacher
-      because you have not registered an e-mail address'
-    student_teacher_disassociated: '%{teacher_name} has been removed as a teacher
-      for %{student_name}'
+    activity: Seneste klasse aktivitet
+    user_not_found: Lærer eller elev kunne ikke findes
+    cant_remove_student_no_email: '%{student_name} kan ikke fjernes som din studerende,
+      fordi %{student_name} ikke har registreret en e-mailadresse'
+    cant_remove_teacher_no_email: '%{teacher_name} kan ikke fjernes som din lærer,
+      fordi du ikke har registreret en e-mailadresse'
+    student_teacher_disassociated: '%{teacher_name} er blevet fjernet som lærer for
+      %{student_name}'
   user:
-    email_confirm_needed: 'Email address has not been confirmed:'
-    email_resend_confirm: Resend confirmation instructions
+    email_confirm_needed: 'E-mailadresse er ikke blevet bekræftet:'
+    email_resend_confirm: Gensend bekræftelses instruktioner
     new_password_hint: (Efterlad blank hvis du ikke ønsker at ændre det)
     current_password_hint: (vi har brug for din nuværende adgangskode til at bekræfte
       dine ændringer)
@@ -294,9 +297,9 @@
     recent_activity: Nylig aktivitet
     show_more: Vis mere
   home:
-    signin_message: Eller hvis du allerede er registreret, %{link}
-    student_reg_link: Studerende
-    teacher_reg_link: Lærer
+    signin_message: Allerede registreret? %{link}
+    student_reg_link: Tilmelding for studerende
+    teacher_reg_link: Tilmelding for studerende
     signin_directions: Use an account to track progress and get rewards.<br/> Teachers,
       track your entire class.
     teacher_dashboard: Se fremskridts oversigt
@@ -304,9 +307,10 @@
     teacher_student_count: Du har %{count} studerende.
     teacher_averages: Dine elever har i gennemsnit optjent %{trophy_average} ud af
       %{trophy_max} "Koncept beherskelse" trofæer.
-    teacher_print_certificates: Print certificates for students who finish this course
-    teacher_read_blog: Read about news and updates to our materials at our Educator
-      Blog
+    teacher_print_certificates: Udskriv certifikater for studerende, der er færdig
+      med dette kursus
+    teacher_read_blog: Læs om nyheder og opdateringer til vores materialer på vores
+      underviser blog
     teacher_survey: Tell us what you think about this course
     classroom: Dit klasseværelse
     student_progress: Dit lærings fremskridt
@@ -322,8 +326,12 @@
     see_details: Se detaljer
     prize_info: 'Prizes for participation (U.S. only): $10 gift cards for student
       completion and up to $1,000 in classroom rewards for public school teachers'
-    tryfirst: 'Or, you can try it first, and sign up later:'
-    trynow: Try now
+    tryfirst: 'Eller du kan prøve det først, og tilmeld dig bagefter:'
+    trynow: Prøv nu
+    add_hint_help: Please help us to add smart hints to Code.org tutorials
+    20hour_overview: This 20-hour course introduces core computer science and programming
+      concepts. The course is designed for use in classrooms for grades K-8, but it
+      is fun to learn at all ages.
   gender:
     male: Mand
     female: Kvinde
@@ -353,6 +361,8 @@
     subtitle: Se disse videoer og tips
     teacher: Se løsningen
     auth_error: Du har ikke rettigheder til at se løsningen.
+    submit: Update Artist Location
+    direction: Start Direction
   video:
     tab: Video.
     notes: Ingen video? Vis noter.
@@ -367,15 +377,27 @@
   download_pdf: Åben lektionsplan
   share_code:
     title: Klik 'Kør program' at se mit program i aktion
-    flappy_og_title: Check out my Flappy Game
-    og_description: I wrote the code myself with Code.org
+    bounce_og_title: Check out my Bounce Game
+    flappy_og_title: Tjek mit Flappy spil
+    og_description: Jeg skrev selv koden med Code.org
   builder:
-    created: You created a new script.
-    destroyed: You destroyed a script.
+    created: Du har oprettet et nyt script.
+    destroyed: Du ødelagde et script.
     manage: Manage Scripts
-    view: View
-    back: Back to scripts
+    view: Se
+    back: Tilbage til scripts
     level:
-      create: Create new level
-      current: Current Levels
-      unused: Unused Levels
+      create: Opret nyt niveau
+      current: Nuværende niveau
+      unused: Ubrugte niveauer
+  upsell:
+    hoc:
+      title: The Hour of Code
+      body: Try the basics of computer science. Millions have given it a shot.
+    flappy:
+      title: Flappy Code
+      body: Wanna write your own game in less than 10 minutes? Try our Flappy Code
+        tutorial!
+    20hour:
+      title: Intro Course
+      body: Try our 20-hour Intro to Computer Science course.

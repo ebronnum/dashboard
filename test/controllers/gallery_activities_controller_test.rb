@@ -9,6 +9,20 @@ class GalleryActivitiesControllerTest < ActionController::TestCase
     @new_activity = create(:activity, user: @user)
   end
 
+  test "should show index" do
+    # index is public
+    get :index
+
+    assert_response :success
+  end
+
+  test "should show index to user" do
+    sign_in @user
+    get :index
+
+    assert_response :success
+  end
+
   test "user should create gallery_activity" do
     sign_in @user
 

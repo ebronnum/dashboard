@@ -1,12 +1,12 @@
 "bg":
   devise:
     confirmations:
-      confirmed: Вашия акаунт бе успешно потвърден. Вече сте влезли.
+      confirmed: Вашият имейл адрес е успешно потвърден.
       send_instructions: До няколко минути, ще получите имейл с инструкции за това
         как да потвърдите акаунта си.
       send_paranoid_instructions: Ако вашият email адрес съществува в нашата база
         данни, ще получите имейл с инструкции за това как да потвърдите акаунта си
-        за няколко минути.
+        до няколко минути.
     failure:
       already_authenticated: Вече сте влезли.
       inactive: Вашият акаунт все още не е активиран.
@@ -19,13 +19,13 @@
       unconfirmed: Трябва да потвърдите вашия акаунт преди да продължите.
     mailer:
       confirmation_instructions:
-        subject: Инструкции за потвърждение
+        subject: Инструкции за потвърждение на Code.org
       reset_password_instructions:
-        subject: Инструкции за възстановяване на парола
+        subject: Инструкции за възстановяване на паролата в Code.org
       unlock_instructions:
         subject: Инструкции за отключване
     omniauth_callbacks:
-      failure: Could not authenticate you from %{kind} because "%{reason}".
+      failure: Не може да ви потвърдим от %{kind} , защото "%{reason}".
       success: Успешно удостоверен от акаунта %{kind}.
     passwords:
       no_token: Нямате достъп до тази страница, ако не идвате от имейл за възстановяване
@@ -42,8 +42,8 @@
       destroyed: Чао! Вашия акаунт бе успешно прекратен. Надяваме се скоро да ви видим
         отново.
       signed_up: Добре дошли! Вие се регистрирахте успешно.
-      signed_up_but_inactive: Регистрирали сте се успешно. Въпреки това, ние можем
-        да ви впишем, тъй като вашият акаунт, все още не е активиран.
+      signed_up_but_inactive: Регистрирали сте се успешно. Въпреки това, ние не можем
+        да ви впишем, тъй като вашият акаунт все още не е активиран.
       signed_up_but_locked: Регистрирали сте се успешно. Въпреки това ние не можем
         да ви впишем, понеже вашият акаунт е заключен.
       signed_up_but_unconfirmed: Съобщение с линк за потвърждение, е изпратено до
@@ -64,9 +64,9 @@
       unlocked: Вашият акаунт бе успешно отключен. Моля, влезте, за да продължите.
   errors:
     messages:
-      already_confirmed: was already confirmed, please try signing in
-      confirmation_period_expired: needs to be confirmed within %{period}, please
-        request a new one
+      already_confirmed: е вече потвърден, моля опитайте се да влезете
+      confirmation_period_expired: трябва да бъде потвърден в рамките на %{period},
+        моля поискайте нов
       expired: е изтекъл, моля поискайте нов
       not_found: не е намерен
       not_locked: не е заключен

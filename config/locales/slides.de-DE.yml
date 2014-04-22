@@ -97,48 +97,50 @@
     flappy_intro:
       1:
         image: notes/flappy01.jpg
-        text: Hi, I'm Katie! One of the most exciting things about computer science
-          is that a computer program can be interactive.
+        text: Hallo, ich bin Katie! Etwas vom Interessantesten an der Informatik ist,
+          dass ein Computerprogramm interaktiv sein kann.
       2:
         image: notes/flappy02.jpg
-        text: Any time somebody clicks or taps or types on a computer or phone, that
-          generates an EVENT, and there's some code that decides what to do when an
-          EVENT occurs.
+        text: Jedes Mal, wenn jemand auf einem Computer oder Smartphone klickt, den
+          Bildschirm berührt oder tippt, wird ein Event erzeugt und Code wird ausgeführt,
+          der entscheidet was bei diesem Event zu tun ist.
       3:
         image: notes/flappy03.jpg
-        text: 'For example, you could have an EVENT-HANDLER that says "when the mouse
-          is clicked, play a sound" '
+        text: 'Zum Beispiel könntest du einen Event-Handler haben, der sagt: "Wenn
+          mit der Maus geklickt wird, spiele einen Ton" '
       4:
         image: notes/flappy04.jpg
-        text: Have you ever heard of the game FlappyBird? By using Event handlers,
-          we're going to learn to program our own custom version of FlappyBird!
+        text: Hast du schon von FlappyBird gehört? Durch Benutzen von Event-Handlern
+          werden wir eine eigene Version von FlappyBird programmieren!
       5:
         image: notes/flappy05.jpg
-        text: The code you'll write involves dragging and dropping blocks that represent
-          commands for the computer. Under the hood, each of these blocks is represented
-          by real code.
+        text: Den Code wirst du durch Drag-and-drop von Blöcken schreiben, die Kommandos
+          für den Computer sind. Unter der Haube steht jeder dieser Blöcke für wirklichen
+          Code.
       6:
         image: notes/flappy06.jpg
-        text: 'If you take a look at the workspace, there are some green blocks that
-          are filled in for you - these are "event handlers" '
+        text: 'Wenn du einen Blick auf den Arbeitsbereich wirfst, siehst du einige
+          grüne Blöcke, die für dich eingefügt wurden - das sind "Event-Handler" '
       7:
         image: notes/flappy07.jpg
-        text: If you want the bird to FLAP when you CLICK the mouse, you can do that
-          by attaching the "FLAP" block to the appropriate event handler, and now
-          in your game whenever you click the mouse, the bird will flap.
+        text: Wenn du den Vogel beim Mausklick mit den Flügeln schlagen lassen willst,
+          kannst du das durch Anhängen des "FLAP"-Blocks an den passenden Event-Handler
+          erreichen. Nun wird der Vogel jedes Mal seine Flügel bewegen, wenn mit der
+          Maus geklickt wird.
       8:
         image: notes/flappy08.jpg
-        text: In each puzzle of this activity we'll introduce new types of events
-          as green blocks on the workspace, and you can decide the appropriate blocks
-          to add in response to those events.
+        text: In jedem Puzzle dieser Übung werden wir neue Typen von Events als grüne
+          Blocks im Arbeitsbereich einfügen und du kannst die passenden Blöcke für
+          Events auswählen.
       9:
         image: notes/flappy09.jpg
-        text: When you see a drop down arrow like this, that means you can change
-          the settings - like what sound to play when flappy hits the ground.
+        text: Wenn du einen Dropdown-Pfeil wie diesen siehst, kannst du die Einstellungen
+          ändern - zum Beispiel, was für ein Ton abgespielt werden soll, wenn der
+          Vogel den Boden berührt.
       10:
         image: notes/flappy10.jpg
-        text: In the final puzzle you'll be able to create your own game and share
-          it with your friends. Have fun!
+        text: Im letzten Puzzle wirst du dein eigenes Spiel erstellen und deinen Freunden
+          zeigen können. Viel Spass!
     loop_times:
       1:
         image: notes/hoc2_1.jpg

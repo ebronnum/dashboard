@@ -11,6 +11,8 @@
         locale: Bahasa
         gender: Jenis kelamin
         edit_header: Edit rincian akun
+        error:
+          future: can't be in the future
   hello: Halo dunia
   welcome_back: Selamat datang kembali, %{name}
   add_teacher_form:
@@ -51,11 +53,9 @@
     need_confirmation: Tidak menerima instruksi konfirmasi?
     need_unlock: Tidak menerima instruksi untuk membuka?
   signup_form:
-    overview: Kursus selama 20 jam ini memperkenalkan ilmu komputer tingkat dasar
-      dan konsep-konsep pemrograman. Kursus ini dirancang untuk digunakan di ruang
-      kelas untuk sekolah dasar dan menengah, tapi tetap menyenangkan dipelajari untuk
-      semua usia.
-    no_signup_header: Tidak ingin mendaftar?
+    overview_student: Sign up for an account to track your progress.
+    overview_teacher: Teach computer science in your classroom by signing up for an
+      account.<p/> You'll be able to track your students' progress and get rewards.
     no_signup_message: Anda dapat <a target="_blank" href="http://learn.code.org">
       mencoba berbagai tahap dan berbagai teka-teki</a>, tetapi Anda akan perlu untuk
       masuk supaya kemajuan belajar Anda dapat dicatat.
@@ -103,6 +103,7 @@
     remember: Ingat saya
     submit: Masuk
   signin:
+    try_heading: Want to try coding without signing up?
     try_hoc: Cobalah 1 Jam berkode
     try_20hours: 'Cobalah program 20 jam perkenalan ilmu komputer '
   password:
@@ -151,6 +152,8 @@
     provider: 'Penyedia:'
     code: 'Kode:'
     redeem_header: 'Untuk menebus:'
+    donorschoose_register: Register as a teacher on DonorsChoose.org
+    donorschoose_project: Post a project
     donorschoose_how_to: Bagaimana menggunakan kode Anda
     success: Hadiah Anda telah berhasil ditebus, silahkan lihat kode di bawah ini.
     error: Hadiah Anda tidak bisa ditebus, silakan coba lagi.
@@ -170,11 +173,11 @@
       msg_student: 'Catatan: Anda hanya dapat memilih satu jenis hadiah.'
       msg_publicschool: Harap mengkonfirmasi bahwa Anda adalah seorang guru sekolah
         umum US.
-      msg_visit_website: Visit website
+      msg_visit_website: Kunjungi website
     providers:
-      apple_itunes: $10 iTunes Gift Card
-      donors_choose: DonorsChoose.org $750 credit
-      donors_choose_bonus: DonorsChoose.org $250 credit
+      apple_itunes: $10 iTunes hadiah voucher
+      donors_choose: kredit DonorsChoose.org $750
+      donors_choose_bonus: kredit DonorsChoose.org $250
       dropbox: 10GB ruang Dropbox
       valve: Portal 2 (PC or Mac game download)
       ea_bejeweled: Bejeweled 3 (PC game download)
@@ -271,7 +274,7 @@
       manage: Mengelola siswa
       add: Cantumkan nama siswa
     sections:
-      manage: Manage sections
+      manage: Kelola bagian
     rollup: 'Dashboard Kemajuan '
     activity: Aktivitas kelas
     user_not_found: Guru atau murid tidak dapat ditemukan
@@ -329,6 +332,10 @@
       siswa yang menyelesaikan dan maximum $1.000 per kelas untuk guru sekolah umum.'
     tryfirst: 'Atau, Anda dapat mencobanya dulu kemudian mendaftar:'
     trynow: Coba sekarang
+    add_hint_help: Please help us to add smart hints to Code.org tutorials
+    20hour_overview: This 20-hour course introduces core computer science and programming
+      concepts. The course is designed for use in classrooms for grades K-8, but it
+      is fun to learn at all ages.
   gender:
     male: Laki-laki
     female: Wanita
@@ -357,6 +364,8 @@
     subtitle: Lihat video ini dan tips lainnya
     teacher: Lihat solusi
     auth_error: Anda tidak diizinkan untuk melihat solusi.
+    submit: Update Artist Location
+    direction: Start Direction
   video:
     tab: Video.
     notes: Tidak ada video? Tunjukkan catatan kaki.
@@ -371,6 +380,7 @@
   download_pdf: Rencana pelajaran terbuka
   share_code:
     title: Klik 'Jalankan program' untuk melihat bagaimana program bekerja
+    bounce_og_title: Check out my Bounce Game
     flappy_og_title: Cobalah permainan Flappyku
     og_description: Saya menulis kode ini sendiri dengan Code.org
   builder:
@@ -383,3 +393,14 @@
       create: Buat level baru
       current: Tingkat saat ini
       unused: Tingkat yang tidak terpakai
+  upsell:
+    hoc:
+      title: The Hour of Code
+      body: Try the basics of computer science. Millions have given it a shot.
+    flappy:
+      title: Flappy Code
+      body: Wanna write your own game in less than 10 minutes? Try our Flappy Code
+        tutorial!
+    20hour:
+      title: Intro Course
+      body: Try our 20-hour Intro to Computer Science course.

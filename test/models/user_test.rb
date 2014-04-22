@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
@@ -118,6 +120,16 @@ class UserTest < ActiveSupport::TestCase
     activity4 = create(:activity, user: user)
     ga4 = GalleryActivity.create!(activity: activity4, user: user)
     assert_equal [ga4, ga2], user.reload.gallery_activities
+  end
+
+  test "short name" do
+    assert_equal 'Laurel', create(:user, :name => 'Laurel Fan', :username => 'laurelfan').short_name # first name last name
+    assert_equal 'laurel', create(:user, :name => '   ', :username => 'laurel').short_name # 'no' name
+    assert_equal 'Winnie', create(:user, :name => 'Winnie the Pooh').short_name # middle name
+    assert_equal "D'Andre", create(:user, :name => "D'Andre Means").short_name # punctuation ok
+    assert_equal '樊瑞', create(:user, :name => '樊瑞').short_name # ok, this isn't actually right but ok for now
+    assert_equal 'Laurel', create(:user, :name => 'Laurel').short_name # just one name
+    assert_equal 'some', create(:user, :name => '  some whitespace in front  ').short_name # whitespace in front
   end
 
 end

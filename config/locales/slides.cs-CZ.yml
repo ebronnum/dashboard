@@ -92,48 +92,48 @@
     flappy_intro:
       1:
         image: notes/flappy01.jpg
-        text: Hi, I'm Katie! One of the most exciting things about computer science
-          is that a computer program can be interactive.
+        text: Ahoj, jmenuju se Katie! Jedna z nejlepších věcí na počítačové vědě je,
+          že počítač může být interaktivní.
       2:
         image: notes/flappy02.jpg
-        text: Any time somebody clicks or taps or types on a computer or phone, that
-          generates an EVENT, and there's some code that decides what to do when an
-          EVENT occurs.
+        text: Kdykoliv někdo klikne nebo ťukne nebo napíše něco na počítači či mobilu,
+          vytvoří to UDÁLOST. Když je dojde k UDÁLOSTI, je tam kód, který rozhodne,
+          co dělat.
       3:
         image: notes/flappy03.jpg
-        text: 'For example, you could have an EVENT-HANDLER that says "when the mouse
-          is clicked, play a sound" '
+        text: 'Například můžeš mít MANIPULÁTOR UDÁLOSTÍ, který říká "když je myš stisknutá,
+          přehraj zvuk" '
       4:
         image: notes/flappy04.jpg
-        text: Have you ever heard of the game FlappyBird? By using Event handlers,
-          we're going to learn to program our own custom version of FlappyBird!
+        text: Už jsi někdy slyšel o hře FlappyBird? S pomocí manipulátoru událostí
+          tě naučíme naprogramovat tvou vlastní verzi FlappyBird!
       5:
         image: notes/flappy05.jpg
-        text: The code you'll write involves dragging and dropping blocks that represent
-          commands for the computer. Under the hood, each of these blocks is represented
-          by real code.
+        text: Kód, který píšeš zahranuje přetahování a pouštění bloků, které předtavují
+          příkazy pro počítač. Pod povrchem každého takového bloku je skrytý skutečný
+          kód.
       6:
         image: notes/flappy06.jpg
-        text: 'If you take a look at the workspace, there are some green blocks that
-          are filled in for you - these are "event handlers" '
+        text: 'Pokud se podíváš na pracovní plochu, uvidíš pár zelených bloků, které
+          tam jsou pro tebe - jsou to "manipulátory událsotí" '
       7:
         image: notes/flappy07.jpg
-        text: If you want the bird to FLAP when you CLICK the mouse, you can do that
-          by attaching the "FLAP" block to the appropriate event handler, and now
-          in your game whenever you click the mouse, the bird will flap.
+        text: Pokud chceš, aby ptáček ZAMÁVAL, když klikneš myší, musíš spojit blok
+          "ZAMÁVAT" s příslušným mnipulátorem událostí a potom, kdykoliv ve své hře
+          klikneš myší, ptáček zamává.
       8:
         image: notes/flappy08.jpg
-        text: In each puzzle of this activity we'll introduce new types of events
-          as green blocks on the workspace, and you can decide the appropriate blocks
-          to add in response to those events.
+        text: V každé části této aktivity si ukážeme nové typy událostí jako zelené
+          bloky na pracovní ploše, a že se můžeš rohodnout přidat příslušné bloky,
+          jako reakci na tyto události.
       9:
         image: notes/flappy09.jpg
-        text: When you see a drop down arrow like this, that means you can change
-          the settings - like what sound to play when flappy hits the ground.
+        text: Když vidíš šipku ukazující dlů, jako je tahle, namená to, že můžeš změnit
+          nastavení - například jaký zvuk přehrát, když se Flappy dotkne země.
       10:
         image: notes/flappy10.jpg
-        text: In the final puzzle you'll be able to create your own game and share
-          it with your friends. Have fun!
+        text: V poslední části si budeš moct vytvořit vlasntí hru asdílet ji se svými
+          přáteli. Užij si to!
     loop_times:
       1:
         image: notes/hoc2_1.jpg

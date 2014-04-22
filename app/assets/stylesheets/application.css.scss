@@ -939,7 +939,10 @@ a.download-video {
     margin: 0
   }
   .smallwhitetext {
-    color:white; font-size:15px; font-size:13px; padding-right:10px; font-weight:normal;
+    color:white;
+    font-size:13px;
+    padding-right:10px;
+    font-weight:normal;
   }   
   .imgspan {
     margin-left: 0px;
@@ -958,7 +961,55 @@ a.download-video {
       font-weight:400;
     }
   }
+  .itemblock {
+    display:inline-block;
+    width:600px
+  }
+  .labelblock {
+    display:inline-block;
+    width:140px
+  }
 }
+
+#signup {
+  .signupblock {
+    background-color: #fafafa;
+  }
+  .signupform {
+    padding:20px;
+    margin-bottom:0px
+  }
+  .itemblock {
+    display:inline-block;
+  }
+  .labelblock {
+    display:inline-block;
+    width:140px
+  }
+  .fieldblock {
+    width:220px;
+    vertical-align:top;
+  }
+  #labelusername {
+    vertical-align:top;
+    padding-top:7px
+  }
+  #usernamefield {
+    vertical-align:top
+  }
+  #usernamemessage, #password_message, #password_message_confirmation {
+    display:inline-block;
+    width:180px;
+    vertical-align:top
+  }
+  #user_gender {
+    width:234px
+  }
+  .field_with_errors {
+    display:inline-block
+  }
+}
+
 
 #current-script-levels, #all-levels {
   min-height: 50px;
@@ -998,15 +1049,36 @@ a.download-video {
   }
 }
 
-ul.gallery {
-  margin-left: 0;
-  li {
-    float: left;
-    list-style-type: none;
-    img {
-      border: 10px groove lightgray;
-      margin: 5px;
-    }
+div.gallery_activity {
+  $img_size: 154px;
+  $img_border_size: 10px;
+  $img_total_size: $img_size + 2 * $img_border_size;
+  float: left;
+  width: $img_total_size;
+  margin: 10px 5px;
+  img {
+    width: $img_size;
+    height: $img_size;
+    border: $img_border_size groove lightgray;
   }
+  .caption {
+    color: #666;
+    margin: 0 auto;
+    clear: both;
+    max-width: $img_size;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.infobox {
+  background-color: rgb(88, 103, 113);
+  margin-left: 0px;
+  color: white;
+  font-size: 13px;
+  padding-right: 10px;
+  font-weight: normal;
+  padding: 10px;
 }
 

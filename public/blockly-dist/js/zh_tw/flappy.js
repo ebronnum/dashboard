@@ -7,6 +7,7 @@ if (typeof global !== 'undefined') {
 }
 
 var addReadyListener = require('./dom').addReadyListener;
+var blocksCommon = require('./blocksCommon');
 
 function StubDialog() {
   for (var argument in arguments) {
@@ -53,6 +54,7 @@ module.exports = function(app, levels, options) {
   };
 
   options.skin = options.skinsModule.load(BlocklyApps.assetUrl, options.skinId);
+  blocksCommon.install(Blockly);
   options.blocksModule.install(Blockly, options.skin);
 
   addReadyListener(function() {
@@ -69,7 +71,7 @@ module.exports = function(app, levels, options) {
 };
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./base":2,"./dom":6}],2:[function(require,module,exports){
+},{"./base":2,"./blocksCommon":4,"./dom":7}],2:[function(require,module,exports){
 /**
  * Blockly Apps: Common code
  *
@@ -151,6 +153,9 @@ BlocklyApps.init = function(config) {
 
   BlocklyApps.share = config.share;
   BlocklyApps.noPadding = config.no_padding;
+
+  BlocklyApps.IDEAL_BLOCK_NUM = config.level.ideal || Infinity;
+  BlocklyApps.REQUIRED_BLOCKS = config.level.requiredBlocks || [];
 
   // enableShowCode defaults to true if not defined
   BlocklyApps.enableShowCode = (config.enableShowCode === false) ? false : true;
@@ -525,7 +530,10 @@ BlocklyApps.arrangeBlockPosition = function(startBlocks, arrangement) {
 };
 
 var showInstructions = function(level) {
-  level.instructions = level.instructions || '';
+  if (!level.instructions) {
+    // Skip instructions if empty
+    return;
+  }
 
   var instructionsDiv = document.createElement('div');
   instructionsDiv.innerHTML = require('./templates/instructions.html')(level);
@@ -866,7 +874,7 @@ var getIdealBlockNumberMsg = function() {
       msg.infinity() : BlocklyApps.IDEAL_BLOCK_NUM;
 };
 
-},{"../locale/zh_tw/common":31,"./builder":4,"./dom":6,"./feedback.js":7,"./slider":18,"./templates/buttons.html":20,"./templates/instructions.html":22,"./templates/learn.html":23,"./templates/makeYourOwn.html":24,"./utils":29,"./xml":30}],3:[function(require,module,exports){
+},{"../locale/zh_tw/common":32,"./builder":5,"./dom":7,"./feedback.js":8,"./slider":19,"./templates/buttons.html":21,"./templates/instructions.html":23,"./templates/learn.html":24,"./templates/makeYourOwn.html":25,"./utils":30,"./xml":31}],3:[function(require,module,exports){
 exports.createToolbox = function(blocks) {
   return '<xml id="toolbox" style="display: none;">' + blocks + '</xml>';
 };
@@ -876,6 +884,43 @@ exports.blockOfType = function(type) {
 };
 
 },{}],4:[function(require,module,exports){
+/**
+ * Defines blocks useful in multiple blockly apps
+ */
+'use strict';
+
+var REPEAT_IMAGE_URL = 'media/sharedBlocks/repeat.png';
+var REPEAT_IMAGE_WIDTH = 53;
+var REPEAT_IMAGE_HEIGHT = 57;
+
+/**
+ * Install extensions to Blockly's language and JavaScript generator
+ * @param blockly instance of Blockly
+ */
+exports.install = function(blockly) {
+  // Re-uses the repeat block generator from core
+  blockly.JavaScript.controls_repeat_simplified = blockly.JavaScript.controls_repeat;
+
+  blockly.Blocks.controls_repeat_simplified = {
+    // Repeat n times (internal number) with simplified UI
+    init: function() {
+      this.setHelpUrl(blockly.Msg.CONTROLS_REPEAT_HELPURL);
+      this.setHSV(322, 0.90, 0.95);
+      this.appendStatementInput('DO')
+        .appendTitle(new blockly.FieldImage(
+          blockly.assetUrl(REPEAT_IMAGE_URL), REPEAT_IMAGE_WIDTH, REPEAT_IMAGE_HEIGHT));
+      this.appendDummyInput()
+        .appendTitle(blockly.Msg.CONTROLS_REPEAT_TITLE_REPEAT)
+        .appendTitle(new Blockly.FieldTextInput('10',
+          blockly.FieldTextInput.nonnegativeIntegerValidator), 'TIMES');
+      this.setPreviousStatement(true);
+      this.setNextStatement(true);
+      this.setTooltip(blockly.Msg.CONTROLS_REPEAT_TOOLTIP);
+    }
+  };
+};
+
+},{}],5:[function(require,module,exports){
 var feedback = require('./feedback.js');
 var dom = require('./dom.js');
 var utils = require('./utils.js');
@@ -905,7 +950,7 @@ exports.builderForm = function(onAttemptCallback) {
   dialog.show({ backdrop: 'static' });
 };
 
-},{"./dom.js":6,"./feedback.js":7,"./templates/builder.html":19,"./utils.js":29,"url":43}],5:[function(require,module,exports){
+},{"./dom.js":7,"./feedback.js":8,"./templates/builder.html":20,"./utils.js":30,"url":44}],6:[function(require,module,exports){
 var INFINITE_LOOP_TRAP = '  BlocklyApps.checkTimeout();\n';
 var INFINITE_LOOP_TRAP_RE =
     new RegExp(INFINITE_LOOP_TRAP.replace(/\(.*\)/, '\\(.*\\)'), 'g');
@@ -985,7 +1030,7 @@ exports.functionFromCode = function(code, options) {
   return new ctor();
 };
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 exports.addReadyListener = function(callback) {
   if (document.readyState === "complete") {
     setTimeout(callback, 1);
@@ -1059,7 +1104,7 @@ exports.isMobile = function() {
   return reg.test(window.navigator.userAgent);
 };
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 var trophy = require('./templates/trophy.html');
 var utils = require('./utils');
 var readonly = require('./templates/readonly.html');
@@ -1839,7 +1884,7 @@ var generateXMLForBlocks = function(blocks) {
 };
 
 
-},{"../locale/zh_tw/common":31,"./codegen":5,"./dom":6,"./templates/buttons.html":20,"./templates/code.html":21,"./templates/readonly.html":26,"./templates/showCode.html":27,"./templates/trophy.html":28,"./utils":29}],8:[function(require,module,exports){
+},{"../locale/zh_tw/common":32,"./codegen":6,"./dom":7,"./templates/buttons.html":21,"./templates/code.html":22,"./templates/readonly.html":27,"./templates/showCode.html":28,"./templates/trophy.html":29,"./utils":30}],9:[function(require,module,exports){
 exports.FlapHeight = {
   VERY_SMALL: -6,
   SMALL: -8,
@@ -1939,7 +1984,7 @@ exports.incrementPlayerScore = function(id) {
   Flappy.displayScore();
 };
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 /**
  * Blockly App: Flappy
  *
@@ -2436,7 +2481,7 @@ exports.install = function(blockly, skin) {
   delete blockly.Blocks.procedures_ifreturn;
 };
 
-},{"../../locale/zh_tw/flappy":32}],10:[function(require,module,exports){
+},{"../../locale/zh_tw/flappy":33}],11:[function(require,module,exports){
 module.exports = {
   WORKSPACE_BUFFER: 20,
   WORKSPACE_COL_WIDTH: 210,
@@ -2446,7 +2491,7 @@ module.exports = {
   AVATAR_WIDTH: 34,
   AVATAR_Y_OFFSET: 0
 };
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2467,7 +2512,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/zh_tw/flappy":32,"ejs":33}],12:[function(require,module,exports){
+},{"../../locale/zh_tw/flappy":33,"ejs":34}],13:[function(require,module,exports){
 /**
  * Blockly App: Flappy
  *
@@ -2549,9 +2594,6 @@ var AVATAR_Y_OFFSET = constants.AVATAR_Y_OFFSET;
 
 var loadLevel = function() {
   // Load maps.
-  BlocklyApps.IDEAL_BLOCK_NUM = level.ideal || Infinity;
-  BlocklyApps.REQUIRED_BLOCKS = level.requiredBlocks;
-
   infoText = (level.infoText === undefined ? true : level.infoText);
   if (!infoText) {
     Flappy.gameState = Flappy.GameStates.ACTIVE;
@@ -3518,7 +3560,7 @@ var checkFinished = function () {
   return false;
 };
 
-},{"../../locale/zh_tw/common":31,"../../locale/zh_tw/flappy":32,"../base":2,"../codegen":5,"../dom":6,"../feedback.js":7,"../skins":17,"../templates/page.html":25,"./api":8,"./constants":10,"./controls.html":11,"./visualization.html":16}],13:[function(require,module,exports){
+},{"../../locale/zh_tw/common":32,"../../locale/zh_tw/flappy":33,"../base":2,"../codegen":6,"../dom":7,"../feedback.js":8,"../skins":18,"../templates/page.html":26,"./api":9,"./constants":11,"./controls.html":12,"./visualization.html":17}],14:[function(require,module,exports){
 /*jshint multistr: true */
 
 // todo - i think our prepoluated code counts as LOCs
@@ -3936,7 +3978,7 @@ module.exports = {
   }
 };
 
-},{"../block_utils":3,"./constants":10}],14:[function(require,module,exports){
+},{"../block_utils":3,"./constants":11}],15:[function(require,module,exports){
 (function (global){
 var appMain = require('../appMain');
 window.Flappy = require('./flappy');
@@ -3954,7 +3996,7 @@ window.flappyMain = function(options) {
 };
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../appMain":1,"./blocks":9,"./flappy":12,"./levels":13,"./skins":15}],15:[function(require,module,exports){
+},{"../appMain":1,"./blocks":10,"./flappy":13,"./levels":14,"./skins":16}],16:[function(require,module,exports){
 /**
  * Load Skin for Flappy.
  */
@@ -4109,7 +4151,7 @@ exports.load = function(assetUrl, id) {
   return skin;
 };
 
-},{"../skins":17}],16:[function(require,module,exports){
+},{"../skins":18}],17:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4130,7 +4172,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":33}],17:[function(require,module,exports){
+},{"ejs":34}],18:[function(require,module,exports){
 // avatar: A 1029x51 set of 21 avatar images.
 
 exports.load = function(assetUrl, id) {
@@ -4157,6 +4199,11 @@ exports.load = function(assetUrl, id) {
     downArrow: skinUrl('down.png'),
     upArrow: skinUrl('up.png'),
     rightArrow: skinUrl('right.png'),
+    leftJumpArrow: skinUrl('left_jump.png'),
+    downJumpArrow: skinUrl('down_jump.png'),
+    upJumpArrow: skinUrl('up_jump.png'),
+    rightJumpArrow: skinUrl('right_jump.png'),
+    offsetLineSlice: skinUrl('offset_line_slice.png'),
     // Sounds
     startSound: [skinUrl('start.mp3'), skinUrl('start.ogg')],
     winSound: [skinUrl('win.mp3'), skinUrl('win.ogg')],
@@ -4165,7 +4212,7 @@ exports.load = function(assetUrl, id) {
   return skin;
 };
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 /**
  * Blockly Apps: SVG Slider
  *
@@ -4370,7 +4417,7 @@ Slider.bindEvent_ = function(element, name, func) {
 
 module.exports = Slider;
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4391,7 +4438,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":33}],20:[function(require,module,exports){
+},{"ejs":34}],21:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4412,7 +4459,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/zh_tw/common":31,"ejs":33}],21:[function(require,module,exports){
+},{"../../locale/zh_tw/common":32,"ejs":34}],22:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4433,7 +4480,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":33}],22:[function(require,module,exports){
+},{"ejs":34}],23:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4454,7 +4501,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/zh_tw/common":31,"ejs":33}],23:[function(require,module,exports){
+},{"../../locale/zh_tw/common":32,"ejs":34}],24:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4477,7 +4524,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/zh_tw/common":31,"ejs":33}],24:[function(require,module,exports){
+},{"../../locale/zh_tw/common":32,"ejs":34}],25:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4498,7 +4545,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/zh_tw/common":31,"ejs":33}],25:[function(require,module,exports){
+},{"../../locale/zh_tw/common":32,"ejs":34}],26:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4520,7 +4567,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/zh_tw/common":31,"ejs":33}],26:[function(require,module,exports){
+},{"../../locale/zh_tw/common":32,"ejs":34}],27:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4542,7 +4589,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":33}],27:[function(require,module,exports){
+},{"ejs":34}],28:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4563,7 +4610,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/zh_tw/common":31,"ejs":33}],28:[function(require,module,exports){
+},{"../../locale/zh_tw/common":32,"ejs":34}],29:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4584,7 +4631,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":33}],29:[function(require,module,exports){
+},{"ejs":34}],30:[function(require,module,exports){
 exports.shallowCopy = function(source) {
   var result = {};
   for (var prop in source) {
@@ -4616,7 +4663,17 @@ exports.escapeHtml = function(unsafe) {
     .replace(/'/g, "&#039;");
 };
 
-},{}],30:[function(require,module,exports){
+/**
+ * Version of modulo which, unlike javascript's `%` operator,
+ * will always return a positive remainder.
+ * @param number
+ * @param mod
+ */
+exports.mod = function(number, mod) {
+  return ((number % mod) + mod) % mod;
+};
+
+},{}],31:[function(require,module,exports){
 // Serializes an XML DOM node to a string.
 exports.serialize = function(node) {
   var serializer = new XMLSerializer();
@@ -4644,7 +4701,7 @@ exports.parseElement = function(text) {
   return element;
 };
 
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.zh=function(n){return "other"}
 exports.blocklyMessage = function(d){return "模組化"};
 
@@ -4676,7 +4733,7 @@ exports.dialogOK = function(d){return "確定"};
 
 exports.emptyBlocksErrorMsg = function(d){return "\"重複\"和\"如果\"程式積木需要包含其它積木在裏面才能正常運作, 請檢查裏面是否有安排適當的程式積木."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "你有一些程式積木還沒有加到事件積木中。"};
 
 exports.finalStage = function(d){return "恭喜你 ！你已完成最後關卡的挑戰。"};
 
@@ -4771,7 +4828,7 @@ exports.signup = function(d){return "報名參加簡介課程"};
 exports.hintHeader = function(d){return "Here's a tip:"};
 
 
-},{"messageformat":44}],32:[function(require,module,exports){
+},{"messageformat":45}],33:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.zh=function(n){return "other"}
 exports.continue = function(d){return "繼續"};
 
@@ -4781,57 +4838,57 @@ exports.elseCode = function(d){return "否則"};
 
 exports.endGame = function(d){return "結束遊戲"};
 
-exports.endGameTooltip = function(d){return "遊戲結尾處。"};
+exports.endGameTooltip = function(d){return "遊戲結束"};
 
-exports.finalLevel = function(d){return "恭喜你 ！你已經解決了最後的關卡。"};
+exports.finalLevel = function(d){return "恭喜！你已經完成最後的關卡。"};
 
-exports.flap = function(d){return "拍打"};
+exports.flap = function(d){return "拍打翅膀"};
 
-exports.flapRandom = function(d){return "拍打隨機次數"};
+exports.flapRandom = function(d){return "以隨機的力量拍打翅膀"};
 
-exports.flapVerySmall = function(d){return "拍極少的次數"};
+exports.flapVerySmall = function(d){return "以非常小的力量拍打翅膀"};
 
-exports.flapSmall = function(d){return "拍較少的次數"};
+exports.flapSmall = function(d){return "以較小的力量拍打翅膀"};
 
-exports.flapNormal = function(d){return "拍正常的次數"};
+exports.flapNormal = function(d){return "以正常的力量拍打翅膀"};
 
-exports.flapLarge = function(d){return "拍較多的次數"};
+exports.flapLarge = function(d){return "以較大的力量拍打翅膀"};
 
-exports.flapVeryLarge = function(d){return "拍極多的次數"};
+exports.flapVeryLarge = function(d){return "以非常大的力量拍打翅膀"};
 
-exports.flapTooltip = function(d){return "向上拍打飛行"};
+exports.flapTooltip = function(d){return "讓Flappy向上飛"};
 
-exports.incrementPlayerScore = function(d){return "積分點"};
+exports.incrementPlayerScore = function(d){return "得一分"};
 
-exports.incrementPlayerScoreTooltip = function(d){return "替當前的玩家添加一分。"};
+exports.incrementPlayerScoreTooltip = function(d){return "替玩家加一分"};
 
 exports.nextLevel = function(d){return "恭喜！你已經完成這個關卡。"};
 
 exports.no = function(d){return "否"};
 
-exports.numBlocksNeeded = function(d){return "這個關卡可以使用 %1 個程式區塊來完成。"};
+exports.numBlocksNeeded = function(d){return "這個關卡可以使用 %1 個程式積木來完成。"};
 
-exports.oneTopBlock = function(d){return "要完成這個關卡，你必需將白色工作區中的全部程式區塊給堆疊連接起來。"};
+exports.oneTopBlock = function(d){return "要完成這個關卡，你必需將工作區中的所有程式積木堆疊起來。"};
 
 exports.playSoundRandom = function(d){return "播放隨機的音效"};
 
 exports.playSoundBounce = function(d){return "播放彈跳音效"};
 
-exports.playSoundCrunch = function(d){return "播放收縮音效"};
+exports.playSoundCrunch = function(d){return "播放嘎吱音效"};
 
 exports.playSoundDie = function(d){return "播放悲傷音效"};
 
 exports.playSoundHit = function(d){return "播放粉碎音效"};
 
-exports.playSoundPoint = function(d){return "播放點出音效"};
+exports.playSoundPoint = function(d){return "播放得分音效"};
 
 exports.playSoundSwoosh = function(d){return "播放旋風音效"};
 
-exports.playSoundWing = function(d){return "播放羽翼音效"};
+exports.playSoundWing = function(d){return "播放拍打翅膀音效"};
 
 exports.playSoundJet = function(d){return "播放噴射音效"};
 
-exports.playSoundCrash = function(d){return "播放崩裂音效"};
+exports.playSoundCrash = function(d){return "播放碰撞音效"};
 
 exports.playSoundJingle = function(d){return "播放叮噹音效"};
 
@@ -4841,115 +4898,115 @@ exports.playSoundLaser = function(d){return "播放雷射音效"};
 
 exports.playSoundTooltip = function(d){return "播放所選音效"};
 
-exports.reinfFeedbackMsg = function(d){return "您可以按\"重試\"鈕，回去玩您的遊戲。"};
+exports.reinfFeedbackMsg = function(d){return "你可以按下\"再玩一次\"按鈕，重新開始遊戲。"};
 
 exports.scoreText = function(d){return "積分: "+v(d,"playerScore")};
 
-exports.setBackgroundRandom = function(d){return "設置隨機場景"};
+exports.setBackgroundRandom = function(d){return "設定為隨機場景"};
 
-exports.setBackgroundFlappy = function(d){return "設置城市 (日)場景"};
+exports.setBackgroundFlappy = function(d){return "設定為城市場景(白天)"};
 
-exports.setBackgroundNight = function(d){return "設置城市 (夜)場景"};
+exports.setBackgroundNight = function(d){return "設定為城市場景(晚上)"};
 
-exports.setBackgroundSciFi = function(d){return "設置科幻場景"};
+exports.setBackgroundSciFi = function(d){return "設定為科幻場景"};
 
-exports.setBackgroundUnderwater = function(d){return "設置水下現場"};
+exports.setBackgroundUnderwater = function(d){return "設定為水底場景"};
 
-exports.setBackgroundCave = function(d){return "設置山洞場景"};
+exports.setBackgroundCave = function(d){return "設定為山洞場景"};
 
-exports.setBackgroundSanta = function(d){return "設置聖誕場景"};
+exports.setBackgroundSanta = function(d){return "設定為聖誕場景"};
 
 exports.setBackgroundTooltip = function(d){return "設置背景圖像"};
 
-exports.setGapRandom = function(d){return "設置隨機差距"};
+exports.setGapRandom = function(d){return "設定一個隨機的間距"};
 
-exports.setGapVerySmall = function(d){return "設置極小差距"};
+exports.setGapVerySmall = function(d){return "設定一個非常小的間距"};
 
-exports.setGapSmall = function(d){return "設置較小差距"};
+exports.setGapSmall = function(d){return "設定一個較小的間距"};
 
-exports.setGapNormal = function(d){return "設置正常差距"};
+exports.setGapNormal = function(d){return "設定一個正常的間距"};
 
-exports.setGapLarge = function(d){return "設置較大差距"};
+exports.setGapLarge = function(d){return "設定一個較大的間距"};
 
-exports.setGapVeryLarge = function(d){return "設置極大差距"};
+exports.setGapVeryLarge = function(d){return "設定一個非常大的間距"};
 
-exports.setGapHeightTooltip = function(d){return "在障礙中設置垂直差距"};
+exports.setGapHeightTooltip = function(d){return "設定障礙物的垂直間距"};
 
-exports.setGravityRandom = function(d){return "設置隨機重力"};
+exports.setGravityRandom = function(d){return "設定為隨機重力"};
 
-exports.setGravityVeryLow = function(d){return "設置極小重力"};
+exports.setGravityVeryLow = function(d){return "設定為極小重力"};
 
-exports.setGravityLow = function(d){return "設置較小重力"};
+exports.setGravityLow = function(d){return "設定為較小重力"};
 
-exports.setGravityNormal = function(d){return "設置正常重力"};
+exports.setGravityNormal = function(d){return "設定為正常重力"};
 
-exports.setGravityHigh = function(d){return "設置較高重力"};
+exports.setGravityHigh = function(d){return "設定為較大重力"};
 
-exports.setGravityVeryHigh = function(d){return "設置極高重力"};
+exports.setGravityVeryHigh = function(d){return "設定為極大重力"};
 
-exports.setGravityTooltip = function(d){return "設置級別的重力"};
+exports.setGravityTooltip = function(d){return "設定關卡重力值"};
 
-exports.setGroundRandom = function(d){return "設置隨機地面"};
+exports.setGroundRandom = function(d){return "設定地面種類為隨機風格"};
 
-exports.setGroundFlappy = function(d){return "設置地下地面"};
+exports.setGroundFlappy = function(d){return "設定地面種類為地板風格"};
 
-exports.setGroundSciFi = function(d){return "設置科幻地面"};
+exports.setGroundSciFi = function(d){return "設定地面種類為科幻風格"};
 
-exports.setGroundUnderwater = function(d){return "設置水下地面"};
+exports.setGroundUnderwater = function(d){return "設定地面種類為水底風格"};
 
-exports.setGroundCave = function(d){return "設置洞穴地面"};
+exports.setGroundCave = function(d){return "設定地面種類為洞穴風格"};
 
-exports.setGroundSanta = function(d){return "設置聖誕地面"};
+exports.setGroundSanta = function(d){return "設定地面種類為聖誕風格"};
 
-exports.setGroundLava = function(d){return "設置岩漿地面"};
+exports.setGroundLava = function(d){return "設定地面種類為岩漿風格"};
 
 exports.setGroundTooltip = function(d){return "設置地面圖像"};
 
-exports.setObstacleRandom = function(d){return "設置隨機障礙"};
+exports.setObstacleRandom = function(d){return "設定障礙物種類為隨機風格"};
 
-exports.setObstacleFlappy = function(d){return "設置管狀障礙"};
+exports.setObstacleFlappy = function(d){return "設定障礙物種類為水管"};
 
-exports.setObstacleSciFi = function(d){return "設置科幻障礙"};
+exports.setObstacleSciFi = function(d){return "設定障礙物種類為科幻"};
 
-exports.setObstacleUnderwater = function(d){return "設置植物障礙"};
+exports.setObstacleUnderwater = function(d){return "設定障礙物種類為植物"};
 
-exports.setObstacleCave = function(d){return "設置洞穴障礙"};
+exports.setObstacleCave = function(d){return "設定障礙物種類為洞穴"};
 
-exports.setObstacleSanta = function(d){return "設置煙囪障礙"};
+exports.setObstacleSanta = function(d){return "設定障礙物種類為煙囪"};
 
-exports.setObstacleLaser = function(d){return "設置雷射障礙"};
+exports.setObstacleLaser = function(d){return "設定障礙物種類為雷射"};
 
 exports.setObstacleTooltip = function(d){return "設置障礙圖像"};
 
-exports.setPlayerRandom = function(d){return "設置玩家-隨機"};
+exports.setPlayerRandom = function(d){return "設置玩家為隨機種類"};
 
-exports.setPlayerFlappy = function(d){return "設置玩家-黃色小鳥"};
+exports.setPlayerFlappy = function(d){return "設置玩家為黃色小鳥"};
 
-exports.setPlayerRedBird = function(d){return "設置玩家-紅色小鳥"};
+exports.setPlayerRedBird = function(d){return "設置玩家為紅色小鳥"};
 
-exports.setPlayerSciFi = function(d){return "設置玩家-飛船"};
+exports.setPlayerSciFi = function(d){return "設置玩家為飛船"};
 
-exports.setPlayerUnderwater = function(d){return "設置玩家-魚"};
+exports.setPlayerUnderwater = function(d){return "設置玩家為魚"};
 
-exports.setPlayerCave = function(d){return "設置玩家-蝙蝠"};
+exports.setPlayerCave = function(d){return "設置玩家為蝙蝠"};
 
-exports.setPlayerSanta = function(d){return "設置玩家-聖誕老人"};
+exports.setPlayerSanta = function(d){return "設置玩家為聖誕老人"};
 
-exports.setPlayerShark = function(d){return "設置玩家-鯊魚"};
+exports.setPlayerShark = function(d){return "設置玩家為鯊魚"};
 
-exports.setPlayerEaster = function(d){return "設置玩家-復活節兔子"};
+exports.setPlayerEaster = function(d){return "設置玩家為復活節兔子"};
 
-exports.setPlayerBatman = function(d){return "設置蝙蝠人玩家"};
+exports.setPlayerBatman = function(d){return "設置玩家為蝙蝠俠"};
 
-exports.setPlayerSubmarine = function(d){return "設置玩家-潛艇"};
+exports.setPlayerSubmarine = function(d){return "設置玩家為潛水艇"};
 
-exports.setPlayerUnicorn = function(d){return "設置玩家-獨角獸"};
+exports.setPlayerUnicorn = function(d){return "設置玩家為獨角獸"};
 
-exports.setPlayerFairy = function(d){return "設置玩家-仙女"};
+exports.setPlayerFairy = function(d){return "設置玩家為小精靈"};
 
-exports.setPlayerSuperman = function(d){return "設置玩家- Flappy 俠"};
+exports.setPlayerSuperman = function(d){return "設置玩家為飛翔的人"};
 
-exports.setPlayerTurkey = function(d){return "設置玩家-火雞"};
+exports.setPlayerTurkey = function(d){return "設置玩家為火雞"};
 
 exports.setPlayerTooltip = function(d){return "設置玩家圖像"};
 
@@ -4959,50 +5016,50 @@ exports.setScoreTooltip = function(d){return "設置玩家的得分"};
 
 exports.setSpeed = function(d){return "設置速度"};
 
-exports.setSpeedTooltip = function(d){return "設置級別的速度"};
+exports.setSpeedTooltip = function(d){return "設置關卡的速度"};
 
 exports.share = function(d){return "分享"};
 
-exports.shareFlappyTwitter = function(d){return "查閱我製作的 Flappy 遊戲。我透過 @codeorg 自己寫的。"};
+exports.shareFlappyTwitter = function(d){return "來玩玩我在 @codeorg　自己完成的 Flappy 遊戲吧。"};
 
 exports.shareGame = function(d){return "分享您的遊戲："};
 
-exports.speedRandom = function(d){return "設置隨機速"};
+exports.speedRandom = function(d){return "設定為隨機的速度"};
 
-exports.speedVerySlow = function(d){return "設置極慢速"};
+exports.speedVerySlow = function(d){return "設定為極慢的速度"};
 
-exports.speedSlow = function(d){return "設置慢速"};
+exports.speedSlow = function(d){return "設定為稍慢的速度"};
 
-exports.speedNormal = function(d){return "設置正常速"};
+exports.speedNormal = function(d){return "設定為正常的速度"};
 
-exports.speedFast = function(d){return "設置快速"};
+exports.speedFast = function(d){return "設定為較快的速度"};
 
-exports.speedVeryFast = function(d){return "設置極快速"};
+exports.speedVeryFast = function(d){return "設定為極快的速度"};
 
-exports.whenClick = function(d){return "當 點擊"};
+exports.whenClick = function(d){return "當點擊時"};
 
-exports.whenClickTooltip = function(d){return "當一個 點擊 事件觸發，執行以下動作。"};
+exports.whenClickTooltip = function(d){return "當點擊事件發生時，就執行以下程式碼。"};
 
-exports.whenCollideGround = function(d){return "當撞到地面"};
+exports.whenCollideGround = function(d){return "當撞到地面時"};
 
 exports.whenCollideGroundTooltip = function(d){return "當 Flappy 撞到地面時，執行以下動作。"};
 
-exports.whenCollideObstacle = function(d){return "當撞到一個障礙時"};
+exports.whenCollideObstacle = function(d){return "當撞到一個障礙物時"};
 
 exports.whenCollideObstacleTooltip = function(d){return "當 Flappy 撞到一個障礙時，執行以下動作。"};
 
-exports.whenEnterObstacle = function(d){return "當越過障礙"};
+exports.whenEnterObstacle = function(d){return "當通過障礙物時"};
 
-exports.whenEnterObstacleTooltip = function(d){return "當 Flappy 進入障礙時，執行以下行動。"};
+exports.whenEnterObstacleTooltip = function(d){return "當 Flappy 進入障礙物時，執行以下動作。"};
 
-exports.whenRunButtonClick = function(d){return "當遊戲開始"};
+exports.whenRunButtonClick = function(d){return "當遊戲開始時"};
 
-exports.whenRunButtonClickTooltip = function(d){return "當游戲開始，執行以下動作。"};
+exports.whenRunButtonClickTooltip = function(d){return "當游戲開始時，執行以下動作。"};
 
 exports.yes = function(d){return "是"};
 
 
-},{"messageformat":44}],33:[function(require,module,exports){
+},{"messageformat":45}],34:[function(require,module,exports){
 
 /*!
  * EJS
@@ -5361,7 +5418,7 @@ if (require.extensions) {
   });
 }
 
-},{"./filters":34,"./utils":35,"fs":36,"path":38}],34:[function(require,module,exports){
+},{"./filters":35,"./utils":36,"fs":37,"path":39}],35:[function(require,module,exports){
 /*!
  * EJS - Filters
  * Copyright(c) 2010 TJ Holowaychuk <tj@vision-media.ca>
@@ -5564,7 +5621,7 @@ exports.json = function(obj){
   return JSON.stringify(obj);
 };
 
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 
 /*!
  * EJS
@@ -5590,9 +5647,9 @@ exports.escape = function(html){
 };
  
 
-},{}],36:[function(require,module,exports){
-
 },{}],37:[function(require,module,exports){
+
+},{}],38:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -5647,7 +5704,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -5875,7 +5932,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require("/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":37}],39:[function(require,module,exports){
+},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":38}],40:[function(require,module,exports){
 (function (global){
 /*! http://mths.be/punycode v1.2.4 by @mathias */
 ;(function(root) {
@@ -6386,7 +6443,7 @@ var substr = 'ab'.substr(-1) === 'b'
 }(this));
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -6472,7 +6529,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -6559,13 +6616,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],42:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":40,"./encode":41}],43:[function(require,module,exports){
+},{"./decode":41,"./encode":42}],44:[function(require,module,exports){
 /*jshint strict:true node:true es5:true onevar:true laxcomma:true laxbreak:true eqeqeq:true immed:true latedef:true*/
 (function () {
   "use strict";
@@ -7198,7 +7255,7 @@ function parseHost(host) {
 
 }());
 
-},{"punycode":39,"querystring":42}],44:[function(require,module,exports){
+},{"punycode":40,"querystring":43}],45:[function(require,module,exports){
 /**
  * messageformat.js
  *
@@ -8781,4 +8838,4 @@ function parseHost(host) {
 
 })( this );
 
-},{}]},{},[14])
+},{}]},{},[15])

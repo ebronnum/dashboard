@@ -77,6 +77,7 @@ class LevelsController < ApplicationController
     else
       raise "Unkown level type #{params[:level_type]}"
     end
+    Level.write_custom_levels_to_file if Rails.env.in?(["staging", "development"])
   end
 
   def create_maze

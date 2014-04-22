@@ -71,9 +71,8 @@
           o rovnaký počet stupňov ako ako otočka v bludisku.
       5:
         image: notes/stage5_5.jpg
-        text: Click on the arrow in either of these blocks to change the amount the
-          artist moves forward or turns. Play around to get familiar with these new
-          blocks.
+        text: Klikni na šípku v každom z týchto blokov a zmen počet o koľko sa artista
+          pohne vpred alebo  sa otočí. Pohraj sa a zoznám sa  s týmito novými blokmi.
     farmer_intro:
       1:
         image: notes/stage9_1.jpg
@@ -182,12 +181,12 @@
           podmienok sa počítač vie rozhodovať.
       2:
         image: notes/hoc4_2.jpg
-        text: You use "If" statements yourself everday. Before you go outside each
-          morning, you say IF it's raining outside, I need to wear my jacket.
+        text: Príkaz "If" ("ak") používaš každý deň. Predtým, než ideš von každé ráno,
+          hovoríš si, "ak" vonku  prší , musím si obliecť bundu.
       3:
         image: notes/hoc4_3.jpg
-        text: We can tell the zombie to check IF there's path to the left, and if
-          he finds a path to the left, we can have him turn in that direction.
+        text: Môžeme povedať, zombíkovi aby skontroloval, či je cesta na ľavej strane,
+          a AK cestu vľavo nájde, môžme ho týmto smerom otočiť.
       4:
         image: notes/hoc4_4.jpg
         text: To write the code for this, let's drag out our "if" block and put a

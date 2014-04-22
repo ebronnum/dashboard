@@ -11,6 +11,8 @@
         locale: زبان
         gender: جنسیت
         edit_header: ویرایش اطلاعات کاربری
+        error:
+          future: can't be in the future
   hello: سلام دنیا
   welcome_back: '%{name}، خوش آمدید'
   add_teacher_form:
@@ -50,10 +52,9 @@
     need_confirmation: دستورالعمل فعال‌سازی حساب کاربری را دریافت نکرده‌اید؟
     need_unlock: دستورالعمل فعال‌سازی را دریافت نکرده‌اید؟
   signup_form:
-    overview: این دوره 20 ساعته به معرفی مفاهیم اساسی علوم کامپیوتر و برنامه نویسی
-      می پردازد. این دوره برای استفاده در کلاس های درس K-8 (دوره ابتدایی تا پایان
-      دوره راهنمایی)طراحی شده است، اما می تواند برای همه سنین دیگر نیز جالب باشد.
-    no_signup_header: نمی خواهید ثبت نام کنید؟
+    overview_student: Sign up for an account to track your progress.
+    overview_teacher: Teach computer science in your classroom by signing up for an
+      account.<p/> You'll be able to track your students' progress and get rewards.
     no_signup_message: شما می‌توانید <a target="_blank" href="http://learn.code.org">
       فهرست مراحل و پازل‌های مختلف را بررسی کنید</a>. باید ثبت نام کنید تا بتوانید
       پیشرفت‌های خود را ذخیره کنید.
@@ -75,7 +76,7 @@
     teacher_pitch: آموزش معرفی K-8 درعلوم کامپیوتر در کلاس درس خودتان
     teacher_title: ثبت نام معلم
     student_pitch: 'فراتر از ساعت 1: معرفی K-8 درعلوم کامپیوترما را امتحان کنید'
-    student_title: ثبت نام
+    student_title: ثبت نام دانش آموز
     school_name: نام مدرسه (اختیاری)
     school_address: نشانی مدرسه (اختیاری)
     address_placeholder: نشانی، شهر، استان، کدپستی
@@ -101,6 +102,7 @@
     remember: مرا به خاطر بسپار
     submit: ورود
   signin:
+    try_heading: Want to try coding without signing up?
     try_hoc: اولین ساعت از کد نویسیتان را امتحان کنید
     try_20hours: دوره 20 ساعته معرفی (مقدماتی) علوم کامپیوتر ما را امتحان کنید
   password:
@@ -148,6 +150,8 @@
     provider: 'فراهم کننده:'
     code: 'کد:'
     redeem_header: 'To redeem:'
+    donorschoose_register: Register as a teacher on DonorsChoose.org
+    donorschoose_project: Post a project
     donorschoose_how_to: چگونه از کد خود استفاده کنید
     success: جایزه شما با موفقیت آزاد شد، کد زیر را مشاهده کنید.
     error: جایزه شما قابل آزاد شدن نیست, لطفا دوباره سعی کنید.
@@ -225,8 +229,8 @@
     confirm: مطمئنید؟
     created: '%{model} با موفقیت ساخته شد.'
     updated: '%{model} با موفقیت به روز شد.'
-    destroyed: '%{model} was successfully deleted.'
-    access_denied: You do not have access to this %{model}.
+    destroyed: '%{model} با موفقیت حذف شد.'
+    access_denied: شما به این %{model} دسترسی ندارید.
   nav:
     header:
       finished_hoc: من ساعتی با کد خود را به پایان رسانده ام
@@ -252,11 +256,11 @@
       prizes_link: اطلاعات بیشتر
   teacher:
     title:
-      one: معلم شما %{name} می باشد
+      one: 'معلم شما:'
       other: 'معلم های شما:'
-    remove: (remove teacher)
+    remove: (حذف معلم)
     confirm:
-      remove: Are you sure you want to remove this teacher?
+      remove: آیا برای حذف این معلم مطمئت هستبد؟
     tools: ابزار معلم
     students:
       manage: مدیریت دانش آموزان
@@ -265,13 +269,13 @@
       manage: Manage sections
     rollup: داشبورد پیشرفت
     activity: آخرین فعالیت های کلاس
-    user_not_found: The teacher or student could not be found
-    cant_remove_student_no_email: '%{student_name} cannot be removed as your student
-      because %{student_name} has not registered an e-mail address'
-    cant_remove_teacher_no_email: '%{teacher_name} cannot be removed as your teacher
-      because you have not registered an e-mail address'
-    student_teacher_disassociated: '%{teacher_name} has been removed as a teacher
-      for %{student_name}'
+    user_not_found: معلم یا دانش آموز مورد نظر یافت نشد
+    cant_remove_student_no_email: '%{student_name} به عنوان دانش آموز شما نمیتواند
+      حذف شود چون %{student_name} نشانی پست الکترونیکی ثبت نکرده است'
+    cant_remove_teacher_no_email: '%{teacher_name} به عنوان معلم شما نمیتواندحذف شود
+      زیرا شما آدرس پست الکترونیکی ثبت نکرده اید'
+    student_teacher_disassociated: '%{teacher_name}  به عنوان یک معلم برای %{student_name}
+      حذف شده است'
   user:
     email_confirm_needed: 'Email address has not been confirmed:'
     email_resend_confirm: Resend confirmation instructions
@@ -290,7 +294,7 @@
   home:
     signin_message: یا اگر قبلا ثبت نام کرده اید، %{link}
     student_reg_link: دانش آموز
-    teacher_reg_link: معلم
+    teacher_reg_link: 'ثبت نام معلم '
     signin_directions: Use an account to track progress and get rewards.<br/> Teachers,
       track your entire class.
     teacher_dashboard: مشاهده داشبورد پیشرفت
@@ -316,8 +320,12 @@
     see_details: مشاهده جزئیات
     prize_info: 'Prizes for participation (U.S. only): $10 gift cards for student
       completion and up to $1,000 in classroom rewards for public school teachers'
-    tryfirst: 'Or, you can try it first, and sign up later:'
-    trynow: Try now
+    tryfirst: 'یا شما می توانیدآن را اول امتحان کنید و بعد ثبت نام کنید:'
+    trynow: حالا امتحان کنید
+    add_hint_help: Please help us to add smart hints to Code.org tutorials
+    20hour_overview: This 20-hour course introduces core computer science and programming
+      concepts. The course is designed for use in classrooms for grades K-8, but it
+      is fun to learn at all ages.
   gender:
     male: مرد
     female: زن
@@ -346,6 +354,8 @@
     subtitle: دیدن این فیلم ها و نکات
     teacher: مشاهده راه حل
     auth_error: شما مجاز به دیدن راه حل نیستید.
+    submit: Update Artist Location
+    direction: Start Direction
   video:
     tab: فیلم.
     notes: فیلمی نیست؟ نمایش یادداشت ها.
@@ -360,15 +370,27 @@
   download_pdf: طرح درس آزاد
   share_code:
     title: '"اجرای برنامه" را کلیک کنید تا برنامه خود را در حال اجرا ببینید'
+    bounce_og_title: Check out my Bounce Game
     flappy_og_title: Check out my Flappy Game
-    og_description: I wrote the code myself with Code.org
+    og_description: من خودم با Code.org کد را نوشتم
   builder:
-    created: You created a new script.
-    destroyed: You destroyed a script.
+    created: یک اسکریپت جدید ایجاد کردید.
+    destroyed: یک اسکریپت را از بین بردید.
     manage: Manage Scripts
-    view: View
-    back: Back to scripts
+    view: مشاهده
+    back: بازگشت به اسکریپت ها
     level:
-      create: Create new level
-      current: Current Levels
-      unused: Unused Levels
+      create: ایجاد مرحله جدید
+      current: مرحله فعلی
+      unused: مراحل استفاده نشده
+  upsell:
+    hoc:
+      title: The Hour of Code
+      body: Try the basics of computer science. Millions have given it a shot.
+    flappy:
+      title: Flappy Code
+      body: Wanna write your own game in less than 10 minutes? Try our Flappy Code
+        tutorial!
+    20hour:
+      title: Intro Course
+      body: Try our 20-hour Intro to Computer Science course.

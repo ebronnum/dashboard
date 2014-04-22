@@ -11,6 +11,8 @@
         locale: Dil
         gender: Cins
         edit_header: Hesab Detallarına düzəliş edin
+        error:
+          future: can't be in the future
   hello: Salam, dünya
   welcome_back: Bir daha xoş gəldiniz, %{name}
   add_teacher_form:
@@ -32,7 +34,7 @@
   try_hoc: Kod Saatında özünüzü sınayın, buraya klikləyin >> 
   try_k8intro: Yaxud da bizim K-8 İnformatikaya Giriş kursunu (15-25 saat) sınaqdan
     keçirin
-  k8intro: K-8 Intro to Computer Science Course (15-25 hours)
+  k8intro: K-8 yaş qrupu (12-13 yaşlılar) üçün İnformatikaya giriş kursu (15-25 saat)
   already_started: 'Artıq başlamısınız? Burada davam edin >> '
   demos: 'Admin: bütün demolar'
   continue: Davam et
@@ -51,10 +53,9 @@
     need_confirmation: Təsdiq göstərişlərini almamisiniz?
     need_unlock: Kilidaçma göstərişlərini almamisiniz?
   signup_form:
-    overview: Bu 20 saatlıq kurs informatikanın əsasları və proqramlaşdırmanın əsas
-      anlayışlarını təqdim edir. Kurs K-8 yaş qrupunda (12-13 yaşlılar) olan siniflərdə
-      istifadə olunmaq üçün hazırlanıb, lakin öyrənmək hər yaşda əyləncəlidir.
-    no_signup_header: Qeydiyyatdan keçmək istəmirsiniz?
+    overview_student: Sign up for an account to track your progress.
+    overview_teacher: Teach computer science in your classroom by signing up for an
+      account.<p/> You'll be able to track your students' progress and get rewards.
     no_signup_message: Siz <a target="_blank" href="http://learn.code.org">müxtəlif
       mərhələ və tapmacalar</a>ı nəzərdən keçirə bilərsiniz, lakin nəticələrinizi
       yadda saxlamaq üçün qeydiyyatdan keçməyiniz lazım olacaq.
@@ -101,6 +102,7 @@
     remember: Məni yadda saxla
     submit: Daxil olun
   signin:
+    try_heading: Want to try coding without signing up?
     try_hoc: Try one Hour of Code first
     try_20hours: Try our 20 hour Intro to Computer Science
   password:
@@ -153,6 +155,8 @@
     provider: 'Təminatçı:'
     code: 'Kod:'
     redeem_header: 'To redeem:'
+    donorschoose_register: Register as a teacher on DonorsChoose.org
+    donorschoose_project: Post a project
     donorschoose_how_to: How to use your code
     success: Mükafatınızı müvəffəqiyyətlə xərclədiniz, aşağıdakı koda baxın.
     error: Mükafatınızı xərcləmək mümkün olmadı, lütfən bir də cəhd edin.
@@ -193,7 +197,7 @@
         birini seçə bilərsiniz. QEYD: təklif yalnız ABŞ-dan olan şagirdlər üçün və
         yalnız mükafatlar verildiyi müddətdə etibarlıdır.'
       teacher:
-        earned: 10 və ya daha çox şagird %{num_trophies} kubokun hamısını topladı.
+        earned: 15 və ya daha çox şagird %{num_trophies} kubokun hamısını topladı.
           Siz bir müəllim mükafatı qazandınız! (yalnız ABŞ-dan olan müəllimlər)
         not_earned_title: Teach the class, earn up to $1,000 in <a target="_blank"
           href="http://DonorsChoose.org">DonorsChoose.org</a> credits (U.S. teachers
@@ -326,6 +330,10 @@
       completion and up to $1,000 in classroom rewards for public school teachers'
     tryfirst: 'Or, you can try it first, and sign up later:'
     trynow: Try now
+    add_hint_help: Please help us to add smart hints to Code.org tutorials
+    20hour_overview: This 20-hour course introduces core computer science and programming
+      concepts. The course is designed for use in classrooms for grades K-8, but it
+      is fun to learn at all ages.
   gender:
     male: Kişi
     female: Qadın
@@ -354,6 +362,8 @@
     subtitle: Bu videolara və məsləhətlərə baxın
     teacher: Həlli gör
     auth_error: Həlli görməyə səlahiyyətiniz yoxdur.
+    submit: Update Artist Location
+    direction: Start Direction
   video:
     tab: Video.
     notes: Video yoxdur? Qeydləri göstər.
@@ -368,6 +378,7 @@
   download_pdf: Dərs planını aç
   share_code:
     title: Mənim proqramımı fəaliyyətdə görmək üçün 'Proqramı icra et' - ə klikləyiniz
+    bounce_og_title: Check out my Bounce Game
     flappy_og_title: Check out my Flappy Game
     og_description: I wrote the code myself with Code.org
   builder:
@@ -380,3 +391,14 @@
       create: Create new level
       current: Current Levels
       unused: Unused Levels
+  upsell:
+    hoc:
+      title: The Hour of Code
+      body: Try the basics of computer science. Millions have given it a shot.
+    flappy:
+      title: Flappy Code
+      body: Wanna write your own game in less than 10 minutes? Try our Flappy Code
+        tutorial!
+    20hour:
+      title: Intro Course
+      body: Try our 20-hour Intro to Computer Science course.

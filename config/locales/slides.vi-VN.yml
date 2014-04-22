@@ -336,19 +336,21 @@
           even a self-driving car.
       2:
         image: notes/hoc6_2.jpg
-        text: The basic concepts you used are at the heart of every program or app
-          you'll ever try.  We learned about repeat loops, repeat until statements,
-          if statements, and if else statements.
+        text: Các khái niệm cơ bản bạn sử dụng ở trung tâm của mọi chương trình hoặc
+          ứng dụng bạn sẽ phải cố gắng.  Chúng tôi đã được học về vòng lặp lại, lặp
+          lại trừ khi thực thi, nếu thực thi, và ngược lại.
       3:
         image: notes/hoc6_3.jpg
-        text: If you liked your first hour of code, visit code.org to continue your
-          education into computer science! Once you complete our 20 hour course, you'll
-          have mastered the basics of programming, and can start learning how to write
-          phone apps, robot instructions, games, you name it.
+        text: Nếu bạn thích giờ đầu tiên của việc lập trình, hãy truy cập code.org
+          để tiếp tục việc học của bạn vào khoa học máy tính! Khi bạn hoàn tất khóa
+          học 20 giờ của chúng tôi, bạn sẽ nắm bắt các khái niệm cơ bản của chương
+          trình, và có thể bắt đầu học tập làm thế nào để viết ứng dụng điện thoại,
+          hướng dẫn robot, trò chơi, đặt tên cho nó.
       4:
         image: notes/hoc6_4.jpg
-        text: 'Technology is changing everything we do and it doesn''t matter if you''re
-          young or old: programming is fun, it''s creative, and anyone can learn!'
+        text: 'Công nghệ đang thay đổi tất cả mọi thứ chúng ta làm và nó không quan
+          trọng nếu bạn còn trẻ hay già: lập trình là thú vị, đó là sáng tạo, và bất
+          cứ ai có thể tìm hiểu!'
     20_wrapup:
       1:
         image: notes/bird.png
