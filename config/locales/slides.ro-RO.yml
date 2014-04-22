@@ -7,8 +7,8 @@
           ta încercare de programare.
       2:
         image: notes/hoc1_2.jpg
-        text: Vom folosi Blockly, un limbaj de programare vizuală, în care muți cu
-          drag și drop blocuri pentru a scrie un cod.
+        text: Vom folosi Blockly, un limbaj de programare vizuală, în care muți blocuri
+          cu drag și drop pentru a scrie un cod.
       3:
         image: notes/hoc1_3.jpg
         text: Majoritatea codului e scris cu tastatura, dar Blockly e vizual. Fiecare
@@ -24,8 +24,8 @@
           urmeze.
       6:
         image: notes/hoc1_6.jpg
-        text: Scopul primului tău program este să lovești un Porcușor Verde cu o Pasare
-          Furioasă printr-un labirint.
+        text: Scopul primului tău program este să treci o Pasăre Furioasă printr-un
+          labirint care să ajungă să lovească un Porcușor Verde.
       7:
         image: notes/hoc1_7.jpg
         text: Partea stângă este labirintul în care programul se execută. Instrucțiunile
@@ -46,7 +46,7 @@
           cu un spațiu pe labirint.
       11:
         image: notes/hoc1_11.jpg
-        text: Ca să execuți mai mult de o mișcare, poți trage mai multe blocuri în
+        text: Ca să execuți mai mult de o acțiune, poți trage mai multe blocuri în
           spațiul tău de lucru și să le atașezi împreună. Pasărea va executa comezile
           de sus în jos.
       12:
@@ -68,8 +68,8 @@
           lor indiferent unde ei merg.
       3:
         image: notes/stage5_3.jpg
-        text: Acest bloc spune "merge mai departe cu 100 pixeli." Pixelii sunt de
-          fapt doar puncte foarte mici pe ecran.
+        text: Acest bloc spune "mută înainte cu 100 pixeli." Pixelii sunt de fapt
+          doar puncte foarte mici pe ecran.
       4:
         image: notes/stage5_4.jpg
         text: Acest bloc spune "întoarce la dreapta cu 90 de grade." Acesta va roti
@@ -109,8 +109,8 @@
           decide ce să facă atunci când are loc un eveniment.
       3:
         image: note/flappy03.jpg
-        text: 'De exemplu, ai putea avea un HANDLER de EVENIMENT care spune "Când
-          se face clic cu mouse-ul, scoate un sunet" '
+        text: 'De exemplu, ai putea avea un GESTIONAR de EVENIMENT care spune "Când
+          se face clic cu mouse-ul, redă un sunet" '
       4:
         image: note/flappy04.jpg
         text: Ai auzit vreodată de jocul FlappyBird? Prin utilizarea gestionărilor
@@ -127,10 +127,10 @@
           sunt completate pentru tine - acestea sunt "gestionari de eveniment" '
       7:
         image: note/flappy07.jpg
-        text: Dacă dorești ca pasăre să DEA DIN ARIPI când dai clic cu mouse-ul, poţi
-          face asta ataşând blocul "DĂ DIN ARIPI" la gestionarea de eveniment corespunzătoare,
+        text: Dacă dorești ca pasăre să ZBOARE când dai clic cu mouse-ul, poţi face
+          asta ataşând blocul "ZBOARĂ" la gestionarul de eveniment corespunzătoare,
           şi de acum când te joci, ori de câte ori faci clic cu mouse-ul, pasărea
-          va da din aripi.
+          va zbura.
       8:
         image: note/flappy08.jpg
         text: În fiecare puzzle din cadrul acestei activități vom introduce noi tipuri
@@ -204,7 +204,8 @@
       3:
         image: notes/hoc4_3.jpg
         text: Putem să-i spunem zombie-ului să verifice DACĂ este o cale către stânga,
-          și dacă găsește o cale către stânga, putem să îl îndreptăm în acea direcție.
+          și dacă găsește o cale către stânga, putem să îl facem să se întoarcă în
+          acea direcție.
       4:
         image: notes/hoc4_4.jpg
         text: Ca să scriem codul pentru asta, hai să scoatem afară blocul nostru "dacă"
@@ -256,29 +257,29 @@
           singur bloc.
       2:
         image: notes/stage13_2.jpg
-        text: Vom învață cum să definim funcții. Definițiile pentru funcții au o stea
+        text: Vom învață cum să definim funcții. Definițiile funcțiilor au o stea
           în colț. Numele funcției este scris pe prima linie de sus.
       3:
         image: notes/stage13_3.jpg
-        text: Blocuri care merg în interiorul definiției ne spun ce fac. Deci această
-          definiție a funcției se numește "umple 5" și acesta este format dintr-un
-          un bloc "repetă" și un bloc "umple".
+        text: Blocuri care merg în interiorul definiției ne spun ce face aceasta.
+          Deci această definiție a funcției se numește "umple 5" și aceasta este formată
+          dintr-un un bloc "repetă" și un bloc "umple".
       4:
         image: notes/stage13_4.jpg
-        text: Definiția stă pe spațiul de lucru, dar fermierul nostru nu va rula funcția
-          până când nu vom trage în afară blocul nostru cu funcția "umple 5" de la
-          categoria de funcții.
+        text: Definiția stă pe spațiul de lucru, dar fermierul nostru nu va executa
+          funcția până când nu vom trage în afară blocul nostru cu funcția "umple
+          5" de la categoria de funcții.
       5:
         image: notes/stage13_5.jpg
-        text: 'Sa punem "distracţia" înapoi în "Funcţie!" '
+        text: 'Hai să punem "distracţia" înapoi în "FUNcţie!" '
     loop_while:
       1:
         image: notes/stage9_5.jpg
-        text: 'Salut, eu sunt Makinde! Hai să învățăm despre "blocul în timp ce" '
+        text: 'Salut, eu sunt Makinde! Hai să învățăm despre blocul "în timp ce" '
       2:
         image: notes/stage9_6.jpg
-        text: "\"Blocul în timp ce\" va face tot ce ai pus în interiorul acestuia,
-          ATÂTA TIMP CÂT \t\ndeclarația din partea de sus este ADEVĂRATĂ.\n"
+        text: Blocul "în timp ce" va face tot ce ai pus în interiorul acestuia, ATÂTA
+          TIMP CÂT declarația din partea de sus este ADEVĂRATĂ.
       3:
         image: notes/stage9_7.jpg
         text: De exemplu, în cazul în care fermierul stă pe o grămadă, el va continua
@@ -290,30 +291,30 @@
           inclusiv Shrek.
       2:
         image: notes/stage11_2.jpg
-        text: Acesta este noua buclă "contor". El va efectua acțiuni din nou și din
+        text: Aceasta este noua buclă "contor". Ea va efectua acțiuni din nou și din
           nou și tu poți face ca acțiunile să se schimbe câte puțin de fiecare dată.
       3:
         image: notes/stage11_3.jpg
-        text: În acest exemplu, buclă noastră "contor" spune "numără cu contorul de
+        text: În acest exemplu, bucla noastră "contor" spune "numără cu contorul de
           la 50 la 90 din 10 în 10" și în interiorul ei avem blocul nostru "desenează
-          un pătrat". Trage blocul "contor" de la secțiune "Variabile" înspre locul
-          "lungime".
+          un pătrat". Glisează blocul "contor" de la secțiunea "Variabile" în interiorul
+          spațiului "lungime".
       4:
         image: notes/stage11_4.jpg
         text: Acest lucru înseamnă că artistul nostru va desena un pătrat care are
-          lungimea laturile de 50 de pixeli, iar mai apoi va adăuga încă 10 pixeli
-          la ele și va desena un pătrat cu lungimea laturilor de 60 de pixeli. Iar
-          mai apoi va tot continua să adauge câte 10 pixeli și va desena pătrate până
-          când va ajunge la un pătrat de 90 de pixeli. Astfel încât vom avea pătrate
-          de 50, 60, 70, 80 și 90 de pixeli.
+          laturi de 50 de pixeli lungime, și apoi va adăuga încă 10 pixeli la ele
+          și va desena un pătrat cu laturi de 60 de pixeli lungime. Iar mai apoi va
+          tot continua să adauge câte 10 pixeli și va desena pătrate până când va
+          ajunge la 90 de pixeli. Astfel   vom avea pătrate de 50, 60, 70, 80 și 90
+          de pixeli.
     parameters:
       1:
         image: notes/stage15_1.jpg
         text: Salut, eu sunt Janete și sunt inginer la Zynga.
       2:
         image: notes/stage15_2.jpg
-        text: Cum ar fi dacă am vrea să desenăm o grămadă de triunghiuri cu dimensiunile
-          lor de dimensiuni diferite?
+        text: Cum ar fi dacă am vrea să desenăm o grămadă de triunghiuri cu lungimi
+          de dimensiuni diferite?
       3:
         image: notes/stage15_3.jpg
         text: Am putea scrie tot acel cod de mână sau am putea folosi o funcție cu
@@ -321,12 +322,12 @@
       4:
         image: notes/stage15_4.jpg
         text: Pentru a face acest lucru, dă clic pe steaua albastră de la definiția
-          funcției "desenează un triunghi". Apoi trage "nume intrare" înspre blocul
-          "intrare".
+          funcției "desenează un triunghi". Apoi trage "intrare nume" în interiorul
+          blocului "intrare".
       5:
         image: notes/stage15_5.jpg
-        text: Apoi dacă scrii "lungime" în locul unde scrie "x" și apeși "Enter" vei
-          crea o intrare de tipul lungime pentru funcția ta.
+        text: Apoi, dacă scrii "lungime" în locul unde scrie "x" și apeși "Enter",
+          vei crea o intrare de tipul lungime pentru funcția ta.
       6:
         image: notes/stage15_6.jpg
         text: Apoi fă clic pe stea. Acum, vei dori să dai clic pe categoria variabile

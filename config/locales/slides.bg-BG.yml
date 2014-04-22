@@ -3,344 +3,356 @@
     maze_intro:
       1:
         image: notes/hoc1_1.jpg
-        text: Welcome to your first hour of code! Let's dive right into your first
-          taste of programming.
+        text: Добре дошли в първия си час по програмиране! Нека да се потопим направо
+          в първото си предизвикателство.
       2:
         image: notes/hoc1_2.jpg
-        text: We'll be using Blockly, a visual programming language where you drag
-          and drop blocks to write code.
+        text: Ние ще  използваме Blockly. Това е визуален език за програмиране, където
+          трябва само да плъзнете и пуснете блоковете за да напишете код.
       3:
         image: notes/hoc1_3.jpg
-        text: Most code is typed, but Blockly is visual. Each blocks corresponds to
-          a line of "real" code.
+        text: Кодът се пише, но Blockly е визуален. Всеки блок отговаря на един ред
+          от "истински" код.
       4:
         image: notes/hoc1_4.jpg
-        text: You'll learn the foundations of computer science, concepts which are
-          used anywhere from making apps to controlling the Mars rover.
+        text: Ще научите основите на компютърните науки, концепции, които се използват
+          навсякъде дори за създаването на приложения за контролиране на марсоходът
+          на Марс.
       5:
         image: notes/hoc1_5.jpg
-        text: A program is a set of instructions for your computer to follow.
+        text: Програмата е набор от инструкции за вашия компютър, които  да следва.
       6:
         image: notes/hoc1_6.jpg
-        text: The goal of your first program is to get an Angry Bird through a maze
-          to hit a Green Pig.
+        text: Целта на вашата първа програма е да посочите на ядосаната птица пътят
+          за да удари зеленото прасе.
       7:
         image: notes/hoc1_7.jpg
-        text: The left side is the maze where your program is run. The instructions
-          for each puzzle are below the maze.
+        text: От лявата страна е лабиринтът, където се изпълнява вашата програма.
+          Инструкциите за всеки пъзел са под лабиринта.
       8:
         image: notes/hoc1_8.jpg
-        text: The middle toolbox has the commands for the Angry Bird. You'll use these
-          to build your code.
+        text: В средата на кутията с инструменти има команди за ядосаната птица. Вие
+          ще ги използвате  за да изградите вашия код.
       9:
         image: notes/hoc1_9.jpg
-        text: On the right is your workspace where you'll drag blocks from the toolbox
-          to build your program. To delete a block, drag it to the trash in the corner.
+        text: Вдясно е вашата работна област, където ще можете да плъзнете блокове
+          от кутията с инструменти. За да изтриете блок просто го плъзнете в кошчето
+          в ъгъла.
       10:
         image: notes/hoc1_10.jpg
-        text: Each block is one instruction. If you drag a "move forward" block to
-          your workspace and press "Run Program", the bird moves one space on the
-          maze.
+        text: Всеки блок е една инструкция. Ако плъзнете "продължи напред" блок във
+          вашата работна област и натиснете "Изпълни програмата", птицата ще се премести
+          едно квадратче  напред в лабиринта.
       11:
         image: notes/hoc1_11.jpg
-        text: To do more than one action, you can drag many block to your workspace
-          and attach them together. The bird will do the commands from top to bottom.
+        text: За да направите повече от едно действие, можете да плъзнете много блокове
+          във вашата работна област и да ги прикрепите един към друг. Птицата ще извърши  вашите
+          команди от най-горната до най-долната.
       12:
         image: notes/hoc1_12.jpg
-        text: If you run a program and want to fix it and try again, press the "Reset"
-          button.
+        text: Ако стартирате програмата и искате да поправите кода си и да опитате
+          отново, натиснете бутона "Възстановяване".
       13:
         image: notes/hoc1_13.jpg
-        text: Let's go get those pigs!
+        text: Да вървим да хванем тези прасета!
     artist_intro:
       1:
         image: notes/stage5_1.jpg
-        text: Hi, I'm JR! Every race car team need computer scientists to win. They
-          analyze data from the car to make it go faster.
+        text: Здравейте аз съм младши! На всеки състезателен екип са му  необходими
+          компютърни учени, за да спечели. Те анализират данни от колата за да може
+          тя да се подобри.
       2:
         image: notes/stage5_2.jpg
-        text: In these puzzles, you'll be an artist that draws a line behind them
-          everywhere they go.
+        text: В тези пъзели вие ще бъдете художник, който чертае линия зад себе си,
+          където и да отиде.
       3:
         image: notes/stage5_3.jpg
-        text: This block says "move forward by 100 pixels." Pixels are just really
-          tiny dots on your screen.
+        text: Този блок се казва "преместване напред със 100 пиксела." Пикселите са
+          наистина много малки точки на вашия екран.
       4:
         image: notes/stage5_4.jpg
-        text: This block says "turn right by 90 degrees." This will turn your artist
-          the same amount as the "turn" blocks in the maze puzzles.
+        text: Този блок се казва, "обърни се надясно под 90 градуса." Това ще обърне
+          вашия художник във определената посока както "завий" блоковете при ядосаните
+          птици.
       5:
         image: notes/stage5_5.jpg
-        text: Click on the arrow in either of these blocks to change the amount the
-          artist moves forward or turns. Play around to get familiar with these new
-          blocks.
+        text: Кликнете върху стрелката в някой от тези блокове, за да промените броя
+          на движенията на художника напред или  въртене. Поиграйте си с блоковете,
+          за да се запознаете с техните възможности.
     farmer_intro:
       1:
         image: notes/stage9_1.jpg
-        text: Hi, I'm Paola! In these puzzles, you're a farmer who has to get her
-          field completely flat to start planting crops.
+        text: Здравейте аз съм Паола! В тези пъзели Вие сте земеделски производител,
+          който трябва да заравни нивата си за да започне засаждане на семена.
       2:
         image: notes/stage9_2.jpg
-        text: You have to help her remove all the piles of dirt and fill in all the
-          holes.
+        text: Трябва да премахнете всички купчинки и запълните всички дупки.
       3:
         image: notes/stage9_3.jpg
-        text: The new blocks remove 1 shovelful of dirt from a pile and fill in 1
-          shovelful of dirt to a hole.
+        text: Новите блокове премахват една лопата мръсотия от купчината и запълват
+          с една лопата дупката.
       4:
         image: notes/stage9_4.jpg
-        text: The piles and holes are different sizes, so you have to tell the farmer
-          how many shovelfuls to use.
+        text: Купчинките и дупките са с различни размери, така че вие трябва да кажете
+          на фермера колко лопати да използва.
     flappy_intro:
       1:
-        image: notes/flappy01.jpg
-        text: Hi, I'm Katie! One of the most exciting things about computer science
-          is that a computer program can be interactive.
+        image: бележки/flappy01.jpg
+        text: Здравейте аз съм Кейти! Едно от най-вълнуващите неща за компютърните
+          науки е, че една компютърна програма може да бъде интерактивна.
       2:
-        image: notes/flappy02.jpg
-        text: Any time somebody clicks or taps or types on a computer or phone, that
-          generates an EVENT, and there's some code that decides what to do when an
-          EVENT occurs.
+        image: бележки/flappy02.jpg
+        text: Ако някой кликне или докосне компютър или телефон, той генерира събитие,
+          и има  код, който решава какво да се направи, когато възникне събитие.
       3:
-        image: notes/flappy03.jpg
-        text: 'For example, you could have an EVENT-HANDLER that says "when the mouse
-          is clicked, play a sound" '
+        image: бележки/flappy03.jpg
+        text: 'Например, може да имаме МАНИПУЛАТОР на събитие, който казва "когато
+          мишката е натисната ще се възпроизведе на звук" '
       4:
-        image: notes/flappy04.jpg
-        text: Have you ever heard of the game FlappyBird? By using Event handlers,
-          we're going to learn to program our own custom version of FlappyBird!
+        image: бележки/flappy04.jpg
+        text: Чувал ли си за играта FlappyBird? С помощта на манипулатори на събития,
+          ние ще те научим да програмираш своя собствена потребителска версия на FlappyBird!
       5:
-        image: notes/flappy05.jpg
-        text: The code you'll write involves dragging and dropping blocks that represent
-          commands for the computer. Under the hood, each of these blocks is represented
-          by real code.
+        image: бележки/flappy05.jpg
+        text: Кода, който вие ще напишете се състои от блокове, които представляват
+          команди за компютъра. Зад всеки от тези блокове стои реален код.
       6:
-        image: notes/flappy06.jpg
-        text: 'If you take a look at the workspace, there are some green blocks that
-          are filled in for you - these are "event handlers" '
+        image: бележки/flappy06.jpg
+        text: 'Ако погледнете в работната област, ще видите зелени блокове, които
+          сме попълнили за вас - това са "манипулатори" '
       7:
-        image: notes/flappy07.jpg
-        text: If you want the bird to FLAP when you CLICK the mouse, you can do that
-          by attaching the "FLAP" block to the appropriate event handler, and now
-          in your game whenever you click the mouse, the bird will flap.
+        image: бележки/flappy07.jpg
+        text: Ако искате птицата да пляска с крила, когато щракнете с мишката, можете
+          да направите това чрез поставяне на блокът "пляскане с крила" при манипулатора
+          на подходящо събитие, и сега в играта си всеки път, когато щракнете с мишката,
+          птица ще пляска с криле.
       8:
-        image: notes/flappy08.jpg
-        text: In each puzzle of this activity we'll introduce new types of events
-          as green blocks on the workspace, and you can decide the appropriate blocks
-          to add in response to those events.
+        image: бележки/flappy08.jpg
+        text: При всеки пъзел в тази дейност ние ще въвеждаме нови типове събития
+          под формата на зелени блокове в работната област и ти можеш да избереш как
+          да ги ползваш.
       9:
-        image: notes/flappy09.jpg
-        text: When you see a drop down arrow like this, that means you can change
-          the settings - like what sound to play when flappy hits the ground.
+        image: бележки/flappy09.jpg
+        text: Когато видиш падащата стрелка като тази, това означава, че можеш да
+          промениш настройките - като какъв звук да се възпроизведе когато flappy
+          удари земята.
       10:
-        image: notes/flappy10.jpg
-        text: In the final puzzle you'll be able to create your own game and share
-          it with your friends. Have fun!
+        image: бележки/flappy10.jpg
+        text: Във финалния пъзел ще успееш да създадеш своя собствена игра и да я
+          споделиш със своите приятели. Забавлявай се!
     loop_times:
       1:
         image: notes/hoc2_1.jpg
-        text: Hi, I'm Mark! Let's learn about loops. Using loops you can tell a computer
-          to repeat any set of actions over and over, thousands or even billions of
-          times.
+        text: Здравейте аз съм Марк! Нека да обясня какво представляват командите
+          за повторения. Използването на тези команди казва на компютъра да повтаря
+          отново и отново всеки набор от действия, хиляди или дори милиони пъти.
       2:
         image: notes/hoc2_2.jpg
-        text: In this puzzle, we want to make the bird move forward 5 spaces to get
-          to the pig.
+        text: В този пъзел ние трябва да накараме птицата да се придвижи напред с
+          5 квадратчета, за да стигне до прасето.
       3:
         image: notes/hoc2_3.jpg
-        text: We can use the new "repeat" block to help us out.
+        text: Можем да използваме нови "повтари" блокове за да си помогнем.
       4:
         image: notes/hoc2_4.jpg
-        text: Instead of dragging out 5 "move forward" blocks...
+        text: Вместо да плъзгаме 5 "продължи напред" блокове...
       5:
         image: notes/hoc2_5.jpg
-        text: We can put the "move forward" block inside the "repeat" block and write
-          a number in the block to tell it how many times to repeat.
+        text: Ние ще поставим "продължи напред" блока вътре в блока "повтори" и ще
+          напишем число в блока за да кажем колко пъти да се повтори действието.
       6:
         image: notes/hoc2_6.jpg
-        text: 'And this is important: you can put more than one command inside a "repeat"
-          block.'
+        text: 'това е важно: можете да поставите повече от една команда в "повтори"
+          блока.'
       7:
         image: notes/hoc2_7.jpg
-        text: Enjoy using your new "repeat" block!
+        text: Насладете се на използването на вашия нов "повтори" блок!
     loop_until:
       1:
         image: notes/hoc3_1.jpg
-        text: Hi, I'm Chris. Before joining the Miami Heat, I went to Georgia Tech
-          to study Computer Science. Let's try our new block, the "repeat until" block.
+        text: Здравейте аз съм Крис. Преди да постъпя в Маями Хийт, отидох в Джорджия
+          Tech за да уча компютърни науки. Нека опитаме нашия нов блок, " повтаряй
+          докато" блок.
       2:
         image: notes/hoc3_2.jpg
-        text: What if we didn't know how far the bird had to move to get to the pig?
+        text: Какво става, ако ние не знаем колко далеч птицата трябва да се премести
+          за да стигне до прасето?
       3:
         image: notes/hoc3_3.jpg
-        text: If we put a "move forward" block inside the "repeat until" block, the
-          bird will move forward UNTIL it reaches the pig (or crashes into a wall).
+        text: Ако сложим "движи напред" блок вътре в блока, "повтори докато", птицата
+          ще продължи напред, докато достигне прасето (или ще се блъсне в стената).
       4:
         image: notes/hoc3_4.jpg
-        text: 'And this is important: just like before, we can put multiple blocks
-          inside the "repeat until" block, and they will all be repeated.'
+        text: 'И това е важно: както преди, можем да сложим няколко блока вътре в
+          блока, "повтори докато", и всички те ще се повтарят.'
     if:
       1:
         image: notes/hoc4_1.jpg
-        text: 'Hi, I''m Bill! Let''s learn a new fundamental concept: "If" statements.
-          This is how computers make decisions.'
+        text: 'Здравейте аз съм Бил! Нека да научим нова основна концепция: "Ако".
+          Така ние учим компютрите да вземат решения.'
       2:
         image: notes/hoc4_2.jpg
-        text: You use "If" statements yourself everday. Before you go outside each
-          morning, you say IF it's raining outside, I need to wear my jacket.
+        text: Можете да използвате "ако" изрази всеки ден. Преди да отидете навън
+          всяка сутрин, вие си казвате, ако навън вали, трябва да си взема яке.
       3:
         image: notes/hoc4_3.jpg
-        text: We can tell the zombie to check IF there's path to the left, and if
-          he finds a path to the left, we can have him turn in that direction.
+        text: Ние можем да кажем на зомбито да провери дали има път наляво, и ако
+          той открие път, може да се придвижи в тази посока.
       4:
         image: notes/hoc4_4.jpg
-        text: To write the code for this, let's drag out our "if" block and put a
-          "turn left" block inside it.
+        text: За да напишем код за това, нека да поставим "Ако" блок и в него да вмъкнем
+          "Завий наляво".
       5:
         image: notes/hoc4_5.jpg
-        text: Now, if we put a "move forward" block above it and a "repeat" block
-          around everything, each time the zombie moves, he'll check if there's a
-          path to the left and turn. The "repeat" command is critical, to check for
-          a turn at every step.
+        text: Сега ако сложим "движи напред" блок над него и "повторение" блок около
+          всичко, всеки път, когато зомбито се движи, то ще проверява дали има път
+          наляво. Командата "Повтаряне" е от решаващо значение, за да проверите за
+          завой на всяка стъпка.
       6:
         image: notes/hoc4_6.jpg
-        text: If statements are really important in computer science. One of the first
-          programs I wrote was a tic-tac-toe game, and there was a If statement that
-          said IF the other person is about to win, block the spot that lets them
-          win.
+        text: Ако твърденията са много важни за компютърните науки. Една от първите
+          програми, която съм написал е игра на кръстчета и нули, и имаше едно ако
+          твърдение, че  ако другият човек е на път да спечели, компютърът трябва
+          да блокира мястото, което му позволява да спечели.
       7:
         image: notes/hoc4_7.jpg
-        text: Have fun using the "if" block!
+        text: Забавлявайте се с помощта на "Ако" блока!
     if_else:
       1:
         image: notes/hoc5_1.jpg
-        text: Hi, my name is Saloni. I use computer science to help solve problems
-          in health and medicine. Let's learn about the "if else" block. It looks
-          like the "if" block, but it has an extra part at the end that says "else".
+        text: Здравейте моето име е Салони. Използвам компютърни науки, за да помогна
+          за решаването на проблемите в здравеопазването и медицината. Нека да сe
+          научим  да използваме "ако или" блок. Той изглежда като блок "Ако", но има
+          допълнителна част в края, която казва "или".
       2:
         image: notes/hoc5_2.jpg
-        text: If I put a "move forward" block in the spot where it says "do" and a
-          "turn left" block where it says "else" that means that the zombie will choose
-          between 2 options. IF there is a path ahead, the zombie will move forward,
-          and OTHERWISE (there isn't a path ahead), the zombie will turn left.
+        text: Ако сложим в мястото, където се казва "ако" блок "Напред" и "Завий наляво"
+          блок където се казва "или," това означава, че зомбито ще избира между две
+          опции. Ако има път напред, зомбито ще се движи напред, или (ако липса такава
+          възможност)- зомбито ще завие наляво.
       3:
         image: notes/hoc5_3.jpg
-        text: Just like the "if" block, we can put "if else" blocks inside a "repeat"
-          blocks so that the zombie keeps moving and the "if else" block will keep
-          checking if there's somewhere to turn.
+        text: Точно като при "Ако" блока, можем да добавим в блока"ако или" блок за
+          "повторение", така че зомбито да продължава да се движи и "ако или" блока
+          ще извърши проверка дали има някъде възможност да се завие.
       4:
         image: notes/hoc5_4.jpg
-        text: Now, get those zombies where they belong!
+        text: Сега преведете зомбитата до местата, където те трябва да стигнат!
     function:
       1:
         image: notes/stage13_1.jpg
-        text: Hi, I'm Brina, an engineer at Instagram. A function is certain lines
-          of code that you want to use over and over again, so instead of writing
-          that code out everytime, you can just use one block.
+        text: Здравейте аз съм Brina, инженер от Instagram. Функция е някои редове
+          с код, който искате да използвате отново и отново, така че вместо да повтаряте
+          изписването на кода, вие можете да използвате само един блок.
       2:
         image: notes/stage13_2.jpg
-        text: We're going to learn how to define functions. Function definitions have
-          a star in the corner. The name of the function is written on the top line.
+        text: Ще научите как да дефинирате функции. Дефинициите имат звезда в ъгъла.
+          Името на функцията е написано на най-горния ред.
       3:
         image: notes/stage13_3.jpg
-        text: The blocks that go inside the definition tell us what it does. So this
-          function definition is called "fill 5" and it's made up of a "repeat" block
-          and a "fill" block.
+        text: Блоковете, които влизат вътре в дефиницията ни казват  какво прави тя.
+          Дефиницията, която ще използваме се нарича "запълване 5" и тя се състои
+          от блок за "повторение" и "запълване" блок.
       4:
         image: notes/stage13_4.jpg
-        text: The definition sits on the workspace, but our farmer won't run the function
-          until we drag out our "fill 5" function block from functions category.
+        text: Дефиницията се намира на работната област, но нашият фермер няма да
+          изпълни функцията, докато ние не поставим "запълване 5" функция блок от
+          категорията функции.
       5:
         image: notes/stage13_5.jpg
-        text: 'Let''s put the "fun" back in "FUNction!" '
+        text: 'Нека върнем "забавно" обратно във "Функцията!" '
     loop_while:
       1:
         image: notes/stage9_5.jpg
-        text: 'Hi, I''m Makinde! Let''s learn about the "while block." '
+        text: 'Здравейте аз съм Макинде! Нека да научим за "докато блок." '
       2:
         image: notes/stage9_6.jpg
-        text: The "while block" will do whatever you put inside it AS LONG AS the
-          statement on the top is TRUE.
+        text: '"Докато блок" ще повтаря действие, докато се отчете, че действието
+          е извършено.'
       3:
         image: notes/stage9_7.jpg
-        text: For example, if the farmer is standing on a pile, she will continue
-          to remove 1 shovelful WHILE there is still a pile beneath her.
+        text: Например ако фермерът е стъпил върху купчина, той ще продължи да я премахва
+          с по 1 лопата, докато все още има купчина под него.
     loop_for:
       1:
         image: notes/stage11_1.jpg
-        text: Hi, I'm Trina, and I work for Pixar. I've worked on a bunch of movies,
-          including Shrek.
+        text: Здравейте аз съм Trina, и работя за Pixar. Работила съм в няколко филми,
+          включително и в Шрек.
       2:
         image: notes/stage11_2.jpg
-        text: This is our new "counter" loop. It will perform actions over and over
-          again and you can make the actions change slightly each time.
+        text: Това е нашата нова "брояч" за цикли. Той ще извършва действия отново
+          и отново, а вие можете да направите така, че действията да се променят леко
+          всеки път.
       3:
         image: notes/stage11_3.jpg
-        text: In this example, our "counter" loop says "count with counter from 50
-          to 90 by 10" and inside it, we have our "draw a square" block. Drag the
-          "counter" block from the "Variables" section into the "length" spot.
+        text: В този пример, нашият "брояч" на цикли  казва "ще броя с брояч от 50
+          до 90  през 10" и вътре в него, ние имаме нашият "нарисувай квадрат" блок.
+          Плъзнете блока "брояч" от раздела "Променливи" в "дължина" място.
       4:
         image: notes/stage11_4.jpg
-        text: This means our artist is going to draw a square that has 50 pixel length
-          sides, then it will add 10 to that and draw a square with 60 pixel length
-          sides. Then it will keep adding 10 and drawing squares until it reaches
-          90. So we'll have squares of 50, 60, 70, 80, and 90.
+        text: Това означава, че художникът ще нарисува квадрат, който има 50 пиксела
+          дължина на страните, тогава той ще добави 10, и ще нарисува квадрат с 60
+          пиксела дължина на страните. Тогава ще продължи докато нариува квадрат със
+          страни 90. Така ще имаме квадрати със страни 50, 60, 70, 80 и 90.
     parameters:
       1:
         image: notes/stage15_1.jpg
-        text: Hi, I'm Janete, and I'm an engineer at Zynga.
+        text: Здравейте аз съм Janete и съм инженер в Zynga.
       2:
         image: notes/stage15_2.jpg
-        text: What if we want to draw a bunch of triangles and have their lengths
-          be different sizes?
+        text: Ако искаме да нарисувате куп триъгълници  със различни размери на страните
+          им?
       3:
         image: notes/stage15_3.jpg
-        text: We could write all that code out by hand or we can use a function with
-          parameters.
+        text: Можем да напишем целия този код на ръка или можем да използваме функция
+          с параметри.
       4:
         image: notes/stage15_4.jpg
-        text: To do this, click the blue star on the "draw a triangle" function definition.
-          Then drag "input name" into the "input" block.
+        text: За да направите това, щракнете върху синята звезда на дефиницията на
+          "равно на триъгълник" функцията. След това плъзнете "въведете име" в "вмъкни"
+          блока.
       5:
         image: notes/stage15_5.jpg
-        text: Then if you write "length" in the spot where it says "x" and press "Enter"
-          you'll create a length input for your function.
+        text: Тогава, ако  напишете "дължина" на мястото, където е "х" и натиснете
+          "Enter", вие ще създадете дължина за входни данни на вашата функция.
       6:
         image: notes/stage15_6.jpg
-        text: Then click on the star. Now, you want to click on the variables category
-          and drag the "length" block into the "move forward" block of your function
-          definition. And drag away the old number block.
+        text: След това кликнете върху звездата. Сега вие трябва да щракнете върху
+          категорията на променливи и да плъзнете "дължина" блок в "движи напред"
+          блок от вашата дефиниция на функция. Плъзнете и блок за номер.
       7:
         image: notes/stage15_7.jpg
-        text: To use your function with parameters, click on the functions category
-          and drag out your "draw a triangle with length" function.
+        text: За да използвате вашата функция с параметри, щракнете върху категорията
+          функции и изберете "Нарисувай триъгълник с дължина" функция.
       8:
         image: notes/stage15_8.jpg
-        text: Now you can use the math block to input different numbers to draw triangles
-          of different sizes.
+        text: Сега можете да използвате математически блок за да въведете различни
+          номера и да начертаете триъгълници с различни размери.
     hoc_wrapup:
       1:
         image: notes/hoc6_1.jpg
-        text: Congratulations! With the last puzzle you solved, you just wrote code
-          that can tell ANY robot how to find it's way through a non-branching maze
-          or tunnel of any length, whether it's a zombie, a bird, a mars rover, or
-          even a self-driving car.
+        text: Поздравления! С последната загадка, която разгадахте, вие просто написахте
+          код, който може да каже на всеки робот как да си придвижи, без да се губи
+          в лабиринта или тунела. Това можете да повторите и с зомби, птица, марсоход
+          или дори самостоятелно шофиращ се автомобил.
       2:
         image: notes/hoc6_2.jpg
-        text: The basic concepts you used are at the heart of every program or app
-          you'll ever try.  We learned about repeat loops, repeat until statements,
-          if statements, and if else statements.
+        text: Основните понятия, които използваме са в основата на всяка програма
+          или приложение, които някога сте ползвали.  Ние научихме за повторение  докато,
+          ако отчетите, ако- или отчетите.
       3:
         image: notes/hoc6_3.jpg
-        text: If you liked your first hour of code, visit code.org to continue your
-          education into computer science! Once you complete our 20 hour course, you'll
-          have mastered the basics of programming, and can start learning how to write
-          phone apps, robot instructions, games, you name it.
+        text: Ако ви харесва  първия час на програмиране, посетете code.org за да
+          продължите образованието си в компютърните науки! След като завършите нашият
+          20 часов курс, вие ще сте усвоили основите на програмиране и може да се
+          научите как да създавате програми за телефони, инструкции за роботи, игри,
+          и др.
       4:
         image: notes/hoc6_4.jpg
-        text: 'Technology is changing everything we do and it doesn''t matter if you''re
-          young or old: programming is fun, it''s creative, and anyone can learn!'
+        text: 'Технологията променя всичко, което правим и няма значение, ако сте
+          млад или стар: програмирането е забавно, това е творчество  и всеки може
+          да научи!'
     20_wrapup:
       1:
         image: notes/bird.png
-        text: Show notes coming soon!
+        text: Показването на бележки очаквайте скоро!

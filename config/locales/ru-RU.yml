@@ -11,6 +11,8 @@
         locale: Язык
         gender: Пол
         edit_header: Изменить данные регистрации
+        error:
+          future: can't be in the future
   hello: Привет, мир!
   welcome_back: С возвращением, %{name}
   add_teacher_form:
@@ -19,7 +21,7 @@
       placeholder: Код (ABCDEF) или электронная почта (teacher@school.edu)
     submit: Добавить учителя
   add_hint_form:
-    placeholder: Пожалуйста, введите вашу подсказку здесь
+    placeholder: Пожалуйста, введите Вашу подсказку здесь
     submit: Добавить подсказку
   appname: Code.org
   stage: Этап
@@ -30,8 +32,8 @@
   more: ЕЩЁ
   less: СВЕРНУТЬ
   try_hoc: Для участия в "Часе кода" нажми здесь >> 
-  try_k8intro: Попробуйте наш курс К-8 "Введение в информатику" (15-25 часов)
-  k8intro: Курс К-8 "Введение в компьютерную науку" (15-25 часов)
+  try_k8intro: Попробуйте наш курс "Введение в информатику" (15-25 часов)
+  k8intro: Курс "Введение в информатику" (15-25 часов)
   already_started: 'Уже начали? Продолжайте здесь >> '
   demos: 'Admin: Все демо'
   continue: Продолжить
@@ -50,18 +52,17 @@
     need_confirmation: Не получили письмо для подтверждения?
     need_unlock: Не получили письмо-инструкцию для разблокировки?
   signup_form:
-    overview: Этот 20-часовой курс является введением в основы информатики. Курс предназначен
-      для работы с детьми с дошкольного возраста до 8-ого класса, но он занимателен
-      для всех возрастов.
-    no_signup_header: Не хотите регистрироваться?
+    overview_student: Sign up for an account to track your progress.
+    overview_teacher: Teach computer science in your classroom by signing up for an
+      account.<p/> You'll be able to track your students' progress and get rewards.
     no_signup_message: Вы можете <a target="_blank" href="http://learn.code.org">
       просматривать различные этапы и головоломки</a>, но Вам нужно зарегистрироваться,
       чтобы сохранять свои  результаты.
     prizes_header: The first students to complete the course win prizes! (U.S. students
       only)
-    prizes_message: Американские ученики, которые получили все %{num_trophies} тематические
-      трофеи, могут выбрать различные призы, включая дисковое пространство на Dropbox.com,
-      кредиты в Skype и игры,  скачиваемые с Electronic Arts.
+    prizes_message: Американские ученики, которые получили все %{num_trophies} кубков,
+      могут выбрать различные призы, включая дисковое пространство на Dropbox.com,
+      кредит в Skype и игры,  скачиваемые с Electronic Arts.
     teacher_educator_guide: Смотри руководство учителя
     teacher_prize_header: Выиграть $1,000 - награду <a target="_blank" href="http://DonorsChoose.org">
       DonorsChoose.org</a>
@@ -70,7 +71,7 @@
       школ, у которых не менее 15 учеников прошли этот курс. <a href="http://code.org/educate/20hr">Подробности
       смотри в руководстве преподавателя</a> '
     teacher_prize_limits: '(Ограничение: $1000 на учителя. <a target="_blank" href="http://help.donorschoose.org/app/answers/detail/a_id/454/kw/code.org">
-      Посмотреть FAQ для следующих ограничений</a>)'
+      О других ограничениях смотреть FAQ</a>)'
     teacher_pitch: Проведите курс "Введение в Информатику" в вашем классе
     teacher_title: Регистрация учителя
     student_pitch: 'После 1-ого часа: познакомься с нашим "Введением в Информатику"'
@@ -93,14 +94,15 @@
       моих родителей или законного опекуна на использование Code.org.
     teacher_terms: Я согласен с условиями использования Code.org.
   signin_form:
-    title: Уже есть аккаунт? Войти
+    title: Уже зарегистрированы? Войти
     login: Адрес электронной почты или имя пользователя
     password: Пароль
     remember: Запомнить меня
     submit: Войти
   signin:
-    try_hoc: Попробуйтеодин Час Кода вначале
-    try_20hours: Попробуйте наше двадцатичасовое "Введение в компьютерную науку"
+    try_heading: Want to try coding without signing up?
+    try_hoc: Попробуйте сначала один Час Кода
+    try_20hours: Попробуйте наше двадцатичасовое "Введение в информатику"
   password:
     reset_form:
       title: Забыли пароль?
@@ -133,10 +135,10 @@
       invite_student:
         subject: Присоединяйся к классу учителя %{teacher_name} на Code.org!
       student_disassociated:
-        subject: 'Code.org уведомление: % {student_name} больше не является вашим
-          студентом.'
+        subject: 'Уведомление от Code.org: %{student_name} больше не является Вашим
+          учеником.'
       teacher_disassociated:
-        subject: 'Code.org уведомление: % {teacher_name} больше не является вашим
+        subject: 'Уведомление от Code.org: %{teacher_name} больше не является Вашим
           учителем.'
   reports:
     error:
@@ -146,15 +148,18 @@
     provider: 'Provider:'
     code: 'Code:'
     redeem_header: 'To redeem:'
-    donorschoose_how_to: Как использовать ваш код
+    donorschoose_register: Register as a teacher on DonorsChoose.org
+    donorschoose_project: Post a project
+    donorschoose_how_to: Как использовать Ваш код
     success: Your prize was succesfully redeemed, see code below.
     error: Your prize could not be redeemed, please try again.
     error_us_only: Предложение приза действительно только для пользователей в США.
     error_not_earned: Вы ещё не заработали этот приз.
     error_already_redeemed: Ваш приз уже получен.
     no_prizes_available: Извините, но сейчас у нас нет призов.
-    teacher_info_required: 'Для призов учителю требуется имя и адрес школы:'
-    teacher_email_required: 'Учительская награда требуетт подтверждения адреса электронной
+    teacher_info_required: 'Для награды учителю требуется сообщить название и адрес
+      школы:'
+    teacher_email_required: 'Для награда учителю требуется подтверждённый адрес электронной
       почты:'
     confirm:
       title: Please Confirm
@@ -186,7 +191,7 @@
         или бесплатное скачивание игр. ПРИМЕЧАНИЕ: действительно только для учеников
         в США, пока призы не закончатся.'
       teacher:
-        earned: 10 или более учеников собрали все %{num_trophies} трофеи. Вы выиграли
+        earned: 10 или более учеников собрали все %{num_trophies} кубков. Вы выиграли
           учительский приз $750! (Только для учителей США)
         not_earned_title: Teach the class, earn up to $1,000 in <a target="_blank"
           href="http://DonorsChoose.org">DonorsChoose.org</a> credits (U.S. teachers
@@ -243,28 +248,29 @@
       prizes_link: подробнее
   teacher:
     title:
-      one: 'Ваш Учитель:'
+      one: 'Ваш учитель:'
       other: 'Ваши учителя:'
-    remove: (убрать учителя)
+    remove: (удалить учителя)
     confirm:
-      remove: Вы уверены, что вы хотите удалить этого учителя?
+      remove: Вы уверены, что хотите удалить этого учителя?
     tools: Инструментарий учителя
     students:
       manage: Управление учениками
       add: Пригласить учеников
     sections:
-      manage: Manage sections
+      manage: Управление классами
     rollup: Панель контроля хода выполнения
     activity: Последние данные по работе класса
-    user_not_found: Преподаватель или студент не может быть найден
-    cant_remove_student_no_email: '% {student_name} не могут быть удалены как ваш
-      студент, потому что % {student_name} не зарегистрировали адрес электронной почты'
-    cant_remove_teacher_no_email: '% {teacher_name} не могут быть удалены как ваш
-      учитель, потому что вы еще не зарегистрировали адрес электронной почты'
-    student_teacher_disassociated: '% {teacher_name} был удален как учитель для% {student_name}'
+    user_not_found: Преподаватель или ученик не может быть найден
+    cant_remove_student_no_email: '%{student_name} не может быть удален из списка
+      Ваших  учеников,, поскольку %{student_name} не зарегистрировал адрес электронной
+      почты'
+    cant_remove_teacher_no_email: Учитель %{teacher_name} не может быть удален, поскольку  Вы
+      не зарегистрировали адрес электронной почты
+    student_teacher_disassociated: Учитель %{teacher_name} удалён у ученика %{student_name}
   user:
-    email_confirm_needed: 'Не был подтвержден адрес электронной почты:'
-    email_resend_confirm: Выслать подтверждение инструкции
+    email_confirm_needed: 'Адрес электронной почты не был подтвержден:'
+    email_resend_confirm: Выслать инструкции для подтверждения
     new_password_hint: (оставьте пустым, если не хотите ничего менять)
     current_password_hint: (нам нужен Ваш текущий пароль для подтверждения изменений)
     cancel:
@@ -288,10 +294,10 @@
     teacher_student_count: У Вас %{count} учеников.
     teacher_averages: В среднем Ваши ученики заработали  %{trophy_average} из %{trophy_max}
       возможных кубков «Знаток основ».
-    teacher_print_certificates: Печать сертификатов для студентов, которые закончили
+    teacher_print_certificates: Распечатать сертификаты учеников, которые закончили
       этот курс
-    teacher_read_blog: Читайте о новостях и новинках наших материалов на нашем Учебном
-      Блоге
+    teacher_read_blog: Знакомтесь с новостями и обновлениями наших материалов на нашем
+      Учебном Блоге
     teacher_survey: Tell us what you think about this course
     classroom: Ваш класс
     student_progress: Ваши результаты обучения
@@ -308,8 +314,12 @@
     prize_info: 'Призы за участие (только для США): $10 на подарочные карты для завершения
       студенческого обучения и до $1000 в классе награды для учителей государственных
       школ.'
-    tryfirst: 'Или, вы можете сначала попробовать это и зарегистрироваться позже:'
+    tryfirst: 'Или Вы можете сначала попробовать, а зарегистрироваться позже:'
     trynow: Попробуйте сейчас
+    add_hint_help: Please help us to add smart hints to Code.org tutorials
+    20hour_overview: This 20-hour course introduces core computer science and programming
+      concepts. The course is designed for use in classrooms for grades K-8, but it
+      is fun to learn at all ages.
   gender:
     male: Мужской
     female: Женский
@@ -338,6 +348,8 @@
     subtitle: Смотрите эти видео и советы
     teacher: Посмотреть решение
     auth_error: У Вас нет прав смотреть решение.
+    submit: Update Artist Location
+    direction: Start Direction
   video:
     tab: Видео.
     notes: Не надо видео? Смотреть текстовый вариант.
@@ -352,8 +364,9 @@
   download_pdf: Показать план урока
   share_code:
     title: Нажми "Запустить программу", чтобы посмотреть работу моей программы
+    bounce_og_title: Check out my Bounce Game
     flappy_og_title: Проверь мои Flappy игру
-    og_description: Я написал код с Code.org  сам
+    og_description: Я сам написал код  на Code.org
   builder:
     created: Вы создали новый скрипт.
     destroyed: Вы уничтожили скрипт.
@@ -364,3 +377,14 @@
       create: Создать новый уровень
       current: Текущие уровни
       unused: Неиспользованные уровни
+  upsell:
+    hoc:
+      title: The Hour of Code
+      body: Try the basics of computer science. Millions have given it a shot.
+    flappy:
+      title: Flappy Code
+      body: Wanna write your own game in less than 10 minutes? Try our Flappy Code
+        tutorial!
+    20hour:
+      title: Intro Course
+      body: Try our 20-hour Intro to Computer Science course.

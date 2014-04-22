@@ -32,74 +32,82 @@
           MazeEC: Nivo 1
         2014 Levels:
           desc: 2014 Puzzles (beta)
-          MazeEC: Stage 1
+          Bounce: Stage 1
+        Builder Levels:
+          desc: User-Created Puzzles (beta)
+          Custom: Stage 1
         Flappy Levels:
           desc: Flappy Bird
-          MazeEC: Stage 1
+          Flappy: Stage 1
+        Jigsaw Levels:
+          desc: Jigsaw (beta)
+          Jigsaw: Stage 1
     game:
       name:
         Unplug1: Uvod u Informatiku
         Maze: Labirint
-        Unplug2: Computational Thinking
+        Unplug2: Razmišljati poput računala
         Unplug3: Graph Paper Programming
-        Artist: The Artist
-        Unplug4: Algorithms
-        Artist2: The Artist 2
-        Unplug5: Functions
-        Farmer: The Farmer
-        Unplug6: Conditionals
-        Artist3: The Artist 3
-        Unplug7: Song Writing
-        Farmer2: The Farmer 2
+        Artist: Umjetnik
+        Unplug4: Algoritmi
+        Artist2: Umjetnik 2
+        Unplug5: Funkcije
+        Farmer: Farmer
+        Unplug6: Uvjeti
+        Artist3: Umjetnik 3
+        Unplug7: Skladanje pjesmi
+        Farmer2: Farmer 2
         Unplug8: Abstraction
-        Artist4: The Artist 4
+        Artist4: Umjetnik 4
         Unplug9: Relay Programming
-        Farmer3: The Farmer 3
-        Unplug10: The Internet
-        Artist5: The Artist 5
+        Farmer3: Farmer 3
+        Unplug10: Internet
+        Artist5: Umjetnik 5
         Unplug11: Wrap-up
         MazeEC: The Maze
         Bounce: Bounce
         Flappy: Flappy Bird
+        Jigsaw: Jigsaw
     trophy:
       name:
-        Bronze: Bronze
-        Silver: Silver
-        Gold: Gold
+        Bronze: Bronca
+        Silver: Srebro
+        Gold: Zlato
     concept:
       description:
         sequence: Sequence
-        if: If block
-        if_else: If-else block
+        if: '"Ako" naredba'
+        if_else: '"Ako inače" naredba'
         loop_times: Repeat times block
-        loop_until: Repeat until block
-        loop_while: While block
-        loop_for: Counter block
-        function: Functions
-        parameters: Functions with parameters
+        loop_until: '"Ponavljaj dok" blok'
+        loop_while: '"Dok" blok'
+        loop_for: Brojač
+        function: Funkcije
+        parameters: Funkcije sa parametrima
     level:
       instructions:
-        maze_2_2: 'Can you help me to catch the naughty pig? Stack a couple of "move
-          forward" blocks together and press "Run Program" to help me get there. '
-        maze_2_1: This pig is ruffling my feathers. Help me to find him!
-        maze_2_2_5: Trace the path and lead me to the silly pig. Avoid TNT or the
-          feathers will fly!
-        maze_2_3: Guide me to the green evilness! (Watch out for TNT)
-        maze_2_4: Keep calm and help me to find the bad pig. Otherwise I might get
-          angry!
-        maze_2_5: There's a way I can get to the silly pig using only 2 blocks. Can
-          you figure it out?
+        maze_2_2: 'Možeš li mi pomoći da uhvatim zločestu svinju? Spoji nekoliko "pomakni
+          naprijed" blokova zajedno i pritisni tipku "Pokreni program" da me dovedeš
+          do tamo. '
+        maze_2_1: Ova svinja mi je nakostriješila perje. Pomozi mi ga pronaći!
+        maze_2_2_5: Prati stazu i odvedi me do šašave svinje. Zaobiđi TNT ili će perje
+          letjeti na sve strane!
+        maze_2_3: Vodi me do zelene zloće! (Pazi se TNT-a)
+        maze_2_4: Ostani smiren i pomozi mi pronaći zločestu svinju inače bih se mogao
+          naljutiti !
+        maze_2_5: Postoji način kako da dođem do šašave svinje koristeći samo 2 bloka.
+          Možeš li doći do rješenja ?
         maze_2_6: Try to get me to the green intruder using only three blocks.
         maze_2_7: Help me banish this bad piggy using the fewest number of blocks.
           Try using more than one "repeat times" block.
         maze_2_8: 'To solve this one, try a "repeat" block with these 3 blocks inside
           it: move, move, turn.'
-        maze_2_9: Ok, try the new "repeat until" block - it will repeat until I reach
-          the annoying pig.
+        maze_2_9: U redu, probaj sada "ponavljaj dok" naredbu - ona će se ponavljati
+          dok ne dođem do dosadne svinje.
         maze_2_10: Ok, one last time for practice - can you solve this one using only
           4 blocks?
-        maze_2_11: Dear person.  Me zombie. Me hungry. Must... get... to sunflower...
-          Can you get me there with only 5 blocks?
+        maze_2_11: Dragi čovječe. Ja zombij. Ja gladan. Moram... otići ... do suncokreta...
+          Možeš li me odvesti tamo koristeći samo 5 naredbi?
         maze_2_12: Ok, this is similar, but slightly different. Can you do it in only
           5 blocks?
         maze_2_13: 'Use the new "if" block to let me decide when to turn. Hint: you
@@ -334,6 +342,9 @@
         bounce_11: You can now attach blocks to the "when game starts" block. Try
           changing the speed of the paddle and the ball and see how many points you
           can score before your opponent scores twice.
+        bounce_12: Create your own Bounce game. You can change all the visuals and
+          the rules. When you're done, click Share to let friends try your game on
+          their phones.
         Custom_builder: Drag blocks from the toolbox to the workspace to draw the
           level you wish to create. Press "Run Program" when you are ready.
         flappy_1: Attach a block to the "when click" block, then press "Run Program"
@@ -362,6 +373,17 @@
         flappy_11: Create your own Flappy game and share it. You can change the visuals,
           or even the rules. Try changing visuals each time Flappy passes an obstacle.
           Or make Flappy invincible so he never dies.
+        jigsaw_1: Click the block
+        jigsaw_2: Drag the block to the target
+        jigsaw_3: Arrange the blocks to form the image
+        jigsaw_4: Arrange the blocks to form the image
+        jigsaw_5: Arrange the blocks to form the image
+        jigsaw_6: Arrange the blocks to form the image
+        jigsaw_7: Arrange the blocks to form the image
+        jigsaw_8: Arrange the blocks to form the image
+        jigsaw_9: Arrange the blocks to form the image
+        jigsaw_10: Arrange the blocks to form the image
+        jigsaw_11: Arrange the blocks to form the image
       levelIncompleteError:
         maze_2_8: 'To solve this, find the pattern that repeats. Use a "repeat" block
           with these 3 blocks inside it: move, move, turn right.'
@@ -387,3 +409,15 @@
         parameters: Functions with Parameters
         hoc_wrapup: Hour of Code Wrapup
         20_wrapup: 20-Hour Wrapup
+    callout:
+      text:
+        drag_blocks: Drag a "move" block and snap it below the other block
+        run: Hit "Run" to try your program
+        watch_again: Click here to watch the video again
+        gray_block_explanation: Blocks that are grey can't be moved or deleted. Can
+          you solve the puzzle anyway?
+        show_code_explanation: Click here to see the code for the program you're making
+        instructions_repeat_explanation: The instructions for each puzzle are repeated
+          here
+        category_explanation: You have all the same blocks but they've now been arranged
+          in categories

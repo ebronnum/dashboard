@@ -7,6 +7,7 @@ if (typeof global !== 'undefined') {
 }
 
 var addReadyListener = require('./dom').addReadyListener;
+var blocksCommon = require('./blocksCommon');
 
 function StubDialog() {
   for (var argument in arguments) {
@@ -53,6 +54,7 @@ module.exports = function(app, levels, options) {
   };
 
   options.skin = options.skinsModule.load(BlocklyApps.assetUrl, options.skinId);
+  blocksCommon.install(Blockly);
   options.blocksModule.install(Blockly, options.skin);
 
   addReadyListener(function() {
@@ -69,7 +71,7 @@ module.exports = function(app, levels, options) {
 };
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./base":2,"./dom":15}],2:[function(require,module,exports){
+},{"./base":2,"./blocksCommon":4,"./dom":16}],2:[function(require,module,exports){
 /**
  * Blockly Apps: Common code
  *
@@ -869,7 +871,7 @@ var getIdealBlockNumberMsg = function() {
       msg.infinity() : BlocklyApps.IDEAL_BLOCK_NUM;
 };
 
-},{"../locale/pl_pl/common":32,"./builder":13,"./dom":15,"./feedback.js":16,"./slider":18,"./templates/buttons.html":20,"./templates/instructions.html":22,"./templates/learn.html":23,"./templates/makeYourOwn.html":24,"./utils":29,"./xml":30}],3:[function(require,module,exports){
+},{"../locale/pl_pl/common":33,"./builder":14,"./dom":16,"./feedback.js":17,"./slider":19,"./templates/buttons.html":21,"./templates/instructions.html":23,"./templates/learn.html":24,"./templates/makeYourOwn.html":25,"./utils":30,"./xml":31}],3:[function(require,module,exports){
 exports.createToolbox = function(blocks) {
   return '<xml id="toolbox" style="display: none;">' + blocks + '</xml>';
 };
@@ -879,6 +881,43 @@ exports.blockOfType = function(type) {
 };
 
 },{}],4:[function(require,module,exports){
+/**
+ * Defines blocks useful in multiple blockly apps
+ */
+'use strict';
+
+var REPEAT_IMAGE_URL = 'media/sharedBlocks/repeat.png';
+var REPEAT_IMAGE_WIDTH = 53;
+var REPEAT_IMAGE_HEIGHT = 57;
+
+/**
+ * Install extensions to Blockly's language and JavaScript generator
+ * @param blockly instance of Blockly
+ */
+exports.install = function(blockly) {
+  // Re-uses the repeat block generator from core
+  blockly.JavaScript.controls_repeat_simplified = blockly.JavaScript.controls_repeat;
+
+  blockly.Blocks.controls_repeat_simplified = {
+    // Repeat n times (internal number) with simplified UI
+    init: function() {
+      this.setHelpUrl(blockly.Msg.CONTROLS_REPEAT_HELPURL);
+      this.setHSV(322, 0.90, 0.95);
+      this.appendStatementInput('DO')
+        .appendTitle(new blockly.FieldImage(
+          blockly.assetUrl(REPEAT_IMAGE_URL), REPEAT_IMAGE_WIDTH, REPEAT_IMAGE_HEIGHT));
+      this.appendDummyInput()
+        .appendTitle(blockly.Msg.CONTROLS_REPEAT_TITLE_REPEAT)
+        .appendTitle(new Blockly.FieldTextInput('10',
+          blockly.FieldTextInput.nonnegativeIntegerValidator), 'TIMES');
+      this.setPreviousStatement(true);
+      this.setNextStatement(true);
+      this.setTooltip(blockly.Msg.CONTROLS_REPEAT_TOOLTIP);
+    }
+  };
+};
+
+},{}],5:[function(require,module,exports){
 var tiles = require('./tiles');
 var Direction = tiles.Direction;
 var SquareType = tiles.SquareType;
@@ -1060,7 +1099,7 @@ exports.bounceBall = function(id) {
 };
 
 
-},{"./tiles":11}],5:[function(require,module,exports){
+},{"./tiles":12}],6:[function(require,module,exports){
 /**
  * Blockly App: Bounce
  *
@@ -1574,7 +1613,7 @@ exports.install = function(blockly, skin) {
   delete blockly.Blocks.procedures_ifreturn;
 };
 
-},{"../../locale/pl_pl/bounce":31,"../codegen":14}],6:[function(require,module,exports){
+},{"../../locale/pl_pl/bounce":32,"../codegen":15}],7:[function(require,module,exports){
 /**
  * Blockly App: Bounce
  *
@@ -3033,7 +3072,7 @@ var checkFinished = function () {
   return false;
 };
 
-},{"../../locale/pl_pl/bounce":31,"../../locale/pl_pl/common":32,"../base":2,"../codegen":14,"../dom":15,"../feedback.js":16,"../skins":17,"../templates/page.html":25,"./api":4,"./controls.html":7,"./tiles":11,"./visualization.html":12}],7:[function(require,module,exports){
+},{"../../locale/pl_pl/bounce":32,"../../locale/pl_pl/common":33,"../base":2,"../codegen":15,"../dom":16,"../feedback.js":17,"../skins":18,"../templates/page.html":26,"./api":5,"./controls.html":8,"./tiles":12,"./visualization.html":13}],8:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -3054,7 +3093,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/pl_pl/bounce":31,"ejs":33}],8:[function(require,module,exports){
+},{"../../locale/pl_pl/bounce":32,"ejs":34}],9:[function(require,module,exports){
 /*jshint multistr: true */
 
 var Direction = require('./tiles').Direction;
@@ -3483,7 +3522,7 @@ module.exports = {
   },
 };
 
-},{"../block_utils":3,"./tiles":11}],9:[function(require,module,exports){
+},{"../block_utils":3,"./tiles":12}],10:[function(require,module,exports){
 (function (global){
 var appMain = require('../appMain');
 window.Bounce = require('./bounce');
@@ -3501,7 +3540,7 @@ window.bounceMain = function(options) {
 };
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../appMain":1,"./blocks":5,"./bounce":6,"./levels":8,"./skins":10}],10:[function(require,module,exports){
+},{"../appMain":1,"./blocks":6,"./bounce":7,"./levels":9,"./skins":11}],11:[function(require,module,exports){
 /**
  * Load Skin for Bounce.
  */
@@ -3603,7 +3642,7 @@ exports.load = function(assetUrl, id) {
   return skin;
 };
 
-},{"../skins":17}],11:[function(require,module,exports){
+},{"../skins":18}],12:[function(require,module,exports){
 'use strict';
 
 /**
@@ -3642,7 +3681,7 @@ exports.SquareType = {
   OBSTACLE: 64
 };
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -3663,7 +3702,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":33}],13:[function(require,module,exports){
+},{"ejs":34}],14:[function(require,module,exports){
 var feedback = require('./feedback.js');
 var dom = require('./dom.js');
 var utils = require('./utils.js');
@@ -3693,7 +3732,7 @@ exports.builderForm = function(onAttemptCallback) {
   dialog.show({ backdrop: 'static' });
 };
 
-},{"./dom.js":15,"./feedback.js":16,"./templates/builder.html":19,"./utils.js":29,"url":43}],14:[function(require,module,exports){
+},{"./dom.js":16,"./feedback.js":17,"./templates/builder.html":20,"./utils.js":30,"url":44}],15:[function(require,module,exports){
 var INFINITE_LOOP_TRAP = '  BlocklyApps.checkTimeout();\n';
 var INFINITE_LOOP_TRAP_RE =
     new RegExp(INFINITE_LOOP_TRAP.replace(/\(.*\)/, '\\(.*\\)'), 'g');
@@ -3773,7 +3812,7 @@ exports.functionFromCode = function(code, options) {
   return new ctor();
 };
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 exports.addReadyListener = function(callback) {
   if (document.readyState === "complete") {
     setTimeout(callback, 1);
@@ -3847,7 +3886,7 @@ exports.isMobile = function() {
   return reg.test(window.navigator.userAgent);
 };
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 var trophy = require('./templates/trophy.html');
 var utils = require('./utils');
 var readonly = require('./templates/readonly.html');
@@ -4627,7 +4666,7 @@ var generateXMLForBlocks = function(blocks) {
 };
 
 
-},{"../locale/pl_pl/common":32,"./codegen":14,"./dom":15,"./templates/buttons.html":20,"./templates/code.html":21,"./templates/readonly.html":26,"./templates/showCode.html":27,"./templates/trophy.html":28,"./utils":29}],17:[function(require,module,exports){
+},{"../locale/pl_pl/common":33,"./codegen":15,"./dom":16,"./templates/buttons.html":21,"./templates/code.html":22,"./templates/readonly.html":27,"./templates/showCode.html":28,"./templates/trophy.html":29,"./utils":30}],18:[function(require,module,exports){
 // avatar: A 1029x51 set of 21 avatar images.
 
 exports.load = function(assetUrl, id) {
@@ -4667,7 +4706,7 @@ exports.load = function(assetUrl, id) {
   return skin;
 };
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 /**
  * Blockly Apps: SVG Slider
  *
@@ -4872,7 +4911,7 @@ Slider.bindEvent_ = function(element, name, func) {
 
 module.exports = Slider;
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4893,7 +4932,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":33}],20:[function(require,module,exports){
+},{"ejs":34}],21:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4914,7 +4953,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/pl_pl/common":32,"ejs":33}],21:[function(require,module,exports){
+},{"../../locale/pl_pl/common":33,"ejs":34}],22:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4935,7 +4974,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":33}],22:[function(require,module,exports){
+},{"ejs":34}],23:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4956,7 +4995,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/pl_pl/common":32,"ejs":33}],23:[function(require,module,exports){
+},{"../../locale/pl_pl/common":33,"ejs":34}],24:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4979,7 +5018,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/pl_pl/common":32,"ejs":33}],24:[function(require,module,exports){
+},{"../../locale/pl_pl/common":33,"ejs":34}],25:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -5000,7 +5039,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/pl_pl/common":32,"ejs":33}],25:[function(require,module,exports){
+},{"../../locale/pl_pl/common":33,"ejs":34}],26:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -5022,7 +5061,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/pl_pl/common":32,"ejs":33}],26:[function(require,module,exports){
+},{"../../locale/pl_pl/common":33,"ejs":34}],27:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -5044,7 +5083,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":33}],27:[function(require,module,exports){
+},{"ejs":34}],28:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -5065,7 +5104,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/pl_pl/common":32,"ejs":33}],28:[function(require,module,exports){
+},{"../../locale/pl_pl/common":33,"ejs":34}],29:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -5086,7 +5125,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":33}],29:[function(require,module,exports){
+},{"ejs":34}],30:[function(require,module,exports){
 exports.shallowCopy = function(source) {
   var result = {};
   for (var prop in source) {
@@ -5128,7 +5167,7 @@ exports.mod = function(number, mod) {
   return ((number % mod) + mod) % mod;
 };
 
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 // Serializes an XML DOM node to a string.
 exports.serialize = function(node) {
   var serializer = new XMLSerializer();
@@ -5156,7 +5195,7 @@ exports.parseElement = function(text) {
   return element;
 };
 
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.pl = function (n) {
   if (n == 1) {
     return 'one';
@@ -5302,57 +5341,57 @@ exports.repeatUntilFinish = function(d){return "powtarzaj aż będzie koniec"};
 
 exports.scoreText = function(d){return "Wynik: "+v(d,"playerScore")+": "+v(d,"opponentScore")};
 
-exports.setBackgroundRandom = function(d){return "set random scene"};
+exports.setBackgroundRandom = function(d){return "wybierz losową scenę"};
 
 exports.setBackgroundHardcourt = function(d){return "set hardcourt scene"};
 
-exports.setBackgroundRetro = function(d){return "set retro scene"};
+exports.setBackgroundRetro = function(d){return "ustaw scenę retro"};
 
-exports.setBackgroundTooltip = function(d){return "Sets the background image"};
+exports.setBackgroundTooltip = function(d){return "Ustawia obraz w tle"};
 
-exports.setBallRandom = function(d){return "set random ball"};
+exports.setBallRandom = function(d){return "wybierz losową piłkę"};
 
 exports.setBallHardcourt = function(d){return "set hardcourt ball"};
 
-exports.setBallRetro = function(d){return "set retro ball"};
+exports.setBallRetro = function(d){return "wybierz piłkę retro"};
 
-exports.setBallTooltip = function(d){return "Sets the ball image"};
+exports.setBallTooltip = function(d){return "Ustawia obraz piłki"};
 
-exports.setBallSpeedRandom = function(d){return "set random ball speed"};
+exports.setBallSpeedRandom = function(d){return "ustaw losową prędkość piłki"};
 
-exports.setBallSpeedVerySlow = function(d){return "set very slow ball speed"};
+exports.setBallSpeedVerySlow = function(d){return "ustaw bardzo wolną prędkość piłki"};
 
-exports.setBallSpeedSlow = function(d){return "set slow ball speed"};
+exports.setBallSpeedSlow = function(d){return "ustaw wolną prędkość piłki"};
 
-exports.setBallSpeedNormal = function(d){return "set normal ball speed"};
+exports.setBallSpeedNormal = function(d){return "ustaw normalną prędkość piłki"};
 
-exports.setBallSpeedFast = function(d){return "set fast ball speed"};
+exports.setBallSpeedFast = function(d){return "ustaw szybką prędkość piłki"};
 
-exports.setBallSpeedVeryFast = function(d){return "set very fast ball speed"};
+exports.setBallSpeedVeryFast = function(d){return "ustaw bardzo szybką prędkość piłki"};
 
-exports.setBallSpeedTooltip = function(d){return "Sets the speed of the ball"};
+exports.setBallSpeedTooltip = function(d){return "Ustawianie szybkości piłki"};
 
-exports.setPaddleRandom = function(d){return "set random paddle"};
+exports.setPaddleRandom = function(d){return "ustaw losową paletkę"};
 
 exports.setPaddleHardcourt = function(d){return "set hardcourt paddle"};
 
-exports.setPaddleRetro = function(d){return "set retro paddle"};
+exports.setPaddleRetro = function(d){return "ustaw paletkę retro"};
 
 exports.setPaddleTooltip = function(d){return "Sets the ball paddle"};
 
-exports.setPaddleSpeedRandom = function(d){return "set random paddle speed"};
+exports.setPaddleSpeedRandom = function(d){return "ustaw losową prędkość paletki"};
 
-exports.setPaddleSpeedVerySlow = function(d){return "set very slow paddle speed"};
+exports.setPaddleSpeedVerySlow = function(d){return "ustaw bardzo wolną prędkość paletki"};
 
-exports.setPaddleSpeedSlow = function(d){return "set slow paddle speed"};
+exports.setPaddleSpeedSlow = function(d){return "ustaw wolną prędkość paletki"};
 
-exports.setPaddleSpeedNormal = function(d){return "set normal paddle speed"};
+exports.setPaddleSpeedNormal = function(d){return "ustaw normalną prędkość paletki"};
 
-exports.setPaddleSpeedFast = function(d){return "set fast paddle speed"};
+exports.setPaddleSpeedFast = function(d){return "ustaw szybką prędkość paletki"};
 
-exports.setPaddleSpeedVeryFast = function(d){return "set very fast paddle speed"};
+exports.setPaddleSpeedVeryFast = function(d){return "ustaw bardzo szybką prędkość paletki"};
 
-exports.setPaddleSpeedTooltip = function(d){return "Sets the speed of the paddle"};
+exports.setPaddleSpeedTooltip = function(d){return "Ustawia szybkość paletki"};
 
 exports.share = function(d){return "Share"};
 
@@ -5378,9 +5417,9 @@ exports.whenDown = function(d){return "kiedy strzałka w dół"};
 
 exports.whenDownTooltip = function(d){return "Wykonaj poniższe czynności, gdy wciśnięty jest klawisz strzałki w dół."};
 
-exports.whenGameStarts = function(d){return "when game starts"};
+exports.whenGameStarts = function(d){return "kiedy gra się zacznie"};
 
-exports.whenGameStartsTooltip = function(d){return "Execute the actions below when the game starts."};
+exports.whenGameStartsTooltip = function(d){return "Wykonaj czynności poniżej kiedy gra się zacznie."};
 
 exports.whenLeft = function(d){return "kiedy strzałka w lewo"};
 
@@ -5409,7 +5448,7 @@ exports.whileTooltip = function(d){return "Powtarzaj wymienione czynności, aż 
 exports.yes = function(d){return "Tak"};
 
 
-},{"messageformat":44}],32:[function(require,module,exports){
+},{"messageformat":45}],33:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.pl = function (n) {
   if (n == 1) {
     return 'one';
@@ -5550,7 +5589,7 @@ exports.signup = function(d){return "Zapisz się na kurs wprowadzający"};
 exports.hintHeader = function(d){return "Here's a tip:"};
 
 
-},{"messageformat":44}],33:[function(require,module,exports){
+},{"messageformat":45}],34:[function(require,module,exports){
 
 /*!
  * EJS
@@ -5909,7 +5948,7 @@ if (require.extensions) {
   });
 }
 
-},{"./filters":34,"./utils":35,"fs":36,"path":38}],34:[function(require,module,exports){
+},{"./filters":35,"./utils":36,"fs":37,"path":39}],35:[function(require,module,exports){
 /*!
  * EJS - Filters
  * Copyright(c) 2010 TJ Holowaychuk <tj@vision-media.ca>
@@ -6112,7 +6151,7 @@ exports.json = function(obj){
   return JSON.stringify(obj);
 };
 
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 
 /*!
  * EJS
@@ -6138,9 +6177,9 @@ exports.escape = function(html){
 };
  
 
-},{}],36:[function(require,module,exports){
-
 },{}],37:[function(require,module,exports){
+
+},{}],38:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -6195,7 +6234,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -6423,7 +6462,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require("/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":37}],39:[function(require,module,exports){
+},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":38}],40:[function(require,module,exports){
 (function (global){
 /*! http://mths.be/punycode v1.2.4 by @mathias */
 ;(function(root) {
@@ -6934,7 +6973,7 @@ var substr = 'ab'.substr(-1) === 'b'
 }(this));
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -7020,7 +7059,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -7107,13 +7146,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],42:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":40,"./encode":41}],43:[function(require,module,exports){
+},{"./decode":41,"./encode":42}],44:[function(require,module,exports){
 /*jshint strict:true node:true es5:true onevar:true laxcomma:true laxbreak:true eqeqeq:true immed:true latedef:true*/
 (function () {
   "use strict";
@@ -7746,7 +7785,7 @@ function parseHost(host) {
 
 }());
 
-},{"punycode":39,"querystring":42}],44:[function(require,module,exports){
+},{"punycode":40,"querystring":43}],45:[function(require,module,exports){
 /**
  * messageformat.js
  *
@@ -9329,4 +9368,4 @@ function parseHost(host) {
 
 })( this );
 
-},{}]},{},[9])
+},{}]},{},[10])

@@ -11,6 +11,8 @@
         locale: 言語
         gender: 性別
         edit_header: アカウントの詳細を編集
+        error:
+          future: can't be in the future
   hello: ハローワールド
   welcome_back: Welcome Back, %{name}
   add_teacher_form:
@@ -30,8 +32,8 @@
   more: 詳細
   less: 隠す
   try_hoc: ここをクリックしてコードの時間を試してください >>
-  try_k8intro: または、私たちの K- 8 イントロ計算機科学コース (15-25 時間)を試してください。
-  k8intro: K-8 Intro to Computer Science Course (15-25 hours)
+  try_k8intro: コンピューター科学コース （15-25 時間） の入門編を試してください。
+  k8intro: コンピューター科学コース （15-25 時間）の入門編
   already_started: 既に開始しましたか？ここで再開してください >>
   demos: 管理者： 全部のデモ
   continue: 続行しますか？
@@ -50,8 +52,9 @@
     need_confirmation: 確認イーメイルが来ませんでしたか？
     need_unlock: ロックを解除をするインストラクションとど来ましたか？
   signup_form:
-    overview: この20時間コースではコンピューターサイエンスの核となる部分やプログラミングの概念について紹介します。このコースは等級K-8用の授業に使われることを考慮して設計されました。しかし、ご安心ください全年齢を対象としており、楽しくプログラミングを学ぶことができます。
-    no_signup_header: 入会したくないですか？
+    overview_student: Sign up for an account to track your progress.
+    overview_teacher: Teach computer science in your classroom by signing up for an
+      account.<p/> You'll be able to track your students' progress and get rewards.
     no_signup_message: <a target="_blank"href="http://learn.code.org"> いろいろなステージとパズルを見られます。</a>しかし、あなたの進捗状況を保存するために入会する必要があります。
     prizes_header: The first students to complete the course win prizes! (U.S. students
       only)
@@ -67,7 +70,7 @@
     teacher_pitch: あなたの教室でK 8(幼稚園から８学年生）にコンピューター科学の紹介を教える。
     teacher_title: 教師入会
     student_pitch: '1 時間を超えて: 私たちのK 8 入門コンピューターサイエンスを試してみてください'
-    student_title: 入会
+    student_title: 生徒のサインアップ（登録）
     school_name: 学校名 (省略可能)
     school_address: 学校の住所（オプションです）
     address_placeholder: 住所、市、県、郵便番号
@@ -85,14 +88,15 @@
       サービスを使用するこのフォームを送信することを確認します。
     teacher_terms: Code.org 利用規約によって拘束されることに同意します。
   signin_form:
-    title: ログイン
+    title: すでにアカウントをお持ちですか？サインイン
     login: メールまたはユーザー名
     password: パスワード
     remember: ログインを覚えてください。
     submit: ログイン
   signin:
-    try_hoc: Try one Hour of Code first
-    try_20hours: Try our 20 hour Intro to Computer Science
+    try_heading: Want to try coding without signing up?
+    try_hoc: 最初に 1 時間分のコード学習を試す
+    try_20hours: 20 時間分のコンピュータ科学入門編を試してください。
   password:
     reset_form:
       title: パスワードをお忘れですか？
@@ -138,6 +142,8 @@
     provider: 'プロバイダー:'
     code: 'コード:'
     redeem_header: 'To redeem:'
+    donorschoose_register: Register as a teacher on DonorsChoose.org
+    donorschoose_project: Post a project
     donorschoose_how_to: あなたのコードを使用する方法
     success: あなたの賞金は獲得できました。下のコードを参照してください。
     error: あなたの賞金は償還できませんでした、もう一度やり直してください。
@@ -174,7 +180,7 @@
       not_earned: 'コンピューターサイエンスの概念を全て学び、 %{num_trophies}トロフィーと実際の商品を獲得します。10 ドル分の
         iTunes ギフトカード、10 GB の無料の Dropbox のストレージ、 10 ドル分のSkipeクレジットそしてゲームの無料ダウンロードから選択できます。注：米国内の生徒のみ対象となります。また商品はなくなり次第終了いたします。 '
       teacher:
-        earned: 10 人以上の学生が %{num_trophies} のトロフィーをすべての収集しましたので、 教師賞品を獲得しました ！（米国の教師のみ）
+        earned: 15人 以上の学生が % {num_trophies} 個すべてのトロフィーを獲得しました。教師賞を授与します！（米国の教師のみ）
         not_earned_title: Teach the class, earn up to $1,000 in <a target="_blank"
           href="http://DonorsChoose.org">DonorsChoose.org</a> credits (U.S. teachers
           only)
@@ -242,14 +248,13 @@
       manage: 学生の管理。
       add: 生徒を追加する
     sections:
-      manage: Manage sections
+      manage: セクションの管理
     rollup: プログレスダッシュ ボード
     activity: 最近のクラスの活動
     user_not_found: 教師、又は、生徒は見つかりませんでした
-    cant_remove_student_no_email: '%{student_name} cannot be removed as your student
-      because %{student_name} has not registered an e-mail address'
-    cant_remove_teacher_no_email: '%{teacher_name} cannot be removed as your teacher
-      because you have not registered an e-mail address'
+    cant_remove_student_no_email: '% {student_name} が電子メール アドレスを登録していないために、あなたの学生として
+      % {student_name} を削除できません。'
+    cant_remove_teacher_no_email: 電子メール アドレスが登録されていないため、教師として % {teacher_name} を削除できません。
     student_teacher_disassociated: '% {teacher_name} が % {student_name} の教師として削除されています。'
   user:
     email_confirm_needed: 電子メール アドレスが確認されていません。
@@ -267,18 +272,17 @@
     recent_activity: 最近の活動
     show_more: もっと見る
   home:
-    signin_message: すでに登録されていましたら %{link}
-    student_reg_link: 生徒
-    teacher_reg_link: 先生
+    signin_message: 既に登録されていますか？% {リンク}
+    student_reg_link: 学生は、サインアップ（登録）
+    teacher_reg_link: 教師は、サインアップ（登録）
     signin_directions: Use an account to track progress and get rewards.<br/> Teachers,
       track your entire class.
     teacher_dashboard: プログレス状況わ、ダッシュ ボードを参照してください。
     teacher_student_count_one: あなたには %{count} 人の生徒がいます。
     teacher_student_count: あなたには %{count} 人の生徒がいます。
     teacher_averages: 平均であなたの学生わ %{trophy_max}のうち%{trophy_average}　"コンセプト習得"のトロフィーを獲得しています。
-    teacher_print_certificates: Print certificates for students who finish this course
-    teacher_read_blog: Read about news and updates to our materials at our Educator
-      Blog
+    teacher_print_certificates: このコースを終了した生徒の証明書を印刷します。
+    teacher_read_blog: ニュースと更新（教師用ブログ）を読みます
     teacher_survey: Tell us what you think about this course
     classroom: あなたの教室
     student_progress: 学習の進行状況
@@ -292,8 +296,12 @@
     see_details: 詳細はこちら
     prize_info: 'Prizes for participation (U.S. only): $10 gift cards for student
       completion and up to $1,000 in classroom rewards for public school teachers'
-    tryfirst: 'Or, you can try it first, and sign up later:'
-    trynow: Try now
+    tryfirst: または、最初に試してみて、後でサインアップ（登録）することができます。
+    trynow: 今すぐ試す
+    add_hint_help: Please help us to add smart hints to Code.org tutorials
+    20hour_overview: This 20-hour course introduces core computer science and programming
+      concepts. The course is designed for use in classrooms for grades K-8, but it
+      is fun to learn at all ages.
   gender:
     male: 男性
     female: 女性
@@ -322,6 +330,8 @@
     subtitle: ビデオやヒントを見る
     teacher: 解答を参照してください。
     auth_error: 解答を見る権限がありません。
+    submit: Update Artist Location
+    direction: Start Direction
   video:
     tab: 動画
     notes: 動画の代わりにノートを見る
@@ -336,15 +346,27 @@
   download_pdf: オープン レッスン ・ プラン
   share_code:
     title: 私のプログラムを動かすには、「プログラムの実行」をクリックしてください
-    flappy_og_title: Check out my Flappy Game
-    og_description: I wrote the code myself with Code.org
+    bounce_og_title: Check out my Bounce Game
+    flappy_og_title: フラッピーゲームを調べる
+    og_description: Code.org でコード（プログラム）を書きました。
   builder:
-    created: You created a new script.
-    destroyed: You destroyed a script.
+    created: 新しいスクリプトを作成しました。
+    destroyed: スクリプトを破棄しました。
     manage: Manage Scripts
-    view: View
-    back: Back to scripts
+    view: 表示
+    back: スクリプトに戻る
     level:
-      create: Create new level
-      current: Current Levels
-      unused: Unused Levels
+      create: 新しいレベルを作成します。
+      current: 現在のレベル
+      unused: 未使用のレベル
+  upsell:
+    hoc:
+      title: The Hour of Code
+      body: Try the basics of computer science. Millions have given it a shot.
+    flappy:
+      title: Flappy Code
+      body: Wanna write your own game in less than 10 minutes? Try our Flappy Code
+        tutorial!
+    20hour:
+      title: Intro Course
+      body: Try our 20-hour Intro to Computer Science course.

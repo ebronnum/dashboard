@@ -95,48 +95,48 @@
     flappy_intro:
       1:
         image: notes/flappy01.jpg
-        text: Hi, I'm Katie! One of the most exciting things about computer science
-          is that a computer program can be interactive.
+        text: Hæ, ég er Katie! Eitt af því mest spennandi við tölvunarfræði er það
+          að tölvuforrit getur verið gagnvirkt.
       2:
         image: notes/flappy02.jpg
-        text: Any time somebody clicks or taps or types on a computer or phone, that
-          generates an EVENT, and there's some code that decides what to do when an
-          EVENT occurs.
+        text: Í hvert skipti sem einhver smellir eða slær eða skrifar á tölvu eða
+          síma, þá verður til ATVIK og það er kóði sem fangar atvikið og ákveður hvað
+          eigi að gerast þegar ATVIK verður.
       3:
         image: notes/flappy03.jpg
-        text: 'For example, you could have an EVENT-HANDLER that says "when the mouse
-          is clicked, play a sound" '
+        text: 'Til dæmis gæti maður haft ATVIKAFANGARA sem segir "þegar mús er smellt
+          þá skal spila hljóð" '
       4:
         image: notes/flappy04.jpg
-        text: Have you ever heard of the game FlappyBird? By using Event handlers,
-          we're going to learn to program our own custom version of FlappyBird!
+        text: Hefur þú heyrt um leikinn FlappyBird? Með því að nota atvikahöndlara
+          ætlum við að læra að forrita okkar eigin sérhönnuðu útgáfu af FlappyBird!
       5:
         image: notes/flappy05.jpg
-        text: The code you'll write involves dragging and dropping blocks that represent
-          commands for the computer. Under the hood, each of these blocks is represented
-          by real code.
+        text: Kóðinn sem þú munt skrifa felur í sér að draga og setja niður kubba
+          sem tákna skipanir fyrir tölvuna. Bak við tjöldin, stendur hver þessara
+          kubba fyrir raunverulegan kóða.
       6:
         image: notes/flappy06.jpg
-        text: 'If you take a look at the workspace, there are some green blocks that
-          are filled in for you - these are "event handlers" '
+        text: 'Ef þú skoðar vinnusvæðið þá eru þar grænir kubbar sem búið er að setja
+          fyrir þig - þetta eru "atvikafangarar" '
       7:
         image: notes/flappy07.jpg
-        text: If you want the bird to FLAP when you CLICK the mouse, you can do that
-          by attaching the "FLAP" block to the appropriate event handler, and now
-          in your game whenever you click the mouse, the bird will flap.
+        text: Ef þú vilt láta fuglinn BLAKA VÆNGJUNUM þegar þú SMELLIR músinni getur
+          þú gert það með því að tengja "BLAKA" kubbinn við viðeigandi atvikafangara
+          og í leiknum mun það að smella músinni leiða til þess að fuglinn flýgur.
       8:
         image: notes/flappy08.jpg
-        text: In each puzzle of this activity we'll introduce new types of events
-          as green blocks on the workspace, and you can decide the appropriate blocks
-          to add in response to those events.
+        text: Í hverri þraut þessa verkefnis munum við kynna nýjar tegundir atvika
+          sem græna kubba á vinnusvæðinu og þú þarft að ákveða hvaða kubbum á að bæta
+          við til að bregðast rétt við þessum atvikum.
       9:
         image: notes/flappy09.jpg
-        text: When you see a drop down arrow like this, that means you can change
-          the settings - like what sound to play when flappy hits the ground.
+        text: Þegar þú sérð svona ör fyrir fellilista þá táknar það að þú getir breytt
+          stillingum - eins og hvaða hljóð eigi að spila þegar Flappy rekst á jörðina.
       10:
         image: notes/flappy10.jpg
-        text: In the final puzzle you'll be able to create your own game and share
-          it with your friends. Have fun!
+        text: Í síðustu þrautinni getur þú búið til eiginn leik og deilt honum með
+          vinum þínum. Skemmtu þér vel!
     loop_times:
       1:
         image: notes/hoc2_1.jpg

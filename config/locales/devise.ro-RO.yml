@@ -1,7 +1,7 @@
 "ro":
   devise:
     confirmations:
-      confirmed: Adresa de email a fost confirmată cu succes.
+      confirmed: Adresa ta de email a fost confirmată cu succes.
       send_instructions: Vei primi un email cu instrucţiuni despre cum să îți confirmi
         contul în câteva minute.
       send_paranoid_instructions: Dacă adresa ta de email există în baza noastră de
@@ -19,9 +19,9 @@
       unconfirmed: Trebuie să îți confirmi contul înainte de a continua.
     mailer:
       confirmation_instructions:
-        subject: Code.org instrucţiuni de confirmare
+        subject: Instrucţiuni de confirmare Code.org
       reset_password_instructions:
-        subject: Code.org instructiuni de resetare a parolei
+        subject: Instrucțiuni de resetare a parolei Code.org
       unlock_instructions:
         subject: Instrucţiuni de deblocare
     omniauth_callbacks:

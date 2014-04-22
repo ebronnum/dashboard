@@ -32,10 +32,16 @@
           MazeEC: Teil 1
         2014 Levels:
           desc: 2014 Puzzles (beta)
-          MazeEC: Stage 1
+          Bounce: Stage 1
+        Builder Levels:
+          desc: User-Created Puzzles (beta)
+          Custom: Stage 1
         Flappy Levels:
           desc: Flappy Bird
-          MazeEC: Stage 1
+          Flappy: Stage 1
+        Jigsaw Levels:
+          desc: Jigsaw (beta)
+          Jigsaw: Stage 1
     game:
       name:
         Unplug1: Einführung in die Informatik
@@ -61,6 +67,7 @@
         MazeEC: Das Labyrinth
         Bounce: Bounce
         Flappy: Flappy Bird
+        Jigsaw: Jigsaw
     trophy:
       name:
         Bronze: Bronze
@@ -351,50 +358,75 @@
           laufe!
         maze_3_4: Argh! Schreibe mir ein Programm das mich um den TNT-Sprengstoff
           zum Schwein bringt.
-        bounce_1: Attach a block to the "when left arrow" block, then run and move
-          the paddle with the left arrow key to the finish target.
-        bounce_2: Attach a block to the "when right arrow" and "when left arrow" blocks,
-          then run and move the paddle with the both arrow key to both finish targets.
-        bounce_3: TBD
-        bounce_4: TBD
-        bounce_5: Attach a blocks to the "when right arrow", "when left arrow", "when
-          ball hits wall", and "when ball hits paddle" blocks.
-        bounce_6: Try again with more balls.
-        bounce_7: Now it is getting crazy!
-        bounce_10: There is a now a goal at the top. Attach "increment score" blocks
-          to the the "when ball in goal" and "when ball misses paddle" blocks to make
-          a game.
+        bounce_1: Hänge einen Baustein an den "Wenn linker Pfeil"-Baustein und drücke
+          "Programm ausführen". Bewege jetzt das Paddel mit dem linken Pfeil um das
+          Ziel zu erreichen.
+        bounce_2: Hänge einen Baustein an den "Wenn rechter Pfeil"- und den "Wenn
+          linker Pfeil"-Baustein. Bewege jetzt das Paddel um beide Ziele zu erreichen.
+        bounce_3: Versuche jetzt etwas ähnliches mit dem "Wenn oben Pfeil"-Baustein.
+          Bewege das Paddel zum oberen Ziel.
+        bounce_4: Jetzt musst du vier Bausteine anhängen. Bewege das Paddel zu allen
+          vier Zielen, um dieses Puzzle zu lösen.
+        bounce_5: Wir werden jetzt einen Ball auf das Paddel runterfliegen lassen.
+          Füge einen Baustein an den "Wenn Ball Paddel berührt"-Baustein um sicherzustellen,
+          dass der Ball das Ziel erreicht.
+        bounce_6: Jetzt ist das Ziel oben. Du musst Bausteine an beide "Wenn Ball
+          auftrifft"-Bausteine anhängen um dieses Puzzle zu lösen.
+        bounce_7: Füge jedem der "Wenn"-Bausteine weitere Bausteine hinzu. Lasse den
+          Ball springen bis er das Ziel trifft.
+        bounce_10: Jetzt gibt es oben ein Ziel. Hänge den "Erziele einen Punkt"- und
+          den "Erziele Gegnerpunkt"-Baustein an den "Wenn Ball im Tor"- und "Wenn
+          Ball Paddel verfehlt"-Baustein, um ein Spiel zu erstellen. Schau wie viele
+          Punkte du erzielen kannst, bevor der Gegner zweimal gewinnt.
         bounce_11: You can now attach blocks to the "when game starts" block. Try
           changing the speed of the paddle and the ball and see how many points you
           can score before your opponent scores twice.
-        Custom_builder: Drag blocks from the toolbox to the workspace to draw the
-          level you wish to create. Press "Run Program" when you are ready.
-        flappy_1: Attach a block to the "when click" block, then press "Run Program"
-          and click or tap to move Flappy to the target.
-        flappy_2: Now we've added some ground.  Attach a block to the "when hit the
-          ground" block, then press "Run Program". To pass this puzzle, your code
-          needs to 'END GAME' when Flappy crashes into the ground.
-        flappy_3: The "when Run is clicked" block allows you to run code when your
-          game first starts.  Try setting the level speed and flapping to the target.
-        flappy_4: Flappy will fly through obstacles unless you write code to make
-          him crash. Attach a block to the "when hit an obstacle" block. To pass the
-          puzzle, your code needs to 'END GAME' and make Flappy crash into the first
-          pipe so he can reach the target.
-        flappy_5: Let's add a scoreboard, and count points when Flappy makes it past
-          obstacles. Add to the "when pass an obstacle" block, and then score a point
-          by flying Flappy through the first set of pipes.
-        flappy_6: See if you can still score a point after making Flappy flap either
-          a smaller or larger amount.
-        flappy_7: Next, try changing the scene by attaching another block to the "when
-          Run is clicked".
-        flappy_8: You can set visuals anytime, not just when the game starts. Try
-          setting a RANDOM scene when other events happen, for example, when passing
-          an obstacle.
-        flappy_9: To mix things up, when hitting an obstacle or the ground, instead
-          of ending the game try setting the score back to 0.
-        flappy_11: Create your own Flappy game and share it. You can change the visuals,
-          or even the rules. Try changing visuals each time Flappy passes an obstacle.
-          Or make Flappy invincible so he never dies.
+        bounce_12: Create your own Bounce game. You can change all the visuals and
+          the rules. When you're done, click Share to let friends try your game on
+          their phones.
+        Custom_builder: Ziehe Bausteine aus der Toolbox in den Arbeitsbereich, um
+          das Level zu entwerfen. Drücke "Programm ausführen", wenn Du bereit bist.
+        flappy_1: Füge dem "Wenn geklickt"-Baustein einen weiteren Baustein hinzu
+          und drücke dann "Programm ausführen". Klicke oder tippe auf den Bildschirm,
+          um Flappy zum Ziel zu bewegen.
+        flappy_2: Nun haben wir etwas Boden hinzugefügt. Füge dem "Wenn auf Boden
+          gestürzt"-Baustein einen weiteren Baustein hinzu. Dein Programm benötigt
+          einen "Spiel beendet"-Baustein, wenn Flappy zu Boden stürzt.
+        flappy_3: Der "Wenn Spiel beginnt"-Baustein erlaubt Dir, ein Programm auszuführen,
+          sobald Dein Spiel beginnt. Versuche, die Geschwindigkeit des Levels einzustellen
+          und zum Ziel zu flattern.
+        flappy_4: Flappy fliegt durch Hindernisse hindurch, es sei denn, du programmierst
+          ihn so, dass er abstürzt. Füge einen Baustein zum "Wenn Hindernis getroffen"-Baustein
+          hinzu. Dein Programm muss "SPIEL BEENDEN", wenn Flappy gegen die ersten
+          Rohre knallt.
+        flappy_5: Füge einen Punktezähler hinzu, der Punkte zählt, wenn Flappy es
+          an Hindernissen vorbeischafft. Füge ihn zum "Wenn Hindernis überwunden"-Baustein
+          hinzu und erziele einen Punkt, indem du Flappy durch die erste Reihe von
+          Rohren fliegst.
+        flappy_6: Versuche, ob du auch dann einen Punkt erzielen kannst, wenn Flappy
+          schwächer oder stärker flattert.
+        flappy_7: Versuch nun, eine andere Szene zu setzen, indem du einen anderen
+          Baustein an den "Wenn Spiel beginnt"-Baustein fügst.
+        flappy_8: Du kannst jederzeit Bilder festlegen, nicht nur zu Spielbeginn.
+          Versuche, einen zufälligen Hintergrund zu setzen, wenn andere Ereignisse
+          stattfinden, zum Beispiel wenn ein Hindernis überwunden wird.
+        flappy_9: 'Bring etwas Abwechslung hinein: statt bei einem Zusammenstoß oder
+          einem Aufprall zu Boden das Spiel zu beenden, versuche stattdessen den Punktestand
+          auf Null zurückzusetzen.'
+        flappy_11: Erstelle dein eigenes Flappy Spiel. Du kannst alle Grafiken, die
+          Regeln und sogar die Schwerkraft verändern. Wenn du fertig bist, klicke
+          auf "Teilen" um das Spiel deinen Freunden zu zeigen.
+        jigsaw_1: Click the block
+        jigsaw_2: Drag the block to the target
+        jigsaw_3: Arrange the blocks to form the image
+        jigsaw_4: Arrange the blocks to form the image
+        jigsaw_5: Arrange the blocks to form the image
+        jigsaw_6: Arrange the blocks to form the image
+        jigsaw_7: Arrange the blocks to form the image
+        jigsaw_8: Arrange the blocks to form the image
+        jigsaw_9: Arrange the blocks to form the image
+        jigsaw_10: Arrange the blocks to form the image
+        jigsaw_11: Arrange the blocks to form the image
       levelIncompleteError:
         maze_2_8: 'Um dieses Problem zu lösen, suche nach einem Muster, dass sich
           wiederholt. Benutze dann den "wiederhole"-Baustein mit diesen drei Bausteinen
@@ -423,3 +455,15 @@
         parameters: Funktionen mit Parametern
         hoc_wrapup: Programmierstunde Zusammenfassung
         20_wrapup: 20-Stunden Zusammenfassung
+    callout:
+      text:
+        drag_blocks: Drag a "move" block and snap it below the other block
+        run: Hit "Run" to try your program
+        watch_again: Click here to watch the video again
+        gray_block_explanation: Blocks that are grey can't be moved or deleted. Can
+          you solve the puzzle anyway?
+        show_code_explanation: Click here to see the code for the program you're making
+        instructions_repeat_explanation: The instructions for each puzzle are repeated
+          here
+        category_explanation: You have all the same blocks but they've now been arranged
+          in categories

@@ -11,6 +11,8 @@
         locale: Dil
         gender: Cinsiyet
         edit_header: Hesap Bilgilerini Düzenle
+        error:
+          future: can't be in the future
   hello: Merhaba Dünya
   welcome_back: Hoş geldiniz %{name}
   add_teacher_form:
@@ -32,7 +34,7 @@
   try_hoc: 'Kod Saati''ni denemek için buraya tıklayın >> '
   try_k8intro: İlköğretim okullarına yönelik Bilgisayar Bilimlerine Giriş dersimizi
     deneyin (15-25 saat)
-  k8intro: K-8 Intro to Computer Science Course (15-25 hours)
+  k8intro: K-8 Bilişim Teknolojileri Kursu Tanıtımı (15-25 saat)
   already_started: 'Zaten başladınız mı? Buradan devam edin >> '
   demos: 'Yönetici: Tüm Demolar'
   continue: Devam
@@ -51,10 +53,9 @@
     need_confirmation: Onay talimatlarını almadınız mı?
     need_unlock: Kilit açma talimatlarını almadınız mı?
   signup_form:
-    overview: Bu 20 saatlik ders temel bilgisayar bilimi ve programlama kavramlarını
-      tanıtır. Ders, K-8 dersliklerinde kullanılmak üzere tasarlanmıştır, ama her
-      yaştan öğrenmek için eğlencelidir.
-    no_signup_header: Kaydolmak istemiyor musun?
+    overview_student: Sign up for an account to track your progress.
+    overview_teacher: Teach computer science in your classroom by signing up for an
+      account.<p/> You'll be able to track your students' progress and get rewards.
     no_signup_message: <a target="_blank" href="http://learn.code.org">Çeşitli aşamalara
       ve bulmacalara gözatabilirsin</a> ama ilerlemeni kaydetmek için kayıt olman
       gerekmektedir.
@@ -76,7 +77,7 @@
     teacher_pitch: Bilgisayar Bilimine Giriş K-8'i sınıfında öğret
     teacher_title: Öğretmen Kayıt
     student_pitch: '1 Saat ötesinde: Bilgisayar bilimi K-8 Intromuzu deneyin'
-    student_title: Kayıt ol
+    student_title: Öğrenci üye ol
     school_name: Okul Adı (isteğe bağlı)
     school_address: Okul Adresi (isteğe bağlı)
     address_placeholder: adres, şehir, eyalet, posta kodu
@@ -101,6 +102,7 @@
     remember: Beni hatırla
     submit: Giriş Yap
   signin:
+    try_heading: Want to try coding without signing up?
     try_hoc: Önce bir Kodlama Saati dene
     try_20hours: 20 saatlik Bilgisayar Bilimlerine Giriş dersini dene
   password:
@@ -146,6 +148,8 @@
     provider: 'Sağlayıcı:'
     code: 'Kod:'
     redeem_header: 'To redeem:'
+    donorschoose_register: Register as a teacher on DonorsChoose.org
+    donorschoose_project: Post a project
     donorschoose_how_to: Kodunuzu nasıl kullanırsınız
     success: Ödülünüzü başarılı bir şekilde kullandınız, aşağıdaki koda bakın.
     error: Ödülünüzü kullanamazsınız, lütfen tekrar deneyin.
@@ -262,7 +266,7 @@
       manage: Öğrencileri yönet
       add: Öğrenciler Ekle
     sections:
-      manage: Manage sections
+      manage: Bölümleri yönetmek
     rollup: İlerleme Kontrol Paneli
     activity: Son sınıf etkinlikleri
     user_not_found: Öğrenci ve öğretmen bulunamadı
@@ -288,7 +292,7 @@
     recent_activity: Son etkinlik
     show_more: Daha fazla göster
   home:
-    signin_message: veya zaten kayıtlıysanız %{link}
+    signin_message: Zaten üye misiniz? % {link}
     student_reg_link: Öğrenci Üyelik
     teacher_reg_link: Öğretmen Üyelik
     signin_directions: Use an account to track progress and get rewards.<br/> Teachers,
@@ -317,8 +321,12 @@
     see_details: Ayrıntılara bakınız
     prize_info: 'Katılım için ödüller (sadece A.B.D.): Öğrencinin dersi tamamlaması
       durumunda 10$ hediye çeki, ve okul öğretmenleri için 1000$''a kadar sınıf ödülleri'
-    tryfirst: 'Or, you can try it first, and sign up later:'
-    trynow: Try now
+    tryfirst: 'Ya da önce deneyin, sonra üye olun:'
+    trynow: Şimdi dene
+    add_hint_help: Please help us to add smart hints to Code.org tutorials
+    20hour_overview: This 20-hour course introduces core computer science and programming
+      concepts. The course is designed for use in classrooms for grades K-8, but it
+      is fun to learn at all ages.
   gender:
     male: Erkek
     female: Kadın
@@ -346,6 +354,8 @@
     subtitle: Bu videolara ve ipuçlarına bakın
     teacher: Çözüme bakın
     auth_error: Bu çözümü görmek için yetkiniz yok.
+    submit: Update Artist Location
+    direction: Start Direction
   video:
     tab: Video.
     notes: Video yok? Notları göster.
@@ -360,15 +370,27 @@
   download_pdf: Açık ders planı
   share_code:
     title: Programı çalıştırmak için 'Programı çalıştır'a tıklayın
-    flappy_og_title: Check out my Flappy Game
-    og_description: I wrote the code myself with Code.org
+    bounce_og_title: Check out my Bounce Game
+    flappy_og_title: Benim Flappy Oyun'uma göz atın
+    og_description: Ben Code.org ile kendi kodumu yazdım
   builder:
-    created: You created a new script.
-    destroyed: You destroyed a script.
+    created: Yeni bir komut dosyası oluşturdu.
+    destroyed: Bir komut dosyası yok.
     manage: Manage Scripts
-    view: View
-    back: Back to scripts
+    view: Görünüm
+    back: Komut dosyalarına geri dön
     level:
-      create: Create new level
-      current: Current Levels
-      unused: Unused Levels
+      create: Yeni seviye oluştur
+      current: Şu anki Seviyeler
+      unused: Kullanılmamış Seviyeler
+  upsell:
+    hoc:
+      title: The Hour of Code
+      body: Try the basics of computer science. Millions have given it a shot.
+    flappy:
+      title: Flappy Code
+      body: Wanna write your own game in less than 10 minutes? Try our Flappy Code
+        tutorial!
+    20hour:
+      title: Intro Course
+      body: Try our 20-hour Intro to Computer Science course.
