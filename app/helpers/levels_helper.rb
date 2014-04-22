@@ -114,48 +114,46 @@ module LevelsHelper
 
   # Code for generating the blockly options hash
   def blockly_options(local_assigns)
-    # Use values from properties json when available
+    # Use values from properties json when available (use String keys instead of Symbols for consistency)
     level = @level.properties || {}
 
     # Set some specific values
-    level[:puzzle_number] = @script_level ? @script_level.game_chapter : 1
-    level[:stage_total] = @script ? @script.script_levels_from_game(@level.game_id).length : @level.game.levels.count
+    level['puzzle_number'] = @script_level ? @script_level.game_chapter : 1
+    level['stage_total'] = @script ? @script.script_levels_from_game(@level.game_id).length : @level.game.levels.count
 
-    # Copy Dashboard-style names from local_assigns or @level parameters to Blockly-style names in level object.
-    # Keys are Dashboard names, values are Blockly's expected names.
-    {:startBlocks => :start_blocks,
-      :solutionBlocks => :solution_blocks,
-      :sliderSpeed => :slider_speed,
-      :maze => :maze,
-      :toolbox => :toolbox_blocks,
-      :startDirection => :start_direction,
-      :instructions => :instructions,
-      :initialX => :x,
-      :initialY => :y,
-      :builder => :artist_builder}.each do |block, dash|
+    # Map Dashboard-style names to Blockly-style names in level object.
+    # Dashboard underscore_names mapped to Blockly lowerCamelCase, or explicit 'Dashboard:Blockly'
+    Hash[%w(
+      start_blocks solution_blocks slider_speed start_direction instructions maze
+      toolbox_blocks:toolbox
+      x:initialX
+      y:initialY
+      artist_builder:builder
+    ).map{ |x| x.include?(':') ? x.split(':') : [x,x.camelize(:lower)]}]
+    .each do |dashboard, blockly|
       # Select first valid value from 1. local_assigns, 2. property of @level object, 3. named instance variable, 4. properties json
       # Don't override existing valid (non-nil/empty) values
-      property = local_assigns[dash].presence ||
-        @level[dash].presence ||
-        instance_variable_get("@#{dash}").presence ||
-        level[dash.to_s].presence
-      level[block] ||= property if property.present?
+      property = local_assigns[dashboard].presence ||
+        @level[dashboard].presence ||
+        instance_variable_get("@#{dashboard}").presence ||
+        level[dashboard.to_s].presence
+      level[blockly.to_s] ||= property if property.present?
     end
 
     # Blockly requires startDirection as an integer not a string
-    level[:startDirection] = level[:startDirection].to_i if level[:startDirection].present?
+    level['startDirection'] = level['startDirection'].to_i if level['startDirection'].present?
 
-    # Fetch localized strings for specified symbols
-    [:instructions, :levelIncompleteError, :other1StarError, :tooFewBlocksMsg].each do |label|
+    # Fetch localized strings
+    %w(instructions levelIncompleteError other1StarError tooFewBlocksMsg).each do |label|
       level[label] ||= [@level.game.app, @level.game.name].map { |name|
-        data_t('level.'+label.to_s, name+'_'+@level.level_num)
+        data_t("level.#{label}", "#{name}_#{@level.level_num}")
       }.compact!.first
     end
 
     # Set some values that Blockly expects on the root of its options string
-    app_options = {:levelId => @level.level_num}
-    app_options[:scriptId] = @script.id if @script
-    app_options[:levelGameName] = @level.game.name if @level.game
+    app_options = {'levelId' => @level.level_num}
+    app_options['scriptId'] = @script.id if @script
+    app_options['levelGameName'] = @level.game.name if @level.game
     [level, app_options]
   end
 end
