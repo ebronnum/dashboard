@@ -14,6 +14,7 @@ class ScriptsControllerTest < ActionController::TestCase
     get :index
     assert_response :success
     assert_not_nil assigns(:scripts)
+    assert_equal Script.all, assigns(:scripts)
   end
 
   test "should not get index if not signed in" do

@@ -1,7 +1,7 @@
 stage 'The Maze'
-level "test2"
-level "test3"
+level 'test2'
+level 'test3'
 
 stage 'The Coffee'
-level "yoyoyo"
-level "test-will"
+level 'yoyoyo'
+level 'test-will'
