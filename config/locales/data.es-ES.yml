@@ -32,10 +32,16 @@
           MazeEC: Etapa 1
         2014 Levels:
           desc: Rompecabezas de 2014 (beta)
-          MazeEC: Etapa 1
+          Bounce: Stage 1
+        Builder Levels:
+          desc: User-Created Puzzles (beta)
+          Custom: Stage 1
         Flappy Levels:
           desc: Flappy Bird
-          MazeEC: Etapa 1
+          Flappy: Stage 1
+        Jigsaw Levels:
+          desc: Jigsaw (beta)
+          Jigsaw: Stage 1
     game:
       name:
         Unplug1: Introducción a la ciencia en computación
@@ -61,6 +67,7 @@
         MazeEC: El laberinto
         Bounce: Rebote
         Flappy: Flappy Bird
+        Jigsaw: Jigsaw
     trophy:
       name:
         Bronze: Bronce
@@ -335,61 +342,74 @@
         maze_3_3: ¿Cómo llego al cerdo? Asegúrate de que no pasar por la caja de TNT!
         maze_3_4: ¡Argh! Escríbeme un programa que me haga esquivar el TNT y llegue
           hasta el cerdo.
-        bounce_1: Junta un bloque al bloque "cuando flecha a la izquierda", luego
-          oprima el botón "Correr Programa" y mueve la palanca con la tecla de flecha
-          izquierda hacia el objetivo final.
-        bounce_2: Junta un bloque a los bloques "cuando flecha a la derecha" y "cuando
-          flecha a la izquierda", luego corre y mueve la palanca con ambas teclas
-          de flecha para ambos objetivos finales.
+        bounce_1: Une un bloque al bloque "cuando flecha izquierda" y presiona "Ejecutar
+          Programa". Mueve la paleta usando la flecha izquierda para alcanzar el objetivo
+          final.
+        bounce_2: Une un bloque a los bloques "cuando flecha derecha" y "cuando flecha
+          izquierda". Mueve la paleta para alcanzar ambos objetivos finales.
         bounce_3: Ahora intenta algo similar con el bloque "cuando flecha arriba".
           Mueve la palanca hacia el objetivo final en la parte superior.
         bounce_4: Esta vez tienes que añadir cuatro bloques. Mueve la palanca a los
           cuatro objetivos terminados para completar este reto.
-        bounce_5: Vamos a lanzar una bola bajando hacia la palanca. Junta un bloque
-          al bloque "cuando la bola golpea la palanca" para asegurar que la bola alcance
-          el objetivo final.
-        bounce_6: Ahora el objetivo final está en la parte superior. Tienes que juntar
-          los bloques a ambos bloques de "cuando la bola choca" para resolver éste
-          reto.
-        bounce_7: Añade los bloques a los bloques "cuando flecha a la derecha", "cuando
-          flecha a la izquierda", "cuando la bola golpea la pared" y "cuando la bola
-          golpea la palanca".
-        bounce_10: Ahora hay un gol en la parte superior. Junta los bloques "subir
-          puntuación" a los bloques "cuando la bola está en la portería" y los bloques
-          "cuando la bola esquiva la palanca" para hacer un juego.
+        bounce_5: Vamos a lanzar una bola hacia la paleta. Une un bloque al bloque
+          "cuando la bola golpea la paleta" para asegurar que la bola alcance el objetivo
+          final.
+        bounce_6: Ahora el objetivo final está en la parte superior. Tienes que unir
+          bloques a ambos bloques de "cuando la bola choca" para resolver éste reto.
+        bounce_7: Une bloques a cada uno de los bloques "cuando". Rebota la pelota
+          hasta que alcance el objetivo final.
+        bounce_10: Ahora hay una meta en la parte superior. Une el bloque "anotar
+          punto" y "anotar punto del oponente" a los bloques "cuando pelota alcanza
+          la meta" y "cuando pelota pasa de largo" para crear un juego. Prueba cuantos
+          puntos puedes anotar antes de que tu oponente anote dos veces.
         bounce_11: You can now attach blocks to the "when game starts" block. Try
           changing the speed of the paddle and the ball and see how many points you
           can score before your opponent scores twice.
+        bounce_12: Create your own Bounce game. You can change all the visuals and
+          the rules. When you're done, click Share to let friends try your game on
+          their phones.
         Custom_builder: Arrastra los bloques desde la caja de herramientas al espacio
           de trabajo para dibujar el nivel que deseas crear. Presiona "Run Program"
           cuando estés listo.
-        flappy_1: Attach a block to the "when click" block, then press "Run Program"
-          and click or tap to move Flappy to the target.
-        flappy_2: Now we've added some ground.  Attach a block to the "when hit the
-          ground" block, then press "Run Program". To pass this puzzle, your code
-          needs to 'END GAME' when Flappy crashes into the ground.
-        flappy_3: The "when Run is clicked" block allows you to run code when your
-          game first starts.  Try setting the level speed and flapping to the target.
-        flappy_4: Flappy will fly through obstacles unless you write code to make
-          him crash. Attach a block to the "when hit an obstacle" block. To pass the
-          puzzle, your code needs to 'END GAME' and make Flappy crash into the first
-          pipe so he can reach the target.
+        flappy_1: Une un bloque al bloque "cuando se haga clic"; después presiona
+          "Ejecutar Programa". Haz clic o toca la pantalla para llevar a Flappy al
+          objetivo.
+        flappy_2: Ahora hemos añadido un suelo. Une un bloque al bloque "cuando golpee
+          el suelo". Tu código necesita 'ACABAR EL JUEGO' cuando Flappy se estrelle.
+        flappy_3: El bloque "cuando comience el juego" te permite ejecutar código
+          cuando comienza el juego. Intenta establecer en el objetivo la velocidad
+          del nivel y la del aleteo.
+        flappy_4: Flappy volará a través de los obstáculos, a menos de que escribas
+          código para que se estrelle. Une un bloque al bloque "cuando colisione con
+          un obstáculo". Tu código deberá 'ACABAR EL JUEGO' cuando Flappy choque contra
+          el primer grupo de tuberías.
         flappy_5: Vamos a añadir un marcador y contar puntos cuando Flappy pase más
           allá de los obstáculos. Agregue al bloque de  "when pass an obstacle (cuando
           pasa un obstáculo)"  esto anotrará un punto cuando Flappy pase el primer
           conjunto de tubos.
         flappy_6: Ve si puedes anotar un punto haciendo que Flappy aletee, rapido
           o lento.
-        flappy_7: Next, try changing the scene by attaching another block to the "when
-          Run is clicked".
-        flappy_8: You can set visuals anytime, not just when the game starts. Try
-          setting a RANDOM scene when other events happen, for example, when passing
-          an obstacle.
-        flappy_9: To mix things up, when hitting an obstacle or the ground, instead
-          of ending the game try setting the score back to 0.
-        flappy_11: Crear tu propio juego Flappy y compartelo. Puede cambiar las imágenes,
-          o incluso las reglas. Trata de cambiar imágenes cada vez que Flappy pasa
-          un obstáculo. O hacer un Flappy invencible, haciendo que nunca muera.
+        flappy_7: A continuación, intenta cambiar la escena uniendo otro bloque al
+          bloque "cuando comienza el juego".
+        flappy_8: Puedes poner elementos visuales en cualquier momento, no sólo cuando
+          comience el juego. Intenta establecer una escena ALEATORIA cuando sucedan
+          otros eventos, por ejemplo, al superar un obstáculo.
+        flappy_9: Para complicarlo un poco, cuando golpees un obstáculo o el suelo,
+          en vez de acabar el juego intenta poner el marcador a 0.
+        flappy_11: Crea tu propio juego Flappy. Puedes cambiar todos los elementos
+          visuales y todas las reglas, incluso la gravedad. Cuando acabes, haz clic
+          en Compartir para que tus amigos prueben tu juego en sus teléfonos móviles.
+        jigsaw_1: Click the block
+        jigsaw_2: Drag the block to the target
+        jigsaw_3: Arrange the blocks to form the image
+        jigsaw_4: Arrange the blocks to form the image
+        jigsaw_5: Arrange the blocks to form the image
+        jigsaw_6: Arrange the blocks to form the image
+        jigsaw_7: Arrange the blocks to form the image
+        jigsaw_8: Arrange the blocks to form the image
+        jigsaw_9: Arrange the blocks to form the image
+        jigsaw_10: Arrange the blocks to form the image
+        jigsaw_11: Arrange the blocks to form the image
       levelIncompleteError:
         maze_2_8: 'Para resolver este, encuentra el bloque que repite. Usa un bloque
           "repetir" con estos 3 bloques en su interior: avanzar, avanzar, girar a
@@ -417,3 +437,15 @@
         parameters: Funciones con parámetros
         hoc_wrapup: Repaso de la Hora del Código
         20_wrapup: Repaso de 20 horas
+    callout:
+      text:
+        drag_blocks: Drag a "move" block and snap it below the other block
+        run: Hit "Run" to try your program
+        watch_again: Click here to watch the video again
+        gray_block_explanation: Blocks that are grey can't be moved or deleted. Can
+          you solve the puzzle anyway?
+        show_code_explanation: Click here to see the code for the program you're making
+        instructions_repeat_explanation: The instructions for each puzzle are repeated
+          here
+        category_explanation: You have all the same blocks but they've now been arranged
+          in categories

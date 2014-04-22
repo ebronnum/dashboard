@@ -11,6 +11,8 @@
         locale: Γλώσσα
         gender: Φύλο
         edit_header: Στοιχεία Λογαριασμού
+        error:
+          future: can't be in the future
   hello: Γεια σου κόσμε
   welcome_back: Καλώς ήρθες, %{name}
   add_teacher_form:
@@ -51,10 +53,9 @@
     need_confirmation: Δεν έλαβες τις οδηγίες επιβεβαίωσης;
     need_unlock: Δεν έλαβες τις οδηγίες ξεκλειδώματος;
   signup_form:
-    overview: Αυτό το 20ωρο μάθημα εισάγει σε θεμελιώδης έννοιες Πληροφορικής και
-      προγραμματισμού . Το μάθημα έχει σχεδιαστεί για χρήση από τις τελευταίες τάξεις
-      του δημοτικού, αλλά η μάθηση είναι διασκεδαστική σε κάθε ηλικία.
-    no_signup_header: Δεν θέλετε να εγγραφείτε;
+    overview_student: Sign up for an account to track your progress.
+    overview_teacher: Teach computer science in your classroom by signing up for an
+      account.<p/> You'll be able to track your students' progress and get rewards.
     no_signup_message: Μπορείτε να <a target="_blank" href="http://learn.code.org">
       περιηγηθείτε στα διάφορα στάδια και παζλ</a>, αλλά θα πρέπει να εγγραφείτε για
       να αποθηκεύσετε την πρόοδό σας.
@@ -103,6 +104,7 @@
     remember: Να με θυμάσαι
     submit: Σύνδεση
   signin:
+    try_heading: Want to try coding without signing up?
     try_hoc: Try one Hour of Code first
     try_20hours: Try our 20 hour Intro to Computer Science
   password:
@@ -153,6 +155,8 @@
     provider: 'Πάροχος:'
     code: 'Κωδικός:'
     redeem_header: 'To redeem:'
+    donorschoose_register: Register as a teacher on DonorsChoose.org
+    donorschoose_project: Post a project
     donorschoose_how_to: How to use your code
     success: Το βραβείο σας εξαργυρώθηκε με επιτυχία, δες τον παρακάτω κωδικό.
     error: Το βραβείο σας δεν ήταν δυνατόν να εξαργυρωθεί, παρακαλώ προσπαθήστε ξανά.
@@ -328,6 +332,10 @@
       completion and up to $1,000 in classroom rewards for public school teachers'
     tryfirst: 'Or, you can try it first, and sign up later:'
     trynow: Try now
+    add_hint_help: Please help us to add smart hints to Code.org tutorials
+    20hour_overview: This 20-hour course introduces core computer science and programming
+      concepts. The course is designed for use in classrooms for grades K-8, but it
+      is fun to learn at all ages.
   gender:
     male: Αγόρι
     female: Κορίτσι
@@ -357,6 +365,8 @@
     subtitle: Δες αυτά τα βίντεο και τις υποδείξεις
     teacher: Δείτε τη λύση
     auth_error: Δεν έχετε εξουσιοδήτηση να δείτε τη λύση.
+    submit: Update Artist Location
+    direction: Start Direction
   video:
     tab: Βίντεο.
     notes: Δεν υπάρχει βίντεο; Δείξε σημειώσεις.
@@ -372,6 +382,7 @@
   share_code:
     title: Κάντε κλικ στο κουμπί «Εκτέλεση προγράμματος» για να δείτε το πρόγραμμα
       μου να εκτελείται
+    bounce_og_title: Check out my Bounce Game
     flappy_og_title: Check out my Flappy Game
     og_description: I wrote the code myself with Code.org
   builder:
@@ -384,3 +395,14 @@
       create: Create new level
       current: Current Levels
       unused: Unused Levels
+  upsell:
+    hoc:
+      title: The Hour of Code
+      body: Try the basics of computer science. Millions have given it a shot.
+    flappy:
+      title: Flappy Code
+      body: Wanna write your own game in less than 10 minutes? Try our Flappy Code
+        tutorial!
+    20hour:
+      title: Intro Course
+      body: Try our 20-hour Intro to Computer Science course.

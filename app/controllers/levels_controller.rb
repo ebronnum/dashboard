@@ -4,6 +4,7 @@ class LevelsController < ApplicationController
   include LevelsHelper
   include ActiveSupport::Inflector
   before_filter :authenticate_user!
+  before_filter :can_modify?, except: [:show, :index]
   skip_before_filter :verify_params_before_cancan_loads_model, :only => [:create, :update_blocks]
   load_and_authorize_resource :except => [:create]
   check_authorization
@@ -40,7 +41,7 @@ class LevelsController < ApplicationController
   def edit_blocks
     authorize! :manage, :level
     @level = Level.find(params[:level_id])
-    @start_blocks = @level[params[:type]]
+    @start_blocks = @level.properties[params[:type]].presence || @level[params[:type]]
     @toolbox_blocks = @level.complete_toolbox  # Provide complete toolbox for editing start/toolbox blocks.
     @game = @level.game
     @full_width = true
@@ -52,7 +53,7 @@ class LevelsController < ApplicationController
   def update_blocks
     authorize! :manage, :level
     @level = Level.find(params[:level_id])
-    @level[params[:type]] = params[:program]
+    @level.properties[params[:type]] = params[:program]
     @level.save
     render json: { redirect: game_level_url(@level.game, @level) }
   end
@@ -77,7 +78,6 @@ class LevelsController < ApplicationController
     else
       raise "Unkown level type #{params[:level_type]}"
     end
-    Level.write_custom_levels_to_file if Rails.env.in?(["staging", "development"])
   end
 
   def create_maze
@@ -135,6 +135,11 @@ class LevelsController < ApplicationController
     render :show
   end
 
+  def can_modify?
+    if !Rails.env.in?(["staging", "development"])
+      render text: "Cannot create or modify levels from this environment.", status: :forbidden
+    end
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

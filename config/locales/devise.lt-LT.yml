@@ -1,29 +1,29 @@
 "lt":
   devise:
     confirmations:
-      confirmed: Your account was successfully confirmed. You are now signed in.
-      send_instructions: You will receive an email with instructions about how to
-        confirm your account in a few minutes.
-      send_paranoid_instructions: If your email address exists in our database, you
-        will receive an email with instructions about how to confirm your account
-        in a few minutes.
+      confirmed: Jūsų el. pašto adresas buvo sėkmingai patvirtintas.
+      send_instructions: Netrukus gausite el. laišką į savo pašto dėžutę su instrukcijomis,
+        kad patvirtintumėte Jūsų paskyrą.
+      send_paranoid_instructions: Jeigu Jūsų el.pašto adresas egzistuoja mūsų duomenų
+        bazėje, netrukus gausite el. laišką į savo el. pašto dėžutę su instrukcija,
+        kaip patvirtinti Jūsų paskyrą.
     failure:
-      already_authenticated: You are already signed in.
-      inactive: Your account was not activated yet.
-      invalid: Invalid email or password.
-      invalid_token: Invalid authentication token.
-      locked: Your account is locked.
-      not_found_in_database: Invalid email or password.
-      timeout: Your session expired, please sign in again to continue.
-      unauthenticated: You need to sign in or sign up before continuing.
-      unconfirmed: You have to confirm your account before continuing.
+      already_authenticated: Jūs jau prisijungęs.
+      inactive: Jūsų paskyra dar nebuvo aktyvuota.
+      invalid: Neteisingas el. pašto adresas arba slaptažodis.
+      invalid_token: Neteisingas autentifikavimo ženklas.
+      locked: Jūsų paskyra yra užrakinta.
+      not_found_in_database: Neteisingas el. pašto adresas arba slaptažodis.
+      timeout: Jūsų sesija baigėsi. Prisijunkite iš naujo ir tęskite.
+      unauthenticated: Turite prisijungti ar prisiregistruoti, kad galėtumėte tęsti.
+      unconfirmed: Prieš tęsdami, turite patvirtinti savo paskyrą.
     mailer:
       confirmation_instructions:
-        subject: Confirmation instructions
+        subject: Code.org patvirtinimo instrukcijos
       reset_password_instructions:
-        subject: Reset password instructions
+        subject: Code.org slaptažodžio pakeitimo instrukcijos
       unlock_instructions:
-        subject: Unlock Instructions
+        subject: Atrakinti instrukcijas
     omniauth_callbacks:
       failure: Could not authenticate you from %{kind} because "%{reason}".
       success: Successfully authenticated from %{kind} account.
@@ -50,10 +50,10 @@
       update_needs_confirmation: You updated your account successfully, but we need
         to verify your new email address. Please check your email and click on the
         confirm link to finalize confirming your new email address.
-      updated: You updated your account successfully.
+      updated: Jūs sėkmingai atnaujinote savo paskyrą.
     sessions:
-      signed_in: Signed in successfully.
-      signed_out: Signed out successfully.
+      signed_in: Prisijungta sėkmingai.
+      signed_out: Sėkmingai atsijungta.
     unlocks:
       send_instructions: You will receive an email with instructions about how to
         unlock your account in a few minutes.
@@ -65,9 +65,9 @@
       already_confirmed: was already confirmed, please try signing in
       confirmation_period_expired: needs to be confirmed within %{period}, please
         request a new one
-      expired: has expired, please request a new one
-      not_found: not found
-      not_locked: was not locked
+      expired: pasibaigė, prašome prašyti naujos
+      not_found: nerastas
+      not_locked: nebuvo užrakintas
       not_saved:
-        one: '1 error prohibited this %{resource} from being saved:'
-        other: '%{count} errors prohibited this %{resource} from being saved:'
+        one: 'Įvyko klaida, kuri neleido %{resource} išsaugoti:'
+        other: 'Įvyko %{count} klaidų, kurios neleido %{resource} išsaugoti:'

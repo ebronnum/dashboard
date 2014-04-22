@@ -7,6 +7,7 @@ if (typeof global !== 'undefined') {
 }
 
 var addReadyListener = require('./dom').addReadyListener;
+var blocksCommon = require('./blocksCommon');
 
 function StubDialog() {
   for (var argument in arguments) {
@@ -53,6 +54,7 @@ module.exports = function(app, levels, options) {
   };
 
   options.skin = options.skinsModule.load(BlocklyApps.assetUrl, options.skinId);
+  blocksCommon.install(Blockly);
   options.blocksModule.install(Blockly, options.skin);
 
   addReadyListener(function() {
@@ -69,7 +71,7 @@ module.exports = function(app, levels, options) {
 };
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./base":2,"./dom":6}],2:[function(require,module,exports){
+},{"./base":2,"./blocksCommon":4,"./dom":7}],2:[function(require,module,exports){
 /**
  * Blockly Apps: Common code
  *
@@ -528,7 +530,10 @@ BlocklyApps.arrangeBlockPosition = function(startBlocks, arrangement) {
 };
 
 var showInstructions = function(level) {
-  level.instructions = level.instructions || '';
+  if (!level.instructions) {
+    // Skip instructions if empty
+    return;
+  }
 
   var instructionsDiv = document.createElement('div');
   instructionsDiv.innerHTML = require('./templates/instructions.html')(level);
@@ -869,7 +874,7 @@ var getIdealBlockNumberMsg = function() {
       msg.infinity() : BlocklyApps.IDEAL_BLOCK_NUM;
 };
 
-},{"../locale/sr_sp/common":31,"./builder":4,"./dom":6,"./feedback.js":7,"./slider":18,"./templates/buttons.html":20,"./templates/instructions.html":22,"./templates/learn.html":23,"./templates/makeYourOwn.html":24,"./utils":29,"./xml":30}],3:[function(require,module,exports){
+},{"../locale/sr_sp/common":32,"./builder":5,"./dom":7,"./feedback.js":8,"./slider":19,"./templates/buttons.html":21,"./templates/instructions.html":23,"./templates/learn.html":24,"./templates/makeYourOwn.html":25,"./utils":30,"./xml":31}],3:[function(require,module,exports){
 exports.createToolbox = function(blocks) {
   return '<xml id="toolbox" style="display: none;">' + blocks + '</xml>';
 };
@@ -879,6 +884,43 @@ exports.blockOfType = function(type) {
 };
 
 },{}],4:[function(require,module,exports){
+/**
+ * Defines blocks useful in multiple blockly apps
+ */
+'use strict';
+
+var REPEAT_IMAGE_URL = 'media/sharedBlocks/repeat.png';
+var REPEAT_IMAGE_WIDTH = 53;
+var REPEAT_IMAGE_HEIGHT = 57;
+
+/**
+ * Install extensions to Blockly's language and JavaScript generator
+ * @param blockly instance of Blockly
+ */
+exports.install = function(blockly) {
+  // Re-uses the repeat block generator from core
+  blockly.JavaScript.controls_repeat_simplified = blockly.JavaScript.controls_repeat;
+
+  blockly.Blocks.controls_repeat_simplified = {
+    // Repeat n times (internal number) with simplified UI
+    init: function() {
+      this.setHelpUrl(blockly.Msg.CONTROLS_REPEAT_HELPURL);
+      this.setHSV(322, 0.90, 0.95);
+      this.appendStatementInput('DO')
+        .appendTitle(new blockly.FieldImage(
+          blockly.assetUrl(REPEAT_IMAGE_URL), REPEAT_IMAGE_WIDTH, REPEAT_IMAGE_HEIGHT));
+      this.appendDummyInput()
+        .appendTitle(blockly.Msg.CONTROLS_REPEAT_TITLE_REPEAT)
+        .appendTitle(new Blockly.FieldTextInput('10',
+          blockly.FieldTextInput.nonnegativeIntegerValidator), 'TIMES');
+      this.setPreviousStatement(true);
+      this.setNextStatement(true);
+      this.setTooltip(blockly.Msg.CONTROLS_REPEAT_TOOLTIP);
+    }
+  };
+};
+
+},{}],5:[function(require,module,exports){
 var feedback = require('./feedback.js');
 var dom = require('./dom.js');
 var utils = require('./utils.js');
@@ -908,7 +950,7 @@ exports.builderForm = function(onAttemptCallback) {
   dialog.show({ backdrop: 'static' });
 };
 
-},{"./dom.js":6,"./feedback.js":7,"./templates/builder.html":19,"./utils.js":29,"url":43}],5:[function(require,module,exports){
+},{"./dom.js":7,"./feedback.js":8,"./templates/builder.html":20,"./utils.js":30,"url":44}],6:[function(require,module,exports){
 var INFINITE_LOOP_TRAP = '  BlocklyApps.checkTimeout();\n';
 var INFINITE_LOOP_TRAP_RE =
     new RegExp(INFINITE_LOOP_TRAP.replace(/\(.*\)/, '\\(.*\\)'), 'g');
@@ -988,7 +1030,7 @@ exports.functionFromCode = function(code, options) {
   return new ctor();
 };
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 exports.addReadyListener = function(callback) {
   if (document.readyState === "complete") {
     setTimeout(callback, 1);
@@ -1062,7 +1104,7 @@ exports.isMobile = function() {
   return reg.test(window.navigator.userAgent);
 };
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 var trophy = require('./templates/trophy.html');
 var utils = require('./utils');
 var readonly = require('./templates/readonly.html');
@@ -1842,7 +1884,7 @@ var generateXMLForBlocks = function(blocks) {
 };
 
 
-},{"../locale/sr_sp/common":31,"./codegen":5,"./dom":6,"./templates/buttons.html":20,"./templates/code.html":21,"./templates/readonly.html":26,"./templates/showCode.html":27,"./templates/trophy.html":28,"./utils":29}],8:[function(require,module,exports){
+},{"../locale/sr_sp/common":32,"./codegen":6,"./dom":7,"./templates/buttons.html":21,"./templates/code.html":22,"./templates/readonly.html":27,"./templates/showCode.html":28,"./templates/trophy.html":29,"./utils":30}],9:[function(require,module,exports){
 exports.FlapHeight = {
   VERY_SMALL: -6,
   SMALL: -8,
@@ -1942,7 +1984,7 @@ exports.incrementPlayerScore = function(id) {
   Flappy.displayScore();
 };
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 /**
  * Blockly App: Flappy
  *
@@ -2439,7 +2481,7 @@ exports.install = function(blockly, skin) {
   delete blockly.Blocks.procedures_ifreturn;
 };
 
-},{"../../locale/sr_sp/flappy":32}],10:[function(require,module,exports){
+},{"../../locale/sr_sp/flappy":33}],11:[function(require,module,exports){
 module.exports = {
   WORKSPACE_BUFFER: 20,
   WORKSPACE_COL_WIDTH: 210,
@@ -2449,7 +2491,7 @@ module.exports = {
   AVATAR_WIDTH: 34,
   AVATAR_Y_OFFSET: 0
 };
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2470,7 +2512,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/sr_sp/flappy":32,"ejs":33}],12:[function(require,module,exports){
+},{"../../locale/sr_sp/flappy":33,"ejs":34}],13:[function(require,module,exports){
 /**
  * Blockly App: Flappy
  *
@@ -3518,7 +3560,7 @@ var checkFinished = function () {
   return false;
 };
 
-},{"../../locale/sr_sp/common":31,"../../locale/sr_sp/flappy":32,"../base":2,"../codegen":5,"../dom":6,"../feedback.js":7,"../skins":17,"../templates/page.html":25,"./api":8,"./constants":10,"./controls.html":11,"./visualization.html":16}],13:[function(require,module,exports){
+},{"../../locale/sr_sp/common":32,"../../locale/sr_sp/flappy":33,"../base":2,"../codegen":6,"../dom":7,"../feedback.js":8,"../skins":18,"../templates/page.html":26,"./api":9,"./constants":11,"./controls.html":12,"./visualization.html":17}],14:[function(require,module,exports){
 /*jshint multistr: true */
 
 // todo - i think our prepoluated code counts as LOCs
@@ -3936,7 +3978,7 @@ module.exports = {
   }
 };
 
-},{"../block_utils":3,"./constants":10}],14:[function(require,module,exports){
+},{"../block_utils":3,"./constants":11}],15:[function(require,module,exports){
 (function (global){
 var appMain = require('../appMain');
 window.Flappy = require('./flappy');
@@ -3954,7 +3996,7 @@ window.flappyMain = function(options) {
 };
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../appMain":1,"./blocks":9,"./flappy":12,"./levels":13,"./skins":15}],15:[function(require,module,exports){
+},{"../appMain":1,"./blocks":10,"./flappy":13,"./levels":14,"./skins":16}],16:[function(require,module,exports){
 /**
  * Load Skin for Flappy.
  */
@@ -4109,7 +4151,7 @@ exports.load = function(assetUrl, id) {
   return skin;
 };
 
-},{"../skins":17}],16:[function(require,module,exports){
+},{"../skins":18}],17:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4130,7 +4172,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":33}],17:[function(require,module,exports){
+},{"ejs":34}],18:[function(require,module,exports){
 // avatar: A 1029x51 set of 21 avatar images.
 
 exports.load = function(assetUrl, id) {
@@ -4157,6 +4199,11 @@ exports.load = function(assetUrl, id) {
     downArrow: skinUrl('down.png'),
     upArrow: skinUrl('up.png'),
     rightArrow: skinUrl('right.png'),
+    leftJumpArrow: skinUrl('left_jump.png'),
+    downJumpArrow: skinUrl('down_jump.png'),
+    upJumpArrow: skinUrl('up_jump.png'),
+    rightJumpArrow: skinUrl('right_jump.png'),
+    offsetLineSlice: skinUrl('offset_line_slice.png'),
     // Sounds
     startSound: [skinUrl('start.mp3'), skinUrl('start.ogg')],
     winSound: [skinUrl('win.mp3'), skinUrl('win.ogg')],
@@ -4165,7 +4212,7 @@ exports.load = function(assetUrl, id) {
   return skin;
 };
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 /**
  * Blockly Apps: SVG Slider
  *
@@ -4370,7 +4417,7 @@ Slider.bindEvent_ = function(element, name, func) {
 
 module.exports = Slider;
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4391,7 +4438,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":33}],20:[function(require,module,exports){
+},{"ejs":34}],21:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4412,7 +4459,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/sr_sp/common":31,"ejs":33}],21:[function(require,module,exports){
+},{"../../locale/sr_sp/common":32,"ejs":34}],22:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4433,7 +4480,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":33}],22:[function(require,module,exports){
+},{"ejs":34}],23:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4454,7 +4501,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/sr_sp/common":31,"ejs":33}],23:[function(require,module,exports){
+},{"../../locale/sr_sp/common":32,"ejs":34}],24:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4477,7 +4524,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/sr_sp/common":31,"ejs":33}],24:[function(require,module,exports){
+},{"../../locale/sr_sp/common":32,"ejs":34}],25:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4498,7 +4545,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/sr_sp/common":31,"ejs":33}],25:[function(require,module,exports){
+},{"../../locale/sr_sp/common":32,"ejs":34}],26:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4520,7 +4567,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/sr_sp/common":31,"ejs":33}],26:[function(require,module,exports){
+},{"../../locale/sr_sp/common":32,"ejs":34}],27:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4542,7 +4589,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":33}],27:[function(require,module,exports){
+},{"ejs":34}],28:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4563,7 +4610,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/sr_sp/common":31,"ejs":33}],28:[function(require,module,exports){
+},{"../../locale/sr_sp/common":32,"ejs":34}],29:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4584,7 +4631,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":33}],29:[function(require,module,exports){
+},{"ejs":34}],30:[function(require,module,exports){
 exports.shallowCopy = function(source) {
   var result = {};
   for (var prop in source) {
@@ -4616,7 +4663,17 @@ exports.escapeHtml = function(unsafe) {
     .replace(/'/g, "&#039;");
 };
 
-},{}],30:[function(require,module,exports){
+/**
+ * Version of modulo which, unlike javascript's `%` operator,
+ * will always return a positive remainder.
+ * @param number
+ * @param mod
+ */
+exports.mod = function(number, mod) {
+  return ((number % mod) + mod) % mod;
+};
+
+},{}],31:[function(require,module,exports){
 // Serializes an XML DOM node to a string.
 exports.serialize = function(node) {
   var serializer = new XMLSerializer();
@@ -4644,7 +4701,7 @@ exports.parseElement = function(text) {
   return element;
 };
 
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.sr = function (n) {
   if ((n % 10) == 1 && (n % 100) != 11) {
     return 'one';
@@ -4661,15 +4718,15 @@ var MessageFormat = require("messageformat");MessageFormat.locale.sr = function 
 };
 exports.blocklyMessage = function(d){return "Blockly"};
 
-exports.catActions = function(d){return "акција"};
+exports.catActions = function(d){return "Акције"};
 
-exports.catColour = function(d){return "боја"};
+exports.catColour = function(d){return "Боја"};
 
-exports.catLogic = function(d){return "логика"};
+exports.catLogic = function(d){return "Логика"};
 
-exports.catLists = function(d){return "листе"};
+exports.catLists = function(d){return "Листе"};
 
-exports.catLoops = function(d){return "петље"};
+exports.catLoops = function(d){return "Понављања"};
 
 exports.catMath = function(d){return "Математика"};
 
@@ -4679,21 +4736,21 @@ exports.catText = function(d){return "Текст"};
 
 exports.catVariables = function(d){return "Променљиве"};
 
-exports.codeTooltip = function(d){return "Погледајте генерисани код JavaScript-е."};
+exports.codeTooltip = function(d){return "Погледајте генерисани код JavaScript-а."};
 
-exports.continue = function(d){return "Наставите"};
+exports.continue = function(d){return "Настави"};
 
 exports.dialogCancel = function(d){return "Откажи"};
 
 exports.dialogOK = function(d){return "У реду"};
 
-exports.emptyBlocksErrorMsg = function(d){return "\"Repeat\" или  \"If\" блок мора имати још један блок у себи како би функционисао. Постарајте се да је унутрашнји блок правилно убачен у ванјски блок."};
+exports.emptyBlocksErrorMsg = function(d){return "Да би блок \"Понављај\" или  \"Ако\" радио, у њега треба уградити друге блокове. Постарајте се да је унутрашњи блок правилно убачен у спољни блок."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Имаш блокове који нису повезани са основним блоком."};
 
-exports.finalStage = function(d){return "Честитамо! Завршили сте последнју етапу."};
+exports.finalStage = function(d){return "Честитамо! Завршили сте последњу етапу."};
 
-exports.finalStageTrophies = function(d){return "Честитамо! Завршили сте последнју етапу и освојили  "+p(d,"numTrophies",0,"sr",{"one":"трофеј","other":n(d,"numTrophies")+" трофеја"})+"."};
+exports.finalStageTrophies = function(d){return "Честитамо! Завршио-ла си последњи ниво и освојио-ла  "+p(d,"numTrophies",0,"sr",{"one":"трофеј","other":n(d,"numTrophies")+" трофеја"})+"."};
 
 exports.generatedCodeInfo = function(d){return "Блокови за ваш програм се такође могу репрезентовати у јава скрипту, светском најшире прихваћеном програмском језику:"};
 
@@ -4701,57 +4758,57 @@ exports.hashError = function(d){return "Жао нам је, '%1' не одгов
 
 exports.help = function(d){return "Помоћ"};
 
-exports.hintTitle = function(d){return "Предлог:"};
+exports.hintTitle = function(d){return "Савет:"};
 
-exports.levelIncompleteError = function(d){return "Ви користите све неопходне типове блокова, али не правилно."};
+exports.levelIncompleteError = function(d){return "Користиш све неопходне типове блокова, али не на прави начин."};
 
-exports.listVariable = function(d){return "Листа"};
+exports.listVariable = function(d){return "листа"};
 
-exports.makeYourOwnFlappy = function(d){return "Make Your Own Flappy Game"};
+exports.makeYourOwnFlappy = function(d){return "Направи своју Flappy игру"};
 
-exports.missingBlocksErrorMsg = function(d){return "Пробајте један или више блокова испод како би решили слагалицу."};
+exports.missingBlocksErrorMsg = function(d){return "Пробај један или више понуђених блокова како би решио-ла мозгалицу."};
 
-exports.nextLevel = function(d){return "Честитамо! Решили сте Puzzle "+v(d,"puzzleNumber")+"."};
+exports.nextLevel = function(d){return "Честитамо! Решио-ла си мозгалицу "+v(d,"puzzleNumber")+"."};
 
-exports.nextLevelTrophies = function(d){return "Честитамо! Решили сте  Puzzle "+v(d,"puzzleNumber")+" и освојили "+p(d,"numTrophies",0,"sr",{"one":"a trophy","other":n(d,"numTrophies")+" trophies"})+"."};
+exports.nextLevelTrophies = function(d){return "Честитамо! Решили сте Слагалицу "+v(d,"puzzleNumber")+" и освојили "+p(d,"numTrophies",0,"sr",{"one":"трофеј","other":n(d,"numTrophies")+" трофеја"})+"."};
 
 exports.nextStage = function(d){return "Честитамо! Решили сте  Stage "+v(d,"stageNumber")+"."};
 
 exports.nextStageTrophies = function(d){return "Честитамо! Решили сте  Stage "+v(d,"stageNumber")+" и освојили "+p(d,"numTrophies",0,"sr",{"one":"a trophy","other":n(d,"numTrophies")+" trophies"})+"."};
 
-exports.numBlocksNeeded = function(d){return "Честитамо! Решили сте Puzzle "+v(d,"puzzleNumber")+". (Међутим, ипак сте могли само користити "+p(d,"numBlocks",0,"sr",{"one":"1 block","other":n(d,"numBlocks")+" blocks"})+".)"};
+exports.numBlocksNeeded = function(d){return "Честитамо! Решио-ла си мозгалицу "+v(d,"puzzleNumber")+". (Међутим, постоји програм са само "+p(d,"numBlocks",0,"sr",{"one":"једним блоком","other":n(d,"numBlocks")+" блокова"})+".)"};
 
-exports.numLinesOfCodeWritten = function(d){return "Управо сте написали "+p(d,"numLines",0,"sr",{"one":"1 line","other":n(d,"numLines")+" lines"})+" кода!"};
+exports.numLinesOfCodeWritten = function(d){return "Управо си написао-ла "+p(d,"numLines",0,"sr",{"one":"1 линију","other":n(d,"numLines")+" линија"})+" кода!"};
 
-exports.puzzleTitle = function(d){return "Puzzle "+v(d,"puzzle_number")+" of "+v(d,"stage_total")};
+exports.puzzleTitle = function(d){return "Мозгалица "+v(d,"puzzle_number")+" од "+v(d,"stage_total")};
 
-exports.resetProgram = function(d){return "Ресетирати"};
+exports.resetProgram = function(d){return "Почни поново"};
 
 exports.runProgram = function(d){return "Покрени програм"};
 
-exports.runTooltip = function(d){return "Покренути програм који сте написали уз помоћ блокова у радном простору."};
+exports.runTooltip = function(d){return "Покрени програм састављен уз помоћ блокова у радном простору."};
 
-exports.showCodeHeader = function(d){return "Покажи Програмски код"};
+exports.showCodeHeader = function(d){return "Покажи код програма"};
 
-exports.showGeneratedCode = function(d){return "Покажи Програмски код"};
+exports.showGeneratedCode = function(d){return "Покажи код програма"};
 
-exports.subtitle = function(d){return "Окруженје визуалног програмиранја"};
+exports.subtitle = function(d){return "графичко окружење за програмирање"};
 
 exports.textVariable = function(d){return "текст"};
 
-exports.tooFewBlocksMsg = function(d){return "Ви користите све неопходне типове блокова, али покушајте користити више ове типове блокова како би завршили ову слагалицу."};
+exports.tooFewBlocksMsg = function(d){return "Користиш све неопходне типове блокова, али покушај да искористиш више ових блокова да завршиш мозгалицу."};
 
-exports.tooManyBlocksMsg = function(d){return "Ова се слагалица може решити са <x id='START_SPAN'/><x id='END_SPAN'/> блоковима."};
+exports.tooManyBlocksMsg = function(d){return "Ова мозгалица може да се реши са <x id='START_SPAN'/><x id='END_SPAN'/> блокова."};
 
-exports.tooMuchWork = function(d){return "Чините да ја радим пуно посла! Можете ли покушати понавлјати више пута?"};
+exports.tooMuchWork = function(d){return "Задао си ми много посла! Покушај са мање понављања."};
 
-exports.flappySpecificFail = function(d){return "Your code looks good - it will flap with each click. But you need to click many times to flap to the target."};
+exports.flappySpecificFail = function(d){return "Твој програм изледа добро - замахнуће крилима на сваки клик, али треба да кликнеш много пута да долетиш до циља."};
 
 exports.toolboxHeader = function(d){return "Блокови"};
 
 exports.openWorkspace = function(d){return "Како то ради"};
 
-exports.totalNumLinesOfCodeWritten = function(d){return "Укупно : "+p(d,"numLines",0,"sr",{"one":"1 line","other":n(d,"numLines")+" lines"})+" кода."};
+exports.totalNumLinesOfCodeWritten = function(d){return "Укупно : "+p(d,"numLines",0,"sr",{"one":"1 линија","other":n(d,"numLines")+" линија"})+" кода."};
 
 exports.tryAgain = function(d){return "Покушај поново"};
 
@@ -4759,32 +4816,32 @@ exports.backToPreviousLevel = function(d){return "Натраг на претхо
 
 exports.saveToGallery = function(d){return "Save to your gallery"};
 
-exports.typeCode = function(d){return "Откуцајте ваш JavaScript код испод ових инструкција."};
+exports.typeCode = function(d){return "Напиши свој JavaScript код испод ових инструкција."};
 
 exports.typeFuncs = function(d){return "Доступне функције:%1"};
 
-exports.typeHint = function(d){return "Неопходне су заграде и тачка-зарези."};
+exports.typeHint = function(d){return "Уочи да су неопходне заграде и тачка-зарези."};
 
-exports.workspaceHeader = function(d){return "Скупи своје блокове овде: "};
+exports.workspaceHeader = function(d){return "Склопи своје блокове овде: "};
 
-exports.infinity = function(d){return "бесконачност"};
+exports.infinity = function(d){return "Бесконачно"};
 
 exports.rotateText = function(d){return "Окрените ваш уређај."};
 
-exports.orientationLock = function(d){return "Угасите оријентациону браву у подешаванјима уређаја."};
+exports.orientationLock = function(d){return "У подешавањима уређаја искључи блокаду оријентације."};
 
-exports.wantToLearn = function(d){return "Желиш научити да програмираш?"};
+exports.wantToLearn = function(d){return "Желиш да научиш да програмираш?"};
 
 exports.watchVideo = function(d){return "Погледај видео"};
 
-exports.tryHOC = function(d){return "Пробај Сат Програмирања"};
+exports.tryHOC = function(d){return "Испробај \"Hour of Code\""};
 
-exports.signup = function(d){return "Региструј се за почетни курс"};
+exports.signup = function(d){return "Региструј се за уводни курс"};
 
 exports.hintHeader = function(d){return "Here's a tip:"};
 
 
-},{"messageformat":44}],32:[function(require,module,exports){
+},{"messageformat":45}],33:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.sr = function (n) {
   if ((n % 10) == 1 && (n % 100) != 11) {
     return 'one';
@@ -4987,7 +5044,7 @@ exports.setSpeed = function(d){return "set speed"};
 
 exports.setSpeedTooltip = function(d){return "Sets the levels speed"};
 
-exports.share = function(d){return "Share"};
+exports.share = function(d){return "Подели"};
 
 exports.shareFlappyTwitter = function(d){return "Check out the Flappy game I made. I wrote it myself with @codeorg"};
 
@@ -5028,7 +5085,7 @@ exports.whenRunButtonClickTooltip = function(d){return "Execute the actions belo
 exports.yes = function(d){return "Да"};
 
 
-},{"messageformat":44}],33:[function(require,module,exports){
+},{"messageformat":45}],34:[function(require,module,exports){
 
 /*!
  * EJS
@@ -5387,7 +5444,7 @@ if (require.extensions) {
   });
 }
 
-},{"./filters":34,"./utils":35,"fs":36,"path":38}],34:[function(require,module,exports){
+},{"./filters":35,"./utils":36,"fs":37,"path":39}],35:[function(require,module,exports){
 /*!
  * EJS - Filters
  * Copyright(c) 2010 TJ Holowaychuk <tj@vision-media.ca>
@@ -5590,7 +5647,7 @@ exports.json = function(obj){
   return JSON.stringify(obj);
 };
 
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 
 /*!
  * EJS
@@ -5616,9 +5673,9 @@ exports.escape = function(html){
 };
  
 
-},{}],36:[function(require,module,exports){
-
 },{}],37:[function(require,module,exports){
+
+},{}],38:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -5673,7 +5730,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -5901,7 +5958,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require("/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":37}],39:[function(require,module,exports){
+},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":38}],40:[function(require,module,exports){
 (function (global){
 /*! http://mths.be/punycode v1.2.4 by @mathias */
 ;(function(root) {
@@ -6412,7 +6469,7 @@ var substr = 'ab'.substr(-1) === 'b'
 }(this));
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -6498,7 +6555,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -6585,13 +6642,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],42:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":40,"./encode":41}],43:[function(require,module,exports){
+},{"./decode":41,"./encode":42}],44:[function(require,module,exports){
 /*jshint strict:true node:true es5:true onevar:true laxcomma:true laxbreak:true eqeqeq:true immed:true latedef:true*/
 (function () {
   "use strict";
@@ -7224,7 +7281,7 @@ function parseHost(host) {
 
 }());
 
-},{"punycode":39,"querystring":42}],44:[function(require,module,exports){
+},{"punycode":40,"querystring":43}],45:[function(require,module,exports){
 /**
  * messageformat.js
  *
@@ -8807,4 +8864,4 @@ function parseHost(host) {
 
 })( this );
 
-},{}]},{},[14])
+},{}]},{},[15])

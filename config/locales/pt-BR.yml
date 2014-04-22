@@ -11,6 +11,8 @@
         locale: Idioma
         gender: Sexo
         edit_header: Editar detalhes da conta
+        error:
+          future: can't be in the future
   hello: Olá mundo
   welcome_back: Bem-vindo de volta, %{name}
   add_teacher_form:
@@ -30,9 +32,10 @@
   more: MAIS
   less: MENOS
   try_hoc: 'Experimente a Hora do Código, clique aqui >> '
-  try_k8intro: Teste a nossa introdução do curso de Ciência da Computação (15-25 horas)
-    para o Ensino Fundamental
-  k8intro: K-8 Introdução ao Curso de Ciência da Computação (15-25 horas)
+  try_k8intro: Experimente nossa introdução do curso de Ciência da Computação (15-25
+    horas) para o Ensino Fundamental
+  k8intro: Introdução ao Curso de Ciência da Computação (15-25 horas) para estudantes
+    do ensino fundamental (K-8)
   already_started: 'Já começou? Continue aqui >> '
   demos: 'Administrar: Todas as Demonstrações'
   continue: Continuar
@@ -51,10 +54,9 @@
     need_confirmation: Não recebeu as instruções de confirmação?
     need_unlock: Não recebeu as instruções de desbloqueio?
   signup_form:
-    overview: Este curso de 20 horas apresenta o núcleo da computação e conceitos
-      de programação. O curso é projetado para uso em salas de aula para o Ensino
-      Fundamental, mas é divertido de aprender em todas as idades.
-    no_signup_header: Não quer se registar?
+    overview_student: Sign up for an account to track your progress.
+    overview_teacher: Teach computer science in your classroom by signing up for an
+      account.<p/> You'll be able to track your students' progress and get rewards.
     no_signup_message: Você pode <a target="_blank" href="http://learn.code.org">
       consultar as várias fases e quebra-cabeças</a>, mas você precisará inscrever-se
       para gravar seu progresso.
@@ -102,8 +104,9 @@
     remember: Lembrar de mim
     submit: Entrar
   signin:
+    try_heading: Want to try coding without signing up?
     try_hoc: Tente uma Hora de Código primeiro
-    try_20hours: Tente nossa introdução de 20 horas em Ciência da Computação
+    try_20hours: Experimente nossa introdução de 20 horas em Ciência da Computação
   password:
     reset_form:
       title: Esqueceu sua senha?
@@ -152,6 +155,8 @@
     provider: 'Fornecedor:'
     code: 'Código:'
     redeem_header: 'To redeem:'
+    donorschoose_register: Register as a teacher on DonorsChoose.org
+    donorschoose_project: Post a project
     donorschoose_how_to: Como usar seu código
     success: Seu prêmio foi resgatado com êxito, veja o código abaixo.
     error: O prêmio não pode ser resgatado, por favor tente novamente.
@@ -274,16 +279,16 @@
       manage: Gerenciar alunos
       add: Adicionar alunos
     sections:
-      manage: Manage sections
+      manage: Gerenciar seções
     rollup: Painel de controle do progresso
     activity: Atividade recente de classe
     user_not_found: O professor ou o estudante não pôde ser encontrado
-    cant_remove_student_no_email: '%{student_name} cannot be removed as your student
-      because %{student_name} has not registered an e-mail address'
-    cant_remove_teacher_no_email: '%{teacher_name} cannot be removed as your teacher
-      because you have not registered an e-mail address'
-    student_teacher_disassociated: '%{teacher_name} has been removed as a teacher
-      for %{student_name}'
+    cant_remove_student_no_email: '%{student_name} não pode ser removido como seu
+      aluno porque %{student_name} não registrou um endereço de e-mail'
+    cant_remove_teacher_no_email: '%{teacher_name} não pode ser removido como seu
+      professor, porque você não registrou um endereço de e-mail'
+    student_teacher_disassociated: '%{teacher_name} foi removido como professor de
+      %{student_name}'
   user:
     email_confirm_needed: 'O endereço de e-mail não foi confirmado:'
     email_resend_confirm: Reenviar instruções de confirmação
@@ -332,6 +337,10 @@
       para professores de escola pública.'
     tryfirst: 'Ou, você pode experimentar primeiro e se inscrever depois:'
     trynow: Tente agora
+    add_hint_help: Please help us to add smart hints to Code.org tutorials
+    20hour_overview: This 20-hour course introduces core computer science and programming
+      concepts. The course is designed for use in classrooms for grades K-8, but it
+      is fun to learn at all ages.
   gender:
     male: Masculino
     female: Feminino
@@ -361,6 +370,8 @@
     subtitle: Assista a estes vídeos e dicas
     teacher: Ver a solução
     auth_error: Você não está autorizado a ver a solução.
+    submit: Update Artist Location
+    direction: Start Direction
   video:
     tab: Vídeo.
     notes: Nenhum vídeo? Mostrar notas.
@@ -375,8 +386,9 @@
   download_pdf: Abra o planejamento da aula
   share_code:
     title: Clique em 'Executar programa' para ver o meu programa em ação
+    bounce_og_title: Check out my Bounce Game
     flappy_og_title: Confira meu jogo Flappy
-    og_description: Eu mesmo escrevi o código com Code.org
+    og_description: Eu mesmo escrevi o código com o Code.org
   builder:
     created: Você criou um novo script.
     destroyed: Você destruiu um script.
@@ -387,3 +399,14 @@
       create: Criar novo nível
       current: Níveis atuais
       unused: Níveis não utilizados
+  upsell:
+    hoc:
+      title: The Hour of Code
+      body: Try the basics of computer science. Millions have given it a shot.
+    flappy:
+      title: Flappy Code
+      body: Wanna write your own game in less than 10 minutes? Try our Flappy Code
+        tutorial!
+    20hour:
+      title: Intro Course
+      body: Try our 20-hour Intro to Computer Science course.

@@ -32,10 +32,16 @@
           MazeEC: 第一阶段
         2014 Levels:
           desc: 2014 谜题 （测试版）
-          MazeEC: 第一阶段
+          Bounce: Stage 1
+        Builder Levels:
+          desc: User-Created Puzzles (beta)
+          Custom: Stage 1
         Flappy Levels:
           desc: Flappy Bird
-          MazeEC: 第一阶段
+          Flappy: Stage 1
+        Jigsaw Levels:
+          desc: Jigsaw (beta)
+          Jigsaw: Stage 1
     game:
       name:
         Unplug1: 计算机科学导论
@@ -61,6 +67,7 @@
         MazeEC: 迷宫
         Bounce: 跳
         Flappy: Flappy Bird
+        Jigsaw: Jigsaw
     trophy:
       name:
         Bronze: 铜色
@@ -74,7 +81,7 @@
         loop_times: ”重复次数“版块
         loop_until: ”重复...直到..."版块
         loop_while: “同时”版块
-        loop_for: “计数”版块
+        loop_for: “计数”循环块
         function: 函数
         parameters: 参数函数
     level:
@@ -136,8 +143,8 @@
         turtle_2_3: 用 （在"循环"目录下） 的"重复"块画 3 个大小为100的正方形，每个相隔120度。试试用3种不同的随机颜色。
         turtle_2_4: 现在，让我们画更复杂的图案吧。更改代码来画36个正方形，100像素大小，每个相隔10度。提示： 你可以使用滑块来让我走得更快。
         turtle_2_5: 试试画大小为50，60，70，80，和90的正方形。你可以使用五次"画一个正方形"函数。
-        turtle_2_6: 好的，在这个程序中，我们要使用一个计数器来画和上次一样的正方形。你要画的正方形大小和计数器当前数字的大小相同。试试看怎么用"计数器"块。提示：
-          它是在变量目录中。
+        turtle_2_6: 好的，在这个程序中将要使用计数器，来画一个和上次一样的正方形。你要画的正方形大小和计数器当前数字的大小相同。试试看怎么用“计数器”块。提示：
+          它是在『变量』分类中。
         turtle_2_7: 这个程序可以画一个螺旋，但我们已经禁用了这些块，所以它们不能运行。你能不能试试看用 (在循环目录下的）"计数"块 和(在变量类别）"计数器"块
           画一个相同的螺旋。
         turtle_2_7_5: (在函数目录中）有一个新的函数："画一个雪人"。画两个雪人，一个高为250像素，一个高为100像素。
@@ -145,7 +152,7 @@
           个像素。
         turtle_2_9: 用一个"计数"循环块来画雪人一家人。他们的高度分别是110， 100， 90， 80，和 70，每两个之间相隔60像素。
         turtle_2_10: 试试用这些代码来画不同的螺旋。如果你改变旋转的次数会怎么样？或者在循环中设置随机的颜色？画你喜欢的。
-        maze_karel_2_1: 请试试用所给的块来移除所有的土堆，填平所有的洞。尝试使用循环来节省块。提示：你可以在一个循环内放另一个循环。
+        maze_karel_2_1: 请帮助我移除所有的土堆，填平地上所有的洞。 尝试使用循环来节省块。提示：你可以将一个循环放在另一个循环里。
         maze_karel_2_2: 我们定义了一个新块："填充5"，在函数目录中。用它来帮我把这个洞填平。
         maze_karel_2_3: 使用新的"填充 5"函数块来帮我填平所有的洞。你得从函数目录里拖出"填充 5"块。
         maze_karel_2_4: 定义一个新的函数：”移除 7“。然后用它编写一个程序来帮我删除所有土堆。
@@ -193,6 +200,9 @@
         bounce_7: 将块附加到每个"当"块。跳起球，直到它击中完成目标。
         bounce_10: 现在有一个目标在顶部。附加上"得分点"和"分数对手点"块"当球在目标中"和"当球未命中桨"块去做一场游戏。看看你可以获得多少分，在你对手得分两次之前。
         bounce_11: 您现在可以往"游戏启动时"块上附加块。尝试更改球拍和球的速度，看看你可以获得多少分，在你对手得分两次之前。
+        bounce_12: Create your own Bounce game. You can change all the visuals and
+          the rules. When you're done, click Share to let friends try your game on
+          their phones.
         Custom_builder: 将块从工具箱中拖动到工作区中绘制您想要创建的水平。当您准备好时，按下"运行程序"。
         flappy_1: 将一个块附加到"单击时"块中，然后按下"运行程序"。单击或点击屏幕移动 Flappy到目标。
         flappy_2: 现在我们已经添加了一些地面。将一个块附加到"撞到地面时"块。Flappy 撞了时，您的代码需要 ' 结束游戏 '。
@@ -205,6 +215,17 @@
         flappy_8: 不只是在游戏开始时，您可以随时设置的视觉效果。请尝试在其他事件发生时设置一个随机场景，例如，在通过障碍时。
         flappy_9: 去搀混它们，当击中障碍或者掉到地上，不只是结束游戏，尝试设置分数为0。
         flappy_11: 创建您自己Flappy游戏。您可以更改所有的视觉效果和所有的规则，甚至重力。当你完成，单击共享，让朋友在手机上试试你的游戏吧。
+        jigsaw_1: Click the block
+        jigsaw_2: Drag the block to the target
+        jigsaw_3: Arrange the blocks to form the image
+        jigsaw_4: Arrange the blocks to form the image
+        jigsaw_5: Arrange the blocks to form the image
+        jigsaw_6: Arrange the blocks to form the image
+        jigsaw_7: Arrange the blocks to form the image
+        jigsaw_8: Arrange the blocks to form the image
+        jigsaw_9: Arrange the blocks to form the image
+        jigsaw_10: Arrange the blocks to form the image
+        jigsaw_11: Arrange the blocks to form the image
       levelIncompleteError:
         maze_2_8: 要解决这个谜题，试试找找其中重复的部分。用一个”重复“块，并在里面里面放上三个块：向前，向前，右转。
       other1StarError:
@@ -223,7 +244,19 @@
         if_else: 如果/那么块
         function: 功能
         loop_while: 当块
-        loop_for: “计数器”块
+        loop_for: “计数”循环块
         parameters: 有参数的函数
         hoc_wrapup: 编程一小时总结
         20_wrapup: 20小时教程总结
+    callout:
+      text:
+        drag_blocks: Drag a "move" block and snap it below the other block
+        run: Hit "Run" to try your program
+        watch_again: Click here to watch the video again
+        gray_block_explanation: Blocks that are grey can't be moved or deleted. Can
+          you solve the puzzle anyway?
+        show_code_explanation: Click here to see the code for the program you're making
+        instructions_repeat_explanation: The instructions for each puzzle are repeated
+          here
+        category_explanation: You have all the same blocks but they've now been arranged
+          in categories

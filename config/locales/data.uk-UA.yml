@@ -32,10 +32,16 @@
           MazeEC: Етап 1
         2014 Levels:
           desc: Завдання 2014 (бета-версія)
-          MazeEC: Етап 1
+          Bounce: Stage 1
+        Builder Levels:
+          desc: User-Created Puzzles (beta)
+          Custom: Stage 1
         Flappy Levels:
           desc: Пташок Пурх
-          MazeEC: Етап 1
+          Flappy: Stage 1
+        Jigsaw Levels:
+          desc: Jigsaw (beta)
+          Jigsaw: Stage 1
     game:
       name:
         Unplug1: Вступ до інформатики
@@ -61,6 +67,7 @@
         MazeEC: Лабіринт
         Bounce: Відбити
         Flappy: Пташок Пурх
+        Jigsaw: Jigsaw
     trophy:
       name:
         Bronze: Бронза
@@ -331,10 +338,11 @@
           полі вибухівку!
         maze_3_4: Ох! Напишіть мені програма, яка приведе мене до свині і дозволить
           не зачепити вибухівку.
-        bounce_1: Вкласти блок у блок "коли стрілка Вліво", потім запустити і перемістити
-          платформу за допомогою клавіші стрілки вліво до кінцевої мети.
-        bounce_2: Вкласти блок у блок "коли стрілка Вправо", потім запустити і перемістити
-          платформу за допомогою клавіші стрілки вправо до кінцевої мети.
+        bounce_1: Додайте блок до блоку "коли стрілка вліво" і натисніть клавішу "Запуск
+          програми". Рухайте платформу, використовуючи стрілку ліворуч для досягнення
+          цільового показника.
+        bounce_2: Додайте блоки до блоків "коли стрілка вправо" і "коли стрілка вліво".
+          Переміщуйте платформу для досягнення обох цільових показників.
         bounce_3: Тепер спробуйте щось подібно з блоком "коли стрілка вгору". Перемістіть
           платформу до кінцевої цілі вгорі.
         bounce_4: На цей раз потрібно додати чотири блоки. Перемістіть платформу до
@@ -343,22 +351,25 @@
           "коли м'яч влучає у платформу", щоб забезпечити досягнення кінцевої мети.
         bounce_6: Тепер кінцева мета знаходиться вгорі. Для розв'язання цієї задачі
           потрібно додати блоки до обох блоків "коли м'яч влучає".
-        bounce_7: Вкласти блоки у блоки "коли стрілка Вліво", "коли стрілка Вправо",
-          "коли м'яч влучає у стіну" і "коли м'яч влучає у платформу".
-        bounce_10: Ціль тепер нагорі. Додайте блоки "збільшити бал" до блоків "коли
-          м'яч влучає в ціль" і "коли м'яч промахується повз платформу" та почніть
-          гру.
+        bounce_7: Додайте блоки до кожного з блоків "коли". Відбивайте м'яч, поки
+          він не досягне цільового показника.
+        bounce_10: Тепер ціль знаходиться нагорі. Для створення гри додайте блоки
+          "додати бал" і "додати бал супротивнику" до блоків "коли м'яч влучає в ціль"
+          і "коли м'яч промахується повз платформу". Подивіться, скільки очок ви можете
+          заробити, перш ніж супротивник отримає два очка.
         bounce_11: You can now attach blocks to the "when game starts" block. Try
           changing the speed of the paddle and the ball and see how many points you
           can score before your opponent scores twice.
+        bounce_12: Create your own Bounce game. You can change all the visuals and
+          the rules. When you're done, click Share to let friends try your game on
+          their phones.
         Custom_builder: Перетягуйте блоки з панелі інструментів на робочу область
           для того, щоб намалювати рівень, який бажаєте створити. Клацніть "Запустити
           програму" коли все готово.
         flappy_1: Додайте блок до блоку "коли клацнули", а тоді запустіть програму.
           Клацайте чи торкайтесь екрану для того, щоб Пурх дістався до цілі.
-        flappy_2: Now we've added some ground.  Attach a block to the "when hit the
-          ground" block, then press "Run Program". To pass this puzzle, your code
-          needs to 'END GAME' when Flappy crashes into the ground.
+        flappy_2: Тож ми додали землю. Додайте блок до блоку "коли впав на землю".
+          Ваш код має завершувати гру, коли Пурх розбивається.
         flappy_3: Блок "коли гра починається" дозволяє запускати певний код після
           початку гри. Спробуйте задати рівень швидкості та долетіти до мети.
         flappy_4: Пурх летітиме крізь перешкоди, якщо ви не напишете код, що змусить
@@ -369,17 +380,27 @@
           набір труб.
         flappy_6: Подивіться, чи ви все ще можете заробити бал, змушуючи Пурха махати
           крилами більше або менше.
-        flappy_7: Next, try changing the scene by attaching another block to the "when
-          Run is clicked".
-        flappy_8: You can set visuals anytime, not just when the game starts. Try
-          setting a RANDOM scene when other events happen, for example, when passing
-          an obstacle.
-        flappy_9: To mix things up, when hitting an obstacle or the ground, instead
-          of ending the game try setting the score back to 0.
-        flappy_11: Створіть свою власну гру про Пурха та поділіться нею. Ви можете
-          змінити вигляд гри, або навіть правила. Спробуйте змінювати візуальні ефекти
-          щоразу як Пурх долає перешкоду. Або зробіть його непереможним, щоб він ніколи
-          не гинув.
+        flappy_7: Тепер спробуйте змінити сцену, додаючи блок до "коли гра починається".
+        flappy_8: Візуальні ефекти можна встановити будь-який час, не тільки коли
+          гра починається. Спробуйте встановити ВИПАДКОВУ сцену, коли відбуваються
+          інші події, наприклад, при проходженні перешкоди.
+        flappy_9: 'А тепер ускладнимо: коли зачепимо перешкоду або землю, не завершуйте
+          гру, а спробуйте встановити бали назад на 0.'
+        flappy_11: Створіть свою власну гру в Пурха (Flappy). Ви можете змінити всі
+          візуальні ефекти і правила гри, навіть силу тяжіння! Коли ви завершите,
+          натисніть кнопку спільний доступ, щоб дозволити друзям спробувати вашу гру
+          на своїх телефонах.
+        jigsaw_1: Click the block
+        jigsaw_2: Drag the block to the target
+        jigsaw_3: Arrange the blocks to form the image
+        jigsaw_4: Arrange the blocks to form the image
+        jigsaw_5: Arrange the blocks to form the image
+        jigsaw_6: Arrange the blocks to form the image
+        jigsaw_7: Arrange the blocks to form the image
+        jigsaw_8: Arrange the blocks to form the image
+        jigsaw_9: Arrange the blocks to form the image
+        jigsaw_10: Arrange the blocks to form the image
+        jigsaw_11: Arrange the blocks to form the image
       levelIncompleteError:
         maze_2_8: 'Щоб вирішити цю проблему, знайдіть шаблон, який повторюється. Використовуйте
           блок "повтор" з цих 3 блоків всередині нього: рух вперед, рух вперед, поворот
@@ -407,3 +428,15 @@
         parameters: Функції з параметрами
         hoc_wrapup: Підсумок години коду
         20_wrapup: 20-годинний підсумок
+    callout:
+      text:
+        drag_blocks: Drag a "move" block and snap it below the other block
+        run: Hit "Run" to try your program
+        watch_again: Click here to watch the video again
+        gray_block_explanation: Blocks that are grey can't be moved or deleted. Can
+          you solve the puzzle anyway?
+        show_code_explanation: Click here to see the code for the program you're making
+        instructions_repeat_explanation: The instructions for each puzzle are repeated
+          here
+        category_explanation: You have all the same blocks but they've now been arranged
+          in categories

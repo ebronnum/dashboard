@@ -3,17 +3,14 @@ class UserLevel < ActiveRecord::Base
   belongs_to :level
 
   def best?
-    return false if best_result.nil?
-    (best_result == Activity::BEST_PASS_RESULT)
+    Activity.best? best_result
   end
 
   def finished?
-    return false if best_result.nil?
-    (best_result >= Activity::MINIMUM_FINISHED_RESULT)
+    Activity.finished? best_result
   end
 
   def passing?
-    return false if best_result.nil?
-    (best_result >= Activity::MINIMUM_PASS_RESULT)
+    Activity.passing? best_result
   end
 end

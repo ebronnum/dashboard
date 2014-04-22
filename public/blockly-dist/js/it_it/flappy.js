@@ -7,6 +7,7 @@ if (typeof global !== 'undefined') {
 }
 
 var addReadyListener = require('./dom').addReadyListener;
+var blocksCommon = require('./blocksCommon');
 
 function StubDialog() {
   for (var argument in arguments) {
@@ -53,6 +54,7 @@ module.exports = function(app, levels, options) {
   };
 
   options.skin = options.skinsModule.load(BlocklyApps.assetUrl, options.skinId);
+  blocksCommon.install(Blockly);
   options.blocksModule.install(Blockly, options.skin);
 
   addReadyListener(function() {
@@ -69,7 +71,7 @@ module.exports = function(app, levels, options) {
 };
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./base":2,"./dom":6}],2:[function(require,module,exports){
+},{"./base":2,"./blocksCommon":4,"./dom":7}],2:[function(require,module,exports){
 /**
  * Blockly Apps: Common code
  *
@@ -528,7 +530,10 @@ BlocklyApps.arrangeBlockPosition = function(startBlocks, arrangement) {
 };
 
 var showInstructions = function(level) {
-  level.instructions = level.instructions || '';
+  if (!level.instructions) {
+    // Skip instructions if empty
+    return;
+  }
 
   var instructionsDiv = document.createElement('div');
   instructionsDiv.innerHTML = require('./templates/instructions.html')(level);
@@ -869,7 +874,7 @@ var getIdealBlockNumberMsg = function() {
       msg.infinity() : BlocklyApps.IDEAL_BLOCK_NUM;
 };
 
-},{"../locale/it_it/common":31,"./builder":4,"./dom":6,"./feedback.js":7,"./slider":18,"./templates/buttons.html":20,"./templates/instructions.html":22,"./templates/learn.html":23,"./templates/makeYourOwn.html":24,"./utils":29,"./xml":30}],3:[function(require,module,exports){
+},{"../locale/it_it/common":32,"./builder":5,"./dom":7,"./feedback.js":8,"./slider":19,"./templates/buttons.html":21,"./templates/instructions.html":23,"./templates/learn.html":24,"./templates/makeYourOwn.html":25,"./utils":30,"./xml":31}],3:[function(require,module,exports){
 exports.createToolbox = function(blocks) {
   return '<xml id="toolbox" style="display: none;">' + blocks + '</xml>';
 };
@@ -879,6 +884,43 @@ exports.blockOfType = function(type) {
 };
 
 },{}],4:[function(require,module,exports){
+/**
+ * Defines blocks useful in multiple blockly apps
+ */
+'use strict';
+
+var REPEAT_IMAGE_URL = 'media/sharedBlocks/repeat.png';
+var REPEAT_IMAGE_WIDTH = 53;
+var REPEAT_IMAGE_HEIGHT = 57;
+
+/**
+ * Install extensions to Blockly's language and JavaScript generator
+ * @param blockly instance of Blockly
+ */
+exports.install = function(blockly) {
+  // Re-uses the repeat block generator from core
+  blockly.JavaScript.controls_repeat_simplified = blockly.JavaScript.controls_repeat;
+
+  blockly.Blocks.controls_repeat_simplified = {
+    // Repeat n times (internal number) with simplified UI
+    init: function() {
+      this.setHelpUrl(blockly.Msg.CONTROLS_REPEAT_HELPURL);
+      this.setHSV(322, 0.90, 0.95);
+      this.appendStatementInput('DO')
+        .appendTitle(new blockly.FieldImage(
+          blockly.assetUrl(REPEAT_IMAGE_URL), REPEAT_IMAGE_WIDTH, REPEAT_IMAGE_HEIGHT));
+      this.appendDummyInput()
+        .appendTitle(blockly.Msg.CONTROLS_REPEAT_TITLE_REPEAT)
+        .appendTitle(new Blockly.FieldTextInput('10',
+          blockly.FieldTextInput.nonnegativeIntegerValidator), 'TIMES');
+      this.setPreviousStatement(true);
+      this.setNextStatement(true);
+      this.setTooltip(blockly.Msg.CONTROLS_REPEAT_TOOLTIP);
+    }
+  };
+};
+
+},{}],5:[function(require,module,exports){
 var feedback = require('./feedback.js');
 var dom = require('./dom.js');
 var utils = require('./utils.js');
@@ -908,7 +950,7 @@ exports.builderForm = function(onAttemptCallback) {
   dialog.show({ backdrop: 'static' });
 };
 
-},{"./dom.js":6,"./feedback.js":7,"./templates/builder.html":19,"./utils.js":29,"url":43}],5:[function(require,module,exports){
+},{"./dom.js":7,"./feedback.js":8,"./templates/builder.html":20,"./utils.js":30,"url":44}],6:[function(require,module,exports){
 var INFINITE_LOOP_TRAP = '  BlocklyApps.checkTimeout();\n';
 var INFINITE_LOOP_TRAP_RE =
     new RegExp(INFINITE_LOOP_TRAP.replace(/\(.*\)/, '\\(.*\\)'), 'g');
@@ -988,7 +1030,7 @@ exports.functionFromCode = function(code, options) {
   return new ctor();
 };
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 exports.addReadyListener = function(callback) {
   if (document.readyState === "complete") {
     setTimeout(callback, 1);
@@ -1062,7 +1104,7 @@ exports.isMobile = function() {
   return reg.test(window.navigator.userAgent);
 };
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 var trophy = require('./templates/trophy.html');
 var utils = require('./utils');
 var readonly = require('./templates/readonly.html');
@@ -1842,7 +1884,7 @@ var generateXMLForBlocks = function(blocks) {
 };
 
 
-},{"../locale/it_it/common":31,"./codegen":5,"./dom":6,"./templates/buttons.html":20,"./templates/code.html":21,"./templates/readonly.html":26,"./templates/showCode.html":27,"./templates/trophy.html":28,"./utils":29}],8:[function(require,module,exports){
+},{"../locale/it_it/common":32,"./codegen":6,"./dom":7,"./templates/buttons.html":21,"./templates/code.html":22,"./templates/readonly.html":27,"./templates/showCode.html":28,"./templates/trophy.html":29,"./utils":30}],9:[function(require,module,exports){
 exports.FlapHeight = {
   VERY_SMALL: -6,
   SMALL: -8,
@@ -1942,7 +1984,7 @@ exports.incrementPlayerScore = function(id) {
   Flappy.displayScore();
 };
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 /**
  * Blockly App: Flappy
  *
@@ -2439,7 +2481,7 @@ exports.install = function(blockly, skin) {
   delete blockly.Blocks.procedures_ifreturn;
 };
 
-},{"../../locale/it_it/flappy":32}],10:[function(require,module,exports){
+},{"../../locale/it_it/flappy":33}],11:[function(require,module,exports){
 module.exports = {
   WORKSPACE_BUFFER: 20,
   WORKSPACE_COL_WIDTH: 210,
@@ -2449,7 +2491,7 @@ module.exports = {
   AVATAR_WIDTH: 34,
   AVATAR_Y_OFFSET: 0
 };
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2470,7 +2512,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/it_it/flappy":32,"ejs":33}],12:[function(require,module,exports){
+},{"../../locale/it_it/flappy":33,"ejs":34}],13:[function(require,module,exports){
 /**
  * Blockly App: Flappy
  *
@@ -3518,7 +3560,7 @@ var checkFinished = function () {
   return false;
 };
 
-},{"../../locale/it_it/common":31,"../../locale/it_it/flappy":32,"../base":2,"../codegen":5,"../dom":6,"../feedback.js":7,"../skins":17,"../templates/page.html":25,"./api":8,"./constants":10,"./controls.html":11,"./visualization.html":16}],13:[function(require,module,exports){
+},{"../../locale/it_it/common":32,"../../locale/it_it/flappy":33,"../base":2,"../codegen":6,"../dom":7,"../feedback.js":8,"../skins":18,"../templates/page.html":26,"./api":9,"./constants":11,"./controls.html":12,"./visualization.html":17}],14:[function(require,module,exports){
 /*jshint multistr: true */
 
 // todo - i think our prepoluated code counts as LOCs
@@ -3936,7 +3978,7 @@ module.exports = {
   }
 };
 
-},{"../block_utils":3,"./constants":10}],14:[function(require,module,exports){
+},{"../block_utils":3,"./constants":11}],15:[function(require,module,exports){
 (function (global){
 var appMain = require('../appMain');
 window.Flappy = require('./flappy');
@@ -3954,7 +3996,7 @@ window.flappyMain = function(options) {
 };
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../appMain":1,"./blocks":9,"./flappy":12,"./levels":13,"./skins":15}],15:[function(require,module,exports){
+},{"../appMain":1,"./blocks":10,"./flappy":13,"./levels":14,"./skins":16}],16:[function(require,module,exports){
 /**
  * Load Skin for Flappy.
  */
@@ -4109,7 +4151,7 @@ exports.load = function(assetUrl, id) {
   return skin;
 };
 
-},{"../skins":17}],16:[function(require,module,exports){
+},{"../skins":18}],17:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4130,7 +4172,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":33}],17:[function(require,module,exports){
+},{"ejs":34}],18:[function(require,module,exports){
 // avatar: A 1029x51 set of 21 avatar images.
 
 exports.load = function(assetUrl, id) {
@@ -4157,6 +4199,11 @@ exports.load = function(assetUrl, id) {
     downArrow: skinUrl('down.png'),
     upArrow: skinUrl('up.png'),
     rightArrow: skinUrl('right.png'),
+    leftJumpArrow: skinUrl('left_jump.png'),
+    downJumpArrow: skinUrl('down_jump.png'),
+    upJumpArrow: skinUrl('up_jump.png'),
+    rightJumpArrow: skinUrl('right_jump.png'),
+    offsetLineSlice: skinUrl('offset_line_slice.png'),
     // Sounds
     startSound: [skinUrl('start.mp3'), skinUrl('start.ogg')],
     winSound: [skinUrl('win.mp3'), skinUrl('win.ogg')],
@@ -4165,7 +4212,7 @@ exports.load = function(assetUrl, id) {
   return skin;
 };
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 /**
  * Blockly Apps: SVG Slider
  *
@@ -4370,7 +4417,7 @@ Slider.bindEvent_ = function(element, name, func) {
 
 module.exports = Slider;
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4391,7 +4438,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":33}],20:[function(require,module,exports){
+},{"ejs":34}],21:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4412,7 +4459,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/it_it/common":31,"ejs":33}],21:[function(require,module,exports){
+},{"../../locale/it_it/common":32,"ejs":34}],22:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4433,7 +4480,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":33}],22:[function(require,module,exports){
+},{"ejs":34}],23:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4454,7 +4501,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/it_it/common":31,"ejs":33}],23:[function(require,module,exports){
+},{"../../locale/it_it/common":32,"ejs":34}],24:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4477,7 +4524,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/it_it/common":31,"ejs":33}],24:[function(require,module,exports){
+},{"../../locale/it_it/common":32,"ejs":34}],25:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4498,7 +4545,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/it_it/common":31,"ejs":33}],25:[function(require,module,exports){
+},{"../../locale/it_it/common":32,"ejs":34}],26:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4520,7 +4567,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/it_it/common":31,"ejs":33}],26:[function(require,module,exports){
+},{"../../locale/it_it/common":32,"ejs":34}],27:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4542,7 +4589,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":33}],27:[function(require,module,exports){
+},{"ejs":34}],28:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4563,7 +4610,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/it_it/common":31,"ejs":33}],28:[function(require,module,exports){
+},{"../../locale/it_it/common":32,"ejs":34}],29:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4584,7 +4631,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":33}],29:[function(require,module,exports){
+},{"ejs":34}],30:[function(require,module,exports){
 exports.shallowCopy = function(source) {
   var result = {};
   for (var prop in source) {
@@ -4616,7 +4663,17 @@ exports.escapeHtml = function(unsafe) {
     .replace(/'/g, "&#039;");
 };
 
-},{}],30:[function(require,module,exports){
+/**
+ * Version of modulo which, unlike javascript's `%` operator,
+ * will always return a positive remainder.
+ * @param number
+ * @param mod
+ */
+exports.mod = function(number, mod) {
+  return ((number % mod) + mod) % mod;
+};
+
+},{}],31:[function(require,module,exports){
 // Serializes an XML DOM node to a string.
 exports.serialize = function(node) {
   var serializer = new XMLSerializer();
@@ -4644,7 +4701,7 @@ exports.parseElement = function(text) {
   return element;
 };
 
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.it=function(n){return n===1?"one":"other"}
 exports.blocklyMessage = function(d){return "Blockly"};
 
@@ -4676,7 +4733,7 @@ exports.dialogOK = function(d){return "Ok"};
 
 exports.emptyBlocksErrorMsg = function(d){return "Il blocco \"ripeti\" o \"se\" deve avere all'interno altri blocchi per poter funzionare. Assicurati che i blocchi interni siano inseriti correttamente all'interno del blocco principale."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Ci sono blocchi che non sono attaccati ad un blocco evento."};
 
 exports.finalStage = function(d){return "Complimenti! Hai completato l'ultima lezione."};
 
@@ -4732,7 +4789,7 @@ exports.tooManyBlocksMsg = function(d){return "Questo puzzle può essere risolto
 
 exports.tooMuchWork = function(d){return "Mi hai fatto fare un sacco di lavoro!  Puoi provare a farmi fare meno ripetizioni?"};
 
-exports.flappySpecificFail = function(d){return "Il tuo codice sembra buono - sbatte le ali ad ogni click. Ma devi cliccare molte volte per volare fino alla meta."};
+exports.flappySpecificFail = function(d){return "Il tuo codice sembra buono: Flappy sbatte le ali ad ogni clic. Ma devi cliccare molte volte per volare fino al bersaglio disegnato."};
 
 exports.toolboxHeader = function(d){return "Blocchi"};
 
@@ -4771,11 +4828,11 @@ exports.signup = function(d){return "Iscriviti al corso introduttivo"};
 exports.hintHeader = function(d){return "Here's a tip:"};
 
 
-},{"messageformat":44}],32:[function(require,module,exports){
+},{"messageformat":45}],33:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.it=function(n){return n===1?"one":"other"}
 exports.continue = function(d){return "Continua"};
 
-exports.doCode = function(d){return "fai"};
+exports.doCode = function(d){return "esegui"};
 
 exports.elseCode = function(d){return "altrimenti"};
 
@@ -4785,25 +4842,25 @@ exports.endGameTooltip = function(d){return "Termina il gioco."};
 
 exports.finalLevel = function(d){return "Complimenti! Hai risolto il puzzle finale."};
 
-exports.flap = function(d){return "Sbatti le ali"};
+exports.flap = function(d){return "sbatti le ali"};
 
-exports.flapRandom = function(d){return "sbatti le ali per un numero di volte casuale"};
+exports.flapRandom = function(d){return "sbatti le ali per un numero di volte scelto a caso"};
 
-exports.flapVerySmall = function(d){return "sbatti le ali molto poco"};
+exports.flapVerySmall = function(d){return "sbatti le ali sbatti le ali per un numero di volte molto piccolo"};
 
-exports.flapSmall = function(d){return "sbatti le ali poco"};
+exports.flapSmall = function(d){return "sbatti le ali per un numero di volte piccolo"};
 
-exports.flapNormal = function(d){return "sbatti le ali per una quantità normale"};
+exports.flapNormal = function(d){return "sbatti le ali per un numero di volte normale"};
 
-exports.flapLarge = function(d){return "sbatti tanto le ali"};
+exports.flapLarge = function(d){return "sbatti le ali per un numero di volte grande"};
 
-exports.flapVeryLarge = function(d){return "sbatti le ali veramente tanto"};
+exports.flapVeryLarge = function(d){return "sbatti le ali per un numero di volte molto grande"};
 
-exports.flapTooltip = function(d){return "Fai volare Flappy verso l'alto."};
+exports.flapTooltip = function(d){return "fai volare Flappy verso l'alto."};
 
-exports.incrementPlayerScore = function(d){return "Segna un punto"};
+exports.incrementPlayerScore = function(d){return "aggiungi un punto"};
 
-exports.incrementPlayerScoreTooltip = function(d){return "Aggiungi uno al punteggio attuale del giocatore."};
+exports.incrementPlayerScoreTooltip = function(d){return "Aggiunge uno al punteggio attuale del giocatore."};
 
 exports.nextLevel = function(d){return "Complimenti! Hai completato questo puzzle."};
 
@@ -4813,196 +4870,196 @@ exports.numBlocksNeeded = function(d){return "Questo puzzle può essere risolto 
 
 exports.oneTopBlock = function(d){return "Per questo puzzle, devi sovrapporre verticalmente tutti i blocchi nell'area di lavoro bianca."};
 
-exports.playSoundRandom = function(d){return "Riproduci un suono casuale"};
+exports.playSoundRandom = function(d){return "riproduci un suono scelto a caso"};
 
-exports.playSoundBounce = function(d){return "Rproduci il rumore di un rimbalzo"};
+exports.playSoundBounce = function(d){return "riproduci il suono di un rimbalzo"};
 
-exports.playSoundCrunch = function(d){return "Riproduci il rumore di uno sgranocchiamento"};
+exports.playSoundCrunch = function(d){return "riproduci il suono di uno sgranocchiamento"};
 
-exports.playSoundDie = function(d){return "Fai un suono triste"};
+exports.playSoundDie = function(d){return "riproduci un suono triste"};
 
-exports.playSoundHit = function(d){return "Riproduci il suono di uno schiacciamento"};
+exports.playSoundHit = function(d){return "riproduci il suono di uno schiacciamento"};
 
-exports.playSoundPoint = function(d){return "Riproduci il suono di un punto"};
+exports.playSoundPoint = function(d){return "riproduci il suono di un punto"};
 
-exports.playSoundSwoosh = function(d){return "Riproduci il suono di uno swoosh"};
+exports.playSoundSwoosh = function(d){return "riproduci il suono di un risucchio"};
 
-exports.playSoundWing = function(d){return "Riproduci il suono di un'ala"};
+exports.playSoundWing = function(d){return "riproduci il suono di un'ala"};
 
-exports.playSoundJet = function(d){return "Riproduci il suono di un jet"};
+exports.playSoundJet = function(d){return "riproduci il suono di un aereo a reazione"};
 
-exports.playSoundCrash = function(d){return "Riproduci il suono di un crash"};
+exports.playSoundCrash = function(d){return "riproduci il suono di qualcosa che si rompe"};
 
-exports.playSoundJingle = function(d){return "Riproduci il suono di un jingle"};
+exports.playSoundJingle = function(d){return "riproduci il suono di un tintinnio"};
 
-exports.playSoundSplash = function(d){return "Riproduci il suono di uno splash"};
+exports.playSoundSplash = function(d){return "riproduci il suono di un tuffo nell'acqua"};
 
-exports.playSoundLaser = function(d){return "Riproduci il suono di un laser"};
+exports.playSoundLaser = function(d){return "riproduci il suono di un raggio laser"};
 
 exports.playSoundTooltip = function(d){return "Riproduci il suono scelto."};
 
-exports.reinfFeedbackMsg = function(d){return "Premi \"Riprova\" per ricominciare a giocare la tua partita."};
+exports.reinfFeedbackMsg = function(d){return "Premi \"Ricomincia\" per ricominciare a giocare la tua partita."};
 
 exports.scoreText = function(d){return "Punteggio: "+v(d,"playerScore")};
 
-exports.setBackgroundRandom = function(d){return "impostare la scena Casuale"};
+exports.setBackgroundRandom = function(d){return "imposta una scena scelta a caso"};
 
-exports.setBackgroundFlappy = function(d){return "impostare la scena Città (giorno)"};
+exports.setBackgroundFlappy = function(d){return "impostare la scena Città di giorno"};
 
-exports.setBackgroundNight = function(d){return "impostare la scena Città (notte)"};
+exports.setBackgroundNight = function(d){return "impostare la scena Città di notte"};
 
-exports.setBackgroundSciFi = function(d){return "impostare la scena Sci-Fi"};
+exports.setBackgroundSciFi = function(d){return "imposta la scena Fantascienza"};
 
-exports.setBackgroundUnderwater = function(d){return "Impostare la scena Sott'acqua"};
+exports.setBackgroundUnderwater = function(d){return "imposta la scena Sottomarina"};
 
-exports.setBackgroundCave = function(d){return "impostare la scena Grotta"};
+exports.setBackgroundCave = function(d){return "imposta la scena Grotta"};
 
-exports.setBackgroundSanta = function(d){return "impostare la scena Natale"};
+exports.setBackgroundSanta = function(d){return "imposta la scena Natale"};
 
 exports.setBackgroundTooltip = function(d){return "Imposta l'immagine di sfondo"};
 
-exports.setGapRandom = function(d){return "impostare una distanza casuale"};
+exports.setGapRandom = function(d){return "imposta una distanza casuale"};
 
-exports.setGapVerySmall = function(d){return "impostare una distanza molto piccola"};
+exports.setGapVerySmall = function(d){return "imposta una distanza molto piccola"};
 
-exports.setGapSmall = function(d){return "impostare una distanza piccola"};
+exports.setGapSmall = function(d){return "imposta una distanza piccola"};
 
-exports.setGapNormal = function(d){return "impostare una distanza normale"};
+exports.setGapNormal = function(d){return "imposta una distanza normale"};
 
-exports.setGapLarge = function(d){return "impostare un intervallo grande"};
+exports.setGapLarge = function(d){return "imposta una distanza grande"};
 
-exports.setGapVeryLarge = function(d){return "impostare una distanza molto grande"};
+exports.setGapVeryLarge = function(d){return "imposta una distanza molto grande"};
 
 exports.setGapHeightTooltip = function(d){return "Imposta la distanza verticale in un ostacolo"};
 
-exports.setGravityRandom = function(d){return "imposta gravità casuale"};
+exports.setGravityRandom = function(d){return "imposta una gravità scelta a caso"};
 
-exports.setGravityVeryLow = function(d){return "imposta gravità molto bassa"};
+exports.setGravityVeryLow = function(d){return "imposta la gravità molto bassa"};
 
-exports.setGravityLow = function(d){return "imposta gravità bassa"};
+exports.setGravityLow = function(d){return "imposta la gravità bassa"};
 
-exports.setGravityNormal = function(d){return "imposta gravità normale"};
+exports.setGravityNormal = function(d){return "imposta la gravità normale"};
 
-exports.setGravityHigh = function(d){return "imposta gravità alta"};
+exports.setGravityHigh = function(d){return "imposta la gravità alta"};
 
-exports.setGravityVeryHigh = function(d){return "imposta gravità molto alta"};
+exports.setGravityVeryHigh = function(d){return "imposta la gravità molto alta"};
 
 exports.setGravityTooltip = function(d){return "Imposta il livello della gravità"};
 
-exports.setGroundRandom = function(d){return "impostare un suolo casuale"};
+exports.setGroundRandom = function(d){return "imposta un terreno scelto a caso"};
 
-exports.setGroundFlappy = function(d){return "impostare il suolo Terreno"};
+exports.setGroundFlappy = function(d){return "impostare il terreno Normale"};
 
-exports.setGroundSciFi = function(d){return "Impostare il suolo Sci-Fi"};
+exports.setGroundSciFi = function(d){return "imposta il terreno Fantascienza"};
 
-exports.setGroundUnderwater = function(d){return "impostare il suolo Sott'acqua"};
+exports.setGroundUnderwater = function(d){return "imposta il terreno Sottomarino"};
 
-exports.setGroundCave = function(d){return "impostare il suolo Grotta"};
+exports.setGroundCave = function(d){return "imposta il terreno Grotta"};
 
-exports.setGroundSanta = function(d){return "Impostare il suolo Natale"};
+exports.setGroundSanta = function(d){return "Imposta il terreno Natale"};
 
-exports.setGroundLava = function(d){return "impostare il terreno Lava"};
+exports.setGroundLava = function(d){return "imposta il terreno Lava"};
 
 exports.setGroundTooltip = function(d){return "Imposta l'immagine del terreno"};
 
-exports.setObstacleRandom = function(d){return "impostare un ostacolo casuale"};
+exports.setObstacleRandom = function(d){return "imposta un ostacolo scelto a caso"};
 
-exports.setObstacleFlappy = function(d){return "selezionare l'ostacolo Tubo"};
+exports.setObstacleFlappy = function(d){return "imposta l'ostacolo Tubo"};
 
-exports.setObstacleSciFi = function(d){return "impostare l'ostale Sci-Fi"};
+exports.setObstacleSciFi = function(d){return "imposta l'ostacolo Fantascienza"};
 
-exports.setObstacleUnderwater = function(d){return "selezionare l'ostacolo Pianta"};
+exports.setObstacleUnderwater = function(d){return "imposta l'ostacolo Pianta"};
 
-exports.setObstacleCave = function(d){return "impostare l'ostacolo Caverna"};
+exports.setObstacleCave = function(d){return "imposta l'ostacolo Grotta"};
 
-exports.setObstacleSanta = function(d){return "impostare l'ostacolo Camino"};
+exports.setObstacleSanta = function(d){return "imposta l'ostacolo Camino"};
 
-exports.setObstacleLaser = function(d){return "impostare l'ostacolo Laser"};
+exports.setObstacleLaser = function(d){return "imposta l'ostacolo Raggio Laser"};
 
-exports.setObstacleTooltip = function(d){return "Imposta l'immagine dell'ostacolo"};
+exports.setObstacleTooltip = function(d){return "Imposta l'immagine degli ostacoli"};
 
-exports.setPlayerRandom = function(d){return "impostare  un giocatore a caso"};
+exports.setPlayerRandom = function(d){return "imposta un giocatore scelto a caso"};
 
-exports.setPlayerFlappy = function(d){return "impostare il giocatore Uccello Giallo"};
+exports.setPlayerFlappy = function(d){return "imposta il giocatore Uccello Giallo"};
 
-exports.setPlayerRedBird = function(d){return "impostare il giocatore Uccello Rosso"};
+exports.setPlayerRedBird = function(d){return "imposta il giocatore Uccello Rosso"};
 
-exports.setPlayerSciFi = function(d){return "impostare il giocatore Astronave"};
+exports.setPlayerSciFi = function(d){return "imposta il giocatore Astronave"};
 
-exports.setPlayerUnderwater = function(d){return "impostare il giocatore Pesce"};
+exports.setPlayerUnderwater = function(d){return "imposta il giocatore Pesce"};
 
-exports.setPlayerCave = function(d){return "impostare il giocatore Pippistrello"};
+exports.setPlayerCave = function(d){return "imposta il giocatore Pipistrello"};
 
-exports.setPlayerSanta = function(d){return "impostare il giocatore Natale"};
+exports.setPlayerSanta = function(d){return "imposta il giocatore Babbo Natale"};
 
-exports.setPlayerShark = function(d){return "impostare il giocatore Squalo"};
+exports.setPlayerShark = function(d){return "imposta il giocatore Squalo"};
 
-exports.setPlayerEaster = function(d){return "impostare il giocatore Coniglietto di Pasqua"};
+exports.setPlayerEaster = function(d){return "imposta il giocatore Coniglietto"};
 
-exports.setPlayerBatman = function(d){return "impostare il giorcatore Bat ragazzo"};
+exports.setPlayerBatman = function(d){return "imposta il giocatore Batman"};
 
-exports.setPlayerSubmarine = function(d){return "impostare il giocatore Sottomarino"};
+exports.setPlayerSubmarine = function(d){return "imposta il giocatore Sottomarino"};
 
-exports.setPlayerUnicorn = function(d){return "impostare il giocatore Unicorno"};
+exports.setPlayerUnicorn = function(d){return "imposta il giocatore Unicorno"};
 
-exports.setPlayerFairy = function(d){return "impostare il giocatore Fata"};
+exports.setPlayerFairy = function(d){return "imposta il giocatore Fatina"};
 
-exports.setPlayerSuperman = function(d){return "impostare il giocatore Flappyman"};
+exports.setPlayerSuperman = function(d){return "imposta il giocatore Superman"};
 
-exports.setPlayerTurkey = function(d){return "impostare il giocatore Tacchino"};
+exports.setPlayerTurkey = function(d){return "imposta il giocatore Tacchino"};
 
 exports.setPlayerTooltip = function(d){return "Imposta l'immagine del giocatore"};
 
-exports.setScore = function(d){return "impostare il punteggio"};
+exports.setScore = function(d){return "imposta il punteggio"};
 
 exports.setScoreTooltip = function(d){return "Imposta il punteggio del giocatore"};
 
-exports.setSpeed = function(d){return "impostare la velocità"};
+exports.setSpeed = function(d){return "Imposta una velocità"};
 
-exports.setSpeedTooltip = function(d){return "Imposta la velocità del livello"};
+exports.setSpeedTooltip = function(d){return "Imposta la velocità con cui Flappy sbatte le ali"};
 
 exports.share = function(d){return "Condividi"};
 
-exports.shareFlappyTwitter = function(d){return "Scopri il gioco Flappy che ho creato. L'ho fatto da solo @codeorg"};
+exports.shareFlappyTwitter = function(d){return "Guarda il gioco Flappy che ho creato io. L'ho fatto da solo @codeorg"};
 
 exports.shareGame = function(d){return "Condividi il tuo gioco:"};
 
-exports.speedRandom = function(d){return "imposta la velocità casuale"};
+exports.speedRandom = function(d){return "imposta una velocità scelta a caso"};
 
-exports.speedVerySlow = function(d){return "imposta la velocità molto lenta"};
+exports.speedVerySlow = function(d){return "imposta una velocità molto lenta"};
 
-exports.speedSlow = function(d){return "imposta la velocità lenta"};
+exports.speedSlow = function(d){return "imposta una velocità lenta"};
 
-exports.speedNormal = function(d){return "imposta la velocità normale"};
+exports.speedNormal = function(d){return "imposta una velocità normale"};
 
-exports.speedFast = function(d){return "imposta la velocità veloce"};
+exports.speedFast = function(d){return "imposta una velocità veloce"};
 
-exports.speedVeryFast = function(d){return "imposta la velocità molto veloce"};
+exports.speedVeryFast = function(d){return "imposta una velocità molto veloce"};
 
-exports.whenClick = function(d){return "Quando fa click"};
+exports.whenClick = function(d){return "quando si clicca"};
 
-exports.whenClickTooltip = function(d){return "Eseguire le azioni di seguito quando si verifica un evento click."};
+exports.whenClickTooltip = function(d){return "Esegue le azioni qua sotto quando si verifica l'evento \"clic\"."};
 
-exports.whenCollideGround = function(d){return "Quando ha colpito il suolo"};
+exports.whenCollideGround = function(d){return "quando precipita a terra"};
 
-exports.whenCollideGroundTooltip = function(d){return "Eseguire le azioni di seguito quando Flappy colpisce il suolo."};
+exports.whenCollideGroundTooltip = function(d){return "Esegue le azioni qua sotto quando Flappy precipita a terra."};
 
-exports.whenCollideObstacle = function(d){return "Quando ha colpito un ostacolo"};
+exports.whenCollideObstacle = function(d){return "quando colpisce un ostacolo"};
 
-exports.whenCollideObstacleTooltip = function(d){return "Eseguire le azioni di seguito quando Flappy colpisce un ostacolo."};
+exports.whenCollideObstacleTooltip = function(d){return "Esegue le azioni qua sotto quando Flappy colpisce un ostacolo."};
 
 exports.whenEnterObstacle = function(d){return "quando supera un ostacolo"};
 
-exports.whenEnterObstacleTooltip = function(d){return "Eseguire le azioni di seguito quando Flappy incontra un ostacolo."};
+exports.whenEnterObstacleTooltip = function(d){return "Esegue le azioni qua sotto quando Flappy incontra un ostacolo."};
 
-exports.whenRunButtonClick = function(d){return "Quando il gioco inizia"};
+exports.whenRunButtonClick = function(d){return "quando si clicca su \"Esegui il programma\""};
 
-exports.whenRunButtonClickTooltip = function(d){return "Eseguire le azioni di seguito quando il gioco inizia."};
+exports.whenRunButtonClickTooltip = function(d){return "Esegue le azioni qua sotto quando si clicca su \"Esegui il programma\"."};
 
 exports.yes = function(d){return "Sì"};
 
 
-},{"messageformat":44}],33:[function(require,module,exports){
+},{"messageformat":45}],34:[function(require,module,exports){
 
 /*!
  * EJS
@@ -5361,7 +5418,7 @@ if (require.extensions) {
   });
 }
 
-},{"./filters":34,"./utils":35,"fs":36,"path":38}],34:[function(require,module,exports){
+},{"./filters":35,"./utils":36,"fs":37,"path":39}],35:[function(require,module,exports){
 /*!
  * EJS - Filters
  * Copyright(c) 2010 TJ Holowaychuk <tj@vision-media.ca>
@@ -5564,7 +5621,7 @@ exports.json = function(obj){
   return JSON.stringify(obj);
 };
 
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 
 /*!
  * EJS
@@ -5590,9 +5647,9 @@ exports.escape = function(html){
 };
  
 
-},{}],36:[function(require,module,exports){
-
 },{}],37:[function(require,module,exports){
+
+},{}],38:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -5647,7 +5704,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -5875,7 +5932,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require("/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":37}],39:[function(require,module,exports){
+},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":38}],40:[function(require,module,exports){
 (function (global){
 /*! http://mths.be/punycode v1.2.4 by @mathias */
 ;(function(root) {
@@ -6386,7 +6443,7 @@ var substr = 'ab'.substr(-1) === 'b'
 }(this));
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -6472,7 +6529,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -6559,13 +6616,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],42:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":40,"./encode":41}],43:[function(require,module,exports){
+},{"./decode":41,"./encode":42}],44:[function(require,module,exports){
 /*jshint strict:true node:true es5:true onevar:true laxcomma:true laxbreak:true eqeqeq:true immed:true latedef:true*/
 (function () {
   "use strict";
@@ -7198,7 +7255,7 @@ function parseHost(host) {
 
 }());
 
-},{"punycode":39,"querystring":42}],44:[function(require,module,exports){
+},{"punycode":40,"querystring":43}],45:[function(require,module,exports){
 /**
  * messageformat.js
  *
@@ -8781,4 +8838,4 @@ function parseHost(host) {
 
 })( this );
 
-},{}]},{},[14])
+},{}]},{},[15])

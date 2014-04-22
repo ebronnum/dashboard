@@ -1,15 +1,29 @@
-%h2= t('signin_form.title')
+%h1= t('signin_form.title')
+%p{style: "margin-bottom:0px"}
+  &nbsp;
 .row#signin
   .span8
+
+    = show_flashes.html_safe
+
     = form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
-      = f.text_field :login, autofocus: true, placeholder: t('signin_form.login')
-      = f.password_field :password, placeholder: t('signin_form.password')
+      .itemblock
+        .labelblock
+          = t('signin_form.login')
+        = f.text_field :login, autofocus: true
+      %br/
+      .itemblock
+        .labelblock
+          = t('signin_form.password')
+        = f.password_field :password
       %br/
       - if devise_mapping.rememberable?
         %label
           = f.check_box :remember_me, { style: 'margin: 0;'}
           = t('signin_form.remember')
-      = f.submit t('signin_form.submit'), class: "btn btn-primary"
+      %p
+        &nbsp;    
+      = f.submit t('signin_form.submit'), class: "btn btn-primary btn-large"
 
     %br/
     

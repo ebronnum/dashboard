@@ -6,10 +6,10 @@
         text: 初めての「コードの時間」へようこそ！初体験のプログラミングに今すぐ飛び込みましょう。
       2:
         image: notes/hoc1_2.jpg
-        text: 我々はブロックリーを使っています。ブロックリーとは、ブロックをドラッグやドロップしてコードを記述する視覚的なプログラミング言語のことです。
+        text: 我々はブロックを利用した言語を使用しています。ブロックをドラッグ&ドロップしてコードを記述する視覚的なプログラミング言語のことです。
       3:
         image: notes/hoc1_3.jpg
-        text: ほとんどのコードは文字で書かれますが、ブロックリーは視覚的です。それぞれのブロックは「本物の」コードの各行に対応します。
+        text: ほとんどのコードは文字で書かれますが、ブロックは視覚的です。それぞれのブロックは「本物の」コードの各行に対応します。
       4:
         image: notes/hoc1_4.jpg
         text: アプリを作ることから火星探査車をコントロールすることまで、いろいろなところで使われるコンピューター科学の基礎を学習します。
@@ -72,48 +72,34 @@
     flappy_intro:
       1:
         image: notes/flappy01.jpg
-        text: Hi, I'm Katie! One of the most exciting things about computer science
-          is that a computer program can be interactive.
+        text: こんにちは、私はケイティ です！コンピューター科学について最もエキサイティングなものの 1 つは、コンピューター プログラムが双方向性（対話すること）です。
       2:
         image: notes/flappy02.jpg
-        text: Any time somebody clicks or taps or types on a computer or phone, that
-          generates an EVENT, and there's some code that decides what to do when an
-          EVENT occurs.
+        text: 誰かがPCや携帯電話上をクリック、タップまたはタイプした時はいつでも、
       3:
         image: notes/flappy03.jpg
-        text: 'For example, you could have an EVENT-HANDLER that says "when the mouse
-          is clicked, play a sound" '
+        text: 例えば、EVENT-HANDLERは「マウスをクリックしたとき、音が再生」などができます。
       4:
         image: notes/flappy04.jpg
-        text: Have you ever heard of the game FlappyBird? By using Event handlers,
-          we're going to learn to program our own custom version of FlappyBird!
+        text: フラッピーバードというゲームは聞いたことがありますか？イベントハンドラー(Event handlers)を使用することで、独自のカスタマイズしたフラッピーバードのプログラムを学ぶことができます。
       5:
         image: notes/flappy05.jpg
-        text: The code you'll write involves dragging and dropping blocks that represent
-          commands for the computer. Under the hood, each of these blocks is represented
-          by real code.
+        text: コンピュータに指示を与えるブロックをドラッグ&ドロップした、あなたのコード（プログラム）はコンピュータの中でブロックそれぞれが実際のコード（プログラム）に書き表されます。
       6:
         image: notes/flappy06.jpg
-        text: 'If you take a look at the workspace, there are some green blocks that
-          are filled in for you - these are "event handlers" '
+        text: ワークスペースを見ると、そこにはいくつかの緑色のブロックで満たされています。そう、それらが「イベントハンドラー（event handlers）」なのです。
       7:
         image: notes/flappy07.jpg
-        text: If you want the bird to FLAP when you CLICK the mouse, you can do that
-          by attaching the "FLAP" block to the appropriate event handler, and now
-          in your game whenever you click the mouse, the bird will flap.
+        text: マウスをクリックしたときにバードを飛ばしたいなら、「飛ぶ(flap)」ブロックを適切なイベントハンドラー(event handler)に接続しましょう。するとゲームでマウスをクリックすると、バードが飛びます。
       8:
         image: notes/flappy08.jpg
-        text: In each puzzle of this activity we'll introduce new types of events
-          as green blocks on the workspace, and you can decide the appropriate blocks
-          to add in response to those events.
+        text: アクティビティの一つ一つのパズルで、新しいイベントを紹介していきます。そこであなたはイベントに応じて適切なブロックを追加していくのです。
       9:
         image: notes/flappy09.jpg
-        text: When you see a drop down arrow like this, that means you can change
-          the settings - like what sound to play when flappy hits the ground.
+        text: 次のようにドロップダウンの矢印が表示されたら、設定を変えることができます。たとえば、フラッピーが地面にヒットしたときの再生音などです。
       10:
         image: notes/flappy10.jpg
-        text: In the final puzzle you'll be able to create your own game and share
-          it with your friends. Have fun!
+        text: 最終的なパズルでは、あなた自身のゲームを作成して、友人と共有することができます。ぜひ楽しんで！
     loop_times:
       1:
         image: notes/hoc2_1.jpg

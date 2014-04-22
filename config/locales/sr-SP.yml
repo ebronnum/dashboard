@@ -11,6 +11,8 @@
         locale: Језик
         gender: Пол
         edit_header: Уреди детаље налога
+        error:
+          future: can't be in the future
   hello: Здраво свете
   welcome_back: Добродошао назад, %{name}
   add_teacher_form:
@@ -50,10 +52,9 @@
     need_confirmation: Нисте примили инструкције за потврду?
     need_unlock: Нисте примили инструкције за откључавање?
   signup_form:
-    overview: Овај 20-часовни  курс представља срж компјутерских наука и програмерских
-      основа. Курс је дизајниран за употребу у учионицама за разреде К-8, али је забавно
-      учити у било којем животном периоду.
-    no_signup_header: Не желите да се пријавите?
+    overview_student: Sign up for an account to track your progress.
+    overview_teacher: Teach computer science in your classroom by signing up for an
+      account.<p/> You'll be able to track your students' progress and get rewards.
     no_signup_message: Можете <a target="_blank" href="http://learn.code.org">претраживати
       разне нивое и загонетке</a>, али ће те морати да се пријавите како бих запамтили
       ваш напредак.
@@ -99,7 +100,8 @@
     remember: Запамти ме
     submit: Пријави се
   signin:
-    try_hoc: Try one Hour of Code first
+    try_heading: Want to try coding without signing up?
+    try_hoc: Прво испробај један Сат Кода
     try_20hours: Try our 20 hour Intro to Computer Science
   password:
     reset_form:
@@ -148,6 +150,8 @@
     provider: 'Пружаоц услуга:'
     code: 'Код:'
     redeem_header: 'To redeem:'
+    donorschoose_register: Register as a teacher on DonorsChoose.org
+    donorschoose_project: Post a project
     donorschoose_how_to: Како да користите вашу шифру
     success: Ваша је награда успешно откуплјена, погледајте код испод.
     error: Ваша награда није могла бити откуплјена, молимо покушајте поновно.
@@ -226,7 +230,7 @@
     created: '%{model} је успешно направлјен.'
     updated: '%{model} је успешно ажуриран.'
     destroyed: '%{model} was successfully deleted.'
-    access_denied: You do not have access to this %{model}.
+    access_denied: Немаш приступ овом %{model}.
   nav:
     header:
       finished_hoc: Завршио сам свој Сат Програмиранја
@@ -252,11 +256,11 @@
       prizes_link: више информација
   teacher:
     title:
-      one: Твој учителј је %{name}
+      one: 'Твој учитељ:'
       other: 'Твоји учителји:'
-    remove: (remove teacher)
+    remove: (уклони учитеља)
     confirm:
-      remove: Are you sure you want to remove this teacher?
+      remove: Да ли си сигуран/а да желиш да уклониш овог учитеља?
     tools: Учителјева помагала
     students:
       manage: Рспоредити студенте
@@ -265,7 +269,7 @@
       manage: Manage sections
     rollup: Плоча напретка
     activity: Скорашнје активности разреда
-    user_not_found: The teacher or student could not be found
+    user_not_found: Учитељ или ученик није пронађен
     cant_remove_student_no_email: '%{student_name} cannot be removed as your student
       because %{student_name} has not registered an e-mail address'
     cant_remove_teacher_no_email: '%{teacher_name} cannot be removed as your teacher
@@ -290,8 +294,8 @@
     show_more: Покажи још
   home:
     signin_message: Или ако сте већ регистровани, %{link}
-    student_reg_link: Студент
-    teacher_reg_link: Учитељ
+    student_reg_link: Регистрација за Ученике
+    teacher_reg_link: Регистрација за Учитеље
     signin_directions: Use an account to track progress and get rewards.<br/> Teachers,
       track your entire class.
     teacher_dashboard: Видјети плочу напретка
@@ -317,8 +321,12 @@
     see_details: Погледај деталје
     prize_info: 'Prizes for participation (U.S. only): $10 gift cards for student
       completion and up to $1,000 in classroom rewards for public school teachers'
-    tryfirst: 'Or, you can try it first, and sign up later:'
-    trynow: Try now
+    tryfirst: 'Или, можеш прво да пробаш, а да се региструјеш касније:'
+    trynow: Испробај сада
+    add_hint_help: Please help us to add smart hints to Code.org tutorials
+    20hour_overview: This 20-hour course introduces core computer science and programming
+      concepts. The course is designed for use in classrooms for grades K-8, but it
+      is fun to learn at all ages.
   gender:
     male: Мушко
     female: Женско
@@ -345,8 +353,10 @@
   reference_area:
     title: Требаш помоћ?
     subtitle: Погледај ове снимке и савете
-    teacher: See the solution
-    auth_error: You are not authorized to see the solution.
+    teacher: Погледај решење
+    auth_error: Ниси овлашћен/а да видиш решење.
+    submit: Update Artist Location
+    direction: Start Direction
   video:
     tab: Видео.
     notes: Нема видеа? Покаћи забилјешке.
@@ -361,6 +371,7 @@
   download_pdf: Отворен План Лекције
   share_code:
     title: Click 'Run program' to see my program in action
+    bounce_og_title: Check out my Bounce Game
     flappy_og_title: Check out my Flappy Game
     og_description: I wrote the code myself with Code.org
   builder:
@@ -370,6 +381,17 @@
     view: View
     back: Back to scripts
     level:
-      create: Create new level
-      current: Current Levels
-      unused: Unused Levels
+      create: Направи нов ниво
+      current: Тренутни Нивои
+      unused: Неупотребљени Нивои
+  upsell:
+    hoc:
+      title: The Hour of Code
+      body: Try the basics of computer science. Millions have given it a shot.
+    flappy:
+      title: Flappy Code
+      body: Wanna write your own game in less than 10 minutes? Try our Flappy Code
+        tutorial!
+    20hour:
+      title: Intro Course
+      body: Try our 20-hour Intro to Computer Science course.

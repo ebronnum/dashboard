@@ -7,6 +7,7 @@ if (typeof global !== 'undefined') {
 }
 
 var addReadyListener = require('./dom').addReadyListener;
+var blocksCommon = require('./blocksCommon');
 
 function StubDialog() {
   for (var argument in arguments) {
@@ -53,6 +54,7 @@ module.exports = function(app, levels, options) {
   };
 
   options.skin = options.skinsModule.load(BlocklyApps.assetUrl, options.skinId);
+  blocksCommon.install(Blockly);
   options.blocksModule.install(Blockly, options.skin);
 
   addReadyListener(function() {
@@ -69,7 +71,7 @@ module.exports = function(app, levels, options) {
 };
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./base":2,"./dom":6}],2:[function(require,module,exports){
+},{"./base":2,"./blocksCommon":4,"./dom":7}],2:[function(require,module,exports){
 /**
  * Blockly Apps: Common code
  *
@@ -528,7 +530,10 @@ BlocklyApps.arrangeBlockPosition = function(startBlocks, arrangement) {
 };
 
 var showInstructions = function(level) {
-  level.instructions = level.instructions || '';
+  if (!level.instructions) {
+    // Skip instructions if empty
+    return;
+  }
 
   var instructionsDiv = document.createElement('div');
   instructionsDiv.innerHTML = require('./templates/instructions.html')(level);
@@ -869,7 +874,7 @@ var getIdealBlockNumberMsg = function() {
       msg.infinity() : BlocklyApps.IDEAL_BLOCK_NUM;
 };
 
-},{"../locale/fr_fr/common":31,"./builder":4,"./dom":6,"./feedback.js":7,"./slider":18,"./templates/buttons.html":20,"./templates/instructions.html":22,"./templates/learn.html":23,"./templates/makeYourOwn.html":24,"./utils":29,"./xml":30}],3:[function(require,module,exports){
+},{"../locale/fr_fr/common":32,"./builder":5,"./dom":7,"./feedback.js":8,"./slider":19,"./templates/buttons.html":21,"./templates/instructions.html":23,"./templates/learn.html":24,"./templates/makeYourOwn.html":25,"./utils":30,"./xml":31}],3:[function(require,module,exports){
 exports.createToolbox = function(blocks) {
   return '<xml id="toolbox" style="display: none;">' + blocks + '</xml>';
 };
@@ -879,6 +884,43 @@ exports.blockOfType = function(type) {
 };
 
 },{}],4:[function(require,module,exports){
+/**
+ * Defines blocks useful in multiple blockly apps
+ */
+'use strict';
+
+var REPEAT_IMAGE_URL = 'media/sharedBlocks/repeat.png';
+var REPEAT_IMAGE_WIDTH = 53;
+var REPEAT_IMAGE_HEIGHT = 57;
+
+/**
+ * Install extensions to Blockly's language and JavaScript generator
+ * @param blockly instance of Blockly
+ */
+exports.install = function(blockly) {
+  // Re-uses the repeat block generator from core
+  blockly.JavaScript.controls_repeat_simplified = blockly.JavaScript.controls_repeat;
+
+  blockly.Blocks.controls_repeat_simplified = {
+    // Repeat n times (internal number) with simplified UI
+    init: function() {
+      this.setHelpUrl(blockly.Msg.CONTROLS_REPEAT_HELPURL);
+      this.setHSV(322, 0.90, 0.95);
+      this.appendStatementInput('DO')
+        .appendTitle(new blockly.FieldImage(
+          blockly.assetUrl(REPEAT_IMAGE_URL), REPEAT_IMAGE_WIDTH, REPEAT_IMAGE_HEIGHT));
+      this.appendDummyInput()
+        .appendTitle(blockly.Msg.CONTROLS_REPEAT_TITLE_REPEAT)
+        .appendTitle(new Blockly.FieldTextInput('10',
+          blockly.FieldTextInput.nonnegativeIntegerValidator), 'TIMES');
+      this.setPreviousStatement(true);
+      this.setNextStatement(true);
+      this.setTooltip(blockly.Msg.CONTROLS_REPEAT_TOOLTIP);
+    }
+  };
+};
+
+},{}],5:[function(require,module,exports){
 var feedback = require('./feedback.js');
 var dom = require('./dom.js');
 var utils = require('./utils.js');
@@ -908,7 +950,7 @@ exports.builderForm = function(onAttemptCallback) {
   dialog.show({ backdrop: 'static' });
 };
 
-},{"./dom.js":6,"./feedback.js":7,"./templates/builder.html":19,"./utils.js":29,"url":43}],5:[function(require,module,exports){
+},{"./dom.js":7,"./feedback.js":8,"./templates/builder.html":20,"./utils.js":30,"url":44}],6:[function(require,module,exports){
 var INFINITE_LOOP_TRAP = '  BlocklyApps.checkTimeout();\n';
 var INFINITE_LOOP_TRAP_RE =
     new RegExp(INFINITE_LOOP_TRAP.replace(/\(.*\)/, '\\(.*\\)'), 'g');
@@ -988,7 +1030,7 @@ exports.functionFromCode = function(code, options) {
   return new ctor();
 };
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 exports.addReadyListener = function(callback) {
   if (document.readyState === "complete") {
     setTimeout(callback, 1);
@@ -1062,7 +1104,7 @@ exports.isMobile = function() {
   return reg.test(window.navigator.userAgent);
 };
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 var trophy = require('./templates/trophy.html');
 var utils = require('./utils');
 var readonly = require('./templates/readonly.html');
@@ -1842,7 +1884,7 @@ var generateXMLForBlocks = function(blocks) {
 };
 
 
-},{"../locale/fr_fr/common":31,"./codegen":5,"./dom":6,"./templates/buttons.html":20,"./templates/code.html":21,"./templates/readonly.html":26,"./templates/showCode.html":27,"./templates/trophy.html":28,"./utils":29}],8:[function(require,module,exports){
+},{"../locale/fr_fr/common":32,"./codegen":6,"./dom":7,"./templates/buttons.html":21,"./templates/code.html":22,"./templates/readonly.html":27,"./templates/showCode.html":28,"./templates/trophy.html":29,"./utils":30}],9:[function(require,module,exports){
 exports.FlapHeight = {
   VERY_SMALL: -6,
   SMALL: -8,
@@ -1942,7 +1984,7 @@ exports.incrementPlayerScore = function(id) {
   Flappy.displayScore();
 };
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 /**
  * Blockly App: Flappy
  *
@@ -2439,7 +2481,7 @@ exports.install = function(blockly, skin) {
   delete blockly.Blocks.procedures_ifreturn;
 };
 
-},{"../../locale/fr_fr/flappy":32}],10:[function(require,module,exports){
+},{"../../locale/fr_fr/flappy":33}],11:[function(require,module,exports){
 module.exports = {
   WORKSPACE_BUFFER: 20,
   WORKSPACE_COL_WIDTH: 210,
@@ -2449,7 +2491,7 @@ module.exports = {
   AVATAR_WIDTH: 34,
   AVATAR_Y_OFFSET: 0
 };
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2470,7 +2512,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/fr_fr/flappy":32,"ejs":33}],12:[function(require,module,exports){
+},{"../../locale/fr_fr/flappy":33,"ejs":34}],13:[function(require,module,exports){
 /**
  * Blockly App: Flappy
  *
@@ -3518,7 +3560,7 @@ var checkFinished = function () {
   return false;
 };
 
-},{"../../locale/fr_fr/common":31,"../../locale/fr_fr/flappy":32,"../base":2,"../codegen":5,"../dom":6,"../feedback.js":7,"../skins":17,"../templates/page.html":25,"./api":8,"./constants":10,"./controls.html":11,"./visualization.html":16}],13:[function(require,module,exports){
+},{"../../locale/fr_fr/common":32,"../../locale/fr_fr/flappy":33,"../base":2,"../codegen":6,"../dom":7,"../feedback.js":8,"../skins":18,"../templates/page.html":26,"./api":9,"./constants":11,"./controls.html":12,"./visualization.html":17}],14:[function(require,module,exports){
 /*jshint multistr: true */
 
 // todo - i think our prepoluated code counts as LOCs
@@ -3936,7 +3978,7 @@ module.exports = {
   }
 };
 
-},{"../block_utils":3,"./constants":10}],14:[function(require,module,exports){
+},{"../block_utils":3,"./constants":11}],15:[function(require,module,exports){
 (function (global){
 var appMain = require('../appMain');
 window.Flappy = require('./flappy');
@@ -3954,7 +3996,7 @@ window.flappyMain = function(options) {
 };
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../appMain":1,"./blocks":9,"./flappy":12,"./levels":13,"./skins":15}],15:[function(require,module,exports){
+},{"../appMain":1,"./blocks":10,"./flappy":13,"./levels":14,"./skins":16}],16:[function(require,module,exports){
 /**
  * Load Skin for Flappy.
  */
@@ -4109,7 +4151,7 @@ exports.load = function(assetUrl, id) {
   return skin;
 };
 
-},{"../skins":17}],16:[function(require,module,exports){
+},{"../skins":18}],17:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4130,7 +4172,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":33}],17:[function(require,module,exports){
+},{"ejs":34}],18:[function(require,module,exports){
 // avatar: A 1029x51 set of 21 avatar images.
 
 exports.load = function(assetUrl, id) {
@@ -4157,6 +4199,11 @@ exports.load = function(assetUrl, id) {
     downArrow: skinUrl('down.png'),
     upArrow: skinUrl('up.png'),
     rightArrow: skinUrl('right.png'),
+    leftJumpArrow: skinUrl('left_jump.png'),
+    downJumpArrow: skinUrl('down_jump.png'),
+    upJumpArrow: skinUrl('up_jump.png'),
+    rightJumpArrow: skinUrl('right_jump.png'),
+    offsetLineSlice: skinUrl('offset_line_slice.png'),
     // Sounds
     startSound: [skinUrl('start.mp3'), skinUrl('start.ogg')],
     winSound: [skinUrl('win.mp3'), skinUrl('win.ogg')],
@@ -4165,7 +4212,7 @@ exports.load = function(assetUrl, id) {
   return skin;
 };
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 /**
  * Blockly Apps: SVG Slider
  *
@@ -4370,7 +4417,7 @@ Slider.bindEvent_ = function(element, name, func) {
 
 module.exports = Slider;
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4391,7 +4438,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":33}],20:[function(require,module,exports){
+},{"ejs":34}],21:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4412,7 +4459,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/fr_fr/common":31,"ejs":33}],21:[function(require,module,exports){
+},{"../../locale/fr_fr/common":32,"ejs":34}],22:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4433,7 +4480,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":33}],22:[function(require,module,exports){
+},{"ejs":34}],23:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4454,7 +4501,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/fr_fr/common":31,"ejs":33}],23:[function(require,module,exports){
+},{"../../locale/fr_fr/common":32,"ejs":34}],24:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4477,7 +4524,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/fr_fr/common":31,"ejs":33}],24:[function(require,module,exports){
+},{"../../locale/fr_fr/common":32,"ejs":34}],25:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4498,7 +4545,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/fr_fr/common":31,"ejs":33}],25:[function(require,module,exports){
+},{"../../locale/fr_fr/common":32,"ejs":34}],26:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4520,7 +4567,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/fr_fr/common":31,"ejs":33}],26:[function(require,module,exports){
+},{"../../locale/fr_fr/common":32,"ejs":34}],27:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4542,7 +4589,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":33}],27:[function(require,module,exports){
+},{"ejs":34}],28:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4563,7 +4610,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/fr_fr/common":31,"ejs":33}],28:[function(require,module,exports){
+},{"../../locale/fr_fr/common":32,"ejs":34}],29:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4584,7 +4631,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":33}],29:[function(require,module,exports){
+},{"ejs":34}],30:[function(require,module,exports){
 exports.shallowCopy = function(source) {
   var result = {};
   for (var prop in source) {
@@ -4616,7 +4663,17 @@ exports.escapeHtml = function(unsafe) {
     .replace(/'/g, "&#039;");
 };
 
-},{}],30:[function(require,module,exports){
+/**
+ * Version of modulo which, unlike javascript's `%` operator,
+ * will always return a positive remainder.
+ * @param number
+ * @param mod
+ */
+exports.mod = function(number, mod) {
+  return ((number % mod) + mod) % mod;
+};
+
+},{}],31:[function(require,module,exports){
 // Serializes an XML DOM node to a string.
 exports.serialize = function(node) {
   var serializer = new XMLSerializer();
@@ -4644,7 +4701,7 @@ exports.parseElement = function(text) {
   return element;
 };
 
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.fr=function(n){return n===0||n==1?"one":"other"}
 exports.blocklyMessage = function(d){return "Blockly"};
 
@@ -4676,7 +4733,7 @@ exports.dialogOK = function(d){return "OK"};
 
 exports.emptyBlocksErrorMsg = function(d){return "Le bloc « Répéter » ou «Si» doit avoir des autres blocs à l'intérieur pour fonctionner. Assurez-vous que le bloc interne s'adapte correctement à l'intérieur du bloc conteneur."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "Vous avez des blocs supplémentaires qui ne sont pas attachés à un bloc d'événements."};
 
 exports.finalStage = function(d){return "Félicitations ! Vous avez terminé l'étape finale."};
 
@@ -4694,7 +4751,7 @@ exports.levelIncompleteError = function(d){return "Vous utilisez tous les types 
 
 exports.listVariable = function(d){return "liste"};
 
-exports.makeYourOwnFlappy = function(d){return "Make Your Own Flappy Game"};
+exports.makeYourOwnFlappy = function(d){return "Faire votre propre jeu Flappy"};
 
 exports.missingBlocksErrorMsg = function(d){return "Essayez un ou plusieurs des blocs ci-dessous pour résoudre ce puzzle."};
 
@@ -4732,7 +4789,7 @@ exports.tooManyBlocksMsg = function(d){return "Ce puzzle peut être résolu avec
 
 exports.tooMuchWork = function(d){return "Vous m'avez fait faire beaucoup de travail !  Pourriez-vous essayer en répétant moins de fois ?"};
 
-exports.flappySpecificFail = function(d){return "Your code looks good - it will flap with each click. But you need to click many times to flap to the target."};
+exports.flappySpecificFail = function(d){return "Votre code semble bon - il battrera des ailes à chaque clic. Mais vous devez cliquer plusieurs fois pour battre des ailes jusqu'à la cible."};
 
 exports.toolboxHeader = function(d){return "Blocs"};
 
@@ -4771,7 +4828,7 @@ exports.signup = function(d){return "Inscrivez-vous au cours d'introduction"};
 exports.hintHeader = function(d){return "Here's a tip:"};
 
 
-},{"messageformat":44}],32:[function(require,module,exports){
+},{"messageformat":45}],33:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.fr=function(n){return n===0||n==1?"one":"other"}
 exports.continue = function(d){return "Continuer"};
 
@@ -4779,31 +4836,31 @@ exports.doCode = function(d){return "faire"};
 
 exports.elseCode = function(d){return "sinon"};
 
-exports.endGame = function(d){return "end game"};
+exports.endGame = function(d){return "Fin du jeu"};
 
-exports.endGameTooltip = function(d){return "Ends the game."};
+exports.endGameTooltip = function(d){return "Termines le jeu."};
 
 exports.finalLevel = function(d){return "Félicitations ! Vous avez résolu l'énigme finale."};
 
-exports.flap = function(d){return "flap"};
+exports.flap = function(d){return "battre des ailes"};
 
 exports.flapRandom = function(d){return "flap a random amount"};
 
-exports.flapVerySmall = function(d){return "flap a very small amount"};
+exports.flapVerySmall = function(d){return "battre très peu des ailes"};
 
-exports.flapSmall = function(d){return "flap a small amount"};
+exports.flapSmall = function(d){return "battre peu des ailes"};
 
 exports.flapNormal = function(d){return "flap a normal amount"};
 
-exports.flapLarge = function(d){return "flap a large amount"};
+exports.flapLarge = function(d){return "battre beaucoup des ailes"};
 
 exports.flapVeryLarge = function(d){return "flap a very large amount"};
 
 exports.flapTooltip = function(d){return "Fly Flappy upwards."};
 
-exports.incrementPlayerScore = function(d){return "increment player score"};
+exports.incrementPlayerScore = function(d){return "marquer un point"};
 
-exports.incrementPlayerScoreTooltip = function(d){return "Add one to the current player score."};
+exports.incrementPlayerScoreTooltip = function(d){return "Ajouter un au score du joueur actuel."};
 
 exports.nextLevel = function(d){return "Félicitations ! Vous avez terminé cette énigme."};
 
@@ -4811,49 +4868,49 @@ exports.no = function(d){return "Non"};
 
 exports.numBlocksNeeded = function(d){return "Cette enigme peut être résolue avec %1 blocs."};
 
-exports.oneTopBlock = function(d){return "Pour cette énigme, vous devez empiler ensemble tous les blocs dans l'espace blanc."};
+exports.oneTopBlock = function(d){return "Pour cette énigme, vous devez empiler ensemble tous les blocs dans l'espace de travail blanc."};
 
-exports.playSoundRandom = function(d){return "play random sound"};
+exports.playSoundRandom = function(d){return "jouer son aléatoire"};
 
-exports.playSoundBounce = function(d){return "play bounce sound"};
+exports.playSoundBounce = function(d){return "jouer son rebond"};
 
-exports.playSoundCrunch = function(d){return "play crunch sound"};
+exports.playSoundCrunch = function(d){return "jouer son croquement"};
 
-exports.playSoundDie = function(d){return "play sad sound"};
+exports.playSoundDie = function(d){return "jouer son triste"};
 
-exports.playSoundHit = function(d){return "play smash sound"};
+exports.playSoundHit = function(d){return "jouer son frappe"};
 
-exports.playSoundPoint = function(d){return "play point sound"};
+exports.playSoundPoint = function(d){return "Jouer le son 'point'"};
 
-exports.playSoundSwoosh = function(d){return "play swoosh sound"};
+exports.playSoundSwoosh = function(d){return "Jouer le son 'swoosh'"};
 
-exports.playSoundWing = function(d){return "play wing sound"};
+exports.playSoundWing = function(d){return "jouer son ailes"};
 
 exports.playSoundJet = function(d){return "play jet sound"};
 
-exports.playSoundCrash = function(d){return "play crash sound"};
+exports.playSoundCrash = function(d){return "jouer son crash"};
 
 exports.playSoundJingle = function(d){return "play jingle sound"};
 
 exports.playSoundSplash = function(d){return "play splash sound"};
 
-exports.playSoundLaser = function(d){return "play laser sound"};
+exports.playSoundLaser = function(d){return "Jouer le son 'laser'"};
 
-exports.playSoundTooltip = function(d){return "Play a sound."};
+exports.playSoundTooltip = function(d){return "Jouer le son choisi"};
 
-exports.reinfFeedbackMsg = function(d){return "You can press the \"Try again\" button to go back to playing your game."};
+exports.reinfFeedbackMsg = function(d){return "Appuyer sur \"Joue encore\" pour revenir à votre partie."};
 
 exports.scoreText = function(d){return "Score: "+v(d,"playerScore")+" : "+v(d,"opponentScore")};
 
-exports.setBackgroundRandom = function(d){return "set scene Random"};
+exports.setBackgroundRandom = function(d){return "Choisir 'Décor aléatoire'"};
 
-exports.setBackgroundFlappy = function(d){return "set scene City (day)"};
+exports.setBackgroundFlappy = function(d){return "Choisir 'Décor City (de jour)'"};
 
-exports.setBackgroundNight = function(d){return "set scene City (night)"};
+exports.setBackgroundNight = function(d){return "Choisir 'Décor City (de nuit)'"};
 
-exports.setBackgroundSciFi = function(d){return "set scene Sci-Fi"};
+exports.setBackgroundSciFi = function(d){return "Choisir 'Décor Science-Fiction'"};
 
-exports.setBackgroundUnderwater = function(d){return "set scene Underwater"};
+exports.setBackgroundUnderwater = function(d){return "Choisir la scène 'Sous l'eau'"};
 
 exports.setBackgroundCave = function(d){return "set scene Cave"};
 
@@ -4957,52 +5014,52 @@ exports.setScore = function(d){return "set score"};
 
 exports.setScoreTooltip = function(d){return "Sets the player's score"};
 
-exports.setSpeed = function(d){return "set speed"};
+exports.setSpeed = function(d){return "Choisir 'Vitesse'"};
 
-exports.setSpeedTooltip = function(d){return "Sets the levels speed"};
+exports.setSpeedTooltip = function(d){return "Choisir 'Niveau de vitesse'"};
 
-exports.share = function(d){return "Share"};
+exports.share = function(d){return "Partager"};
 
-exports.shareFlappyTwitter = function(d){return "Check out the Flappy game I made. I wrote it myself with @codeorg"};
+exports.shareFlappyTwitter = function(d){return "Regarde le jeu Flappy que j'ai fait. Je l'ai écrit moi-même avec @codeorg"};
 
-exports.shareGame = function(d){return "Share your game:"};
+exports.shareGame = function(d){return "Partagez votre jeu :"};
 
-exports.speedRandom = function(d){return "set speed random"};
+exports.speedRandom = function(d){return "régler la vitesse sur 'aléatoire'"};
 
-exports.speedVerySlow = function(d){return "set speed very slow"};
+exports.speedVerySlow = function(d){return "régler la vitesse sur 'très lente'"};
 
-exports.speedSlow = function(d){return "set speed slow"};
+exports.speedSlow = function(d){return "Régler la vitesse sur 'lente'"};
 
-exports.speedNormal = function(d){return "set speed normal"};
+exports.speedNormal = function(d){return "Régler la vitesse sur 'normal'"};
 
-exports.speedFast = function(d){return "set speed fast"};
+exports.speedFast = function(d){return "Régler la vitesse sur 'rapide'"};
 
 exports.speedVeryFast = function(d){return "set speed very fast"};
 
-exports.whenClick = function(d){return "when click"};
+exports.whenClick = function(d){return "quand on clique"};
 
-exports.whenClickTooltip = function(d){return "Execute the actions below when a click event occurs."};
+exports.whenClickTooltip = function(d){return "Exécuter les actions ci-dessous lorsque l'événement click se produit."};
 
 exports.whenCollideGround = function(d){return "when hit the ground"};
 
-exports.whenCollideGroundTooltip = function(d){return "Execute the actions below when Flappy hits the ground."};
+exports.whenCollideGroundTooltip = function(d){return "Exécuter les actions ci-dessous lorsque Flappy touche le sol."};
 
-exports.whenCollideObstacle = function(d){return "when hit an obstacle"};
+exports.whenCollideObstacle = function(d){return "Quand il frappe un obstacle"};
 
-exports.whenCollideObstacleTooltip = function(d){return "Execute the actions below when Flappy hits an obstacle."};
+exports.whenCollideObstacleTooltip = function(d){return "Exécuter les actions ci-dessous lorsque Flappy touche un obstacle."};
 
-exports.whenEnterObstacle = function(d){return "when pass obstacle"};
+exports.whenEnterObstacle = function(d){return "Quand il dépasse un obstacle"};
 
 exports.whenEnterObstacleTooltip = function(d){return "Execute the actions below when Flappy enters an obstacle."};
 
-exports.whenRunButtonClick = function(d){return "when Run is clicked"};
+exports.whenRunButtonClick = function(d){return "Quand le jeu commence"};
 
 exports.whenRunButtonClickTooltip = function(d){return "Execute the actions below when the run button is pressed."};
 
 exports.yes = function(d){return "Oui"};
 
 
-},{"messageformat":44}],33:[function(require,module,exports){
+},{"messageformat":45}],34:[function(require,module,exports){
 
 /*!
  * EJS
@@ -5361,7 +5418,7 @@ if (require.extensions) {
   });
 }
 
-},{"./filters":34,"./utils":35,"fs":36,"path":38}],34:[function(require,module,exports){
+},{"./filters":35,"./utils":36,"fs":37,"path":39}],35:[function(require,module,exports){
 /*!
  * EJS - Filters
  * Copyright(c) 2010 TJ Holowaychuk <tj@vision-media.ca>
@@ -5564,7 +5621,7 @@ exports.json = function(obj){
   return JSON.stringify(obj);
 };
 
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 
 /*!
  * EJS
@@ -5590,9 +5647,9 @@ exports.escape = function(html){
 };
  
 
-},{}],36:[function(require,module,exports){
-
 },{}],37:[function(require,module,exports){
+
+},{}],38:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -5647,7 +5704,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -5875,7 +5932,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require("/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":37}],39:[function(require,module,exports){
+},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":38}],40:[function(require,module,exports){
 (function (global){
 /*! http://mths.be/punycode v1.2.4 by @mathias */
 ;(function(root) {
@@ -6386,7 +6443,7 @@ var substr = 'ab'.substr(-1) === 'b'
 }(this));
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -6472,7 +6529,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -6559,13 +6616,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],42:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":40,"./encode":41}],43:[function(require,module,exports){
+},{"./decode":41,"./encode":42}],44:[function(require,module,exports){
 /*jshint strict:true node:true es5:true onevar:true laxcomma:true laxbreak:true eqeqeq:true immed:true latedef:true*/
 (function () {
   "use strict";
@@ -7198,7 +7255,7 @@ function parseHost(host) {
 
 }());
 
-},{"punycode":39,"querystring":42}],44:[function(require,module,exports){
+},{"punycode":40,"querystring":43}],45:[function(require,module,exports){
 /**
  * messageformat.js
  *
@@ -8781,4 +8838,4 @@ function parseHost(host) {
 
 })( this );
 
-},{}]},{},[14])
+},{}]},{},[15])

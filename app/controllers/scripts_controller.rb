@@ -1,5 +1,5 @@
 class ScriptsController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, except: :show
   check_authorization
 
   def index
@@ -38,5 +38,10 @@ class ScriptsController < ApplicationController
     Script.find(params[:id]).destroy
     flash.notice = t("builder.destroyed")
     redirect_to scripts_path
+  end
+
+  def show
+    authorize! :read, Script
+    @script = Script.find(params[:id])
   end
 end

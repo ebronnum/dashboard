@@ -135,7 +135,7 @@ class ReportsControllerTest < ActionController::TestCase
 
   generate_admin_only_tests_for :admin_gallery
 
-  test "admin_gallery shows most recent 32 gallery items" do
+  test "admin_gallery shows most recent 25 gallery items" do
     sign_in @admin
 
     100.times do
@@ -144,7 +144,7 @@ class ReportsControllerTest < ActionController::TestCase
 
     get :admin_gallery
 
-    assert_equal 32, assigns(:gallery_activities).count
+    assert_equal 25, assigns(:gallery_activities).count
   end
 
   test "should get students" do

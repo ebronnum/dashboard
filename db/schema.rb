@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140408202946) do
+ActiveRecord::Schema.define(version: 20140418194705) do
 
   create_table "activities", force: true do |t|
     t.integer  "user_id"
@@ -161,6 +161,7 @@ ActiveRecord::Schema.define(version: 20140408202946) do
     t.string   "start_direction"
     t.text     "start_blocks"
     t.text     "toolbox_blocks"
+    t.text     "properties"
   end
 
   add_index "levels", ["game_id"], name: "index_levels_on_game_id", using: :btree

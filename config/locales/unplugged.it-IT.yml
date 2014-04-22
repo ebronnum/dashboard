@@ -25,7 +25,7 @@
           individuare i diversi dettagli degli specifici mostri, poi usare queste
           informazioni per creare un algoritmo (cioè, una sequenza di istruzioni)
           affinché un altro gruppo possa disegnare uno specifico mostro. Ogni gruppo
-          poi scambierà il proprio algoritmo con quello di un altro gruppo e disegnera
+          poi scambierà il proprio algoritmo con quello di un altro gruppo e disegnerà
           il mostro seguendo le istruzioni dell''algoritmo ricevuto. Il disegno che
           che ottengono è ciò che il gruppo che ha scritto l''algoritmo intendeva?'
         video: injJWiSA0pw
@@ -35,9 +35,9 @@
       Unplug3:
         title: Programmazione su carta a quadretti
         desc: Lo studente impara a capire cos'è davvero la programmazione dando istruzioni
-          ad un altro studente affinché faccia un disegno. Il lavoro essenziale consiste
-          nel far sì che ogni studente scriva un programma con il quale un altro studente
-          possa colorare le caselle di un foglio di carta a quadretti in modo da riprodurre
+          ad un altro studente affinché faccia un disegno. L'obiettivo è far sì che
+          uno studente scriva un programma seguendo il quale un altro studente possa
+          colorare le caselle di un foglio di carta a quadretti in modo da riprodurre
           un disegno esistente. Se c'è tempo, nella lezione si può affrontare la creazione
           da parte degli studenti di disegni originali.
         video: 4e3fi_ls8CA
@@ -58,16 +58,16 @@
       Unplug5:
         title: Funzioni
         desc: In questa lezione gli studenti realizzano un prendisole con fili, perline,
-          e uno speciale amuleto. Gli studenti seguono una serie di passi ripetitivi,
-          poi devono individuare alcuni insiemi di "abilità" che vengono replicate
-          più volte. Una volta che queste abilità sono individuate, vengono richiamate
-          da un programma principale e l'intero processo di realizzazione viene scritto
-          su di un singolo foglio di carta. Il programma finale deve essere utile
-          per l'intera classe, a prescindere dal loro tipo di fili, perline e amuleti.
-          Affinché questo sia possibile, gli studenti devono "astrarre" i dettagli
-          del loro specifico materiale e creare opportuni termini generici per i singoli
-          materiali usati. Quest'uso di segnaposto generici è una magnifica introduzione
-          alle variabili.
+          e uno speciale amuleto. Gli studenti seguono una serie di azioni che si
+          ripetono, poi devono individuare alcuni insiemi di "abilità" che vengono
+          replicate più volte. Una volta che queste abilità sono individuate, vengono
+          richiamate da un programma principale e l'intero processo di realizzazione
+          viene scritto su di un singolo foglio di carta. Il programma finale deve
+          essere utile per l'intera classe, a prescindere dal loro tipo di fili, perline
+          e amuleti. Affinché questo sia possibile, gli studenti devono "astrarre"
+          i dettagli del loro specifico materiale e creare opportuni termini generici
+          per i singoli materiali usati. Quest'uso di termini generici è una magnifica
+          introduzione alle variabili.
         video: NAViNTHS3LU
         download: https://s3.amazonaws.com/cdo-videos/new/8-functions-activity.mp4
         pdfs:

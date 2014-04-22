@@ -20,6 +20,18 @@ class ActiveSupport::TestCase
   # Add more helper methods to be used by all tests here...
   include FactoryGirl::Syntax::Methods
 
+  def assert_creates(*args)
+    assert_difference(args.collect(&:to_s).collect {|class_name| "#{class_name}.count"}) do
+      yield
+    end
+  end
+
+  def assert_does_not_create(*args)
+    assert_no_difference(args.collect(&:to_s).collect {|class_name| "#{class_name}.count"}) do
+      yield
+    end
+  end
+
 end
 
 
@@ -52,3 +64,4 @@ class ActionController::TestCase
     end
   end
 end
+
