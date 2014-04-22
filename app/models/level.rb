@@ -105,6 +105,11 @@ class Level < ActiveRecord::Base
       </xml>'
     when 'maze'
       '<xml id="toolbox" style="display: none;">
+        <block type="maze_moveNorth"></block>
+        <block type="maze_moveSouth"></block>
+        <block type="maze_moveEast"></block>
+        <block type="maze_moveWest"></block>
+        <block type="controls_repeat_simplified"></block>
         <block type="maze_moveForward"></block>
         <block type="maze_turn">
           <title name="DIR">turnLeft</title>
