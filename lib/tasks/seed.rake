@@ -119,7 +119,7 @@ namespace :seed do
                  { file: 'config/flappy_script.csv', params: { name: 'Flappy Levels', trophies: false, hidden: true }},
                  { file: 'config/jigsaw_script.csv', params: { name: 'Jigsaw Levels', trophies: false, hidden: true }}
                 ]
-      custom_sources = Dir.glob("config/scripts/*.script").map do |script|
+      custom_sources = Dir.glob("config/scripts/*.script.csv").map do |script|
         { file: script, custom: true, params: { name: File.basename(script, ".script"), trophies: false, hidden: true }}
       end
 
@@ -132,7 +132,7 @@ namespace :seed do
           if source[:custom]
             level = get_level_by_name(row[COL_NAME]).first
             if level.nil?
-              raise "There does not exist a level with the name '#{row[COL_NAME]}'. From the row: #{row}"
+              raise "There does not exist a level with the name '#{row[COL_NAME]}'. From the row: #{row}, From the script: #{source}."
             end
             game = level.game
           else
