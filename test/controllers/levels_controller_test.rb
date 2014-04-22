@@ -73,7 +73,7 @@ class LevelsControllerTest < ActionController::TestCase
   test "should update blocks" do
     post :update_blocks, :level_id => @level.id, :game_id => @level.game.id, :type => 'toolbox_blocks', :program => @program
     level = assigns(:level)
-    assert_equal level.toolbox_blocks, @program
+    assert_equal level.properties[:toolbox_blocks.to_s], @program
   end
 
   test "should not update blocks if not admin" do
