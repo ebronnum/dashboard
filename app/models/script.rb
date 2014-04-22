@@ -22,7 +22,7 @@ class Script < ActiveRecord::Base
   end
 
  def self.flappy_script
-    @@flappy_script ||= Script.includes(script_levels: { level: [:game, :concepts] }).find(JIGSAW_ID)
+    @@flappy_script ||= Script.includes(script_levels: { level: [:game, :concepts] }).find(FLAPPY_ID)
   end
 
   def self.get_from_cache(id)
