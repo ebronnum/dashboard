@@ -7,7 +7,9 @@ class Level < ActiveRecord::Base
 
   validates_length_of :name, within: 1..70
 
-  validates_uniqueness_of :name, conditions: -> { where.not(user_id: nil) }, on: :create
+  validates_uniqueness_of :name, conditions: -> { where.not(user_id: nil) }, on: :create, :update
+
+  validates :can_modify_levels, conditions: -> { where.not(user_id: nil) }, on: :create, :update
 
   after_save :write_custom_levels_to_file if Rails.env.in?(["staging", "development"])
 
@@ -140,6 +142,10 @@ class Level < ActiveRecord::Base
 
   def self.custom_levels
     where("user_id IS NOT NULL")
+  end
+
+  def can_modify_levels
+    Rails.env.in?(["staging", "development"])
   end
 
   def write_custom_levels_to_file

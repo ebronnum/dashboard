@@ -117,10 +117,13 @@ namespace :seed do
                  { file: 'config/2014_script.csv', params: { name: '2014 Levels', trophies: false, hidden: true }},
                  { file: 'config/builder_script.csv', params: { name: 'Builder Levels', trophies: false, hidden: true }},
                  { file: 'config/flappy_script.csv', params: { name: 'Flappy Levels', trophies: false, hidden: true }},
-                 { file: 'config/jigsaw_script.csv', params: { name: 'Jigsaw Levels', trophies: false, hidden: true }},
-                 { file: 'config/scripts/sample_level_builder.script.csv', custom: true, params: { name: 'sample_level_builder', trophies: false, hidden: true}}
+                 { file: 'config/jigsaw_script.csv', params: { name: 'Jigsaw Levels', trophies: false, hidden: true }}
                 ]
-      sources.each do |source|
+      custom_sources = Dir.glob("config/scripts/*.script").map do |script|
+        { file: script, custom: true, params: { name: File.basename(script, ".script"), trophies: false, hidden: true }}
+      end
+
+      (sources + custom_sources).each do |source|
         script = Script.where(source[:params]).first_or_create
         old_script_levels = ScriptLevel.where(script: script).to_a  # tracks which levels are no longer included in script.
         game_index = Hash.new{|h,k| h[k] = 0}
