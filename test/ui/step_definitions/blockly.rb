@@ -12,7 +12,7 @@ end
 
 # Note: this is an offset relative to the current position of the block
 When /^I drag block "([^"]*)" to offset "([^"]*), ([^"]*)"$/ do |from, dx, dy|
-  @browser.execute_script("$(\"[block-id='#{from}']\").simulate( 'drag', {handle: 'corner', dx: #{dx}, dy: #{dy}, moves: 5});")
+  dragBlockRelative(from, dx, dy)
 end
 
 When /^I begin to drag block "([^"]*)" to offset "([^"]*), ([^"]*)"$/ do |from, dx, dy|
