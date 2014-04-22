@@ -71,7 +71,7 @@ class LevelsController < ApplicationController
   def create
     authorize! :create, :level
     case params[:level_type]
-    when 'maze'
+    when 'maze', 'karel'
       create_maze
     when 'artist'
       create_artist
@@ -88,9 +88,26 @@ class LevelsController < ApplicationController
     rescue ArgumentError
       render status: :not_acceptable, text: "There is a non integer value in the grid." and return
     end
+    maze = parse_karel_maze(maze) if params[:type] == 'karel'
     game = Game.custom_maze
     @level = Level.create(level_params.merge(maze: maze.to_s, game: game, user: current_user, level_num: 'custom', skin: 'birds'))
     redirect_to game_level_url(game, @level)
+  end
+
+  def parse_karel_maze(maze)
+    # Karel level builder mazes have the information for three 2D arrays embeded into one.
+    size = params[:size]
+    map, initial_dirt, final_dirt = (0...3).map { Array.new(size) { Array.new(size, 0) }}
+    maze.each_with_index do |row, x|
+      row.each_with_index do |cell, y|
+        if cell >= 100
+          map[x][y] = cell / 100
+        else
+          initial_dirt[x][y] = cell
+        end
+      end
+    end
+    # turn into json here
   end
 
   def create_artist
@@ -113,7 +130,7 @@ class LevelsController < ApplicationController
     case params[:type]
     when 'artist'
       artist_builder
-    when 'maze'
+    when 'maze', 'karel'
       @game = Game.custom_maze
       @level = Level.new
       render :maze_builder
