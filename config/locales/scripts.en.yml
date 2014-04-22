@@ -8,3 +8,8 @@ en:
           Introduction to Computer Science: Introduction to Computer Science
           The Maze: The Maze
           The Coffee: The Coffee
+        sample_level_builder2:
+          desc: A custom script
+          Introduction to Computer Science: Introduction to Computer Science
+          The Maze: The Maze
+          The Coffee: The Coffee

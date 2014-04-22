@@ -530,7 +530,10 @@ BlocklyApps.arrangeBlockPosition = function(startBlocks, arrangement) {
 };
 
 var showInstructions = function(level) {
-  level.instructions = level.instructions || '';
+  if (!level.instructions) {
+    // Skip instructions if empty
+    return;
+  }
 
   var instructionsDiv = document.createElement('div');
   instructionsDiv.innerHTML = require('./templates/instructions.html')(level);
@@ -2141,6 +2144,10 @@ exports.random = function (values) {
   return values[key];
 };
 
+exports.acquireEventHandlerNum = function() {
+  return Studio.eventHandlerNumber++;
+};
+
 exports.setBackground = function (id, value) {
   BlocklyApps.highlight(id);
   Studio.setBackground(value);
@@ -2151,9 +2158,9 @@ exports.setSprite = function (id, spriteIndex, value) {
   Studio.setSprite(spriteIndex, value);
 };
 
-exports.saySprite = function (id, spriteIndex, text) {
+exports.saySprite = function (id, numHandler, spriteIndex, text) {
   BlocklyApps.highlight(id);
-  Studio.saySprite(spriteIndex, text);
+  Studio.saySprite(numHandler, spriteIndex, text);
 };
 
 exports.setBackground = function (id, value) {
@@ -2235,6 +2242,10 @@ exports.install = function(blockly, skin) {
 
   var generator = blockly.Generator.get('JavaScript');
   blockly.JavaScript = generator;
+  
+  generator.studio_eventHandlerPrologue = function() {
+    return 'var numHandler = Studio.acquireEventHandlerNum();\n\n';
+  };
 
   blockly.Blocks.studio_spriteCount = 6;
   
@@ -2251,10 +2262,7 @@ exports.install = function(blockly, skin) {
     }
   };
   
-  generator.studio_whenLeft = function() {
-    // Generate JavaScript for handling Left arrow button event.
-    return '\n';
-  };
+  generator.studio_whenLeft = generator.studio_eventHandlerPrologue;
   
   blockly.Blocks.studio_whenRight = {
     // Block to handle event when the Right arrow button is pressed.
@@ -2269,10 +2277,7 @@ exports.install = function(blockly, skin) {
     }
   };
   
-  generator.studio_whenRight = function() {
-    // Generate JavaScript for handling Right arrow button event.
-    return '\n';
-  };
+  generator.studio_whenRight = generator.studio_eventHandlerPrologue;
   
   blockly.Blocks.studio_whenUp = {
     // Block to handle event when the Up arrow button is pressed.
@@ -2287,10 +2292,7 @@ exports.install = function(blockly, skin) {
     }
   };
   
-  generator.studio_whenUp = function() {
-    // Generate JavaScript for handling Up arrow button event.
-    return '\n';
-  };
+  generator.studio_whenUp = generator.studio_eventHandlerPrologue;
   
   blockly.Blocks.studio_whenDown = {
     // Block to handle event when the Down arrow button is pressed.
@@ -2305,10 +2307,7 @@ exports.install = function(blockly, skin) {
     }
   };
   
-  generator.studio_whenDown = function() {
-    // Generate JavaScript for handling Down arrow button event.
-    return '\n';
-  };
+  generator.studio_whenDown = generator.studio_eventHandlerPrologue;
   
   blockly.Blocks.studio_whenGameStarts = {
     // Block to handle event when the game starts
@@ -2323,10 +2322,7 @@ exports.install = function(blockly, skin) {
     }
   };
 
-  generator.studio_whenGameStarts = function () {
-    // Generate JavaScript for handling run button click
-    return '\n';
-  };
+  generator.studio_whenGameStarts = generator.studio_eventHandlerPrologue;
 
   blockly.Blocks.studio_whenGameIsRunning = {
     // Block to handle the repeating tick event while the game is running.
@@ -2341,10 +2337,7 @@ exports.install = function(blockly, skin) {
     }
   };
 
-  generator.studio_whenGameIsRunning = function () {
-    // Generate JavaScript for handling the repeating tick event
-    return '\n';
-  };
+  generator.studio_whenGameIsRunning = generator.studio_eventHandlerPrologue;
 
   blockly.Blocks.studio_whenSpriteClicked = {
     // Block to handle event when sprite is clicked.
@@ -2370,10 +2363,7 @@ exports.install = function(blockly, skin) {
      [msg.whenSpriteClicked5(), '4'],
      [msg.whenSpriteClicked6(), '5']];
   
-  generator.studio_whenSpriteClicked = function() {
-    // Generate JavaScript for handle when a sprite is clicked event.
-    return '\n';
-  };
+  generator.studio_whenSpriteClicked = generator.studio_eventHandlerPrologue;
 
   blockly.Blocks.studio_whenSpriteCollided = {
     // Block to handle event when sprite collides with another sprite.
@@ -2414,10 +2404,7 @@ exports.install = function(blockly, skin) {
        [msg.whenSpriteCollidedWith5(), '4'],
        [msg.whenSpriteCollidedWith6(), '5']];
   
-  generator.studio_whenSpriteCollided = function() {
-    // Generate JavaScript for handle when a sprite collision event.
-    return '\n';
-  };
+  generator.studio_whenSpriteCollided = generator.studio_eventHandlerPrologue;
 
   blockly.Blocks.studio_move = {
     // Block for moving one frame a time.
@@ -2722,7 +2709,7 @@ exports.install = function(blockly, skin) {
 
   generator.studio_saySprite = function() {
     // Generate JavaScript for saying.
-    return 'Studio.saySprite(\'block_id_' + this.id + '\', ' +
+    return 'Studio.saySprite(\'block_id_' + this.id + '\', numHandler || 0, ' +
                this.getTitleValue('SPRITE') + ', ' +
                blockly.JavaScript.quote_(this.getTitleValue('TEXT')) + ');\n';
   };
@@ -2955,6 +2942,9 @@ exports.load = function(assetUrl, id) {
   var skin = skinsBase.load(assetUrl, id);
   var config = CONFIGS[skin.id];
 
+  skin.hardcourt = {
+    background: skin.assetUrl('background.png'),
+  };
   skin.retro = {
     background: skin.assetUrl('retro_background.png'),
   };
@@ -3102,6 +3092,8 @@ Studio.scale = {
   'snapRadius': 1,
   'stepSpeed': 33
 };
+
+Studio.SPEECH_BUBBLE_TIMEOUT = 3000;
 
 var twitterOptions = {
   text: studioMsg.shareStudioTwitter(),
@@ -3306,6 +3298,29 @@ var performQueuedMoves = function(i)
   }
 };
 
+//
+// Show speech bubbles queued in sayQueues (called from inside onTick)
+//
+
+var showSpeechBubbles = function() {
+  for (var i = 0; i < Studio.eventHandlerNumber; i++) {
+    var sayCmd;
+    var sayQueue = Studio.sayQueues[i];
+    while (sayQueue &&
+           (sayCmd = sayQueue[0]) && sayCmd.tickCount <= Studio.tickCount) {
+      // Remove this item from the queue
+      sayQueue.shift();
+      var speechBubble = document.getElementById('speechBubble' + sayCmd.index);
+      speechBubble.textContent = sayCmd.text;
+      speechBubble.setAttribute('visibility', 'visible');
+      window.clearTimeout(Studio.sprite[sayCmd.index].bubbleTimeout);
+      Studio.sprite[sayCmd.index].bubbleTimeout = window.setTimeout(
+          delegate(this, Studio.hideSpeechBubble, sayCmd.index),
+          Studio.SPEECH_BUBBLE_TIMEOUT);
+    }
+  }
+};
+
 Studio.onTick = function() {
   Studio.tickCount++;
 
@@ -3384,6 +3399,8 @@ Studio.onTick = function() {
     // Display sprite:
     Studio.displaySprite(i);
   }
+  
+  showSpeechBubbles();
   
   if (checkFinished()) {
     Studio.onPuzzleComplete();
@@ -3609,6 +3626,10 @@ BlocklyApps.reset = function(first) {
 
   // Reset configurable variables
   Studio.setBackground('cave');
+  
+  // Reset the eventHandlerNumber
+  Studio.eventHandlerNumber = 0;
+  Studio.sayQueues = [];
 
   var spriteStartingSkins = [ "green", "purple", "pink", "orange" ];
   var numStartingSkins = spriteStartingSkins.length;
@@ -3981,14 +4002,32 @@ Studio.hideSpeechBubble = function (index) {
   speechBubble.setAttribute('visibility', 'hidden');
 };
 
-Studio.saySprite = function (index, text) {
-  var speechBubble = document.getElementById('speechBubble' + index);
-  speechBubble.textContent = text;
-  speechBubble.setAttribute('visibility', 'visible');
-  window.clearTimeout(Studio.sprite[index].bubbleTimeout);
-  Studio.sprite[index].bubbleTimeout = window.setTimeout(
-      delegate(this, Studio.hideSpeechBubble, index),
-      3000);
+var stampNextQueuedSayTick = function (numHandler) {
+  var tickCount = Studio.tickCount;
+  var sayQueue = Studio.sayQueues[numHandler];
+  if (sayQueue) {
+    // Use the last item in this event handler's queue of say commands,
+    // clone that tickCount and add the SPEECH_BUBBLE_TIMEOUT (in ticks)
+    var sayCmd = sayQueue.slice(-1)[0];
+    if (sayCmd) {
+      tickCount = sayCmd.tickCount +
+          Math.round(Studio.SPEECH_BUBBLE_TIMEOUT / Studio.scale.stepSpeed);
+    }
+  }
+  return tickCount;
+};
+
+Studio.saySprite = function (numHandler, index, text) {
+  if (!Studio.sayQueues[numHandler]) {
+    Studio.sayQueues[numHandler] = [];
+  }
+  
+  var sayCmd = {
+      'tickCount': stampNextQueuedSayTick(numHandler),
+      'index': index,
+      'text': text
+  };
+  Studio.sayQueues[numHandler].push(sayCmd);
 };
 
 Studio.moveSingle = function (spriteIndex, dir) {
