@@ -120,7 +120,7 @@ namespace :seed do
                  { file: 'config/jigsaw_script.csv', params: { name: 'Jigsaw Levels', trophies: false, hidden: true }}
                 ]
       custom_sources = Dir.glob("config/scripts/*.script.csv").map do |script|
-        { file: script, custom: true, params: { name: File.basename(script, ".script"), trophies: false, hidden: true }}
+        { file: script, custom: true, params: { name: File.basename(script, ".script.csv"), trophies: false, hidden: true }}
       end
 
       (sources + custom_sources).each do |source|
