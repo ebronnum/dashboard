@@ -4,6 +4,7 @@ class LevelsController < ApplicationController
   include LevelsHelper
   include ActiveSupport::Inflector
   before_filter :authenticate_user!
+  before_filter :can_modify?, except: [:show, :index]
   skip_before_filter :verify_params_before_cancan_loads_model, :only => [:create, :update_blocks]
   load_and_authorize_resource :except => [:create]
   check_authorization
@@ -134,6 +135,11 @@ class LevelsController < ApplicationController
     render :show
   end
 
+  def can_modify?
+    if !Rails.env.in?(["staging", "development"])
+      render text: "Cannot create or modify levels from this environment.", status: :forbidden
+    end
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

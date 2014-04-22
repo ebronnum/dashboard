@@ -10,6 +10,11 @@ class LevelsControllerTest < ActionController::TestCase
     @program = "<hey>"
 
     @not_admin = create(:user)
+    Rails.env = "staging"
+  end
+
+  teardown do
+    Rails.env = "test"
   end
 
   test "should get index" do
@@ -107,7 +112,20 @@ class LevelsControllerTest < ActionController::TestCase
     assert_response :forbidden
   end
 
+  # This should represent the behavior on production.
+  test "should not modify level if on test env" do
+    Rails.env = "test"
+    post :create, :name => "NewCustomLevel", :program => @program, game_id: 1
+    assert_response :forbidden
+  end
+
   test "should show level" do
+    get :show, id: @level, game_id: @level.game
+    assert_response :success
+  end
+
+  test "should show level on test env" do
+    Rails.env = "test"
     get :show, id: @level, game_id: @level.game
     assert_response :success
   end
