@@ -17,7 +17,6 @@ Then /^the dropdown is (.*)$/ do |visibility|
   end
 
   element = @browser.find_element(:class, 'blocklyWidgetDiv')
-  puts element.attribute('style')
   element.attribute('style').match(Regexp.new("display: #{expected}")).should_not eq nil
 end
 
