@@ -5,7 +5,7 @@ class ScriptsController < ApplicationController
   def index
     authorize! :manage, Script
     # Show all the scripts that a user has created.
-    @scripts = Script.where(user: current_user)
+    @scripts = Script.all
   end
 
   def new
