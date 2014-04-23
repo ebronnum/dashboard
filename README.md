@@ -101,7 +101,7 @@ mailcatcher
 ### Adding an Admin Account
 
 1. Create a first user which will be your admin (be sure to have `mailcatcher` running during signup)
-2. `bundle exec rails c`
+2. `./bin/rails c`
 3. `User.first.update(admin: true)`
 
 ### Windows-specific notes
@@ -145,4 +145,5 @@ If you do not have repository privileges, you can [create a fork and issue a pul
 3. Go to the GitHub repository
     - [https://github.com/code-dot-org/dashboard](https://github.com/code-dot-org/dashboard)
 4. Click on the "Pull Request" link, and send out a PR for others to review.
+
 
