@@ -874,7 +874,7 @@ var getIdealBlockNumberMsg = function() {
       msg.infinity() : BlocklyApps.IDEAL_BLOCK_NUM;
 };
 
-},{"../locale/bg_bg/common":33,"./builder":14,"./dom":16,"./feedback.js":17,"./slider":19,"./templates/buttons.html":21,"./templates/instructions.html":23,"./templates/learn.html":24,"./templates/makeYourOwn.html":25,"./utils":30,"./xml":31}],3:[function(require,module,exports){
+},{"../locale/bg_bg/common":34,"./builder":14,"./dom":16,"./feedback.js":17,"./slider":19,"./templates/buttons.html":21,"./templates/instructions.html":23,"./templates/learn.html":24,"./templates/makeYourOwn.html":25,"./utils":31,"./xml":32}],3:[function(require,module,exports){
 exports.createToolbox = function(blocks) {
   return '<xml id="toolbox" style="display: none;">' + blocks + '</xml>';
 };
@@ -1616,7 +1616,7 @@ exports.install = function(blockly, skin) {
   delete blockly.Blocks.procedures_ifreturn;
 };
 
-},{"../../locale/bg_bg/bounce":32,"../codegen":15}],7:[function(require,module,exports){
+},{"../../locale/bg_bg/bounce":33,"../codegen":15}],7:[function(require,module,exports){
 /**
  * Blockly App: Bounce
  *
@@ -1751,7 +1751,7 @@ var initWallMap = function() {
 /**
  * PIDs of async tasks currently executing.
  */
-Bounce.pidList = [];
+var timeoutList = require('../timeoutList');
 
 // Map each possible shape to a sprite.
 // Input: Binary string representing Centre/North/East/South/West squares.
@@ -1822,7 +1822,7 @@ Bounce.createBallElements = function (i) {
 Bounce.deleteBallElements = function (i) {
   var ballClipPath = document.getElementById('ballClipPath' + i);
   ballClipPath.parentNode.removeChild(ballClipPath);
-  
+
   var ballIcon = document.getElementById('ball' + i);
   ballIcon.parentNode.removeChild(ballIcon);
 };
@@ -1982,7 +1982,7 @@ var drawMap = function() {
     paddleClipRect.setAttribute('height', Bounce.PEGMAN_HEIGHT);
     paddleClip.appendChild(paddleClipRect);
     svg.appendChild(paddleClip);
-    
+
     // Add paddle.
     var paddleIcon = document.createElementNS(Blockly.SVG_NS, 'image');
     paddleIcon.setAttribute('id', 'paddle');
@@ -1993,7 +1993,7 @@ var drawMap = function() {
     paddleIcon.setAttribute('clip-path', 'url(#paddleClipPath)');
     svg.appendChild(paddleIcon);
   }
-  
+
   if (Bounce.paddleFinish_) {
     for (i = 0; i < Bounce.paddleFinishCount; i++) {
       // Add finish markers.
@@ -2108,7 +2108,7 @@ Bounce.onTick = function() {
   if (Bounce.tickCount === 1) {
     try { Bounce.whenGameStarts(BlocklyApps, api); } catch (e) { }
   }
-  
+
   // Run key event handlers for any keys that are down:
   for (var key in Keycodes) {
     if (Bounce.keyState[Keycodes[key]] &&
@@ -2129,7 +2129,7 @@ Bounce.onTick = function() {
       }
     }
   }
-  
+
   for (var btn in ArrowIds) {
     if (Bounce.btnState[ArrowIds[btn]] &&
         Bounce.btnState[ArrowIds[btn]] == ButtonState.DOWN) {
@@ -2153,35 +2153,35 @@ Bounce.onTick = function() {
   for (var i = 0; i < Bounce.ballCount; i++) {
     var deltaX = Bounce.ballSpeed[i] * Math.sin(Bounce.ballDir[i]);
     var deltaY = -Bounce.ballSpeed[i] * Math.cos(Bounce.ballDir[i]);
-    
+
     var wasXOK = Bounce.ballX[i] >= 0 && Bounce.ballX[i] <= Bounce.COLS - 1;
     var wasYOK = Bounce.ballY[i] >= tiles.Y_TOP_BOUNDARY;
     var wasYAboveBottom = Bounce.ballY[i] <= Bounce.ROWS - 1;
 
     Bounce.ballX[i] += deltaX;
     Bounce.ballY[i] += deltaY;
-    
+
     if (0 === (Bounce.ballFlags[i] &
                (Bounce.BallFlags.MISSED_PADDLE | Bounce.BallFlags.IN_GOAL))) {
       var nowXOK = Bounce.ballX[i] >= 0 && Bounce.ballX[i] <= Bounce.COLS - 1;
       var nowYOK = Bounce.ballY[i] >= tiles.Y_TOP_BOUNDARY;
       var nowYAboveBottom = Bounce.ballY[i] <= Bounce.ROWS - 1;
-      
+
       if (wasYOK && wasXOK && !nowXOK) {
         //console.log("calling whenWallCollided for ball " + i +
         //" x=" + Bounce.ballX[i] + " y=" + Bounce.ballY[i]);
         try { Bounce.whenWallCollided(BlocklyApps, api); } catch (e) { }
       }
-      
+
       if (wasXOK && wasYOK && !nowYOK) {
         if (Bounce.map[0][Math.round(Bounce.ballX[i])] & SquareType.GOAL) {
           //console.log("calling whenBallInGoal for ball " + i +
           //" x=" + Bounce.ballX[i] + " y=" + Bounce.ballY[i]);
           try { Bounce.whenBallInGoal(BlocklyApps, api); } catch (e) { }
           Bounce.ballFlags[i] |= Bounce.BallFlags.IN_GOAL;
-          Bounce.pidList.push(window.setTimeout(
+          timeoutList.setTimeout(
               delegate(this, Bounce.moveBallOffscreen, i),
-              1000));
+              1000);
           if (Bounce.respawnBalls) {
             Bounce.launchBall(i);
           }
@@ -2191,11 +2191,11 @@ Bounce.onTick = function() {
           try { Bounce.whenWallCollided(BlocklyApps, api); } catch (e) { }
         }
       }
-      
+
       var xPaddleBall = Bounce.ballX[i] - Bounce.paddleX;
       var yPaddleBall = Bounce.ballY[i] - Bounce.paddleY;
       var distPaddleBall = Bounce.calcDistance(xPaddleBall, yPaddleBall);
-      
+
       if (distPaddleBall < tiles.PADDLE_BALL_COLLIDE_DISTANCE) {
         // paddle ball collision
         //console.log("calling whenPaddleCollided for ball " + i +
@@ -2207,23 +2207,23 @@ Bounce.onTick = function() {
         //" x=" + Bounce.ballX[i] + " y=" + Bounce.ballY[i]);
         try { Bounce.whenBallMissesPaddle(BlocklyApps, api); } catch (e) { }
         Bounce.ballFlags[i] |= Bounce.BallFlags.MISSED_PADDLE;
-        Bounce.pidList.push(window.setTimeout(
+        timeoutList.setTimeout(
             delegate(this, Bounce.moveBallOffscreen, i),
-            1000));
+            1000);
         if (Bounce.respawnBalls) {
           Bounce.launchBall(i);
         } else if (Bounce.failOnBallExit) {
           Bounce.result = ResultType.FAILURE;
-          Bounce.onPuzzleComplete();          
+          Bounce.onPuzzleComplete();
         }
       }
     }
-  
+
     Bounce.displayBall(i, Bounce.ballX[i], Bounce.ballY[i]);
   }
-  
+
   Bounce.displayPaddle(Bounce.paddleX, Bounce.paddleY);
-  
+
   if (checkFinished()) {
     Bounce.onPuzzleComplete();
   }
@@ -2232,7 +2232,7 @@ Bounce.onTick = function() {
 Bounce.onKey = function(e) {
   // Store the most recent event type per-key
   Bounce.keyState[e.keyCode] = e.type;
-  
+
   // If we are actively running our tick loop, suppress default event handling
   if (Bounce.intervalId &&
       e.keyCode >= Keycodes.LEFT && e.keyCode <= Keycodes.DOWN) {
@@ -2265,7 +2265,7 @@ Bounce.init = function(config) {
   level = config.level;
   onSharePage = config.share;
   loadLevel();
-  
+
   window.addEventListener("keydown", Bounce.onKey, false);
   window.addEventListener("keyup", Bounce.onKey, false);
 
@@ -2314,7 +2314,7 @@ Bounce.init = function(config) {
                                           ArrowIds[btn]));
     }
     document.addEventListener('mouseup', Bounce.onMouseUp, false);
-  
+
     /**
      * The richness of block colours, regardless of the hue.
      * MOOC blocks should be brighter (target audience is younger).
@@ -2324,7 +2324,7 @@ Bounce.init = function(config) {
     Blockly.HSV_SATURATION = 0.6;
 
     Blockly.SNAP_RADIUS *= Bounce.scale.snapRadius;
-    
+
     Bounce.ballStart_ = [];
     Bounce.ballX = [];
     Bounce.ballY = [];
@@ -2336,7 +2336,7 @@ Bounce.init = function(config) {
     Bounce.paddleFinishCount = 0;
     Bounce.defaultBallSpeed = level.ballSpeed || tiles.DEFAULT_BALL_SPEED;
     Bounce.defaultBallDir = level.ballDirection || tiles.DEFAULT_BALL_DIRECTION;
-    
+
     // Locate the start and finish squares.
     for (var y = 0; y < Bounce.ROWS; y++) {
       for (var x = 0; x < Bounce.COLS; x++) {
@@ -2358,7 +2358,7 @@ Bounce.init = function(config) {
         }
       }
     }
-    
+
     Bounce.originalBallCount = Bounce.ballCount;
 
     drawMap();
@@ -2419,10 +2419,7 @@ Bounce.clearEventHandlersKillTickLoop = function() {
   }
   Bounce.intervalId = 0;
   // Kill all tasks.
-  for (var i = 0; i < Bounce.pidList.length; i++) {
-    window.clearTimeout(Bounce.pidList[i]);
-  }
-  Bounce.pidList = [];
+  timeoutList.clearTimeouts();
 };
 
 /**
@@ -2453,8 +2450,7 @@ Bounce.playSoundAndResetBall = function(i) {
  */
 Bounce.launchBall = function(i) {
   Bounce.ballFlags[i] |= Bounce.BallFlags.LAUNCHING;
-  Bounce.pidList.push(
-      window.setTimeout(delegate(this, Bounce.playSoundAndResetBall, i), 3000));
+  timeoutList.setTimeout(delegate(this, Bounce.playSoundAndResetBall, i), 3000);
 };
 
 /**
@@ -2475,7 +2471,7 @@ Bounce.resetBall = function(i, options) {
                         Bounce.defaultBallDir;
   Bounce.ballSpeed[i] = Bounce.currentBallSpeed;
   Bounce.ballFlags[i] = 0;
-  
+
   Bounce.displayBall(i, Bounce.ballX[i], Bounce.ballY[i]);
 };
 
@@ -2497,7 +2493,7 @@ BlocklyApps.reset = function(first) {
     var softButtonsCell = document.getElementById('soft-buttons');
     softButtonsCell.className = 'soft-buttons-' + softButtonCount;
   }
-  
+
   // Reset the score.
   Bounce.playerScore = 0;
   Bounce.opponentScore = 0;
@@ -2519,12 +2515,12 @@ BlocklyApps.reset = function(first) {
   for (i = 0; i < Bounce.ballCount; i++) {
     Bounce.resetBall(i, {});
   }
-  
+
   // Move Paddle into position.
   Bounce.paddleX = Bounce.paddleStart_.x;
   Bounce.paddleY = Bounce.paddleStart_.y;
   Bounce.paddleSpeed = tiles.DEFAULT_PADDLE_SPEED;
-  
+
   Bounce.displayPaddle(Bounce.paddleX, Bounce.paddleY);
 
   var svg = document.getElementById('svgBounce');
@@ -2624,7 +2620,7 @@ BlocklyApps.runButtonClick = function() {
   BlocklyApps.reset(false);
   BlocklyApps.attempts++;
   Bounce.execute();
-  
+
   if (level.freePlay && !onSharePage) {
     var shareCell = document.getElementById('share-cell');
     shareCell.className = 'share-cell-enabled';
@@ -2715,7 +2711,7 @@ Bounce.execute = function() {
       }
     }
   }
-  
+
   var codeWallCollided = Blockly.Generator.workspaceToCode(
                                     'JavaScript',
                                     'bounce_whenWallCollided');
@@ -2792,7 +2788,7 @@ Bounce.execute = function() {
                         {volume: 0.5});
 
   BlocklyApps.reset(false);
-  
+
   // Set event handlers and start the onTick timer
   Bounce.whenWallCollided = whenWallCollidedFunc;
   Bounce.whenBallInGoal = whenBallInGoalFunc;
@@ -2818,7 +2814,7 @@ Bounce.onPuzzleComplete = function() {
   // If we know they succeeded, mark levelComplete true
   // Note that we have not yet animated the succesful run
   BlocklyApps.levelComplete = (Bounce.result == ResultType.SUCCESS);
-  
+
   // If the current level is a free play, always return the free play
   // result type
   if (level.freePlay) {
@@ -2832,22 +2828,22 @@ Bounce.onPuzzleComplete = function() {
   } else {
     BlocklyApps.playAudio('failure', {volume : 0.5});
   }
-  
+
   if (level.editCode) {
     Bounce.testResults = BlocklyApps.levelComplete ?
       BlocklyApps.TestResults.ALL_PASS :
       BlocklyApps.TestResults.TOO_FEW_BLOCKS_FAIL;
   }
-  
+
   if (level.failForOther1Star && !BlocklyApps.levelComplete) {
     Bounce.testResults = BlocklyApps.TestResults.OTHER_1_STAR_FAIL;
   }
-  
+
   var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
   var textBlocks = Blockly.Xml.domToText(xml);
-  
+
   Bounce.waitingForReport = true;
-  
+
   // Report result to server.
   BlocklyApps.report({
                      app: 'bounce',
@@ -2892,7 +2888,7 @@ Bounce.displayBall = function(i, x, y) {
                         x * Bounce.SQUARE_SIZE);
   ballIcon.setAttribute('y',
                         y * Bounce.SQUARE_SIZE + Bounce.BALL_Y_OFFSET);
-  
+
   var ballClipRect = document.getElementById('ballClipRect' + i);
   ballClipRect.setAttribute('x', x * Bounce.SQUARE_SIZE);
   ballClipRect.setAttribute('y', ballIcon.getAttribute('y'));
@@ -2909,7 +2905,7 @@ Bounce.displayPaddle = function(x, y) {
                           x * Bounce.SQUARE_SIZE);
   paddleIcon.setAttribute('y',
                           y * Bounce.SQUARE_SIZE + Bounce.PADDLE_Y_OFFSET);
-  
+
   var paddleClipRect = document.getElementById('paddleClipRect');
   paddleClipRect.setAttribute('x', x * Bounce.SQUARE_SIZE);
   paddleClipRect.setAttribute('y', paddleIcon.getAttribute('y'));
@@ -3055,7 +3051,7 @@ var checkFinished = function () {
     Bounce.result = ResultType.SUCCESS;
     return true;
   }
-  
+
   // if we have a failure condition, and it's been reached, we're done and failed
   if (level.goal && level.goal.failureCondition && level.goal.failureCondition()) {
     Bounce.result = ResultType.FAILURE;
@@ -3066,16 +3062,16 @@ var checkFinished = function () {
     Bounce.result = ResultType.SUCCESS;
     return true;
   }
-  
+
   if (Bounce.timedOut()) {
     Bounce.result = ResultType.FAILURE;
     return true;
   }
-  
+
   return false;
 };
 
-},{"../../locale/bg_bg/bounce":32,"../../locale/bg_bg/common":33,"../base":2,"../codegen":15,"../dom":16,"../feedback.js":17,"../skins":18,"../templates/page.html":26,"./api":5,"./controls.html":8,"./tiles":12,"./visualization.html":13}],8:[function(require,module,exports){
+},{"../../locale/bg_bg/bounce":33,"../../locale/bg_bg/common":34,"../base":2,"../codegen":15,"../dom":16,"../feedback.js":17,"../skins":18,"../templates/page.html":26,"../timeoutList":30,"./api":5,"./controls.html":8,"./tiles":12,"./visualization.html":13}],8:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -3096,7 +3092,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/bg_bg/bounce":32,"ejs":34}],9:[function(require,module,exports){
+},{"../../locale/bg_bg/bounce":33,"ejs":35}],9:[function(require,module,exports){
 /*jshint multistr: true */
 
 var Direction = require('./tiles').Direction;
@@ -3705,7 +3701,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":34}],14:[function(require,module,exports){
+},{"ejs":35}],14:[function(require,module,exports){
 var feedback = require('./feedback.js');
 var dom = require('./dom.js');
 var utils = require('./utils.js');
@@ -3735,7 +3731,7 @@ exports.builderForm = function(onAttemptCallback) {
   dialog.show({ backdrop: 'static' });
 };
 
-},{"./dom.js":16,"./feedback.js":17,"./templates/builder.html":20,"./utils.js":30,"url":44}],15:[function(require,module,exports){
+},{"./dom.js":16,"./feedback.js":17,"./templates/builder.html":20,"./utils.js":31,"url":45}],15:[function(require,module,exports){
 var INFINITE_LOOP_TRAP = '  BlocklyApps.checkTimeout();\n';
 var INFINITE_LOOP_TRAP_RE =
     new RegExp(INFINITE_LOOP_TRAP.replace(/\(.*\)/, '\\(.*\\)'), 'g');
@@ -4660,7 +4656,7 @@ var generateXMLForBlocks = function(blocks) {
 };
 
 
-},{"../locale/bg_bg/common":33,"./codegen":15,"./dom":16,"./templates/buttons.html":21,"./templates/code.html":22,"./templates/readonly.html":27,"./templates/showCode.html":28,"./templates/trophy.html":29,"./utils":30}],18:[function(require,module,exports){
+},{"../locale/bg_bg/common":34,"./codegen":15,"./dom":16,"./templates/buttons.html":21,"./templates/code.html":22,"./templates/readonly.html":27,"./templates/showCode.html":28,"./templates/trophy.html":29,"./utils":31}],18:[function(require,module,exports){
 // avatar: A 1029x51 set of 21 avatar images.
 
 exports.load = function(assetUrl, id) {
@@ -4926,7 +4922,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":34}],21:[function(require,module,exports){
+},{"ejs":35}],21:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4947,7 +4943,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/bg_bg/common":33,"ejs":34}],22:[function(require,module,exports){
+},{"../../locale/bg_bg/common":34,"ejs":35}],22:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4968,7 +4964,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":34}],23:[function(require,module,exports){
+},{"ejs":35}],23:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4989,7 +4985,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/bg_bg/common":33,"ejs":34}],24:[function(require,module,exports){
+},{"../../locale/bg_bg/common":34,"ejs":35}],24:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -5012,7 +5008,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/bg_bg/common":33,"ejs":34}],25:[function(require,module,exports){
+},{"../../locale/bg_bg/common":34,"ejs":35}],25:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -5033,7 +5029,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/bg_bg/common":33,"ejs":34}],26:[function(require,module,exports){
+},{"../../locale/bg_bg/common":34,"ejs":35}],26:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -5055,7 +5051,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/bg_bg/common":33,"ejs":34}],27:[function(require,module,exports){
+},{"../../locale/bg_bg/common":34,"ejs":35}],27:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -5077,7 +5073,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":34}],28:[function(require,module,exports){
+},{"ejs":35}],28:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -5098,7 +5094,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/bg_bg/common":33,"ejs":34}],29:[function(require,module,exports){
+},{"../../locale/bg_bg/common":34,"ejs":35}],29:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -5119,7 +5115,25 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":34}],30:[function(require,module,exports){
+},{"ejs":35}],30:[function(require,module,exports){
+var list = [];
+
+/**
+ * call setTimeout and track the returned id
+ */
+exports.setTimeout = function (fn, time) {
+  list.push(window.setTimeout(fn, time));
+};
+
+/**
+ * Clears all timeouts in our list and resets the list
+ */
+exports.clearTimeouts = function () {
+  list.forEach(window.clearTimeout);
+  list = [];
+};
+
+},{}],31:[function(require,module,exports){
 exports.shallowCopy = function(source) {
   var result = {};
   for (var prop in source) {
@@ -5161,7 +5175,7 @@ exports.mod = function(number, mod) {
   return ((number % mod) + mod) % mod;
 };
 
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 // Serializes an XML DOM node to a string.
 exports.serialize = function(node) {
   var serializer = new XMLSerializer();
@@ -5189,7 +5203,7 @@ exports.parseElement = function(text) {
   return element;
 };
 
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.bg=function(n){return n===1?"one":"other"}
 exports.bounceBall = function(d){return "bounce ball"};
 
@@ -5428,7 +5442,7 @@ exports.whileTooltip = function(d){return "Повтори заградените
 exports.yes = function(d){return "Да"};
 
 
-},{"messageformat":45}],33:[function(require,module,exports){
+},{"messageformat":46}],34:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.bg=function(n){return n===1?"one":"other"}
 exports.blocklyMessage = function(d){return "Блокли"};
 
@@ -5555,7 +5569,7 @@ exports.signup = function(d){return "Регистрация във встъпи�
 exports.hintHeader = function(d){return "Here's a tip:"};
 
 
-},{"messageformat":45}],34:[function(require,module,exports){
+},{"messageformat":46}],35:[function(require,module,exports){
 
 /*!
  * EJS
@@ -5914,7 +5928,7 @@ if (require.extensions) {
   });
 }
 
-},{"./filters":35,"./utils":36,"fs":37,"path":39}],35:[function(require,module,exports){
+},{"./filters":36,"./utils":37,"fs":38,"path":40}],36:[function(require,module,exports){
 /*!
  * EJS - Filters
  * Copyright(c) 2010 TJ Holowaychuk <tj@vision-media.ca>
@@ -6117,7 +6131,7 @@ exports.json = function(obj){
   return JSON.stringify(obj);
 };
 
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 
 /*!
  * EJS
@@ -6143,9 +6157,9 @@ exports.escape = function(html){
 };
  
 
-},{}],37:[function(require,module,exports){
-
 },{}],38:[function(require,module,exports){
+
+},{}],39:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -6200,7 +6214,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -6428,7 +6442,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require("/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":38}],40:[function(require,module,exports){
+},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":39}],41:[function(require,module,exports){
 (function (global){
 /*! http://mths.be/punycode v1.2.4 by @mathias */
 ;(function(root) {
@@ -6939,7 +6953,7 @@ var substr = 'ab'.substr(-1) === 'b'
 }(this));
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -7025,7 +7039,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],42:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -7112,13 +7126,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],43:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":41,"./encode":42}],44:[function(require,module,exports){
+},{"./decode":42,"./encode":43}],45:[function(require,module,exports){
 /*jshint strict:true node:true es5:true onevar:true laxcomma:true laxbreak:true eqeqeq:true immed:true latedef:true*/
 (function () {
   "use strict";
@@ -7751,7 +7765,7 @@ function parseHost(host) {
 
 }());
 
-},{"punycode":40,"querystring":43}],45:[function(require,module,exports){
+},{"punycode":41,"querystring":44}],46:[function(require,module,exports){
 /**
  * messageformat.js
  *

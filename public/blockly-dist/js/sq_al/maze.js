@@ -874,7 +874,7 @@ var getIdealBlockNumberMsg = function() {
       msg.infinity() : BlocklyApps.IDEAL_BLOCK_NUM;
 };
 
-},{"../locale/sq_al/common":40,"./builder":5,"./dom":7,"./feedback.js":8,"./slider":27,"./templates/buttons.html":29,"./templates/instructions.html":31,"./templates/learn.html":32,"./templates/makeYourOwn.html":33,"./utils":38,"./xml":39}],3:[function(require,module,exports){
+},{"../locale/sq_al/common":41,"./builder":5,"./dom":7,"./feedback.js":8,"./slider":27,"./templates/buttons.html":29,"./templates/instructions.html":31,"./templates/learn.html":32,"./templates/makeYourOwn.html":33,"./utils":39,"./xml":40}],3:[function(require,module,exports){
 exports.createToolbox = function(blocks) {
   return '<xml id="toolbox" style="display: none;">' + blocks + '</xml>';
 };
@@ -950,7 +950,7 @@ exports.builderForm = function(onAttemptCallback) {
   dialog.show({ backdrop: 'static' });
 };
 
-},{"./dom.js":7,"./feedback.js":8,"./templates/builder.html":28,"./utils.js":38,"url":52}],6:[function(require,module,exports){
+},{"./dom.js":7,"./feedback.js":8,"./templates/builder.html":28,"./utils.js":39,"url":53}],6:[function(require,module,exports){
 var INFINITE_LOOP_TRAP = '  BlocklyApps.checkTimeout();\n';
 var INFINITE_LOOP_TRAP_RE =
     new RegExp(INFINITE_LOOP_TRAP.replace(/\(.*\)/, '\\(.*\\)'), 'g');
@@ -1875,7 +1875,7 @@ var generateXMLForBlocks = function(blocks) {
 };
 
 
-},{"../locale/sq_al/common":40,"./codegen":6,"./dom":7,"./templates/buttons.html":29,"./templates/code.html":30,"./templates/readonly.html":35,"./templates/showCode.html":36,"./templates/trophy.html":37,"./utils":38}],9:[function(require,module,exports){
+},{"../locale/sq_al/common":41,"./codegen":6,"./dom":7,"./templates/buttons.html":29,"./templates/code.html":30,"./templates/readonly.html":35,"./templates/showCode.html":36,"./templates/trophy.html":37,"./utils":39}],9:[function(require,module,exports){
 // Functions for checking required blocks.
 
 /**
@@ -2576,7 +2576,7 @@ exports.install = function(blockly, skin) {
 
 };
 
-},{"../../locale/sq_al/maze":41,"../codegen":6}],12:[function(require,module,exports){
+},{"../../locale/sq_al/maze":42,"../codegen":6}],12:[function(require,module,exports){
 var levelBase = require('../level_base');
 var Direction = require('./tiles').Direction;
 var msg = require('../../locale/sq_al/maze');
@@ -4077,7 +4077,7 @@ module.exports = {
   }
 };
 
-},{"../../locale/sq_al/maze":41,"../level_base":9,"./karelStartBlocks.xml":13,"./tiles":20,"./toolboxes/karel1.xml":21,"./toolboxes/karel2.xml":22,"./toolboxes/karel3.xml":23}],13:[function(require,module,exports){
+},{"../../locale/sq_al/maze":42,"../level_base":9,"./karelStartBlocks.xml":13,"./tiles":20,"./toolboxes/karel1.xml":21,"./toolboxes/karel2.xml":22,"./toolboxes/karel3.xml":23}],13:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4109,7 +4109,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/sq_al/maze":41,"ejs":42}],14:[function(require,module,exports){
+},{"../../locale/sq_al/maze":42,"ejs":43}],14:[function(require,module,exports){
 var Direction = require('./tiles').Direction;
 var karelLevels = require('./karelLevels');
 var reqBlocks = require('./requiredBlocks');
@@ -4862,7 +4862,7 @@ var initWallMap = function() {
 /**
  * PIDs of animation tasks currently executing.
  */
-Maze.pidList = [];
+var timeoutList = require('../timeoutList');
 
 // Map each possible shape to a sprite.
 // Input: Binary string representing Centre/North/West/South/East squares.
@@ -5202,7 +5202,7 @@ Maze.init = function(config) {
 
     Maze.start_ = undefined;
     Maze.finish_ = undefined;
-    
+
     // Locate the start and finish squares.
     for (var y = 0; y < Maze.ROWS; y++) {
       for (var x = 0; x < Maze.COLS; x++) {
@@ -5400,10 +5400,7 @@ var updatePegmanAnimation = function(options) {
 BlocklyApps.reset = function(first) {
   var i;
   // Kill all tasks.
-  for (i = 0; i < Maze.pidList.length; i++) {
-    window.clearTimeout(Maze.pidList[i]);
-  }
-  Maze.pidList = [];
+  timeoutList.clearTimeouts();
 
   // Move Pegman into position.
   Maze.pegmanX = Maze.start_.x;
@@ -5412,12 +5409,12 @@ BlocklyApps.reset = function(first) {
   if (first) {
     Maze.pegmanD = Maze.startDirection + 1;
     Maze.scheduleFinish(false);
-    Maze.pidList.push(window.setTimeout(function() {
+    timeoutList.setTimeout(function() {
       stepSpeed = 100;
       Maze.schedule([Maze.pegmanX, Maze.pegmanY, tiles.direction4to16(Maze.pegmanD)],
                     [Maze.pegmanX, Maze.pegmanY, tiles.direction4to16(Maze.pegmanD + TurnDirection.LEFT)]);
       Maze.pegmanD++;
-    }, stepSpeed * 5));
+    }, stepSpeed * 5);
   } else {
     Maze.pegmanD = Maze.startDirection;
     Maze.displayPegman(Maze.pegmanX, Maze.pegmanY, tiles.direction4to16(Maze.pegmanD));
@@ -5700,7 +5697,7 @@ Maze.execute = function() {
   // Speeding up specific levels
   var scaledStepSpeed =
       stepSpeed * Maze.scale.stepSpeed * skin.movePegmanAnimationSpeedScale;
-  Maze.pidList.push(window.setTimeout(Maze.animate,scaledStepSpeed));
+  timeoutList.setTimeout(Maze.animate, scaledStepSpeed);
 };
 
 /**
@@ -5708,7 +5705,7 @@ Maze.execute = function() {
  */
 Maze.animate = function() {
   // All tasks should be complete now.  Clean up the PID list.
-  Maze.pidList = [];
+  timeoutList.clearTimeouts();
 
   var action = BlocklyApps.log.shift();
   if (!action) {
@@ -5779,9 +5776,9 @@ Maze.animate = function() {
           Maze.scheduleFinish(true);
           break;
         default:
-          Maze.pidList.push(window.setTimeout(function() {
+          timeoutList.setTimeout(function() {
             BlocklyApps.playAudio('failure', {volume: 0.5});
-          }, stepSpeed));
+          }, stepSpeed);
           break;
       }
       break;
@@ -5802,7 +5799,7 @@ Maze.animate = function() {
   // Speeding up specific levels
   var scaledStepSpeed =
       stepSpeed * Maze.scale.stepSpeed * skin.movePegmanAnimationSpeedScale;
-  Maze.pidList.push(window.setTimeout(Maze.animate, scaledStepSpeed));
+  timeoutList.setTimeout(Maze.animate, scaledStepSpeed);
 };
 
 Maze.animatedMove = function (direction) {
@@ -5823,7 +5820,7 @@ Maze.animatedMove = function (direction) {
  */
 Maze.schedule = function(startPos, endPos) {
   function updateMoveFrame(frameIdx) {
-    Maze.pidList.push(window.setTimeout(function() {
+    timeoutList.setTimeout(function() {
       pegmanIcon.setAttribute('visibility', 'hidden');
       updatePegmanAnimation({
         idStr: 'move',
@@ -5832,7 +5829,7 @@ Maze.schedule = function(startPos, endPos) {
         direction: direction,
         rowIdx: frameIdx
       });
-    }, stepSpeed * 6 / numFrames * frameIdx));
+    }, stepSpeed * 6 / numFrames * frameIdx);
   }
 
   var deltaX, deltaY, deltaDirection, numFrames;
@@ -5854,12 +5851,12 @@ Maze.schedule = function(startPos, endPos) {
     }
 
     // Hide movePegman and set pegman to the end position.
-    Maze.pidList.push(window.setTimeout(function() {
+    timeoutList.setTimeout(function() {
       movePegmanIcon.setAttribute('visibility', 'hidden');
       pegmanIcon.setAttribute('visibility', 'visible');
       Maze.displayPegman(endPos[0], endPos[1],
                          tiles.constrainDirection16(endPos[2]));
-    }, stepSpeed * 6 / numFrames * frameIdx));
+    }, stepSpeed * 6 / numFrames * frameIdx);
   } else {
     numFrames = 4;
     deltaX = (endPos[0] - startPos[0]) / numFrames;
@@ -5868,22 +5865,22 @@ Maze.schedule = function(startPos, endPos) {
     Maze.displayPegman(startPos[0] + deltaX,
                        startPos[1] + deltaY,
                        tiles.constrainDirection16(startPos[2] + deltaDirection));
-    Maze.pidList.push(window.setTimeout(function() {
+    timeoutList.setTimeout(function() {
         Maze.displayPegman(
             startPos[0] + deltaX * 2,
             startPos[1] + deltaY * 2,
             tiles.constrainDirection16(startPos[2] + deltaDirection * 2));
-    }, stepSpeed));
-    Maze.pidList.push(window.setTimeout(function() {
+    }, stepSpeed);
+    timeoutList.setTimeout(function() {
         Maze.displayPegman(
             startPos[0] + deltaX * 3,
             startPos[1] + deltaY * 3,
             tiles.constrainDirection16(startPos[2] + deltaDirection * 3));
-    }, stepSpeed * 2));
-      Maze.pidList.push(window.setTimeout(function() {
+    }, stepSpeed * 2);
+      timeoutList.setTimeout(function() {
           Maze.displayPegman(endPos[0], endPos[1],
                              tiles.constrainDirection16(endPos[2]));
-    }, stepSpeed * 3));
+    }, stepSpeed * 3);
   }
 
   if (skin.approachingGoalAnimation) {
@@ -5959,7 +5956,7 @@ Maze.scheduleFail = function(forward) {
 
     // Play the animation of hitting the wall
     if (skin.hittingWallAnimation) {
-      Maze.pidList.push(window.setTimeout(function() {
+      timeoutList.setTimeout(function() {
         var wallAnimationIcon = document.getElementById('wallAnimation');
         wallAnimationIcon.setAttribute(
             'x',
@@ -5973,24 +5970,24 @@ Maze.scheduleFail = function(forward) {
         wallAnimationIcon.setAttributeNS(
           'http://www.w3.org/1999/xlink', 'xlink:href',
           skin.hittingWallAnimation);
-      }, stepSpeed / 2));
+      }, stepSpeed / 2);
     }
-    Maze.pidList.push(window.setTimeout(function() {
+    timeoutList.setTimeout(function() {
       Maze.displayPegman(Maze.pegmanX,
                          Maze.pegmanY,
                          direction16);
-    }, stepSpeed));
-    Maze.pidList.push(window.setTimeout(function() {
+    }, stepSpeed);
+    timeoutList.setTimeout(function() {
       Maze.displayPegman(Maze.pegmanX + deltaX / 4,
                          Maze.pegmanY + deltaY / 4,
                          direction16);
       BlocklyApps.playAudio('failure', {volume: 0.5});
-    }, stepSpeed * 2));
-    Maze.pidList.push(window.setTimeout(function() {
+    }, stepSpeed * 2);
+    timeoutList.setTimeout(function() {
       Maze.displayPegman(Maze.pegmanX, Maze.pegmanY, direction16);
-    }, stepSpeed * 3));
+    }, stepSpeed * 3);
     if (skin.wallPegmanAnimation) {
-      Maze.pidList.push(window.setTimeout(function() {
+      timeoutList.setTimeout(function() {
         var pegmanIcon = document.getElementById('pegman');
         pegmanIcon.setAttribute('visibility', 'hidden');
         updatePegmanAnimation({
@@ -5999,7 +5996,7 @@ Maze.scheduleFail = function(forward) {
           col: Maze.pegmanX,
           direction: Maze.pegmanD
         });
-      }, stepSpeed * 4));
+      }, stepSpeed * 4);
     }
   } else if (squareType == SquareType.OBSTACLE) {
     // Play the sound
@@ -6011,18 +6008,18 @@ Maze.scheduleFail = function(forward) {
     obsIcon.setAttributeNS(
         'http://www.w3.org/1999/xlink', 'xlink:href',
         skin.obstacleAnimation);
-    Maze.pidList.push(window.setTimeout(function() {
+    timeoutList.setTimeout(function() {
       Maze.displayPegman(Maze.pegmanX + deltaX / 2,
                          Maze.pegmanY + deltaY / 2,
                          direction16);
-    }, stepSpeed));
+    }, stepSpeed);
 
     // Replace the objects around obstacles with broken objects
     if (skin.largerObstacleAnimationTiles) {
-      Maze.pidList.push(window.setTimeout(function() {
+      timeoutList.setTimeout(function() {
         Maze.updateSurroundingTiles(
             targetY, targetX, skin.largerObstacleAnimationTiles);
-      }, stepSpeed));
+      }, stepSpeed);
     }
 
     // Remove pegman
@@ -6030,13 +6027,13 @@ Maze.scheduleFail = function(forward) {
       var svgMaze = document.getElementById('svgMaze');
       var pegmanIcon = document.getElementById('pegman');
 
-      Maze.pidList.push(window.setTimeout(function() {
+      timeoutList.setTimeout(function() {
         pegmanIcon.setAttribute('visibility', 'hidden');
-      }, stepSpeed * 2));
+      }, stepSpeed * 2);
     }
-    Maze.pidList.push(window.setTimeout(function() {
+    timeoutList.setTimeout(function() {
       BlocklyApps.playAudio('failure', {volume: 0.5});
-    }, stepSpeed));
+    }, stepSpeed);
   }
 };
 
@@ -6087,21 +6084,21 @@ Maze.scheduleFinish = function(sound) {
     BlocklyApps.playAudio('win', {volume: 0.5});
   }
   stepSpeed = 150;  // Slow down victory animation a bit.
-  Maze.pidList.push(window.setTimeout(function() {
+  timeoutList.setTimeout(function() {
     Maze.displayPegman(Maze.pegmanX, Maze.pegmanY, 18);
-  }, stepSpeed));
-  Maze.pidList.push(window.setTimeout(function() {
+  }, stepSpeed);
+  timeoutList.setTimeout(function() {
     Maze.displayPegman(Maze.pegmanX, Maze.pegmanY, 20);
-  }, stepSpeed * 2));
-  Maze.pidList.push(window.setTimeout(function() {
+  }, stepSpeed * 2);
+  timeoutList.setTimeout(function() {
     Maze.displayPegman(Maze.pegmanX, Maze.pegmanY, 18);
-  }, stepSpeed * 3));
-  Maze.pidList.push(window.setTimeout(function() {
+  }, stepSpeed * 3);
+  timeoutList.setTimeout(function() {
     Maze.displayPegman(Maze.pegmanX, Maze.pegmanY, 20);
-  }, stepSpeed * 4));
-  Maze.pidList.push(window.setTimeout(function() {
+  }, stepSpeed * 4);
+  timeoutList.setTimeout(function() {
     Maze.displayPegman(Maze.pegmanX, Maze.pegmanY, direction16);
-  }, stepSpeed * 5));
+  }, stepSpeed * 5);
 };
 
 /**
@@ -6206,12 +6203,12 @@ Maze.scheduleLook = function(d) {
  * @param {number} delay Milliseconds to wait before making wave appear.
  */
 Maze.scheduleLookStep = function(path, delay) {
-  Maze.pidList.push(window.setTimeout(function() {
+  timeoutList.setTimeout(function() {
     path.style.display = 'inline';
     window.setTimeout(function() {
       path.style.display = 'none';
     }, stepSpeed * 2);
-  }, delay));
+  }, delay);
 };
 
 var atFinish = function() {
@@ -6239,7 +6236,7 @@ Maze.checkSuccess = function() {
   return false;
 };
 
-},{"../../locale/sq_al/common":40,"../../locale/sq_al/maze":41,"../base":2,"../codegen":6,"../dom":7,"../feedback.js":8,"../skins":26,"../templates/page.html":34,"./api":10,"./tiles":20,"./visualization.html":25}],17:[function(require,module,exports){
+},{"../../locale/sq_al/common":41,"../../locale/sq_al/maze":42,"../base":2,"../codegen":6,"../dom":7,"../feedback.js":8,"../skins":26,"../templates/page.html":34,"../timeoutList":38,"./api":10,"./tiles":20,"./visualization.html":25}],17:[function(require,module,exports){
 var MOVE_FORWARD = {'test': 'moveForward', 'type': 'maze_moveForward'};
 var TURN_LEFT = {'test': 'turnLeft', 'type': 'maze_turn', 'titles': {'DIR': 'turnLeft'}};
 var TURN_RIGHT = {'test': 'turnRight', 'type': 'maze_turn', 'titles': {'DIR': 'turnRight'}};
@@ -6403,7 +6400,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":42}],20:[function(require,module,exports){
+},{"ejs":43}],20:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -6475,7 +6472,7 @@ Tiles.constrainDirection16 = function(d) {
   return utils.mod(d, 16);
 };
 
-},{"../utils":38}],21:[function(require,module,exports){
+},{"../utils":39}],21:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6496,7 +6493,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":42}],22:[function(require,module,exports){
+},{"ejs":43}],22:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6522,7 +6519,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../../locale/sq_al/common":40,"../../../locale/sq_al/maze":41,"ejs":42}],23:[function(require,module,exports){
+},{"../../../locale/sq_al/common":41,"../../../locale/sq_al/maze":42,"ejs":43}],23:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6556,7 +6553,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../../locale/sq_al/common":40,"ejs":42}],24:[function(require,module,exports){
+},{"../../../locale/sq_al/common":41,"ejs":43}],24:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6577,7 +6574,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":42}],25:[function(require,module,exports){
+},{"ejs":43}],25:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6598,7 +6595,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":42}],26:[function(require,module,exports){
+},{"ejs":43}],26:[function(require,module,exports){
 // avatar: A 1029x51 set of 21 avatar images.
 
 exports.load = function(assetUrl, id) {
@@ -6864,7 +6861,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":42}],29:[function(require,module,exports){
+},{"ejs":43}],29:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6885,7 +6882,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/sq_al/common":40,"ejs":42}],30:[function(require,module,exports){
+},{"../../locale/sq_al/common":41,"ejs":43}],30:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6906,7 +6903,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":42}],31:[function(require,module,exports){
+},{"ejs":43}],31:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6927,7 +6924,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/sq_al/common":40,"ejs":42}],32:[function(require,module,exports){
+},{"../../locale/sq_al/common":41,"ejs":43}],32:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6950,7 +6947,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/sq_al/common":40,"ejs":42}],33:[function(require,module,exports){
+},{"../../locale/sq_al/common":41,"ejs":43}],33:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6971,7 +6968,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/sq_al/common":40,"ejs":42}],34:[function(require,module,exports){
+},{"../../locale/sq_al/common":41,"ejs":43}],34:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6993,7 +6990,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/sq_al/common":40,"ejs":42}],35:[function(require,module,exports){
+},{"../../locale/sq_al/common":41,"ejs":43}],35:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -7015,7 +7012,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":42}],36:[function(require,module,exports){
+},{"ejs":43}],36:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -7036,7 +7033,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/sq_al/common":40,"ejs":42}],37:[function(require,module,exports){
+},{"../../locale/sq_al/common":41,"ejs":43}],37:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -7057,7 +7054,25 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":42}],38:[function(require,module,exports){
+},{"ejs":43}],38:[function(require,module,exports){
+var list = [];
+
+/**
+ * call setTimeout and track the returned id
+ */
+exports.setTimeout = function (fn, time) {
+  list.push(window.setTimeout(fn, time));
+};
+
+/**
+ * Clears all timeouts in our list and resets the list
+ */
+exports.clearTimeouts = function () {
+  list.forEach(window.clearTimeout);
+  list = [];
+};
+
+},{}],39:[function(require,module,exports){
 exports.shallowCopy = function(source) {
   var result = {};
   for (var prop in source) {
@@ -7099,7 +7114,7 @@ exports.mod = function(number, mod) {
   return ((number % mod) + mod) % mod;
 };
 
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 // Serializes an XML DOM node to a string.
 exports.serialize = function(node) {
   var serializer = new XMLSerializer();
@@ -7127,7 +7142,7 @@ exports.parseElement = function(text) {
   return element;
 };
 
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.sq=function(n){return n===1?"one":"other"}
 exports.blocklyMessage = function(d){return "Blockly"};
 
@@ -7254,7 +7269,7 @@ exports.signup = function(d){return "Sign up for the intro course"};
 exports.hintHeader = function(d){return "Here's a tip:"};
 
 
-},{"messageformat":53}],41:[function(require,module,exports){
+},{"messageformat":54}],42:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.sq=function(n){return n===1?"one":"other"}
 exports.avoidCowAndRemove = function(d){return "shmang lopen dhe hiq 1"};
 
@@ -7357,7 +7372,7 @@ exports.whileTooltip = function(d){return "Perserit veprimet e brendshme derisa 
 exports.yes = function(d){return "Po"};
 
 
-},{"messageformat":53}],42:[function(require,module,exports){
+},{"messageformat":54}],43:[function(require,module,exports){
 
 /*!
  * EJS
@@ -7716,7 +7731,7 @@ if (require.extensions) {
   });
 }
 
-},{"./filters":43,"./utils":44,"fs":45,"path":47}],43:[function(require,module,exports){
+},{"./filters":44,"./utils":45,"fs":46,"path":48}],44:[function(require,module,exports){
 /*!
  * EJS - Filters
  * Copyright(c) 2010 TJ Holowaychuk <tj@vision-media.ca>
@@ -7919,7 +7934,7 @@ exports.json = function(obj){
   return JSON.stringify(obj);
 };
 
-},{}],44:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 
 /*!
  * EJS
@@ -7945,9 +7960,9 @@ exports.escape = function(html){
 };
  
 
-},{}],45:[function(require,module,exports){
-
 },{}],46:[function(require,module,exports){
+
+},{}],47:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -8002,7 +8017,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],47:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -8230,7 +8245,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require("/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":46}],48:[function(require,module,exports){
+},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":47}],49:[function(require,module,exports){
 (function (global){
 /*! http://mths.be/punycode v1.2.4 by @mathias */
 ;(function(root) {
@@ -8741,7 +8756,7 @@ var substr = 'ab'.substr(-1) === 'b'
 }(this));
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],49:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -8827,7 +8842,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],50:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -8914,13 +8929,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],51:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":49,"./encode":50}],52:[function(require,module,exports){
+},{"./decode":50,"./encode":51}],53:[function(require,module,exports){
 /*jshint strict:true node:true es5:true onevar:true laxcomma:true laxbreak:true eqeqeq:true immed:true latedef:true*/
 (function () {
   "use strict";
@@ -9553,7 +9568,7 @@ function parseHost(host) {
 
 }());
 
-},{"punycode":48,"querystring":51}],53:[function(require,module,exports){
+},{"punycode":49,"querystring":52}],54:[function(require,module,exports){
 /**
  * messageformat.js
  *
