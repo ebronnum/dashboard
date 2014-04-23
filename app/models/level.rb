@@ -7,7 +7,7 @@ class Level < ActiveRecord::Base
   belongs_to :user
   validates_length_of :name, within: 1..70
   validates_uniqueness_of :name, conditions: -> { where.not(user_id: nil) }
-  after_save :write_custom_levels_to_file if Rails.env.in?(["staging", "development"])
+  after_save :write_custom_levels_to_file if Rails.env == "staging"
   after_initialize :init
 
   def init
