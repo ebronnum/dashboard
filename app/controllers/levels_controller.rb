@@ -90,7 +90,8 @@ class LevelsController < ApplicationController
       render status: :not_acceptable, text: "There is a non integer value in the grid." and return
     end
 
-    @level = Level.create(level_params.merge(game: game, user: current_user, level_num: 'custom', skin: 'birds'))
+    skin = params[:type] == 'maze' ? 'birds' : 'farmer'
+    @level = Level.create(level_params.merge(game: game, user: current_user, level_num: 'custom', skin: skin))
     @level.properties.update(maze)
     @level.save!
     redirect_to game_level_url(game, @level)
