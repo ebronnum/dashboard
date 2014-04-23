@@ -31,6 +31,7 @@ namespace :seed do
       Concept.create!(id: concept_id += 1, name: 'loop_for', video: Video.find_by_key('loop_for'))
       Concept.create!(id: concept_id += 1, name: 'function', video: Video.find_by_key('function'))
       Concept.create!(id: concept_id += 1, name: 'parameters', video: Video.find_by_key('parameters'))
+      Concept.create!(id: concept_id += 1, name: 'events')
     end
   end
   task games: :environment do
