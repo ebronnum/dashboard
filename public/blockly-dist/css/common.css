@@ -31,12 +31,19 @@ html[dir="RTL"] .farSide {
   bottom: 10px;
   margin-left: 415px; }
 
-.show-code-div {
-  margin-top: 5px;
-  margin-bottom: 5px; }
+#show-code-button {
+  background-color: #b9bf15;
+  border-color: #b9bf15;
+  padding: 2px 8px;
+  margin: -5px 0 0 6px;
+  font-size: small;
+  color: white; }
   @media screen and (max-device-width: 540px) {
-    .show-code-div {
+    #show-code-button {
       display: none; } }
+
+.share-code-spacer {
+  min-height: 25px; }
 
 #codeTextbox {
   position: absolute;
@@ -208,11 +215,6 @@ input[type="radio"] {
   color: #7e5ba0;
   font-weight: bold; }
 
-.linesOfCodeMsg {
-  font-size: 20px;
-  line-height: normal;
-  color: #5a6a73; }
-
 .shareDrawingMsg {
   margin-top: 25px;
   font-size: 20px;
@@ -341,7 +343,8 @@ input[type="radio"] {
   .generated-code-container .generatedCodeMessage {
     font-size: 14px;
     line-height: inherit;
-    color: #5b6770; }
+    color: #5b6770;
+    margin-bottom: 10px; }
     .generated-code-container .generatedCodeMessage a {
       font-weight: bold;
       color: #7665a0; }
@@ -391,6 +394,11 @@ input[type="radio"] {
     .modal-content .feedback-callout .hint-image {
       float: right;
       width: 20%; }
+  .modal-content .lines-of-code-message {
+    font-size: 20px;
+    line-height: normal;
+    color: #5a6a73;
+    margin: 0 0 8px; }
 
 .yellow-background {
   background-color: #ffc459; }

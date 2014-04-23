@@ -1116,10 +1116,12 @@ exports.displayFeedback = function(options) {
   options.level = options.level || {};
   options.numTrophies = numTrophiesEarned(options);
 
+  var canContinue = exports.canContinueToNextLevel(options.feedbackType);
+  var displayShowCode = BlocklyApps.enableShowCode && canContinue;
   var feedback = document.createElement('div');
   var feedbackMessage = getFeedbackMessage(options);
   var sharingDiv = createSharingDiv(options);
-  var showCode = getShowCodeElement(options);
+  var showCode = displayShowCode ? getShowCodeElement(options) : null;
   var feedbackBlocks = new FeedbackBlocks(options);
 
   if (feedbackMessage) {
@@ -1135,10 +1137,14 @@ exports.displayFeedback = function(options) {
   if (sharingDiv) {
     feedback.appendChild(sharingDiv);
   }
+  if (options.showingSharing) {
+    var shareCodeSpacer = document.createElement('div');
+    shareCodeSpacer.className = "share-code-spacer";
+    feedback.appendChild(shareCodeSpacer);
+  }
   if (showCode) {
     feedback.appendChild(showCode);
   }
-  var canContinue = exports.canContinueToNextLevel(options.feedbackType);
   feedback.appendChild(getFeedbackButtons(
     options.feedbackType, options.level.showPreviousLevelButton));
 
@@ -1507,43 +1513,28 @@ var getTrophiesElement = function(options) {
 };
 
 var getShowCodeElement = function(options) {
-  if (exports.canContinueToNextLevel(options.feedbackType)) {
-    var linesWritten = exports.getNumBlocksUsed();
-    var showCodeDiv = document.createElement('div');
-    showCodeDiv.setAttribute('id', 'show-code');
-    var lines = document.createElement('span');
-    lines.className = 'linesOfCodeMsg';
-    lines.innerHTML = msg.numLinesOfCodeWritten({
-      numLines: linesWritten
-    });
-    if (options.response && options.response.total_lines &&
-        (options.response.total_lines !== linesWritten)) {
-      lines.innerHTML += '<br>' + msg.totalNumLinesOfCodeWritten({
-        numLines: options.response.total_lines
-      });
-    }
+  var showCodeDiv = document.createElement('div');
+  showCodeDiv.setAttribute('id', 'show-code');
 
-    var showCodeLink = document.createElement('div');
-    showCodeLink.className = 'show-code-div';
-    showCodeLink.innerHTML = require('./templates/showCode.html')();
-    var button = showCodeLink.querySelector('#show-code-button');
+  var numLinesWritten = exports.getNumBlocksUsed();
+  var shouldShowTotalLines =
+    (options.response &&
+      options.response.total_lines &&
+      (options.response.total_lines !== numLinesWritten));
+  var totalNumLinesWritten = shouldShowTotalLines ? options.response.total_lines : 0;
 
-    button.addEventListener('click', function() {
-      var codeDiv = getGeneratedCodeElement();
-      showCodeDiv.appendChild(codeDiv);
-      button.style.display = 'none';
-    });
+  showCodeDiv.innerHTML = require('./templates/showCode.html')({
+    numLinesWritten: numLinesWritten,
+    totalNumLinesWritten: totalNumLinesWritten
+  });
 
-    if (BlocklyApps.enableShowCode) {
-      showCodeDiv.appendChild(lines);
-      showCodeDiv.appendChild(showCodeLink);
-    } else if (options.showingSharing) {
-      // want a breaking line if this is a sharing dialog
-      lines.innerHTML = '<br>';
-      showCodeDiv.appendChild(lines);
-    }
-    return showCodeDiv;
-  }
+  var showCodeButton = showCodeDiv.querySelector('#show-code-button');
+  showCodeButton.addEventListener('click', function () {
+    showCodeDiv.appendChild(getGeneratedCodeElement());
+    showCodeButton.style.display = 'none';
+  });
+
+  return showCodeDiv;
 };
 
 /**
@@ -2373,7 +2364,7 @@ escape = escape || function (html){
 };
 var buf = [];
 with (locals || {}) { (function(){ 
- buf.push('');1; var msg = require('../../locale/eu_es/common'); ; buf.push('\n\n<a id="show-code-button" href="#">', escape((3,  msg.showGeneratedCode() )), '</a>\n'); })();
+ buf.push('');1; var msg = require('../../locale/eu_es/common'); ; buf.push('\n\n<p id="num-lines-of-code" class="lines-of-code-message">\n  ', escape((4,  msg.numLinesOfCodeWritten({ numLines: numLinesWritten }) )), '\n  <button id="show-code-button" href="#">\n    ', escape((6,  msg.showGeneratedCode() )), '\n  </button>\n</p>\n\n');10; if (totalNumLinesWritten !== 0) { ; buf.push('\n  <p id="total-num-lines-of-code" class="lines-of-code-message">\n    ', escape((12,  msg.totalNumLinesOfCodeWritten({ numLines: totalNumLinesWritten }) )), '\n  </p>\n');14; } ; buf.push('\n'); })();
 } 
 return buf.join('');
 };
