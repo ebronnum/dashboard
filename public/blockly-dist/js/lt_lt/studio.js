@@ -2149,9 +2149,9 @@ exports.setSprite = function (id, spriteIndex, value) {
   Studio.setSprite(spriteIndex, value);
 };
 
-exports.saySprite = function (id, numHandler, spriteIndex, text) {
+exports.saySprite = function (id, executionCtx, spriteIndex, text) {
   BlocklyApps.highlight(id);
-  Studio.saySprite(numHandler, spriteIndex, text);
+  Studio.saySprite(executionCtx, spriteIndex, text);
 };
 
 exports.setBackground = function (id, value) {
@@ -2174,9 +2174,9 @@ exports.move = function(id, spriteIndex, dir) {
   Studio.moveSingle(spriteIndex, dir);
 };
 
-exports.moveDistance = function(id, spriteIndex, dir, distance) {
+exports.moveDistance = function(id, executionCtx, spriteIndex, dir, distance) {
   BlocklyApps.highlight(id);
-  Studio.moveDistance(spriteIndex, dir, distance);
+  Studio.moveDistance(executionCtx, spriteIndex, dir, distance);
 };
 
 exports.incrementScore = function(id, player) {
@@ -2235,7 +2235,7 @@ exports.install = function(blockly, skin) {
   blockly.JavaScript = generator;
   
   generator.studio_eventHandlerPrologue = function() {
-    return 'var numHandler = Studio.acquireEventHandlerNum();\n\n';
+    return 'var executionCtx = Studio.acquireEventHandlerNum();\n\n';
   };
 
   blockly.Blocks.studio_spriteCount = 6;
@@ -2415,7 +2415,7 @@ exports.install = function(blockly, skin) {
         this.appendDummyInput()
           .appendTitle(new blockly.FieldDropdown(dropdownArray), 'SPRITE');
         this.appendDummyInput()
-          .appendTitle(msg.moveSeparator());
+          .appendTitle('\t');
       } else {
         this.appendDummyInput()
           .appendTitle(msg.moveSprite());
@@ -2461,7 +2461,7 @@ exports.install = function(blockly, skin) {
         this.appendDummyInput()
           .appendTitle(new blockly.FieldDropdown(dropdownArray), 'SPRITE');
         this.appendDummyInput()
-          .appendTitle(msg.moveSeparator());
+          .appendTitle('\t');
       } else {
         this.appendDummyInput()
           .appendTitle(msg.moveSprite());
@@ -2469,7 +2469,7 @@ exports.install = function(blockly, skin) {
       this.appendDummyInput()
         .appendTitle(new blockly.FieldDropdown(this.DIR), 'DIR');
       this.appendDummyInput()
-        .appendTitle(msg.moveSeparator());
+        .appendTitle('\t');
       this.appendDummyInput()
         .appendTitle(new blockly.FieldDropdown(this.DISTANCE), 'DISTANCE');
       this.setPreviousStatement(true);
@@ -2502,7 +2502,8 @@ exports.install = function(blockly, skin) {
 
   generator.studio_moveDistance = function() {
     // Generate JavaScript for moving.
-    return 'Studio.moveDistance(\'block_id_' + this.id + '\', ' +
+    return 'Studio.moveDistance(\'block_id_' + this.id +
+        '\', executionCtx || 0, ' +
         (this.getTitleValue('SPRITE') || '0') + ', ' +
         this.getTitleValue('DIR') + ', ' +
         this.getTitleValue('DISTANCE') + ');\n';
@@ -2732,7 +2733,8 @@ exports.install = function(blockly, skin) {
 
   generator.studio_saySprite = function() {
     // Generate JavaScript for saying.
-    return 'Studio.saySprite(\'block_id_' + this.id + '\', numHandler || 0, ' +
+    return 'Studio.saySprite(\'block_id_' + this.id +
+               '\', executionCtx || 0, ' +
                (this.getTitleValue('SPRITE') || '0') + ', ' +
                blockly.JavaScript.quote_(this.getTitleValue('TEXT')) + ');\n';
   };
@@ -2786,8 +2788,10 @@ return buf.join('');
 },{"../../locale/lt_lt/studio":34,"ejs":35}],15:[function(require,module,exports){
 /*jshint multistr: true */
 
+var blockUtils = require('../block_utils');
 var Direction = require('./tiles').Direction;
-var tb = require('../block_utils').createToolbox;
+var tb = blockUtils.createToolbox;
+var blockOfType = blockUtils.blockOfType;
 
 /*
  * Configuration for all levels.
@@ -2818,8 +2822,8 @@ module.exports = {
     },
     'timeoutFailureTick': 100,
     'toolbox':
-      tb('<block type="studio_moveDistance"><title name="DIR">1</title></block> \
-          <block type="studio_saySprite"></block>'),
+      tb('<block type="studio_moveDistance"><title name="DIR">1</title></block>' +
+         blockOfType('studio_saySprite')),
     'startBlocks':
      '<block type="studio_whenGameStarts" deletable="false" x="20" y="20"></block>'
   },
@@ -2842,10 +2846,151 @@ module.exports = {
     ],
     'timeoutFailureTick': 100,
     'toolbox':
-      tb('<block type="studio_moveDistance"><title name="DIR">1</title></block> \
-          <block type="studio_saySprite"></block>'),
+      tb('<block type="studio_moveDistance"><title name="DIR">1</title></block>' +
+         blockOfType('studio_saySprite')),
     'startBlocks':
      '<block type="studio_whenGameStarts" deletable="false" x="20" y="20"></block>'
+  },
+  '3': {
+    'requiredBlocks': [
+      [{'test': 'moveDistance', 'type': 'studio_moveDistance'}],
+      [{'test': 'saySprite', 'type': 'studio_saySprite'}]
+    ],
+    'scale': {
+      'snapRadius': 2
+    },
+    'map': [
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0,16, 0, 0,16, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0]
+    ],
+    'timeoutFailureTick': 200,
+    'toolbox':
+      tb('<block type="studio_moveDistance"><title name="DIR">1</title></block>' +
+         blockOfType('studio_saySprite')),
+    'startBlocks':
+     '<block type="studio_whenGameStarts" deletable="false" x="20" y="20"></block> \
+      <block type="studio_whenSpriteCollided" deletable="false" x="20" y="120"></block>'
+  },
+  '4': {
+    'requiredBlocks': [
+      [{'test': 'move', 'type': 'studio_move'}]
+    ],
+    'scale': {
+      'snapRadius': 2
+    },
+    'softButtons': [
+      'leftButton',
+      'rightButton',
+      'downButton',
+      'upButton'
+    ],
+    'map': [
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [1, 0, 0, 0, 0, 1, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0,16, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 1, 0, 0, 0, 0, 1, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0]
+    ],
+    'toolbox':
+      tb(blockOfType('studio_move') +
+         blockOfType('studio_saySprite')),
+    'startBlocks':
+     '<block type="studio_whenLeft" deletable="false" x="20" y="20"></block> \
+      <block type="studio_whenRight" deletable="false" x="180" y="20"></block> \
+      <block type="studio_whenUp" deletable="false" x="20" y="120"></block> \
+      <block type="studio_whenDown" deletable="false" x="180" y="120"></block>'
+  },
+  '5': {
+    'requiredBlocks': [
+      [{'test': 'moveDistance', 'type': 'studio_moveDistance'}]
+    ],
+    'scale': {
+      'snapRadius': 2
+    },
+    'map': [
+      [0, 0, 0, 0, 1, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0,16, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 1, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0]
+    ],
+    'spriteStartingImage': 1,
+    'timeoutFailureTick': 200,
+    'toolbox':
+      tb(blockOfType('studio_moveDistance') +
+         blockOfType('studio_saySprite')),
+    'startBlocks':
+     '<block type="studio_whenGameIsRunning" deletable="false" x="20" y="20"></block>'
+  },
+  '6': {
+    'requiredBlocks': [
+      [{'test': 'move', 'type': 'studio_move'}],
+      [{'test': 'saySprite', 'type': 'studio_saySprite'}]
+    ],
+    'scale': {
+      'snapRadius': 2
+    },
+    'softButtons': [
+      'leftButton',
+      'rightButton',
+      'downButton',
+      'upButton'
+    ],
+    'map': [
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [16,0, 0, 0,16, 0, 1, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0]
+    ],
+    'toolbox':
+      tb(blockOfType('studio_moveDistance') +
+         blockOfType('studio_move') +
+         blockOfType('studio_saySprite')),
+    'minWorkspaceHeight': 600,
+    'startBlocks':
+     '<block type="studio_whenLeft" deletable="false" x="20" y="20"> \
+        <next><block type="studio_move"> \
+                <title name="DIR">3</title></block> \
+        </next></block> \
+      <block type="studio_whenRight" deletable="false" x="20" y="100"> \
+        <next><block type="studio_move"> \
+                <title name="DIR">1</title></block> \
+        </next></block> \
+      <block type="studio_whenUp" deletable="false" x="20" y="180"> \
+        <next><block type="studio_move"> \
+                <title name="DIR">0</title></block> \
+        </next></block> \
+      <block type="studio_whenDown" deletable="false" x="20" y="260"> \
+        <next><block type="studio_move"> \
+                <title name="DIR">2</title></block> \
+        </next></block> \
+      <block type="studio_whenGameIsRunning" deletable="false" x="20" y="340"> \
+        <next><block type="studio_moveDistance"> \
+                <title name="SPRITE">1</title> \
+                <title name="DISTANCE">400</title> \
+          <next><block type="studio_moveDistance"> \
+                  <title name="SPRITE">1</title> \
+                  <title name="DISTANCE">400</title> \
+                  <title name="DIR">2</title></block> \
+          </next></block> \
+      </next></block> \
+      <block type="studio_whenSpriteCollided" deletable="false" x="20" y="440"></block>'
   },
   '99': {
     'requiredBlocks': [
@@ -2872,17 +3017,17 @@ module.exports = {
       [0, 0, 0, 0, 0, 0, 0, 0]
     ],
     'toolbox':
-      tb('<block type="studio_whenSpriteClicked"></block> \
-          <block type="studio_whenSpriteCollided"></block> \
-          <block type="studio_whenGameIsRunning"></block> \
-          <block type="studio_move"></block> \
-          <block type="studio_moveDistance"></block> \
-          <block type="studio_playSound"></block> \
-          <block type="studio_incrementScore"></block> \
-          <block type="studio_saySprite"></block> \
-          <block type="studio_setSpriteSpeed"></block> \
-          <block type="studio_setBackground"></block> \
-          <block type="studio_setSprite"></block>'),
+      tb(blockOfType('studio_whenSpriteClicked') +
+         blockOfType('studio_whenSpriteCollided') +
+         blockOfType('studio_whenGameIsRunning') +
+         blockOfType('studio_move') +
+         blockOfType('studio_moveDistance') +
+         blockOfType('studio_playSound') +
+         blockOfType('studio_incrementScore') +
+         blockOfType('studio_saySprite') +
+         blockOfType('studio_setSpriteSpeed') +
+         blockOfType('studio_setBackground') +
+         blockOfType('studio_setSprite')),
     'startBlocks':
      '<block type="studio_whenGameStarts" deletable="false" x="20" y="20"></block> \
       <block type="studio_whenLeft" deletable="false" x="20" y="120"></block> \
@@ -3039,10 +3184,9 @@ var ButtonState = {
   DOWN: 1
 };
 
-Studio.SpriteFlags = {
-  MISSED_PADDLE: 1,
-  IN_GOAL: 2,
-  LAUNCHING: 4
+var SpriteFlags = {
+  LOOPING_MOVE_X_PENDING: 1,
+  LOOPING_MOVE_Y_PENDING: 2
 };
 
 var ArrowIds = {
@@ -3092,6 +3236,7 @@ var loadLevel = function() {
   Studio.map = level.map;
   Studio.timeoutFailureTick = level.timeoutFailureTick || Infinity;
   Studio.minWorkspaceHeight = level.minWorkspaceHeight;
+  Studio.spriteStartingImage = level.spriteStartingImage;
   Studio.softButtons_ = level.softButtons || [];
 
   // Override scalars.
@@ -3117,11 +3262,6 @@ var loadLevel = function() {
   Studio.MAZE_HEIGHT = Studio.SQUARE_SIZE * Studio.ROWS;
   Studio.PATH_WIDTH = Studio.SQUARE_SIZE / 3;
 };
-
-/**
- * PIDs of async tasks currently executing.
- */
-Studio.pidList = [];
 
 var drawMap = function() {
   var svg = document.getElementById('svgStudio');
@@ -3246,7 +3386,7 @@ var delegate = function(scope, func, data)
 var performQueuedMoves = function(i)
 {
   // Make queued moves in the X axis (fixed to .01 values):
-  if (Studio.sprite[i].queuedX && Studio.sprite[i].queuedX !== 0.00) {
+  if (Studio.sprite[i].queuedX) {
     var nextX = Studio.sprite[i].x;
     if (Studio.sprite[i].queuedX < 0) {
       nextX -= Math.min(Math.abs(Studio.sprite[i].queuedX),
@@ -3260,12 +3400,27 @@ var performQueuedMoves = function(i)
       Studio.sprite[i].queuedX = 0;
     } else {
       var newQX = Studio.sprite[i].queuedX - (nextX - Studio.sprite[i].x);
-      Studio.sprite[i].queuedX = newQX.toFixed(2);
+      Studio.sprite[i].queuedX = newQX;
+      // for very small numbers, reset to integer zero
+      if ("0.00" === newQX.toFixed(2)) {
+        Studio.sprite[i].queuedX = 0;
+      }
     }
     Studio.sprite[i].x = newX;
+  } else {
+    // no X movement, check for queued commands
+    var newQueuedX = Studio.sprite[i].xMoveQueue.shift();
+    if (newQueuedX) {
+      Studio.sprite[i].queuedX = newQueuedX;
+    }
+    else {
+      // flip off async flags and reset any stored context
+      Studio.sprite[i].flags &= ~(SpriteFlags.LOOPING_MOVE_X_PENDING);
+      Studio.sprite[i].queuedXContext = -1;
+    }
   }
   // Make queued moves in the Y axis (fixed to .01 values):
-  if (Studio.sprite[i].queuedY && Studio.sprite[i].queuedY !== 0.00) {
+  if (Studio.sprite[i].queuedY) {
     var nextY = Studio.sprite[i].y;
     if (Studio.sprite[i].queuedY < 0) {
       nextY -= Math.min(Math.abs(Studio.sprite[i].queuedY),
@@ -3279,9 +3434,24 @@ var performQueuedMoves = function(i)
       Studio.sprite[i].queuedY = 0;
     } else {
       var newQY = Studio.sprite[i].queuedY - (nextY - Studio.sprite[i].y);
-      Studio.sprite[i].queuedY = newQY.toFixed(2);
+      Studio.sprite[i].queuedY = newQY;
+      // for very small numbers, reset to integer zero
+      if ("0.00" === newQY.toFixed(2)) {
+        Studio.sprite[i].queuedY = 0;
+      }
     }
     Studio.sprite[i].y = newY;
+  } else {
+    // no Y movement, check for queued commands
+    var newQueuedY = Studio.sprite[i].yMoveQueue.shift();
+    if (newQueuedY) {
+      Studio.sprite[i].queuedY = newQueuedY;
+    }
+    else {
+      // flip off async flags and reset any stored context
+      Studio.sprite[i].flags &= ~(SpriteFlags.LOOPING_MOVE_Y_PENDING);
+      Studio.sprite[i].queuedYContext = -1;
+    }
   }
 };
 
@@ -3302,10 +3472,28 @@ var showSpeechBubbles = function() {
       speechBubble.setAttribute('visibility', 'visible');
       window.clearTimeout(Studio.sprite[sayCmd.index].bubbleTimeout);
       Studio.sprite[sayCmd.index].bubbleTimeout = window.setTimeout(
-          delegate(this, Studio.hideSpeechBubble, sayCmd.index),
+          delegate(this, Studio.hideSpeechBubble, sayCmd),
           Studio.SPEECH_BUBBLE_TIMEOUT);
     }
   }
+};
+
+//
+// Check to see if all async code executed inside the whenGameIsRunning event
+// is complete. This means checking for moveDistance blocks or SaySprite blocks
+// that started during a previous whenGameIsRunning event and are still going.
+//
+// If this function returns true, it is reasonable to fire the event again...
+//
+
+var loopingAsyncCodeComplete = function() {
+  for (var i = 0; i < Studio.spriteCount; i++) {
+    if (Studio.sprite[i].flags & (SpriteFlags.LOOPING_MOVE_X_PENDING |
+                                  SpriteFlags.LOOPING_MOVE_Y_PENDING)) {
+      return false;
+    }
+  }
+  return Studio.loopingPendingSayCmds === 0;
 };
 
 Studio.onTick = function() {
@@ -3315,7 +3503,11 @@ Studio.onTick = function() {
     try { Studio.whenGameStarts(BlocklyApps, api); } catch (e) { }
   }
 
-  try { Studio.whenGameIsRunning(BlocklyApps, api); } catch (e) { }
+  Studio.calledFromWhenGameRunning = true;
+  if (loopingAsyncCodeComplete()) {
+    try { Studio.whenGameIsRunning(BlocklyApps, api); } catch (e) { }
+  }
+  Studio.calledFromWhenGameRunning = false;
   
   // Run key event handlers for any keys that are down:
   for (var key in Keycodes) {
@@ -3579,12 +3771,7 @@ Studio.clearEventHandlersKillTickLoop = function() {
     window.clearInterval(Studio.intervalId);
   }
   Studio.intervalId = 0;
-  // Kill all tasks.
-  for (var i = 0; i < Studio.pidList.length; i++) {
-    window.clearTimeout(Studio.pidList[i]);
-  }
-  Studio.pidList = [];
-  for (i = 0; i < Studio.spriteCount; i++) {
+  for (var i = 0; i < Studio.spriteCount; i++) {
     window.clearTimeout(Studio.sprite[i].bubbleTimeout);
   }
 };
@@ -3616,13 +3803,15 @@ BlocklyApps.reset = function(first) {
   // Reset configurable variables
   Studio.setBackground('cave');
   
-  // Reset the eventHandlerNumber, say queues and complete counts:
+  // Reset the eventHandlerNumber, say queues, pending, and complete counts:
   Studio.eventHandlerNumber = 0;
   Studio.sayQueues = [];
   Studio.sayComplete = 0;
+  Studio.loopingPendingSayCmds = 0;
 
   var spriteStartingSkins = [ "green", "purple", "pink", "orange" ];
   var numStartingSkins = spriteStartingSkins.length;
+  var skinBias = Studio.spriteStartingImage || 0;
 
   // Move sprites into position.
   for (i = 0; i < Studio.spriteCount; i++) {
@@ -3631,9 +3820,14 @@ BlocklyApps.reset = function(first) {
     Studio.sprite[i].speed = tiles.DEFAULT_SPRITE_SPEED;
     Studio.sprite[i].collisionMask = 0;
     Studio.sprite[i].queuedX = 0;
+    Studio.sprite[i].queuedXContext = -1;
     Studio.sprite[i].queuedY = 0;
+    Studio.sprite[i].queuedYContext = -1;
+    Studio.sprite[i].flags = 0;
+    Studio.sprite[i].xMoveQueue = [];
+    Studio.sprite[i].yMoveQueue = [];
     
-    Studio.setSprite(i, spriteStartingSkins[i % numStartingSkins]);
+    Studio.setSprite(i, spriteStartingSkins[(i + skinBias) % numStartingSkins]);
     Studio.displaySprite(i);
     document.getElementById('speechBubble' + i)
       .setAttribute('visibility', 'hidden');
@@ -3985,15 +4179,18 @@ Studio.setSprite = function (index, value) {
  }
 };
 
-Studio.hideSpeechBubble = function (index) {
-  var speechBubble = document.getElementById('speechBubble' + index);
+Studio.hideSpeechBubble = function (sayCmd) {
+  var speechBubble = document.getElementById('speechBubble' + sayCmd.index);
   speechBubble.setAttribute('visibility', 'hidden');
   Studio.sayComplete++;
+  if (sayCmd.calledFromWhenGameRunning) {
+    Studio.loopingPendingSayCmds--;
+  }
 };
 
-var stampNextQueuedSayTick = function (numHandler) {
+var stampNextQueuedSayTick = function (executionCtx) {
   var tickCount = Studio.tickCount;
-  var sayQueue = Studio.sayQueues[numHandler];
+  var sayQueue = Studio.sayQueues[executionCtx];
   if (sayQueue) {
     // Use the last item in this event handler's queue of say commands,
     // clone that tickCount and add the SPEECH_BUBBLE_TIMEOUT (in ticks)
@@ -4006,17 +4203,21 @@ var stampNextQueuedSayTick = function (numHandler) {
   return tickCount;
 };
 
-Studio.saySprite = function (numHandler, index, text) {
-  if (!Studio.sayQueues[numHandler]) {
-    Studio.sayQueues[numHandler] = [];
+Studio.saySprite = function (executionCtx, index, text) {
+  if (!Studio.sayQueues[executionCtx]) {
+    Studio.sayQueues[executionCtx] = [];
   }
   
   var sayCmd = {
-      'tickCount': stampNextQueuedSayTick(numHandler),
+      'tickCount': stampNextQueuedSayTick(executionCtx),
+      'calledFromWhenGameRunning': Studio.calledFromWhenGameRunning,
       'index': index,
       'text': text
   };
-  Studio.sayQueues[numHandler].push(sayCmd);
+  if (Studio.calledFromWhenGameRunning) {
+    Studio.loopingPendingSayCmds++;
+  }
+  Studio.sayQueues[executionCtx].push(sayCmd);
 };
 
 Studio.moveSingle = function (spriteIndex, dir) {
@@ -4048,20 +4249,53 @@ Studio.moveSingle = function (spriteIndex, dir) {
   }
 };
 
-Studio.moveDistance = function (index, dir, distance) {
+Studio.moveDistance = function (executionCtx, index, dir, distance) {
+  var loopingFlag;
+
   switch (dir) {
     case Direction.NORTH:
-      Studio.sprite[index].queuedY = -distance / Studio.SQUARE_SIZE;
+    case Direction.SOUTH:
+      loopingFlag = SpriteFlags.LOOPING_MOVE_Y_PENDING;
+      if (dir === Direction.NORTH) {
+        distance *= -1;
+      }
+      var queuedY = distance / Studio.SQUARE_SIZE;
+      if ((0 !== Studio.sprite[index].queuedY) &&
+          (executionCtx === Studio.sprite[index].queuedYContext)) {
+        // Only queue a move if it is the same sprite, in the same direction,
+        // and in the same execution context:
+        Studio.sprite[index].yMoveQueue.push(queuedY);
+      } else {
+        // Reset any queued movement of this sprite on this axis
+        Studio.sprite[index].queuedYContext = executionCtx;
+        Studio.sprite[index].queuedY = queuedY;
+        Studio.sprite[index].yMoveQueue = [];
+      }
       break;
     case Direction.EAST:
-      Studio.sprite[index].queuedX = distance / Studio.SQUARE_SIZE;
-      break;
-    case Direction.SOUTH:
-      Studio.sprite[index].queuedY = distance / Studio.SQUARE_SIZE;
-      break;
     case Direction.WEST:
-      Studio.sprite[index].queuedX = -distance / Studio.SQUARE_SIZE;
+      loopingFlag = SpriteFlags.LOOPING_MOVE_X_PENDING;
+      if (dir === Direction.WEST) {
+        distance *= -1;
+      }
+      var queuedX = distance / Studio.SQUARE_SIZE;
+      if ((0 !== Studio.sprite[index].queuedX) &&
+          (executionCtx === Studio.sprite[index].queuedXContext)) {
+        // Only queue a move if it is the same sprite, in the same direction,
+        // and in the same execution context:
+        Studio.sprite[index].xMoveQueue.push(queuedX);
+      } else {
+        // Reset any queued movement of this sprite on this axis
+        Studio.sprite[index].queuedXContext = executionCtx;
+        Studio.sprite[index].queuedX = queuedX;
+        Studio.sprite[index].xMoveQueue = [];
+      }
       break;
+  }
+  if (Studio.calledFromWhenGameRunning) {
+    Studio.sprite[index].flags |= loopingFlag;
+  } else {
+    Studio.sprite[index].flags &= ~loopingFlag;
   }
 };
 
@@ -4667,8 +4901,6 @@ exports.moveRight = function(d){return "move right"};
 
 exports.moveRightTooltip = function(d){return "Move the paddle to the right."};
 
-exports.moveSeparator = function(d){return " "};
-
 exports.moveUp = function(d){return "move up"};
 
 exports.moveUpTooltip = function(d){return "Move the paddle up."};
@@ -4821,7 +5053,7 @@ exports.whenRight = function(d){return "when Right arrow"};
 
 exports.whenRightTooltip = function(d){return "Execute the actions below when the Right arrow button is pressed."};
 
-exports.whenSpriteClicked = function(d){return "when character clicked"};
+exports.whenSpriteClicked = function(d){return "when sprite clicked"};
 
 exports.whenSpriteClicked1 = function(d){return "when character 1 clicked"};
 
