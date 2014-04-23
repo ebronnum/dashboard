@@ -3,3 +3,4 @@ Disallow: /
 Allow: /share/
 Allow: /sh/
 Allow: /assets/
+Allow: /gallery
