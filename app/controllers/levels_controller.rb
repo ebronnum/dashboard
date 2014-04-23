@@ -82,36 +82,18 @@ class LevelsController < ApplicationController
 
   def create_maze
     contents = CSV.new(params[:maze_source].read)
-    raw_maze = contents.read[0...params[:size].to_i]
-    begin
-      maze = raw_maze.map {|row| row.map {|cell| Integer(cell)}}
-    rescue ArgumentError
+    game = Game.custom_maze
+    size = params[:size].to_i
+
+    maze = Level.parse_maze(contents, params[:type], size)
+    if maze.nil?
       render status: :not_acceptable, text: "There is a non integer value in the grid." and return
     end
-    game = Game.custom_maze
+
     @level = Level.create(level_params.merge(game: game, user: current_user, level_num: 'custom', skin: 'birds'))
-    @level.properties.update(parse_maze(maze))
+    @level.properties.update(maze)
     @level.save!
     redirect_to game_level_url(game, @level)
-  end
-
-  def parse_maze(maze)
-    if params[:type] == 'maze'
-      return { 'maze' => maze }
-    end
-    # Karel level builder mazes have the information for three 2D arrays embeded into one.
-    size = params[:size]
-    map, initial_dirt, final_dirt = (0...3).map { Array.new(size) { Array.new(size, 0) }}
-    maze.each_with_index do |row, x|
-      row.each_with_index do |cell, y|
-        if cell >= 100
-          map[x][y] = cell / 100
-        else
-          initial_dirt[x][y] = cell
-        end
-      end
-    end
-    { 'maze' => map, 'initial_dirt' => initial_dirt, 'final_dirt' => final_dirt }
   end
 
   def create_artist
