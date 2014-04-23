@@ -50,4 +50,4 @@ File::open(Deploy.dir('dashboard/config/locales/scripts.en.yml'), "w+") do |f|
   f << $hash.to_yaml
 end
 
-system('rake seed:scripts')
+system("cd #{Deploy.dir('dashboard')}; RAILS_ENV=staging bundle exec rake seed:scripts")
