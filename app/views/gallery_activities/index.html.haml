@@ -1,3 +1,8 @@
+- @page_title = t('gallery.students_drew_these_with_code')
+- content_for :head do
+  = tag 'meta', property: 'og:title', content: @page_title
+  = tag 'meta', property: 'og:image', content: asset_url('/images/gallery_thumbnail.png')
+  = tag 'meta', property: 'og:description', content: strip_tags(t('gallery.picture_count', days: @days, count: number_to_human(GalleryActivity.count)))
 .row
   %h1{style: 'text-align:center;'}
     = t('gallery.students_drew_these_with_code')
