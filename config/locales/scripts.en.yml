@@ -4,18 +4,18 @@ en:
     script:
       name:
         sample_level_builder:
-          desc: A custom script
+          desc: Custom script sample_level_builder
           The Maze: The Maze
           The Coffee: The Coffee
         k_1:
-          desc: A custom script
+          desc: Custom script k_1
           The Maze: The Maze
           The Coffee: The Coffee
         '4_5':
-          desc: A custom script
+          desc: Custom script 4_5
           The Maze: The Maze
           The Coffee: The Coffee
         '2_3':
-          desc: A custom script
+          desc: Custom script 2_3
           The Maze: The Maze
           The Coffee: The Coffee
