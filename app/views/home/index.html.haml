@@ -97,9 +97,8 @@
           %br/
 
   .row#stats
-    .span1
-    .span11#rightside
-      = render partial: 'shared/user_stats', locals: { user: current_user, trophies_on_right: true }
+    .span12#rightside
+      = render partial: 'shared/user_stats', locals: { user: current_user, trophies_below: true }
 
   %br/
   - if current_user && !current_user.teacher?
