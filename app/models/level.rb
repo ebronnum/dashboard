@@ -141,7 +141,9 @@ class Level < ActiveRecord::Base
 
   def write_custom_levels_to_file
     File.open(Rails.root.join("config", "scripts", "custom_levels.json"), 'w+') do |file|
-      file << Level.custom_levels.to_json
+      levels = Level.custom_levels
+      levels.each {|level| level.properties.update(solution_blocks: level.solution_level_source.try(:data))}
+      file << levels.to_json
     end
   end
 end

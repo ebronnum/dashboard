@@ -87,12 +87,15 @@ namespace :seed do
 
   task custom_levels: :environment do
     Level.transaction do
-      CSV.read("config/scripts/custom_levels.csv", headers: true).each do |row|
-        levels = get_level_by_name(row[COL_NAME])
+      JSON.parse(File.read("config/scripts/custom_levels.json")).each do |row|
+        levels = get_level_by_name(row['name'])
         level = levels.first_or_create
-        game = Game.where(name: row[COL_GAME]).first
-        solution = LevelSource.lookup(level, row[COL_SOLUTION])
-        level.update(instructions: row[COL_INSTRUCTIONS], skin: row[COL_SKIN], maze: row[COL_MAZE], x: row[COL_X], y: row[COL_Y], start_blocks: row[COL_START_BLOCKS], toolbox_blocks: row[COL_TOOLBOX_BLOCKS], start_direction: row[COL_START_DIRECTION], game: game, solution_level_source: solution)
+        game = Game.find(row['game_id'])
+        level.update(instructions: row['instructions'], skin: row['skin'], maze: row['maze'], x: row['x'], y: row['y'], start_blocks: row['start_blocks'], toolbox_blocks: row['start_blocks'], start_direction: row['start_direction'], game: game)
+        solution = row['properties']['solution_blocks']
+        if solution
+          level.update(solution_level_source: LevelSource.lookup(level, solution))
+        end
       end
     end
   end
@@ -136,6 +139,7 @@ namespace :seed do
               raise "There does not exist a level with the name '#{row[COL_NAME]}'. From the row: #{row}, From the script: #{source}."
             end
             game = level.game
+            raise "Level #{level.to_json}, does not have a game." if game.nil?
           else
             game = game_map[row[COL_GAME].squish]
             level = Level.where(game: game, level_num: row[COL_LEVEL]).first_or_create
