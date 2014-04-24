@@ -1,9 +1,9 @@
 class Turtle < Level
   def self.create_from_level_builder(params)
     game = Game.find(params[:game_id])
-    @level = Level.create(params.merge(game: game, level_num: 'custom', skin: 'artist'))
-    solution = LevelSource.lookup(@level, params[:program])
-    @level.update(solution_level_source: solution)
+    level = Level.create(params.merge(game: game, level_num: 'custom', skin: 'artist'))
+    solution = LevelSource.lookup(level, params[:program])
+    level.update(solution_level_source: solution)
   end
 
   def complete_toolbox
