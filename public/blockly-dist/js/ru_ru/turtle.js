@@ -196,7 +196,7 @@ BlocklyApps.init = function(config) {
       openWorkspace.setAttribute('id', 'open-workspace');
       openWorkspace.appendChild(document.createTextNode(msg.openWorkspace()));
 
-      belowViz.appendChild(feedback.createSharingButtons({
+      belowViz.appendChild(feedback.createSharingDiv({
         response: {
           level_source: window.location
         },
@@ -874,7 +874,7 @@ var getIdealBlockNumberMsg = function() {
       msg.infinity() : BlocklyApps.IDEAL_BLOCK_NUM;
 };
 
-},{"../locale/ru_ru/common":35,"./builder":5,"./dom":7,"./feedback.js":8,"./slider":11,"./templates/buttons.html":13,"./templates/instructions.html":15,"./templates/learn.html":16,"./templates/makeYourOwn.html":17,"./utils":33,"./xml":34}],3:[function(require,module,exports){
+},{"../locale/ru_ru/common":36,"./builder":5,"./dom":7,"./feedback.js":8,"./slider":11,"./templates/buttons.html":13,"./templates/instructions.html":15,"./templates/learn.html":16,"./templates/makeYourOwn.html":17,"./utils":34,"./xml":35}],3:[function(require,module,exports){
 exports.createToolbox = function(blocks) {
   return '<xml id="toolbox" style="display: none;">' + blocks + '</xml>';
 };
@@ -950,7 +950,7 @@ exports.builderForm = function(onAttemptCallback) {
   dialog.show({ backdrop: 'static' });
 };
 
-},{"./dom.js":7,"./feedback.js":8,"./templates/builder.html":12,"./utils.js":33,"url":47}],6:[function(require,module,exports){
+},{"./dom.js":7,"./feedback.js":8,"./templates/builder.html":12,"./utils.js":34,"url":48}],6:[function(require,module,exports){
 var INFINITE_LOOP_TRAP = '  BlocklyApps.checkTimeout();\n';
 var INFINITE_LOOP_TRAP_RE =
     new RegExp(INFINITE_LOOP_TRAP.replace(/\(.*\)/, '\\(.*\\)'), 'g');
@@ -1120,7 +1120,7 @@ exports.displayFeedback = function(options) {
   var displayShowCode = BlocklyApps.enableShowCode && canContinue;
   var feedback = document.createElement('div');
   var feedbackMessage = getFeedbackMessage(options);
-  var sharingDiv = createSharingDiv(options);
+  var sharingDiv = (canContinue && options.showingSharing) ? exports.createSharingDiv(options) : null;
   var showCode = displayShowCode ? getShowCodeElement(options) : null;
   var feedbackBlocks = new FeedbackBlocks(options);
 
@@ -1145,6 +1145,7 @@ exports.displayFeedback = function(options) {
   if (showCode) {
     feedback.appendChild(showCode);
   }
+
   feedback.appendChild(getFeedbackButtons(
     options.feedbackType, options.level.showPreviousLevelButton));
 
@@ -1404,18 +1405,14 @@ var isFeedbackMessageCustomized = function(options) {
        options.level.other1StarError);
 };
 
-exports.createSharingButtons = function(options) {
-  var sharingWrapper = document.createElement('div');
-  var sharingButtons = document.createElement('div');
-  var sharingUrl = document.createElement('div');
-  sharingButtons.className = 'social-buttons';
-  sharingUrl.className = 'feedback-links';
-  sharingUrl.innerHTML = require('./templates/buttons.html')({
-    data: {
-      sharingUrl: options.response.level_source
-    }
-  });
+exports.createSharingDiv = function(options) {
+  if (!options.response || !options.response.level_source) {
+    // don't even try if our caller didn't give us something that can be shared
+    // options.response.level_source is the url that we are sharing
+    return null;
+  } 
 
+  // set up the twitter share url
   var twitterUrl = "https://twitter.com/intent/tweet?url=" +
                    options.response.level_source;
 
@@ -1425,71 +1422,35 @@ exports.createSharingButtons = function(options) {
   if (options.twitter  && options.twitter.hashtag !== undefined) {
     twitterUrl += "&button_hashtag=" + options.twitter.hashtag;
   }
+  options.twitterUrl = twitterUrl;
 
-  sharingButtons.innerHTML = require('./templates/buttons.html')({
-    data: {
-      facebookUrl: "https://www.facebook.com/sharer/sharer.php?u=" +
-                    options.response.level_source,
-      twitterUrl: twitterUrl,
-      makeYourOwn: options.makeYourOwn,
-      saveToGalleryUrl: options.saveToGalleryUrl
-    }
+  // set up the facebook share url
+  var facebookUrl = "https://www.facebook.com/sharer/sharer.php?u=" +
+                    options.response.level_source;
+  options.facebookUrl = facebookUrl;
+
+  // use a generic image for the level if a feedback image has not been supplied.
+  if (options.level && options.level.instructionImageUrl && !options.feedbackImage) {
+    options.feedbackImage = options.level.instructionImageUrl;
+  }
+
+  var sharingDiv = document.createElement('div');
+  sharingDiv.setAttribute('style', 'display:inline-block');
+  sharingDiv.innerHTML = require('./templates/sharing.html')({
+    options: options
   });
-  var sharingInput = sharingUrl.querySelector('#sharing-input');
+
+  var sharingInput = sharingDiv.querySelector('#sharing-input');
   if (sharingInput) {
     dom.addClickTouchEvent(sharingInput, function() {
       sharingInput.focus();
       sharingInput.select();
     });
   }
-  sharingWrapper.appendChild(sharingUrl);
-  sharingWrapper.appendChild(sharingButtons);
-  return sharingWrapper;
+
+  return sharingDiv;
 };
 
-
-var createSharingDiv = function(options) {
-  // Creates the sharing div only when showingSharing is set and the solution is
-  // a passing solution.
-  if (options.showingSharing &&
-      exports.canContinueToNextLevel(options.feedbackType)) {
-    var sharingDiv = document.createElement('div');
-    sharingDiv.setAttribute('style', 'display:inline-block');
-    var sharingImage = document.createElement('div');
-
-    var feedbackImage = createFeedbackImage(options);
-    if (feedbackImage) {
-        sharingImage.appendChild(feedbackImage);
-        sharingDiv.appendChild(sharingImage);
-    }
-
-    if (options.response && options.response.level_source) {
-      var sharingText = document.createElement('div');
-      if (options.appStrings) {
-        dom.setText(sharingText, options.appStrings.sharingText);
-      }
-      sharingText.className = 'shareDrawingMsg';
-      sharingDiv.appendChild(sharingText);
-
-      sharingDiv.appendChild(exports.createSharingButtons(options));
-    }
-    return sharingDiv;
-  } else {
-    return null;
-  }
-};
-
-var createFeedbackImage = function(options) {
-  var feedbackImage;
-  var feedbackImageSrc =
-      options.level.instructionImageUrl || options.feedbackImage;
-  if (feedbackImageSrc) {
-    feedbackImage = document.createElement('img');
-    feedbackImage.className = 'feedback-image';
-    feedbackImage.src = feedbackImageSrc;
-  }
-  return feedbackImage;
-};
 
 var numTrophiesEarned = function(options) {
   if (options.response && options.response.trophy_updates) {
@@ -1875,7 +1836,7 @@ var generateXMLForBlocks = function(blocks) {
 };
 
 
-},{"../locale/ru_ru/common":35,"./codegen":6,"./dom":7,"./templates/buttons.html":13,"./templates/code.html":14,"./templates/readonly.html":19,"./templates/showCode.html":20,"./templates/trophy.html":21,"./utils":33}],9:[function(require,module,exports){
+},{"../locale/ru_ru/common":36,"./codegen":6,"./dom":7,"./templates/buttons.html":13,"./templates/code.html":14,"./templates/readonly.html":19,"./templates/sharing.html":20,"./templates/showCode.html":21,"./templates/trophy.html":22,"./utils":34}],9:[function(require,module,exports){
 // Functions for checking required blocks.
 
 /**
@@ -2200,7 +2161,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":37}],13:[function(require,module,exports){
+},{"ejs":38}],13:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2213,7 +2174,7 @@ escape = escape || function (html){
 };
 var buf = [];
 with (locals || {}) { (function(){ 
- buf.push('');1; var msg = require('../../locale/ru_ru/common'); ; buf.push('\n\n');3; if (data.ok) {; buf.push('  <div class="farSide" style="padding: 1ex 3ex 0">\n    <button id="ok-button" class="secondary">\n      ', escape((5,  msg.dialogOK() )), '\n    </button>\n  </div>\n');8; }; buf.push('\n');9; if (data.previousLevel) {; buf.push('  <button id="back-button" class="launch">\n    ', escape((10,  msg.backToPreviousLevel() )), '\n  </button>\n');12; }; buf.push('\n');13; if (data.tryAgain) {; buf.push('  <button id="again-button" class="launch">\n    ', escape((14,  msg.tryAgain() )), '\n  </button>\n');16; }; buf.push('\n');17; if (data.nextLevel) {; buf.push('  <button id="continue-button" class="launch">\n    ', escape((18,  msg.continue() )), '\n  </button>\n');20; }; buf.push('\n');21; if (data.facebookUrl) {; buf.push('  <a href=', escape((21,  data.facebookUrl )), ' target="_blank">\n    <img src=', escape((22,  BlocklyApps.assetUrl("media/facebook_purple.png") )), '>\n  </a>\n');24; }; buf.push('\n');25; if (data.twitterUrl) {; buf.push('  <a href=', escape((25,  data.twitterUrl )), ' target="_blank">\n    <img src=', escape((26,  BlocklyApps.assetUrl("media/twitter_purple.png") )), ' >\n  </a>\n  <br>\n');29; }; buf.push('\n');30; if (data.sharingUrl) {; buf.push('  <input type="text" id="sharing-input" value=', escape((30,  data.sharingUrl )), ' readonly>\n');31; }; buf.push('\n');32; if (data.saveToGalleryUrl) {; buf.push('  <button id="save-to-gallery-button" class="launch">\n    ', escape((33,  msg.saveToGallery() )), '\n  </button>\n');35; }; buf.push(''); })();
+ buf.push('');1; var msg = require('../../locale/ru_ru/common'); ; buf.push('\n\n');3; if (data.ok) {; buf.push('  <div class="farSide" style="padding: 1ex 3ex 0">\n    <button id="ok-button" class="secondary">\n      ', escape((5,  msg.dialogOK() )), '\n    </button>\n  </div>\n');8; }; buf.push('\n');9; if (data.previousLevel) {; buf.push('  <button id="back-button" class="launch">\n    ', escape((10,  msg.backToPreviousLevel() )), '\n  </button>\n');12; }; buf.push('\n');13; if (data.tryAgain) {; buf.push('  <button id="again-button" class="launch">\n    ', escape((14,  msg.tryAgain() )), '\n  </button>\n');16; }; buf.push('\n');17; if (data.nextLevel) {; buf.push('  <button id="continue-button" class="launch">\n    ', escape((18,  msg.continue() )), '\n  </button>\n');20; }; buf.push(''); })();
 } 
 return buf.join('');
 };
@@ -2221,7 +2182,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/ru_ru/common":35,"ejs":37}],14:[function(require,module,exports){
+},{"../../locale/ru_ru/common":36,"ejs":38}],14:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2242,7 +2203,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":37}],15:[function(require,module,exports){
+},{"ejs":38}],15:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2263,7 +2224,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/ru_ru/common":35,"ejs":37}],16:[function(require,module,exports){
+},{"../../locale/ru_ru/common":36,"ejs":38}],16:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2286,7 +2247,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/ru_ru/common":35,"ejs":37}],17:[function(require,module,exports){
+},{"../../locale/ru_ru/common":36,"ejs":38}],17:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2307,7 +2268,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/ru_ru/common":35,"ejs":37}],18:[function(require,module,exports){
+},{"../../locale/ru_ru/common":36,"ejs":38}],18:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2329,7 +2290,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/ru_ru/common":35,"ejs":37}],19:[function(require,module,exports){
+},{"../../locale/ru_ru/common":36,"ejs":38}],19:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2351,7 +2312,28 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":37}],20:[function(require,module,exports){
+},{"ejs":38}],20:[function(require,module,exports){
+module.exports= (function() {
+  var t = function anonymous(locals, filters, escape, rethrow) {
+escape = escape || function (html){
+  return String(html)
+    .replace(/&(?!#?[a-zA-Z0-9]+;)/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/'/g, '&#39;')
+    .replace(/"/g, '&quot;');
+};
+var buf = [];
+with (locals || {}) { (function(){ 
+ buf.push('');1; var msg = require('../../locale/ru_ru/common'); ; buf.push('\n');2; if (options.feedbackImage) { ; buf.push('\n  <div class="sharing-image">\n    <img class="feedback-image" src="', escape((4,  options.feedbackImage )), '">\n  </div>\n');6; } ; buf.push('\n\n<div class="sharing">\n');9; if (options.alreadySaved) { ; buf.push('\n  <div class="saved-to-gallery">\n    ', escape((11,  msg.savedToGallery() )), '\n  </div>\n');13; } else if (options.saveToGalleryUrl) { ; buf.push('\n  <div class="social-buttons">\n  <button id="save-to-gallery-button" class="launch">\n    ', escape((16,  msg.saveToGallery() )), '\n  </button>\n  </div>\n');19; } ; buf.push('\n\n');21; if (options.response && options.response.level_source) { ; buf.push('\n  ');22; if (options.appStrings && options.appStrings.sharingText) { ; buf.push('\n    <div>', escape((23,  options.appStrings.sharingText )), '</div>\n  ');24; } ; buf.push('\n\n  <div>\n    <input type="text" id="sharing-input" value=', escape((27,  options.response.level_source )), ' readonly>\n  </div>\n\n  <div class=\'social-buttons\'>\n    ');31; if (options.facebookUrl) {; buf.push('      <a href=', escape((31,  options.facebookUrl )), ' target="_blank">\n        <img src=', escape((32,  BlocklyApps.assetUrl("media/facebook_purple.png") )), '>\n      </a>\n    ');34; }; buf.push('  \n    ');35; if (options.twitterUrl) {; buf.push('      <a href=', escape((35,  options.twitterUrl )), ' target="_blank">\n        <img src=', escape((36,  BlocklyApps.assetUrl("media/twitter_purple.png") )), ' >\n      </a>\n    ');38; }; buf.push('  </div>\n');39; } ; buf.push('\n</div>\n\n'); })();
+} 
+return buf.join('');
+};
+  return function(locals) {
+    return t(locals, require("ejs").filters);
+  }
+}());
+},{"../../locale/ru_ru/common":36,"ejs":38}],21:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2372,7 +2354,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/ru_ru/common":35,"ejs":37}],21:[function(require,module,exports){
+},{"../../locale/ru_ru/common":36,"ejs":38}],22:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2393,7 +2375,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":37}],22:[function(require,module,exports){
+},{"ejs":38}],23:[function(require,module,exports){
 /**
  * Blockly Demo: Turtle Graphics
  *
@@ -2744,7 +2726,7 @@ exports.answer = function(page, level) {
   return BlocklyApps.log;
 };
 
-},{"../base":2,"./api":23}],23:[function(require,module,exports){
+},{"../base":2,"./api":24}],24:[function(require,module,exports){
 var BlocklyApps = require('../base');
 
 exports.moveForward = function(distance, id) {
@@ -2827,7 +2809,7 @@ exports.showTurtle = function(id) {
   BlocklyApps.log.push(['ST', id]);
 };
 
-},{"../base":2}],24:[function(require,module,exports){
+},{"../base":2}],25:[function(require,module,exports){
 /**
  * Blockly Demo: Turtle Graphics
  *
@@ -3506,7 +3488,7 @@ exports.install = function(blockly, skin) {
 
 };
 
-},{"../../locale/ru_ru/turtle":36,"./core":26}],25:[function(require,module,exports){
+},{"../../locale/ru_ru/turtle":37,"./core":27}],26:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -3527,7 +3509,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":37}],26:[function(require,module,exports){
+},{"ejs":38}],27:[function(require,module,exports){
 // Create a limited colour palette to avoid overwhelming new users
 // and to make colour checking easier.  These definitions cannot be
 // moved to blocks.js, which is loaded later, since they are used in
@@ -3548,7 +3530,7 @@ exports.Colours = {
   PLUM: '#843179'
 };
 
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 var levelBase = require('../level_base');
 var Colours = require('./core').Colours;
 var answer = require('./answers').answer;
@@ -4398,7 +4380,7 @@ module.exports = {
   }
 };
 
-},{"../../locale/ru_ru/turtle":36,"../block_utils":3,"../level_base":9,"./answers":22,"./core":26,"./requiredBlocks":29,"./startBlocks.xml":30,"./toolbox.xml":31}],28:[function(require,module,exports){
+},{"../../locale/ru_ru/turtle":37,"../block_utils":3,"../level_base":9,"./answers":23,"./core":27,"./requiredBlocks":30,"./startBlocks.xml":31,"./toolbox.xml":32}],29:[function(require,module,exports){
 var appMain = require('../appMain');
 window.Turtle = require('./turtle');
 var blocks = require('./blocks');
@@ -4411,7 +4393,7 @@ window.turtleMain = function(options) {
   appMain(window.Turtle, levels, options);
 };
 
-},{"../appMain":1,"../skins":10,"./blocks":24,"./levels":27,"./turtle":32}],29:[function(require,module,exports){
+},{"../appMain":1,"../skins":10,"./blocks":25,"./levels":28,"./turtle":33}],30:[function(require,module,exports){
 /**
  * Sets BlocklyApp constants that depend on the page and level.
  * This encapsulates many functions used for BlocklyApps.REQUIRED_BLOCKS.
@@ -4644,7 +4626,7 @@ module.exports = {
   SET_COLOUR_RANDOM: SET_COLOUR_RANDOM,
   defineWithArg: defineWithArg
 };
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4711,7 +4693,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/ru_ru/turtle":36,"ejs":37}],31:[function(require,module,exports){
+},{"../../locale/ru_ru/turtle":37,"ejs":38}],32:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4835,7 +4817,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/ru_ru/turtle":36,"ejs":37}],32:[function(require,module,exports){
+},{"../../locale/ru_ru/turtle":37,"ejs":38}],33:[function(require,module,exports){
 /**
  * Blockly Demo: Turtle Graphics
  *
@@ -5442,7 +5424,10 @@ var displayFeedback = function() {
     feedbackImage: Turtle.ctxScratch.canvas.toDataURL("image/png"),
     // add 'impressive':true to non-freeplay levels that we deem are relatively impressive (see #66990480)
     showingSharing: level.freePlay || level.impressive,
-    saveToGalleryUrl: (level.freePlay || level.impressive) && Turtle.response.save_to_gallery_url,
+    // impressive levels are already saved
+    alreadySaved: level.impressive,
+    // allow users to save freeplay levels to their gallery (impressive non-freeplay levels are autosaved)
+    saveToGalleryUrl: level.freePlay && Turtle.response.save_to_gallery_url,
     appStrings: {
       reinfFeedbackMsg: msg.reinfFeedbackMsg(),
       sharingText: msg.shareDrawing()
@@ -5555,20 +5540,7 @@ Turtle.checkAnswer = function() {
     BlocklyApps.playAudio('failure', {volume : 0.5});
   }
 
-  // Get the canvas data for feedback.
-  if (Turtle.testResults >= BlocklyApps.TestResults.TOO_MANY_BLOCKS_FAIL) {
-    BlocklyApps.report({
-      app: 'turtle',
-      level: level.id,
-      builder: level.builder,
-      result: BlocklyApps.levelComplete,
-      testResult: Turtle.testResults,
-      program: encodeURIComponent(textBlocks),
-      onComplete: Turtle.onReportComplete,
-      image : getFeedbackImage()
-    });
-  } else {
-    BlocklyApps.report({
+  var reportData = {
       app: 'turtle',
       level: level.id,
       builder: level.builder,
@@ -5576,8 +5548,18 @@ Turtle.checkAnswer = function() {
       testResult: Turtle.testResults,
       program: encodeURIComponent(textBlocks),
       onComplete: Turtle.onReportComplete
-    });
+  };
+
+  // Get the canvas data for feedback.
+  if (Turtle.testResults >= BlocklyApps.TestResults.TOO_MANY_BLOCKS_FAIL) {
+    reportData.image = getFeedbackImage();
   }
+
+  if (level.impressive) {
+    reportData.save_to_gallery = true;
+  }
+
+  BlocklyApps.report(reportData);
 
   // The call to displayFeedback() will happen later in onReportComplete()
 };
@@ -5591,7 +5573,7 @@ var getFeedbackImage = function() {
       feedbackCanvas.toDataURL("image/png").split(',')[1]);
 };
 
-},{"../../locale/ru_ru/turtle":36,"../base":2,"../codegen":6,"../skins":10,"../templates/page.html":18,"./api":23,"./controls.html":25,"./core":26,"./levels":27}],33:[function(require,module,exports){
+},{"../../locale/ru_ru/turtle":37,"../base":2,"../codegen":6,"../skins":10,"../templates/page.html":18,"./api":24,"./controls.html":26,"./core":27,"./levels":28}],34:[function(require,module,exports){
 exports.shallowCopy = function(source) {
   var result = {};
   for (var prop in source) {
@@ -5633,7 +5615,7 @@ exports.mod = function(number, mod) {
   return ((number % mod) + mod) % mod;
 };
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 // Serializes an XML DOM node to a string.
 exports.serialize = function(node) {
   var serializer = new XMLSerializer();
@@ -5661,7 +5643,7 @@ exports.parseElement = function(text) {
   return element;
 };
 
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.ru = function (n) {
   if ((n % 10) == 1 && (n % 100) != 11) {
     return 'one';
@@ -5776,6 +5758,8 @@ exports.backToPreviousLevel = function(d){return "Вернуться на пре
 
 exports.saveToGallery = function(d){return "Save to your gallery"};
 
+exports.savedToGallery = function(d){return "Saved to your gallery!"};
+
 exports.typeCode = function(d){return "Введите ваш код  на JavaScript под этой инструкцией."};
 
 exports.typeFuncs = function(d){return "Доступные процедуры:%1"};
@@ -5801,7 +5785,7 @@ exports.signup = function(d){return "Зарегистрируйтесь на в�
 exports.hintHeader = function(d){return "Here's a tip:"};
 
 
-},{"messageformat":48}],36:[function(require,module,exports){
+},{"messageformat":49}],37:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.ru = function (n) {
   if ((n % 10) == 1 && (n % 100) != 11) {
     return 'one';
@@ -5911,7 +5895,7 @@ exports.widthTooltip = function(d){return "Изменяет ширину кар�
 exports.wrongColour = function(d){return "Неправильный цвет картинки. Для этой головоломки он должен быть %1."};
 
 
-},{"messageformat":48}],37:[function(require,module,exports){
+},{"messageformat":49}],38:[function(require,module,exports){
 
 /*!
  * EJS
@@ -6270,7 +6254,7 @@ if (require.extensions) {
   });
 }
 
-},{"./filters":38,"./utils":39,"fs":40,"path":42}],38:[function(require,module,exports){
+},{"./filters":39,"./utils":40,"fs":41,"path":43}],39:[function(require,module,exports){
 /*!
  * EJS - Filters
  * Copyright(c) 2010 TJ Holowaychuk <tj@vision-media.ca>
@@ -6473,7 +6457,7 @@ exports.json = function(obj){
   return JSON.stringify(obj);
 };
 
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 
 /*!
  * EJS
@@ -6499,9 +6483,9 @@ exports.escape = function(html){
 };
  
 
-},{}],40:[function(require,module,exports){
-
 },{}],41:[function(require,module,exports){
+
+},{}],42:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -6556,7 +6540,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],42:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -6784,7 +6768,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require("/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":41}],43:[function(require,module,exports){
+},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":42}],44:[function(require,module,exports){
 (function (global){
 /*! http://mths.be/punycode v1.2.4 by @mathias */
 ;(function(root) {
@@ -7295,7 +7279,7 @@ var substr = 'ab'.substr(-1) === 'b'
 }(this));
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],44:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -7381,7 +7365,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],45:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -7468,13 +7452,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],46:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":44,"./encode":45}],47:[function(require,module,exports){
+},{"./decode":45,"./encode":46}],48:[function(require,module,exports){
 /*jshint strict:true node:true es5:true onevar:true laxcomma:true laxbreak:true eqeqeq:true immed:true latedef:true*/
 (function () {
   "use strict";
@@ -8107,7 +8091,7 @@ function parseHost(host) {
 
 }());
 
-},{"punycode":43,"querystring":46}],48:[function(require,module,exports){
+},{"punycode":44,"querystring":47}],49:[function(require,module,exports){
 /**
  * messageformat.js
  *
@@ -9690,4 +9674,4 @@ function parseHost(host) {
 
 })( this );
 
-},{}]},{},[28])
+},{}]},{},[29])

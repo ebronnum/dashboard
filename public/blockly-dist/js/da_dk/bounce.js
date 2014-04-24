@@ -196,7 +196,7 @@ BlocklyApps.init = function(config) {
       openWorkspace.setAttribute('id', 'open-workspace');
       openWorkspace.appendChild(document.createTextNode(msg.openWorkspace()));
 
-      belowViz.appendChild(feedback.createSharingButtons({
+      belowViz.appendChild(feedback.createSharingDiv({
         response: {
           level_source: window.location
         },
@@ -874,7 +874,7 @@ var getIdealBlockNumberMsg = function() {
       msg.infinity() : BlocklyApps.IDEAL_BLOCK_NUM;
 };
 
-},{"../locale/da_dk/common":34,"./builder":14,"./dom":16,"./feedback.js":17,"./slider":19,"./templates/buttons.html":21,"./templates/instructions.html":23,"./templates/learn.html":24,"./templates/makeYourOwn.html":25,"./utils":31,"./xml":32}],3:[function(require,module,exports){
+},{"../locale/da_dk/common":35,"./builder":14,"./dom":16,"./feedback.js":17,"./slider":19,"./templates/buttons.html":21,"./templates/instructions.html":23,"./templates/learn.html":24,"./templates/makeYourOwn.html":25,"./utils":32,"./xml":33}],3:[function(require,module,exports){
 exports.createToolbox = function(blocks) {
   return '<xml id="toolbox" style="display: none;">' + blocks + '</xml>';
 };
@@ -1616,7 +1616,7 @@ exports.install = function(blockly, skin) {
   delete blockly.Blocks.procedures_ifreturn;
 };
 
-},{"../../locale/da_dk/bounce":33,"../codegen":15}],7:[function(require,module,exports){
+},{"../../locale/da_dk/bounce":34,"../codegen":15}],7:[function(require,module,exports){
 /**
  * Blockly App: Bounce
  *
@@ -3071,7 +3071,7 @@ var checkFinished = function () {
   return false;
 };
 
-},{"../../locale/da_dk/bounce":33,"../../locale/da_dk/common":34,"../base":2,"../codegen":15,"../dom":16,"../feedback.js":17,"../skins":18,"../templates/page.html":26,"../timeoutList":30,"./api":5,"./controls.html":8,"./tiles":12,"./visualization.html":13}],8:[function(require,module,exports){
+},{"../../locale/da_dk/bounce":34,"../../locale/da_dk/common":35,"../base":2,"../codegen":15,"../dom":16,"../feedback.js":17,"../skins":18,"../templates/page.html":26,"../timeoutList":31,"./api":5,"./controls.html":8,"./tiles":12,"./visualization.html":13}],8:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -3092,7 +3092,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/da_dk/bounce":33,"ejs":35}],9:[function(require,module,exports){
+},{"../../locale/da_dk/bounce":34,"ejs":36}],9:[function(require,module,exports){
 /*jshint multistr: true */
 
 var Direction = require('./tiles').Direction;
@@ -3701,7 +3701,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":35}],14:[function(require,module,exports){
+},{"ejs":36}],14:[function(require,module,exports){
 var feedback = require('./feedback.js');
 var dom = require('./dom.js');
 var utils = require('./utils.js');
@@ -3731,7 +3731,7 @@ exports.builderForm = function(onAttemptCallback) {
   dialog.show({ backdrop: 'static' });
 };
 
-},{"./dom.js":16,"./feedback.js":17,"./templates/builder.html":20,"./utils.js":31,"url":45}],15:[function(require,module,exports){
+},{"./dom.js":16,"./feedback.js":17,"./templates/builder.html":20,"./utils.js":32,"url":46}],15:[function(require,module,exports){
 var INFINITE_LOOP_TRAP = '  BlocklyApps.checkTimeout();\n';
 var INFINITE_LOOP_TRAP_RE =
     new RegExp(INFINITE_LOOP_TRAP.replace(/\(.*\)/, '\\(.*\\)'), 'g');
@@ -3901,7 +3901,7 @@ exports.displayFeedback = function(options) {
   var displayShowCode = BlocklyApps.enableShowCode && canContinue;
   var feedback = document.createElement('div');
   var feedbackMessage = getFeedbackMessage(options);
-  var sharingDiv = createSharingDiv(options);
+  var sharingDiv = (canContinue && options.showingSharing) ? exports.createSharingDiv(options) : null;
   var showCode = displayShowCode ? getShowCodeElement(options) : null;
   var feedbackBlocks = new FeedbackBlocks(options);
 
@@ -3926,6 +3926,7 @@ exports.displayFeedback = function(options) {
   if (showCode) {
     feedback.appendChild(showCode);
   }
+
   feedback.appendChild(getFeedbackButtons(
     options.feedbackType, options.level.showPreviousLevelButton));
 
@@ -4185,18 +4186,14 @@ var isFeedbackMessageCustomized = function(options) {
        options.level.other1StarError);
 };
 
-exports.createSharingButtons = function(options) {
-  var sharingWrapper = document.createElement('div');
-  var sharingButtons = document.createElement('div');
-  var sharingUrl = document.createElement('div');
-  sharingButtons.className = 'social-buttons';
-  sharingUrl.className = 'feedback-links';
-  sharingUrl.innerHTML = require('./templates/buttons.html')({
-    data: {
-      sharingUrl: options.response.level_source
-    }
-  });
+exports.createSharingDiv = function(options) {
+  if (!options.response || !options.response.level_source) {
+    // don't even try if our caller didn't give us something that can be shared
+    // options.response.level_source is the url that we are sharing
+    return null;
+  } 
 
+  // set up the twitter share url
   var twitterUrl = "https://twitter.com/intent/tweet?url=" +
                    options.response.level_source;
 
@@ -4206,71 +4203,35 @@ exports.createSharingButtons = function(options) {
   if (options.twitter  && options.twitter.hashtag !== undefined) {
     twitterUrl += "&button_hashtag=" + options.twitter.hashtag;
   }
+  options.twitterUrl = twitterUrl;
 
-  sharingButtons.innerHTML = require('./templates/buttons.html')({
-    data: {
-      facebookUrl: "https://www.facebook.com/sharer/sharer.php?u=" +
-                    options.response.level_source,
-      twitterUrl: twitterUrl,
-      makeYourOwn: options.makeYourOwn,
-      saveToGalleryUrl: options.saveToGalleryUrl
-    }
+  // set up the facebook share url
+  var facebookUrl = "https://www.facebook.com/sharer/sharer.php?u=" +
+                    options.response.level_source;
+  options.facebookUrl = facebookUrl;
+
+  // use a generic image for the level if a feedback image has not been supplied.
+  if (options.level && options.level.instructionImageUrl && !options.feedbackImage) {
+    options.feedbackImage = options.level.instructionImageUrl;
+  }
+
+  var sharingDiv = document.createElement('div');
+  sharingDiv.setAttribute('style', 'display:inline-block');
+  sharingDiv.innerHTML = require('./templates/sharing.html')({
+    options: options
   });
-  var sharingInput = sharingUrl.querySelector('#sharing-input');
+
+  var sharingInput = sharingDiv.querySelector('#sharing-input');
   if (sharingInput) {
     dom.addClickTouchEvent(sharingInput, function() {
       sharingInput.focus();
       sharingInput.select();
     });
   }
-  sharingWrapper.appendChild(sharingUrl);
-  sharingWrapper.appendChild(sharingButtons);
-  return sharingWrapper;
+
+  return sharingDiv;
 };
 
-
-var createSharingDiv = function(options) {
-  // Creates the sharing div only when showingSharing is set and the solution is
-  // a passing solution.
-  if (options.showingSharing &&
-      exports.canContinueToNextLevel(options.feedbackType)) {
-    var sharingDiv = document.createElement('div');
-    sharingDiv.setAttribute('style', 'display:inline-block');
-    var sharingImage = document.createElement('div');
-
-    var feedbackImage = createFeedbackImage(options);
-    if (feedbackImage) {
-        sharingImage.appendChild(feedbackImage);
-        sharingDiv.appendChild(sharingImage);
-    }
-
-    if (options.response && options.response.level_source) {
-      var sharingText = document.createElement('div');
-      if (options.appStrings) {
-        dom.setText(sharingText, options.appStrings.sharingText);
-      }
-      sharingText.className = 'shareDrawingMsg';
-      sharingDiv.appendChild(sharingText);
-
-      sharingDiv.appendChild(exports.createSharingButtons(options));
-    }
-    return sharingDiv;
-  } else {
-    return null;
-  }
-};
-
-var createFeedbackImage = function(options) {
-  var feedbackImage;
-  var feedbackImageSrc =
-      options.level.instructionImageUrl || options.feedbackImage;
-  if (feedbackImageSrc) {
-    feedbackImage = document.createElement('img');
-    feedbackImage.className = 'feedback-image';
-    feedbackImage.src = feedbackImageSrc;
-  }
-  return feedbackImage;
-};
 
 var numTrophiesEarned = function(options) {
   if (options.response && options.response.trophy_updates) {
@@ -4656,7 +4617,7 @@ var generateXMLForBlocks = function(blocks) {
 };
 
 
-},{"../locale/da_dk/common":34,"./codegen":15,"./dom":16,"./templates/buttons.html":21,"./templates/code.html":22,"./templates/readonly.html":27,"./templates/showCode.html":28,"./templates/trophy.html":29,"./utils":31}],18:[function(require,module,exports){
+},{"../locale/da_dk/common":35,"./codegen":15,"./dom":16,"./templates/buttons.html":21,"./templates/code.html":22,"./templates/readonly.html":27,"./templates/sharing.html":28,"./templates/showCode.html":29,"./templates/trophy.html":30,"./utils":32}],18:[function(require,module,exports){
 // avatar: A 1029x51 set of 21 avatar images.
 
 exports.load = function(assetUrl, id) {
@@ -4922,7 +4883,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":35}],21:[function(require,module,exports){
+},{"ejs":36}],21:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4935,7 +4896,7 @@ escape = escape || function (html){
 };
 var buf = [];
 with (locals || {}) { (function(){ 
- buf.push('');1; var msg = require('../../locale/da_dk/common'); ; buf.push('\n\n');3; if (data.ok) {; buf.push('  <div class="farSide" style="padding: 1ex 3ex 0">\n    <button id="ok-button" class="secondary">\n      ', escape((5,  msg.dialogOK() )), '\n    </button>\n  </div>\n');8; }; buf.push('\n');9; if (data.previousLevel) {; buf.push('  <button id="back-button" class="launch">\n    ', escape((10,  msg.backToPreviousLevel() )), '\n  </button>\n');12; }; buf.push('\n');13; if (data.tryAgain) {; buf.push('  <button id="again-button" class="launch">\n    ', escape((14,  msg.tryAgain() )), '\n  </button>\n');16; }; buf.push('\n');17; if (data.nextLevel) {; buf.push('  <button id="continue-button" class="launch">\n    ', escape((18,  msg.continue() )), '\n  </button>\n');20; }; buf.push('\n');21; if (data.facebookUrl) {; buf.push('  <a href=', escape((21,  data.facebookUrl )), ' target="_blank">\n    <img src=', escape((22,  BlocklyApps.assetUrl("media/facebook_purple.png") )), '>\n  </a>\n');24; }; buf.push('\n');25; if (data.twitterUrl) {; buf.push('  <a href=', escape((25,  data.twitterUrl )), ' target="_blank">\n    <img src=', escape((26,  BlocklyApps.assetUrl("media/twitter_purple.png") )), ' >\n  </a>\n  <br>\n');29; }; buf.push('\n');30; if (data.sharingUrl) {; buf.push('  <input type="text" id="sharing-input" value=', escape((30,  data.sharingUrl )), ' readonly>\n');31; }; buf.push('\n');32; if (data.saveToGalleryUrl) {; buf.push('  <button id="save-to-gallery-button" class="launch">\n    ', escape((33,  msg.saveToGallery() )), '\n  </button>\n');35; }; buf.push(''); })();
+ buf.push('');1; var msg = require('../../locale/da_dk/common'); ; buf.push('\n\n');3; if (data.ok) {; buf.push('  <div class="farSide" style="padding: 1ex 3ex 0">\n    <button id="ok-button" class="secondary">\n      ', escape((5,  msg.dialogOK() )), '\n    </button>\n  </div>\n');8; }; buf.push('\n');9; if (data.previousLevel) {; buf.push('  <button id="back-button" class="launch">\n    ', escape((10,  msg.backToPreviousLevel() )), '\n  </button>\n');12; }; buf.push('\n');13; if (data.tryAgain) {; buf.push('  <button id="again-button" class="launch">\n    ', escape((14,  msg.tryAgain() )), '\n  </button>\n');16; }; buf.push('\n');17; if (data.nextLevel) {; buf.push('  <button id="continue-button" class="launch">\n    ', escape((18,  msg.continue() )), '\n  </button>\n');20; }; buf.push(''); })();
 } 
 return buf.join('');
 };
@@ -4943,7 +4904,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/da_dk/common":34,"ejs":35}],22:[function(require,module,exports){
+},{"../../locale/da_dk/common":35,"ejs":36}],22:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4964,7 +4925,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":35}],23:[function(require,module,exports){
+},{"ejs":36}],23:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4985,7 +4946,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/da_dk/common":34,"ejs":35}],24:[function(require,module,exports){
+},{"../../locale/da_dk/common":35,"ejs":36}],24:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -5008,7 +4969,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/da_dk/common":34,"ejs":35}],25:[function(require,module,exports){
+},{"../../locale/da_dk/common":35,"ejs":36}],25:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -5029,7 +4990,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/da_dk/common":34,"ejs":35}],26:[function(require,module,exports){
+},{"../../locale/da_dk/common":35,"ejs":36}],26:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -5051,7 +5012,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/da_dk/common":34,"ejs":35}],27:[function(require,module,exports){
+},{"../../locale/da_dk/common":35,"ejs":36}],27:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -5073,7 +5034,28 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":35}],28:[function(require,module,exports){
+},{"ejs":36}],28:[function(require,module,exports){
+module.exports= (function() {
+  var t = function anonymous(locals, filters, escape, rethrow) {
+escape = escape || function (html){
+  return String(html)
+    .replace(/&(?!#?[a-zA-Z0-9]+;)/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/'/g, '&#39;')
+    .replace(/"/g, '&quot;');
+};
+var buf = [];
+with (locals || {}) { (function(){ 
+ buf.push('');1; var msg = require('../../locale/da_dk/common'); ; buf.push('\n');2; if (options.feedbackImage) { ; buf.push('\n  <div class="sharing-image">\n    <img class="feedback-image" src="', escape((4,  options.feedbackImage )), '">\n  </div>\n');6; } ; buf.push('\n\n<div class="sharing">\n');9; if (options.alreadySaved) { ; buf.push('\n  <div class="saved-to-gallery">\n    ', escape((11,  msg.savedToGallery() )), '\n  </div>\n');13; } else if (options.saveToGalleryUrl) { ; buf.push('\n  <div class="social-buttons">\n  <button id="save-to-gallery-button" class="launch">\n    ', escape((16,  msg.saveToGallery() )), '\n  </button>\n  </div>\n');19; } ; buf.push('\n\n');21; if (options.response && options.response.level_source) { ; buf.push('\n  ');22; if (options.appStrings && options.appStrings.sharingText) { ; buf.push('\n    <div>', escape((23,  options.appStrings.sharingText )), '</div>\n  ');24; } ; buf.push('\n\n  <div>\n    <input type="text" id="sharing-input" value=', escape((27,  options.response.level_source )), ' readonly>\n  </div>\n\n  <div class=\'social-buttons\'>\n    ');31; if (options.facebookUrl) {; buf.push('      <a href=', escape((31,  options.facebookUrl )), ' target="_blank">\n        <img src=', escape((32,  BlocklyApps.assetUrl("media/facebook_purple.png") )), '>\n      </a>\n    ');34; }; buf.push('  \n    ');35; if (options.twitterUrl) {; buf.push('      <a href=', escape((35,  options.twitterUrl )), ' target="_blank">\n        <img src=', escape((36,  BlocklyApps.assetUrl("media/twitter_purple.png") )), ' >\n      </a>\n    ');38; }; buf.push('  </div>\n');39; } ; buf.push('\n</div>\n\n'); })();
+} 
+return buf.join('');
+};
+  return function(locals) {
+    return t(locals, require("ejs").filters);
+  }
+}());
+},{"../../locale/da_dk/common":35,"ejs":36}],29:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -5094,7 +5076,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/da_dk/common":34,"ejs":35}],29:[function(require,module,exports){
+},{"../../locale/da_dk/common":35,"ejs":36}],30:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -5115,7 +5097,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":35}],30:[function(require,module,exports){
+},{"ejs":36}],31:[function(require,module,exports){
 var list = [];
 
 /**
@@ -5133,7 +5115,7 @@ exports.clearTimeouts = function () {
   list = [];
 };
 
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 exports.shallowCopy = function(source) {
   var result = {};
   for (var prop in source) {
@@ -5175,7 +5157,7 @@ exports.mod = function(number, mod) {
   return ((number % mod) + mod) % mod;
 };
 
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 // Serializes an XML DOM node to a string.
 exports.serialize = function(node) {
   var serializer = new XMLSerializer();
@@ -5203,7 +5185,7 @@ exports.parseElement = function(text) {
   return element;
 };
 
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.da=function(n){return n===1?"one":"other"}
 exports.bounceBall = function(d){return "bounce ball"};
 
@@ -5442,7 +5424,7 @@ exports.whileTooltip = function(d){return "Gentag de lukkede handlinger indtil m
 exports.yes = function(d){return "Ja"};
 
 
-},{"messageformat":46}],34:[function(require,module,exports){
+},{"messageformat":47}],35:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.da=function(n){return n===1?"one":"other"}
 exports.blocklyMessage = function(d){return "Blockly"};
 
@@ -5544,6 +5526,8 @@ exports.backToPreviousLevel = function(d){return "Tilbage til forrige niveau"};
 
 exports.saveToGallery = function(d){return "Save to your gallery"};
 
+exports.savedToGallery = function(d){return "Saved to your gallery!"};
+
 exports.typeCode = function(d){return "Skriv din JavaScript kode under disse instruktioner."};
 
 exports.typeFuncs = function(d){return "Tilgængelige funktioner: %1"};
@@ -5569,7 +5553,7 @@ exports.signup = function(d){return "Tilmeld til Introduktion kursus"};
 exports.hintHeader = function(d){return "Here's a tip:"};
 
 
-},{"messageformat":46}],35:[function(require,module,exports){
+},{"messageformat":47}],36:[function(require,module,exports){
 
 /*!
  * EJS
@@ -5928,7 +5912,7 @@ if (require.extensions) {
   });
 }
 
-},{"./filters":36,"./utils":37,"fs":38,"path":40}],36:[function(require,module,exports){
+},{"./filters":37,"./utils":38,"fs":39,"path":41}],37:[function(require,module,exports){
 /*!
  * EJS - Filters
  * Copyright(c) 2010 TJ Holowaychuk <tj@vision-media.ca>
@@ -6131,7 +6115,7 @@ exports.json = function(obj){
   return JSON.stringify(obj);
 };
 
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 
 /*!
  * EJS
@@ -6157,9 +6141,9 @@ exports.escape = function(html){
 };
  
 
-},{}],38:[function(require,module,exports){
-
 },{}],39:[function(require,module,exports){
+
+},{}],40:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -6214,7 +6198,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -6442,7 +6426,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require("/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":39}],41:[function(require,module,exports){
+},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":40}],42:[function(require,module,exports){
 (function (global){
 /*! http://mths.be/punycode v1.2.4 by @mathias */
 ;(function(root) {
@@ -6953,7 +6937,7 @@ var substr = 'ab'.substr(-1) === 'b'
 }(this));
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],42:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -7039,7 +7023,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],43:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -7126,13 +7110,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],44:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":42,"./encode":43}],45:[function(require,module,exports){
+},{"./decode":43,"./encode":44}],46:[function(require,module,exports){
 /*jshint strict:true node:true es5:true onevar:true laxcomma:true laxbreak:true eqeqeq:true immed:true latedef:true*/
 (function () {
   "use strict";
@@ -7765,7 +7749,7 @@ function parseHost(host) {
 
 }());
 
-},{"punycode":41,"querystring":44}],46:[function(require,module,exports){
+},{"punycode":42,"querystring":45}],47:[function(require,module,exports){
 /**
  * messageformat.js
  *
