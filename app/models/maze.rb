@@ -1,21 +1,18 @@
 require "csv"
 
 class Maze < Level
-  def self.create_from_level_builder(params)
+  def self.create_from_level_builder(params, level_params)
     contents = CSV.new(params[:maze_source].read)
     game = Game.custom_maze
     size = params[:size].to_i
 
-    begin
-      maze = Level.parse_maze(contents, params[:type], size)
-    rescue ArgumentError
-      render status: :not_acceptable, text: "There is a non integer value in the grid." and return
-    end
+    maze = Level.parse_maze(contents, params[:type], size)
 
     skin = params[:type] == 'maze' ? 'birds' : 'farmer'
-    @level = Level.create(params.merge(game: game, level_num: 'custom', skin: skin))
-    @level.properties.update(maze)
-    @level.save!
+    level = Level.create(level_params.merge(game: game, level_num: 'custom', skin: skin))
+    level.properties.update(maze)
+    level.save!
+    level
   end
 
   def complete_toolbox

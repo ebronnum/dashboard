@@ -74,9 +74,15 @@ class LevelsController < ApplicationController
 
     case params[:level_type]
     when 'maze', 'karel'
-      @level = Maze.create_from_level_builder(level_params)
+      begin
+        @level = Maze.create_from_level_builder(params, level_params)
+      rescue ArgumentError
+        render status: :not_acceptable, text: "There is a non integer value in the grid." and return
+      end
+
       redirect_to game_level_url(@level.game, @level)
     when 'artist'
+      puts params
       @level = Turtle.create_from_level_builder(params)
       render json: { redirect: game_level_url(@level.game, @level) }
     else
