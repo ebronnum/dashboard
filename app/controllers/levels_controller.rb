@@ -82,7 +82,6 @@ class LevelsController < ApplicationController
 
       redirect_to game_level_url(@level.game, @level)
     when 'artist'
-      puts params
       @level = Turtle.create_from_level_builder(params)
       render json: { redirect: game_level_url(@level.game, @level) }
     else
