@@ -196,7 +196,7 @@ BlocklyApps.init = function(config) {
       openWorkspace.setAttribute('id', 'open-workspace');
       openWorkspace.appendChild(document.createTextNode(msg.openWorkspace()));
 
-      belowViz.appendChild(feedback.createSharingButtons({
+      belowViz.appendChild(feedback.createSharingDiv({
         response: {
           level_source: window.location
         },
@@ -874,7 +874,7 @@ var getIdealBlockNumberMsg = function() {
       msg.infinity() : BlocklyApps.IDEAL_BLOCK_NUM;
 };
 
-},{"../locale/sl_si/common":41,"./builder":5,"./dom":7,"./feedback.js":8,"./slider":27,"./templates/buttons.html":29,"./templates/instructions.html":31,"./templates/learn.html":32,"./templates/makeYourOwn.html":33,"./utils":39,"./xml":40}],3:[function(require,module,exports){
+},{"../locale/sl_si/common":42,"./builder":5,"./dom":7,"./feedback.js":8,"./slider":27,"./templates/buttons.html":29,"./templates/instructions.html":31,"./templates/learn.html":32,"./templates/makeYourOwn.html":33,"./utils":40,"./xml":41}],3:[function(require,module,exports){
 exports.createToolbox = function(blocks) {
   return '<xml id="toolbox" style="display: none;">' + blocks + '</xml>';
 };
@@ -950,7 +950,7 @@ exports.builderForm = function(onAttemptCallback) {
   dialog.show({ backdrop: 'static' });
 };
 
-},{"./dom.js":7,"./feedback.js":8,"./templates/builder.html":28,"./utils.js":39,"url":53}],6:[function(require,module,exports){
+},{"./dom.js":7,"./feedback.js":8,"./templates/builder.html":28,"./utils.js":40,"url":54}],6:[function(require,module,exports){
 var INFINITE_LOOP_TRAP = '  BlocklyApps.checkTimeout();\n';
 var INFINITE_LOOP_TRAP_RE =
     new RegExp(INFINITE_LOOP_TRAP.replace(/\(.*\)/, '\\(.*\\)'), 'g');
@@ -1120,7 +1120,7 @@ exports.displayFeedback = function(options) {
   var displayShowCode = BlocklyApps.enableShowCode && canContinue;
   var feedback = document.createElement('div');
   var feedbackMessage = getFeedbackMessage(options);
-  var sharingDiv = createSharingDiv(options);
+  var sharingDiv = (canContinue && options.showingSharing) ? exports.createSharingDiv(options) : null;
   var showCode = displayShowCode ? getShowCodeElement(options) : null;
   var feedbackBlocks = new FeedbackBlocks(options);
 
@@ -1145,6 +1145,7 @@ exports.displayFeedback = function(options) {
   if (showCode) {
     feedback.appendChild(showCode);
   }
+
   feedback.appendChild(getFeedbackButtons(
     options.feedbackType, options.level.showPreviousLevelButton));
 
@@ -1404,18 +1405,14 @@ var isFeedbackMessageCustomized = function(options) {
        options.level.other1StarError);
 };
 
-exports.createSharingButtons = function(options) {
-  var sharingWrapper = document.createElement('div');
-  var sharingButtons = document.createElement('div');
-  var sharingUrl = document.createElement('div');
-  sharingButtons.className = 'social-buttons';
-  sharingUrl.className = 'feedback-links';
-  sharingUrl.innerHTML = require('./templates/buttons.html')({
-    data: {
-      sharingUrl: options.response.level_source
-    }
-  });
+exports.createSharingDiv = function(options) {
+  if (!options.response || !options.response.level_source) {
+    // don't even try if our caller didn't give us something that can be shared
+    // options.response.level_source is the url that we are sharing
+    return null;
+  } 
 
+  // set up the twitter share url
   var twitterUrl = "https://twitter.com/intent/tweet?url=" +
                    options.response.level_source;
 
@@ -1425,71 +1422,35 @@ exports.createSharingButtons = function(options) {
   if (options.twitter  && options.twitter.hashtag !== undefined) {
     twitterUrl += "&button_hashtag=" + options.twitter.hashtag;
   }
+  options.twitterUrl = twitterUrl;
 
-  sharingButtons.innerHTML = require('./templates/buttons.html')({
-    data: {
-      facebookUrl: "https://www.facebook.com/sharer/sharer.php?u=" +
-                    options.response.level_source,
-      twitterUrl: twitterUrl,
-      makeYourOwn: options.makeYourOwn,
-      saveToGalleryUrl: options.saveToGalleryUrl
-    }
+  // set up the facebook share url
+  var facebookUrl = "https://www.facebook.com/sharer/sharer.php?u=" +
+                    options.response.level_source;
+  options.facebookUrl = facebookUrl;
+
+  // use a generic image for the level if a feedback image has not been supplied.
+  if (options.level && options.level.instructionImageUrl && !options.feedbackImage) {
+    options.feedbackImage = options.level.instructionImageUrl;
+  }
+
+  var sharingDiv = document.createElement('div');
+  sharingDiv.setAttribute('style', 'display:inline-block');
+  sharingDiv.innerHTML = require('./templates/sharing.html')({
+    options: options
   });
-  var sharingInput = sharingUrl.querySelector('#sharing-input');
+
+  var sharingInput = sharingDiv.querySelector('#sharing-input');
   if (sharingInput) {
     dom.addClickTouchEvent(sharingInput, function() {
       sharingInput.focus();
       sharingInput.select();
     });
   }
-  sharingWrapper.appendChild(sharingUrl);
-  sharingWrapper.appendChild(sharingButtons);
-  return sharingWrapper;
+
+  return sharingDiv;
 };
 
-
-var createSharingDiv = function(options) {
-  // Creates the sharing div only when showingSharing is set and the solution is
-  // a passing solution.
-  if (options.showingSharing &&
-      exports.canContinueToNextLevel(options.feedbackType)) {
-    var sharingDiv = document.createElement('div');
-    sharingDiv.setAttribute('style', 'display:inline-block');
-    var sharingImage = document.createElement('div');
-
-    var feedbackImage = createFeedbackImage(options);
-    if (feedbackImage) {
-        sharingImage.appendChild(feedbackImage);
-        sharingDiv.appendChild(sharingImage);
-    }
-
-    if (options.response && options.response.level_source) {
-      var sharingText = document.createElement('div');
-      if (options.appStrings) {
-        dom.setText(sharingText, options.appStrings.sharingText);
-      }
-      sharingText.className = 'shareDrawingMsg';
-      sharingDiv.appendChild(sharingText);
-
-      sharingDiv.appendChild(exports.createSharingButtons(options));
-    }
-    return sharingDiv;
-  } else {
-    return null;
-  }
-};
-
-var createFeedbackImage = function(options) {
-  var feedbackImage;
-  var feedbackImageSrc =
-      options.level.instructionImageUrl || options.feedbackImage;
-  if (feedbackImageSrc) {
-    feedbackImage = document.createElement('img');
-    feedbackImage.className = 'feedback-image';
-    feedbackImage.src = feedbackImageSrc;
-  }
-  return feedbackImage;
-};
 
 var numTrophiesEarned = function(options) {
   if (options.response && options.response.trophy_updates) {
@@ -1875,7 +1836,7 @@ var generateXMLForBlocks = function(blocks) {
 };
 
 
-},{"../locale/sl_si/common":41,"./codegen":6,"./dom":7,"./templates/buttons.html":29,"./templates/code.html":30,"./templates/readonly.html":35,"./templates/showCode.html":36,"./templates/trophy.html":37,"./utils":39}],9:[function(require,module,exports){
+},{"../locale/sl_si/common":42,"./codegen":6,"./dom":7,"./templates/buttons.html":29,"./templates/code.html":30,"./templates/readonly.html":35,"./templates/sharing.html":36,"./templates/showCode.html":37,"./templates/trophy.html":38,"./utils":40}],9:[function(require,module,exports){
 // Functions for checking required blocks.
 
 /**
@@ -2576,7 +2537,7 @@ exports.install = function(blockly, skin) {
 
 };
 
-},{"../../locale/sl_si/maze":42,"../codegen":6}],12:[function(require,module,exports){
+},{"../../locale/sl_si/maze":43,"../codegen":6}],12:[function(require,module,exports){
 var levelBase = require('../level_base');
 var Direction = require('./tiles').Direction;
 var msg = require('../../locale/sl_si/maze');
@@ -4077,7 +4038,7 @@ module.exports = {
   }
 };
 
-},{"../../locale/sl_si/maze":42,"../level_base":9,"./karelStartBlocks.xml":13,"./tiles":20,"./toolboxes/karel1.xml":21,"./toolboxes/karel2.xml":22,"./toolboxes/karel3.xml":23}],13:[function(require,module,exports){
+},{"../../locale/sl_si/maze":43,"../level_base":9,"./karelStartBlocks.xml":13,"./tiles":20,"./toolboxes/karel1.xml":21,"./toolboxes/karel2.xml":22,"./toolboxes/karel3.xml":23}],13:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4109,7 +4070,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/sl_si/maze":42,"ejs":43}],14:[function(require,module,exports){
+},{"../../locale/sl_si/maze":43,"ejs":44}],14:[function(require,module,exports){
 var Direction = require('./tiles').Direction;
 var karelLevels = require('./karelLevels');
 var reqBlocks = require('./requiredBlocks');
@@ -6230,7 +6191,7 @@ Maze.checkSuccess = function() {
   return false;
 };
 
-},{"../../locale/sl_si/common":41,"../../locale/sl_si/maze":42,"../base":2,"../codegen":6,"../dom":7,"../feedback.js":8,"../skins":26,"../templates/page.html":34,"../timeoutList":38,"./api":10,"./tiles":20,"./visualization.html":25}],17:[function(require,module,exports){
+},{"../../locale/sl_si/common":42,"../../locale/sl_si/maze":43,"../base":2,"../codegen":6,"../dom":7,"../feedback.js":8,"../skins":26,"../templates/page.html":34,"../timeoutList":39,"./api":10,"./tiles":20,"./visualization.html":25}],17:[function(require,module,exports){
 var MOVE_FORWARD = {'test': 'moveForward', 'type': 'maze_moveForward'};
 var TURN_LEFT = {'test': 'turnLeft', 'type': 'maze_turn', 'titles': {'DIR': 'turnLeft'}};
 var TURN_RIGHT = {'test': 'turnRight', 'type': 'maze_turn', 'titles': {'DIR': 'turnRight'}};
@@ -6397,7 +6358,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":43}],20:[function(require,module,exports){
+},{"ejs":44}],20:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -6469,7 +6430,7 @@ Tiles.constrainDirection16 = function(d) {
   return utils.mod(d, 16);
 };
 
-},{"../utils":39}],21:[function(require,module,exports){
+},{"../utils":40}],21:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6490,7 +6451,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":43}],22:[function(require,module,exports){
+},{"ejs":44}],22:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6516,7 +6477,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../../locale/sl_si/common":41,"../../../locale/sl_si/maze":42,"ejs":43}],23:[function(require,module,exports){
+},{"../../../locale/sl_si/common":42,"../../../locale/sl_si/maze":43,"ejs":44}],23:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6550,7 +6511,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../../locale/sl_si/common":41,"ejs":43}],24:[function(require,module,exports){
+},{"../../../locale/sl_si/common":42,"ejs":44}],24:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6571,7 +6532,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":43}],25:[function(require,module,exports){
+},{"ejs":44}],25:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6592,7 +6553,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":43}],26:[function(require,module,exports){
+},{"ejs":44}],26:[function(require,module,exports){
 // avatar: A 1029x51 set of 21 avatar images.
 
 exports.load = function(assetUrl, id) {
@@ -6858,7 +6819,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":43}],29:[function(require,module,exports){
+},{"ejs":44}],29:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6871,7 +6832,7 @@ escape = escape || function (html){
 };
 var buf = [];
 with (locals || {}) { (function(){ 
- buf.push('');1; var msg = require('../../locale/sl_si/common'); ; buf.push('\n\n');3; if (data.ok) {; buf.push('  <div class="farSide" style="padding: 1ex 3ex 0">\n    <button id="ok-button" class="secondary">\n      ', escape((5,  msg.dialogOK() )), '\n    </button>\n  </div>\n');8; }; buf.push('\n');9; if (data.previousLevel) {; buf.push('  <button id="back-button" class="launch">\n    ', escape((10,  msg.backToPreviousLevel() )), '\n  </button>\n');12; }; buf.push('\n');13; if (data.tryAgain) {; buf.push('  <button id="again-button" class="launch">\n    ', escape((14,  msg.tryAgain() )), '\n  </button>\n');16; }; buf.push('\n');17; if (data.nextLevel) {; buf.push('  <button id="continue-button" class="launch">\n    ', escape((18,  msg.continue() )), '\n  </button>\n');20; }; buf.push('\n');21; if (data.facebookUrl) {; buf.push('  <a href=', escape((21,  data.facebookUrl )), ' target="_blank">\n    <img src=', escape((22,  BlocklyApps.assetUrl("media/facebook_purple.png") )), '>\n  </a>\n');24; }; buf.push('\n');25; if (data.twitterUrl) {; buf.push('  <a href=', escape((25,  data.twitterUrl )), ' target="_blank">\n    <img src=', escape((26,  BlocklyApps.assetUrl("media/twitter_purple.png") )), ' >\n  </a>\n  <br>\n');29; }; buf.push('\n');30; if (data.sharingUrl) {; buf.push('  <input type="text" id="sharing-input" value=', escape((30,  data.sharingUrl )), ' readonly>\n');31; }; buf.push('\n');32; if (data.saveToGalleryUrl) {; buf.push('  <button id="save-to-gallery-button" class="launch">\n    ', escape((33,  msg.saveToGallery() )), '\n  </button>\n');35; }; buf.push(''); })();
+ buf.push('');1; var msg = require('../../locale/sl_si/common'); ; buf.push('\n\n');3; if (data.ok) {; buf.push('  <div class="farSide" style="padding: 1ex 3ex 0">\n    <button id="ok-button" class="secondary">\n      ', escape((5,  msg.dialogOK() )), '\n    </button>\n  </div>\n');8; }; buf.push('\n');9; if (data.previousLevel) {; buf.push('  <button id="back-button" class="launch">\n    ', escape((10,  msg.backToPreviousLevel() )), '\n  </button>\n');12; }; buf.push('\n');13; if (data.tryAgain) {; buf.push('  <button id="again-button" class="launch">\n    ', escape((14,  msg.tryAgain() )), '\n  </button>\n');16; }; buf.push('\n');17; if (data.nextLevel) {; buf.push('  <button id="continue-button" class="launch">\n    ', escape((18,  msg.continue() )), '\n  </button>\n');20; }; buf.push(''); })();
 } 
 return buf.join('');
 };
@@ -6879,7 +6840,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/sl_si/common":41,"ejs":43}],30:[function(require,module,exports){
+},{"../../locale/sl_si/common":42,"ejs":44}],30:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6900,7 +6861,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":43}],31:[function(require,module,exports){
+},{"ejs":44}],31:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6921,7 +6882,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/sl_si/common":41,"ejs":43}],32:[function(require,module,exports){
+},{"../../locale/sl_si/common":42,"ejs":44}],32:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6944,7 +6905,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/sl_si/common":41,"ejs":43}],33:[function(require,module,exports){
+},{"../../locale/sl_si/common":42,"ejs":44}],33:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6965,7 +6926,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/sl_si/common":41,"ejs":43}],34:[function(require,module,exports){
+},{"../../locale/sl_si/common":42,"ejs":44}],34:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6987,7 +6948,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/sl_si/common":41,"ejs":43}],35:[function(require,module,exports){
+},{"../../locale/sl_si/common":42,"ejs":44}],35:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -7009,7 +6970,28 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":43}],36:[function(require,module,exports){
+},{"ejs":44}],36:[function(require,module,exports){
+module.exports= (function() {
+  var t = function anonymous(locals, filters, escape, rethrow) {
+escape = escape || function (html){
+  return String(html)
+    .replace(/&(?!#?[a-zA-Z0-9]+;)/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/'/g, '&#39;')
+    .replace(/"/g, '&quot;');
+};
+var buf = [];
+with (locals || {}) { (function(){ 
+ buf.push('');1; var msg = require('../../locale/sl_si/common'); ; buf.push('\n');2; if (options.feedbackImage) { ; buf.push('\n  <div class="sharing-image">\n    <img class="feedback-image" src="', escape((4,  options.feedbackImage )), '">\n  </div>\n');6; } ; buf.push('\n\n<div class="sharing">\n');9; if (options.alreadySaved) { ; buf.push('\n  <div class="saved-to-gallery">\n    ', escape((11,  msg.savedToGallery() )), '\n  </div>\n');13; } else if (options.saveToGalleryUrl) { ; buf.push('\n  <div class="social-buttons">\n  <button id="save-to-gallery-button" class="launch">\n    ', escape((16,  msg.saveToGallery() )), '\n  </button>\n  </div>\n');19; } ; buf.push('\n\n');21; if (options.response && options.response.level_source) { ; buf.push('\n  ');22; if (options.appStrings && options.appStrings.sharingText) { ; buf.push('\n    <div>', escape((23,  options.appStrings.sharingText )), '</div>\n  ');24; } ; buf.push('\n\n  <div>\n    <input type="text" id="sharing-input" value=', escape((27,  options.response.level_source )), ' readonly>\n  </div>\n\n  <div class=\'social-buttons\'>\n    ');31; if (options.facebookUrl) {; buf.push('      <a href=', escape((31,  options.facebookUrl )), ' target="_blank">\n        <img src=', escape((32,  BlocklyApps.assetUrl("media/facebook_purple.png") )), '>\n      </a>\n    ');34; }; buf.push('  \n    ');35; if (options.twitterUrl) {; buf.push('      <a href=', escape((35,  options.twitterUrl )), ' target="_blank">\n        <img src=', escape((36,  BlocklyApps.assetUrl("media/twitter_purple.png") )), ' >\n      </a>\n    ');38; }; buf.push('  </div>\n');39; } ; buf.push('\n</div>\n\n'); })();
+} 
+return buf.join('');
+};
+  return function(locals) {
+    return t(locals, require("ejs").filters);
+  }
+}());
+},{"../../locale/sl_si/common":42,"ejs":44}],37:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -7030,7 +7012,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/sl_si/common":41,"ejs":43}],37:[function(require,module,exports){
+},{"../../locale/sl_si/common":42,"ejs":44}],38:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -7051,7 +7033,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":43}],38:[function(require,module,exports){
+},{"ejs":44}],39:[function(require,module,exports){
 var list = [];
 
 /**
@@ -7069,7 +7051,7 @@ exports.clearTimeouts = function () {
   list = [];
 };
 
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 exports.shallowCopy = function(source) {
   var result = {};
   for (var prop in source) {
@@ -7111,7 +7093,7 @@ exports.mod = function(number, mod) {
   return ((number % mod) + mod) % mod;
 };
 
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 // Serializes an XML DOM node to a string.
 exports.serialize = function(node) {
   var serializer = new XMLSerializer();
@@ -7139,7 +7121,7 @@ exports.parseElement = function(text) {
   return element;
 };
 
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.sl = function (n) {
   if ((n % 100) == 1) {
     return 'one';
@@ -7252,6 +7234,8 @@ exports.backToPreviousLevel = function(d){return "Nazaj na prejšnjo raven"};
 
 exports.saveToGallery = function(d){return "Save to your gallery"};
 
+exports.savedToGallery = function(d){return "Saved to your gallery!"};
+
 exports.typeCode = function(d){return "Vtipkaj tvojo JavaScript kodo pod temi navodili."};
 
 exports.typeFuncs = function(d){return "Razpoložljive funkcije: %1"};
@@ -7277,7 +7261,7 @@ exports.signup = function(d){return "Vpiši se za uvodni tečaj"};
 exports.hintHeader = function(d){return "Here's a tip:"};
 
 
-},{"messageformat":54}],42:[function(require,module,exports){
+},{"messageformat":55}],43:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.sl = function (n) {
   if ((n % 100) == 1) {
     return 'one';
@@ -7391,7 +7375,7 @@ exports.whileTooltip = function(d){return "Ponavljaj vključena dejanja, dokler 
 exports.yes = function(d){return "Ja"};
 
 
-},{"messageformat":54}],43:[function(require,module,exports){
+},{"messageformat":55}],44:[function(require,module,exports){
 
 /*!
  * EJS
@@ -7750,7 +7734,7 @@ if (require.extensions) {
   });
 }
 
-},{"./filters":44,"./utils":45,"fs":46,"path":48}],44:[function(require,module,exports){
+},{"./filters":45,"./utils":46,"fs":47,"path":49}],45:[function(require,module,exports){
 /*!
  * EJS - Filters
  * Copyright(c) 2010 TJ Holowaychuk <tj@vision-media.ca>
@@ -7953,7 +7937,7 @@ exports.json = function(obj){
   return JSON.stringify(obj);
 };
 
-},{}],45:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 
 /*!
  * EJS
@@ -7979,9 +7963,9 @@ exports.escape = function(html){
 };
  
 
-},{}],46:[function(require,module,exports){
-
 },{}],47:[function(require,module,exports){
+
+},{}],48:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -8036,7 +8020,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],48:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -8264,7 +8248,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require("/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":47}],49:[function(require,module,exports){
+},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":48}],50:[function(require,module,exports){
 (function (global){
 /*! http://mths.be/punycode v1.2.4 by @mathias */
 ;(function(root) {
@@ -8775,7 +8759,7 @@ var substr = 'ab'.substr(-1) === 'b'
 }(this));
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],50:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -8861,7 +8845,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],51:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -8948,13 +8932,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],52:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":50,"./encode":51}],53:[function(require,module,exports){
+},{"./decode":51,"./encode":52}],54:[function(require,module,exports){
 /*jshint strict:true node:true es5:true onevar:true laxcomma:true laxbreak:true eqeqeq:true immed:true latedef:true*/
 (function () {
   "use strict";
@@ -9587,7 +9571,7 @@ function parseHost(host) {
 
 }());
 
-},{"punycode":49,"querystring":52}],54:[function(require,module,exports){
+},{"punycode":50,"querystring":53}],55:[function(require,module,exports){
 /**
  * messageformat.js
  *
