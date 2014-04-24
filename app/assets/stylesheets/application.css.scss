@@ -245,9 +245,12 @@ th {
     padding-top: 4px; 
     padding-bottom: 4px;
     a {
-      border-radius: 5px;
+      border-radius: 15px;
       line-height: 22px;
-      padding: 6px;
+      padding-top: 6px;
+      padding-bottom: 6px;
+      padding-left: 10px;
+      padding-right: 10px;
       background-color: $dark_color;
       &.level-done {
         background-color: $orange;
