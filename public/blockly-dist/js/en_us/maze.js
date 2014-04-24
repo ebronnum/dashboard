@@ -5303,10 +5303,18 @@ var removeDirt = function(row, col) {
 /**
  * Calculate the y coordinates for pegman sprite.
  */
-var getPegmanYCoordinate = function(options) {
-  var y = Maze.SQUARE_SIZE * (options.mazeRow + 0.5) - Maze.PEGMAN_HEIGHT / 2 -
-      (options.pegmanRow || 0) * Maze.PEGMAN_HEIGHT + Maze.PEGMAN_Y_OFFSET - 8;
+var getPegmanYForRow = function (mazeRow) {
+  var y = Maze.SQUARE_SIZE * (mazeRow + 0.5) - Maze.PEGMAN_HEIGHT / 2 +
+    Maze.PEGMAN_Y_OFFSET;
   return Math.floor(y);
+};
+
+/**
+ * Calculate the Y offset within the sheet
+ */
+var getPegmanFrameOffsetY = function (animationRow) {
+  animationRow = animationRow || 0;
+  return animationRow * Maze.PEGMAN_HEIGHT;
 };
 
 /**
@@ -5317,7 +5325,6 @@ var getPegmanYCoordinate = function(options) {
   * col which column the pegman is at.
   * row which row the pegman is at.
   * direction which direction the pegman is facing at.
-  * rowIdx which column of the pegman the animation needs, default is 0.
   * numColPegman number of the pegman in each row, default is 4.
   * numRowPegman number of the pegman in each column, default is 1.
   */
@@ -5332,9 +5339,7 @@ var createPegmanAnimation = function(options) {
     rect.setAttribute('x', options.col * Maze.SQUARE_SIZE + 1);
   }
   if (options.row !== undefined) {
-    rect.setAttribute('y', getPegmanYCoordinate({
-      mazeRow : options.row
-    }));
+    rect.setAttribute('y', getPegmanYForRow(options.row));
   }
   rect.setAttribute('width', Maze.PEGMAN_WIDTH);
   rect.setAttribute('height', Maze.PEGMAN_HEIGHT);
@@ -5358,11 +5363,7 @@ var createPegmanAnimation = function(options) {
     img.setAttribute('x', x);
   }
   if (options.row !== undefined) {
-    var y = getPegmanYCoordinate({
-      mazeRow : options.row,
-      pegmanRow : options.rowIdx
-    });
-    img.setAttribute('y', y);
+    img.setAttribute('y', getPegmanYForRow(options.row));
   }
 };
 
@@ -5373,22 +5374,17 @@ var createPegmanAnimation = function(options) {
   * col required which column the pegman is at.
   * row required which row the pegman is at.
   * direction required which direction the pegman is facing at.
-  * rowIdx which column of the pegman the animation needs, default is 0.
+  * animationRow which row of the sprite sheet the pegman animation needs
   */
 var updatePegmanAnimation = function(options) {
   var rect = document.getElementById(options.idStr + 'PegmanClipRect');
   rect.setAttribute('x', options.col * Maze.SQUARE_SIZE + 1);
-  rect.setAttribute('y', getPegmanYCoordinate({
-    mazeRow : options.row
-  }));
+  rect.setAttribute('y', getPegmanYForRow(options.row));
   var img = document.getElementById(options.idStr + 'Pegman');
   var x = Maze.SQUARE_SIZE * options.col -
       options.direction * Maze.PEGMAN_WIDTH + 1;
   img.setAttribute('x', x);
-  var y = getPegmanYCoordinate({
-    mazeRow : options.row,
-    pegmanRow : options.rowIdx
-  });
+  var y = getPegmanYForRow(options.row) - getPegmanFrameOffsetY(options.animationRow);
   img.setAttribute('y', y);
   img.setAttribute('visibility', 'visible');
 };
@@ -5827,7 +5823,7 @@ Maze.schedule = function(startPos, endPos) {
         col: startPos[0] + deltaX * frameIdx,
         row: startPos[1] + deltaY * frameIdx,
         direction: direction,
-        rowIdx: frameIdx
+        animationRow: frameIdx
       });
     }, stepSpeed * 6 / numFrames * frameIdx);
   }
@@ -6111,9 +6107,7 @@ Maze.displayPegman = function(x, y, d) {
   var pegmanIcon = document.getElementById('pegman');
   pegmanIcon.setAttribute('x',
       x * Maze.SQUARE_SIZE - d * Maze.PEGMAN_WIDTH + 1);
-  pegmanIcon.setAttribute('y', getPegmanYCoordinate({
-    mazeRow : y
-  }));
+  pegmanIcon.setAttribute('y', getPegmanYForRow(y));
 
   var clipRect = document.getElementById('clipRect');
   clipRect.setAttribute('x', x * Maze.SQUARE_SIZE + 1);
@@ -6276,7 +6270,8 @@ var CONFIGS = {
     transparentTileEnding: true,
     nonDisappearingPegmanHittingObstacle: true,
     background: 4,
-    dirtSound: true
+    dirtSound: true,
+    pegmanYOffset: -8
   },
 
   farmer_night: {
@@ -6284,7 +6279,8 @@ var CONFIGS = {
     transparentTileEnding: true,
     nonDisappearingPegmanHittingObstacle: true,
     background: 4,
-    dirtSound: true
+    dirtSound: true,
+    pegmanYOffset: -8
   },
 
   pvz: {
@@ -6306,7 +6302,7 @@ var CONFIGS = {
     approachingGoalAnimation: 'close_goal.png',
     pegmanHeight: 68,
     pegmanWidth: 51,
-    pegmanYOffset: -6
+    pegmanYOffset: -14
   }
 
 };
