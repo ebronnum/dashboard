@@ -2785,20 +2785,6 @@ var essentiallyEqual = function(float1, float2, opt_variance) {
 };
 
 /**
- * @param scope Object :  The scope in which to execute the delegated function.
- * @param func Function : The function to execute
- * @param data Object or Array : The data to pass to the function. If the function is also passed arguments, the data is appended to the arguments list. If the data is an Array, each item is appended as a new argument.
- */
-var delegate = function(scope, func, data)
-{
-  return function()
-  {
-    var args = Array.prototype.slice.apply(arguments).concat(data);
-    func.apply(scope, args);
-  };
-};
-
-/**
  * Check to see if avatar is in collision with given obstacle
  * @param obstacle Object : The obstacle object we're checking
  */
