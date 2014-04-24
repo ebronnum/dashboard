@@ -71,7 +71,7 @@ class LevelsController < ApplicationController
   def create
     authorize! :create, :level
     case params[:level_type]
-    when 'maze'
+    when 'maze', 'karel'
       create_maze
     when 'artist'
       create_artist
@@ -82,14 +82,19 @@ class LevelsController < ApplicationController
 
   def create_maze
     contents = CSV.new(params[:maze_source].read)
-    raw_maze = contents.read[0...params[:size].to_i]
+    game = Game.custom_maze
+    size = params[:size].to_i
+
     begin
-      maze = raw_maze.map {|row| row.map {|cell| Integer(cell)}}
+      maze = Level.parse_maze(contents, params[:type], size)
     rescue ArgumentError
       render status: :not_acceptable, text: "There is a non integer value in the grid." and return
     end
-    game = Game.custom_maze
-    @level = Level.create(level_params.merge(maze: maze.to_s, game: game, user: current_user, level_num: 'custom', skin: 'birds'))
+
+    skin = params[:type] == 'maze' ? 'birds' : 'farmer'
+    @level = Level.create(level_params.merge(game: game, user: current_user, level_num: 'custom', skin: skin))
+    @level.properties.update(maze)
+    @level.save!
     redirect_to game_level_url(game, @level)
   end
 
@@ -113,7 +118,7 @@ class LevelsController < ApplicationController
     case params[:type]
     when 'artist'
       artist_builder
-    when 'maze'
+    when 'maze', 'karel'
       @game = Game.custom_maze
       @level = Level.new
       render :maze_builder
