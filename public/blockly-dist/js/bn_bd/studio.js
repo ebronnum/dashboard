@@ -2869,6 +2869,12 @@ module.exports = {
       [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0]
     ],
+    'goal': {
+      successCondition: function () {
+        return ((Studio.sayComplete > 0) &&
+                (Studio.sprite[0].collisionMask & 2));
+      }
+    },
     'timeoutFailureTick': 200,
     'toolbox':
       tb('<block type="studio_moveDistance"><title name="DIR">1</title></block>' +
