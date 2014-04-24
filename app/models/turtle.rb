@@ -1,7 +1,7 @@
 class Turtle < Level
   def self.create_from_level_builder(params)
     game = Game.find(params[:game_id])
-    level = Level.create(instructions: params[:instructions], name: params[:name], x: params[:x], y: params[:y], start_direction: params[:start_direction], game: game, level_num: 'custom', skin: 'artist')
+    level = create(instructions: params[:instructions], name: params[:name], x: params[:x], y: params[:y], start_direction: params[:start_direction], game: game, level_num: 'custom', skin: 'artist')
     solution = LevelSource.lookup(level, params[:program])
     level.update(solution_level_source: solution)
     level

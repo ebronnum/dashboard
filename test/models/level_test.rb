@@ -3,11 +3,11 @@ include ActionDispatch::TestProcess
 
 class LevelTest < ActiveSupport::TestCase
   setup do
-    @custom_data = {"game_id"=>23, "user_id" => 1, "name"=>"__bob4", "level_num"=>"custom", "skin"=>"artist", "solution_level_source_id"=>4, "user_id"=>1, "instructions"=>"sdfdfs"}
-    @data = {"game_id"=>23, "name"=>"__bob4", "level_num"=>"custom", "skin"=>"artist", "solution_level_source_id"=>4, "user_id"=>1, "instructions"=>"sdfdfs"}
-    @maze_data = {"game_id"=>25, "name"=>"__bob4", "level_num"=>"custom", "skin"=>"birds", "user_id"=>1, "instructions"=>"sdfdfs"}
+    @custom_data = {:game_id=>23, "user_id" => 1, :name=>"__bob4", :level_num=>"custom", :skin=>"artist", :solution_level_source_id=>4, :user_id=>1, :instructions=>"sdfdfs"}
+    @turtle_data = {:game_id=>23, :name=>"__bob4", :level_num=>"custom", :skin=>"artist", :solution_level_source_id=>4, :user_id=>1, :instructions=>"sdfdfs", :program=>"<hey>"}
+    @maze_data = {:game_id=>25, :name=>"__bob4", :level_num=>"custom", :skin=>"birds", :user_id=>1, :instructions=>"sdfdfs"}
     @custom_level = Level.create(@custom_data)
-    @level = Level.create(@data)
+    @level = Level.create(@maze_data)
   end
 
   test "throws argument error on bad data" do
@@ -45,7 +45,7 @@ class LevelTest < ActiveSupport::TestCase
 
   test "can create two custom levels with different names" do
     assert_difference('Level.count', 1) do
-      @custom_data["name"] = "__swoop"
+      @custom_data[:name] = "__swoop"
       level2 = Level.create(@custom_data)
       assert level2.valid?
     end
@@ -57,12 +57,18 @@ class LevelTest < ActiveSupport::TestCase
   end
 
   test "create turtle level of correct subclass" do
-    level = Turtle.create(@data)
+    level = Turtle.create_from_level_builder(@turtle_data)
     assert_equal "Turtle", level.type
   end
 
   test "create maze level of correct subclass" do
-    level = Maze.create(@maze_data)
+    level = Maze.create_from_level_builder(@maze_data)
     assert_equal "Maze", level.type
+  end
+
+  test "create turtle level from level builder" do
+    level = Turtle.create_from_level_builder(@turtle_data)
+
+    assert_equal level.instructions, @turtle_data[:instructions]
   end
 end
