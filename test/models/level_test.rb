@@ -5,6 +5,7 @@ class LevelTest < ActiveSupport::TestCase
   setup do
     @custom_data = {"game_id"=>23, "user_id" => 1, "name"=>"__bob4", "level_num"=>"custom", "skin"=>"artist", "solution_level_source_id"=>4, "user_id"=>1, "instructions"=>"sdfdfs"}
     @data = {"game_id"=>23, "name"=>"__bob4", "level_num"=>"custom", "skin"=>"artist", "solution_level_source_id"=>4, "user_id"=>1, "instructions"=>"sdfdfs"}
+    @maze_data = {"game_id"=>25, "name"=>"__bob4", "level_num"=>"custom", "skin"=>"birds", "user_id"=>1, "instructions"=>"sdfdfs"}
     @custom_level = Level.create(@custom_data)
     @level = Level.create(@data)
   end
@@ -53,5 +54,15 @@ class LevelTest < ActiveSupport::TestCase
   test "get custom levels" do
     assert Level.custom_levels.include?(@custom_level)
     assert_not Level.custom_levels.include?(@level)
+  end
+
+  test "create turtle level of correct subclass" do
+    level = Turtle.create(@data)
+    assert_equal "Turtle", level.type
+  end
+
+  test "create maze level of correct subclass" do
+    level = Maze.create(@maze_data)
+    assert_equal "Maze", level.type
   end
 end
