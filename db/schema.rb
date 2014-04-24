@@ -162,6 +162,7 @@ ActiveRecord::Schema.define(version: 20140425004033) do
     t.text     "start_blocks"
     t.text     "toolbox_blocks"
     t.text     "properties"
+    t.string   "type"
   end
 
   add_index "levels", ["game_id"], name: "index_levels_on_game_id", using: :btree
