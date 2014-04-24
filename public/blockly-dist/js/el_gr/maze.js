@@ -4814,7 +4814,7 @@ Maze.scale = {
 
 var loadLevel = function() {
   // Load maps.
-  Maze.map = level.maze ? JSON.parse(level.maze) : level.map;
+  Maze.map = level.map;
   Maze.initialDirtMap = level.initialDirt;
   Maze.finalDirtMap = level.finalDirt;
   Maze.startDirection = level.startDirection;
