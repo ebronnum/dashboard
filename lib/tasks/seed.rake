@@ -108,7 +108,7 @@ namespace :seed do
     levels
   end
 
-  task scripts: :environment do
+  task scripts: [:games, :environment] do
     Rake::Task["seed:custom_levels"].invoke
     Script.transaction do
       game_map = Game.all.index_by(&:name)
@@ -371,6 +371,6 @@ namespace :seed do
 
   task analyze_data: [:ideal_solutions, :frequent_level_sources]
 
-  task all: [:videos, :concepts, :games, :scripts, :trophies, :prize_providers, :callouts]
+  task all: [:videos, :concepts, :scripts, :trophies, :prize_providers, :callouts]
 
 end
