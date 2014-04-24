@@ -158,9 +158,9 @@ class Level < ActiveRecord::Base
   #   array that Blockly can render.
   # If type is "karel" return a 3 entry hash with keys 'maze', 'initial_dirt',
   #   and 'final_dirt', the keys map to 2d arrays blockly can render.
-  # Returns nil if there is a noninteger value in the array.
+  # Throws ArgumentError if there is a non integer value in the array.
   def self.parse_maze(contents, type, size)
-    maze = read_and_convert_maze_to_integer(contents, size) rescue return  # Return nil on noninteger cell.
+    maze = read_and_convert_maze_to_integer(contents, size)
 
     type == 'maze' ? { 'maze' => maze } : parse_karel_maze(maze, size)
   end

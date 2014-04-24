@@ -85,8 +85,9 @@ class LevelsController < ApplicationController
     game = Game.custom_maze
     size = params[:size].to_i
 
-    maze = Level.parse_maze(contents, params[:type], size)
-    if maze.nil?
+    begin
+      maze = Level.parse_maze(contents, params[:type], size)
+    rescue ArgumentError
       render status: :not_acceptable, text: "There is a non integer value in the grid." and return
     end
 
