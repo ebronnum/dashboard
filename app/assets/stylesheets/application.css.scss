@@ -197,10 +197,10 @@ th {
 }
 
 .level_link {
-  border-radius: 5px;
-  min-width: 20px;
+  border-radius: 20px;
+  min-width: 22px;
   line-height: 22px;
-  padding: 2px 3px;
+  padding: 4px;
   font-size: 16px;
   text-align: center;
   cursor: pointer;
@@ -213,16 +213,45 @@ th {
 
 .level_link_done {
   background-color: orange;
-  padding: 2px 2px 1px 2px;
+  padding: 3px;
+}
+
+.user-stats-block
+{
+  display:inline-block; 
+  position:relative; 
+  overflow:hidden; 
+  float:left;
+  width:100%;
 }
 
 .game-group {
+  display: table; 
+  padding: 10px; 
+  width: 100%;
+  .stage {
+    display: table-cell;
+    width: 200px;
+    vertical-align: middle;
+    margin-right: 5px;
+    .game-title {
+      font-weight: 500
+    }
+  }
   .single-game {
-    margin-top: 8px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    display: table-cell;
+    vertical-align: middle; 
+    padding-top: 4px; 
+    padding-bottom: 4px;
     a {
-      border-radius: 5px;
+      border-radius: 15px;
       line-height: 22px;
-      padding: 6px;
+      padding-top: 6px;
+      padding-bottom: 6px;
+      padding-left: 10px;
+      padding-right: 10px;
       background-color: $dark_color;
       &.level-done {
         background-color: $orange;
@@ -235,6 +264,14 @@ th {
         color: white;
         font-weight: normal;
       }
+    }
+  }
+  .games {
+    display: table-cell;
+    vertical-align: middle;
+    puzzle-number {
+      position: relative; 
+      top: 1px;
     }
   }
 }
@@ -482,7 +519,6 @@ a.level_link:active { color: white; font-weight: 400; background-color: black; }
   position: relative;
   overflow-y: auto;
   display: block;
-  padding: 10px;
   min-height: 1100px;
   
   .loading {

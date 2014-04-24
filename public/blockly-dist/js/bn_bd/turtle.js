@@ -196,7 +196,7 @@ BlocklyApps.init = function(config) {
       openWorkspace.setAttribute('id', 'open-workspace');
       openWorkspace.appendChild(document.createTextNode(msg.openWorkspace()));
 
-      belowViz.appendChild(feedback.createSharingButtons({
+      belowViz.appendChild(feedback.createSharingDiv({
         response: {
           level_source: window.location
         },
@@ -874,7 +874,7 @@ var getIdealBlockNumberMsg = function() {
       msg.infinity() : BlocklyApps.IDEAL_BLOCK_NUM;
 };
 
-},{"../locale/bn_bd/common":35,"./builder":5,"./dom":7,"./feedback.js":8,"./slider":11,"./templates/buttons.html":13,"./templates/instructions.html":15,"./templates/learn.html":16,"./templates/makeYourOwn.html":17,"./utils":33,"./xml":34}],3:[function(require,module,exports){
+},{"../locale/bn_bd/common":36,"./builder":5,"./dom":7,"./feedback.js":8,"./slider":11,"./templates/buttons.html":13,"./templates/instructions.html":15,"./templates/learn.html":16,"./templates/makeYourOwn.html":17,"./utils":34,"./xml":35}],3:[function(require,module,exports){
 exports.createToolbox = function(blocks) {
   return '<xml id="toolbox" style="display: none;">' + blocks + '</xml>';
 };
@@ -950,7 +950,7 @@ exports.builderForm = function(onAttemptCallback) {
   dialog.show({ backdrop: 'static' });
 };
 
-},{"./dom.js":7,"./feedback.js":8,"./templates/builder.html":12,"./utils.js":33,"url":47}],6:[function(require,module,exports){
+},{"./dom.js":7,"./feedback.js":8,"./templates/builder.html":12,"./utils.js":34,"url":48}],6:[function(require,module,exports){
 var INFINITE_LOOP_TRAP = '  BlocklyApps.checkTimeout();\n';
 var INFINITE_LOOP_TRAP_RE =
     new RegExp(INFINITE_LOOP_TRAP.replace(/\(.*\)/, '\\(.*\\)'), 'g');
@@ -1116,10 +1116,12 @@ exports.displayFeedback = function(options) {
   options.level = options.level || {};
   options.numTrophies = numTrophiesEarned(options);
 
+  var canContinue = exports.canContinueToNextLevel(options.feedbackType);
+  var displayShowCode = BlocklyApps.enableShowCode && canContinue;
   var feedback = document.createElement('div');
   var feedbackMessage = getFeedbackMessage(options);
-  var sharingDiv = createSharingDiv(options);
-  var showCode = getShowCodeElement(options);
+  var sharingDiv = (canContinue && options.showingSharing) ? exports.createSharingDiv(options) : null;
+  var showCode = displayShowCode ? getShowCodeElement(options) : null;
   var feedbackBlocks = new FeedbackBlocks(options);
 
   if (feedbackMessage) {
@@ -1135,10 +1137,15 @@ exports.displayFeedback = function(options) {
   if (sharingDiv) {
     feedback.appendChild(sharingDiv);
   }
+  if (options.showingSharing) {
+    var shareCodeSpacer = document.createElement('div');
+    shareCodeSpacer.className = "share-code-spacer";
+    feedback.appendChild(shareCodeSpacer);
+  }
   if (showCode) {
     feedback.appendChild(showCode);
   }
-  var canContinue = exports.canContinueToNextLevel(options.feedbackType);
+
   feedback.appendChild(getFeedbackButtons(
     options.feedbackType, options.level.showPreviousLevelButton));
 
@@ -1398,18 +1405,14 @@ var isFeedbackMessageCustomized = function(options) {
        options.level.other1StarError);
 };
 
-exports.createSharingButtons = function(options) {
-  var sharingWrapper = document.createElement('div');
-  var sharingButtons = document.createElement('div');
-  var sharingUrl = document.createElement('div');
-  sharingButtons.className = 'social-buttons';
-  sharingUrl.className = 'feedback-links';
-  sharingUrl.innerHTML = require('./templates/buttons.html')({
-    data: {
-      sharingUrl: options.response.level_source
-    }
-  });
+exports.createSharingDiv = function(options) {
+  if (!options.response || !options.response.level_source) {
+    // don't even try if our caller didn't give us something that can be shared
+    // options.response.level_source is the url that we are sharing
+    return null;
+  } 
 
+  // set up the twitter share url
   var twitterUrl = "https://twitter.com/intent/tweet?url=" +
                    options.response.level_source;
 
@@ -1419,71 +1422,35 @@ exports.createSharingButtons = function(options) {
   if (options.twitter  && options.twitter.hashtag !== undefined) {
     twitterUrl += "&button_hashtag=" + options.twitter.hashtag;
   }
+  options.twitterUrl = twitterUrl;
 
-  sharingButtons.innerHTML = require('./templates/buttons.html')({
-    data: {
-      facebookUrl: "https://www.facebook.com/sharer/sharer.php?u=" +
-                    options.response.level_source,
-      twitterUrl: twitterUrl,
-      makeYourOwn: options.makeYourOwn,
-      saveToGalleryUrl: options.saveToGalleryUrl
-    }
+  // set up the facebook share url
+  var facebookUrl = "https://www.facebook.com/sharer/sharer.php?u=" +
+                    options.response.level_source;
+  options.facebookUrl = facebookUrl;
+
+  // use a generic image for the level if a feedback image has not been supplied.
+  if (options.level && options.level.instructionImageUrl && !options.feedbackImage) {
+    options.feedbackImage = options.level.instructionImageUrl;
+  }
+
+  var sharingDiv = document.createElement('div');
+  sharingDiv.setAttribute('style', 'display:inline-block');
+  sharingDiv.innerHTML = require('./templates/sharing.html')({
+    options: options
   });
-  var sharingInput = sharingUrl.querySelector('#sharing-input');
+
+  var sharingInput = sharingDiv.querySelector('#sharing-input');
   if (sharingInput) {
     dom.addClickTouchEvent(sharingInput, function() {
       sharingInput.focus();
       sharingInput.select();
     });
   }
-  sharingWrapper.appendChild(sharingUrl);
-  sharingWrapper.appendChild(sharingButtons);
-  return sharingWrapper;
+
+  return sharingDiv;
 };
 
-
-var createSharingDiv = function(options) {
-  // Creates the sharing div only when showingSharing is set and the solution is
-  // a passing solution.
-  if (options.showingSharing &&
-      exports.canContinueToNextLevel(options.feedbackType)) {
-    var sharingDiv = document.createElement('div');
-    sharingDiv.setAttribute('style', 'display:inline-block');
-    var sharingImage = document.createElement('div');
-
-    var feedbackImage = createFeedbackImage(options);
-    if (feedbackImage) {
-        sharingImage.appendChild(feedbackImage);
-        sharingDiv.appendChild(sharingImage);
-    }
-
-    if (options.response && options.response.level_source) {
-      var sharingText = document.createElement('div');
-      if (options.appStrings) {
-        dom.setText(sharingText, options.appStrings.sharingText);
-      }
-      sharingText.className = 'shareDrawingMsg';
-      sharingDiv.appendChild(sharingText);
-
-      sharingDiv.appendChild(exports.createSharingButtons(options));
-    }
-    return sharingDiv;
-  } else {
-    return null;
-  }
-};
-
-var createFeedbackImage = function(options) {
-  var feedbackImage;
-  var feedbackImageSrc =
-      options.level.instructionImageUrl || options.feedbackImage;
-  if (feedbackImageSrc) {
-    feedbackImage = document.createElement('img');
-    feedbackImage.className = 'feedback-image';
-    feedbackImage.src = feedbackImageSrc;
-  }
-  return feedbackImage;
-};
 
 var numTrophiesEarned = function(options) {
   if (options.response && options.response.trophy_updates) {
@@ -1507,43 +1474,28 @@ var getTrophiesElement = function(options) {
 };
 
 var getShowCodeElement = function(options) {
-  if (exports.canContinueToNextLevel(options.feedbackType)) {
-    var linesWritten = exports.getNumBlocksUsed();
-    var showCodeDiv = document.createElement('div');
-    showCodeDiv.setAttribute('id', 'show-code');
-    var lines = document.createElement('span');
-    lines.className = 'linesOfCodeMsg';
-    lines.innerHTML = msg.numLinesOfCodeWritten({
-      numLines: linesWritten
-    });
-    if (options.response && options.response.total_lines &&
-        (options.response.total_lines !== linesWritten)) {
-      lines.innerHTML += '<br>' + msg.totalNumLinesOfCodeWritten({
-        numLines: options.response.total_lines
-      });
-    }
+  var showCodeDiv = document.createElement('div');
+  showCodeDiv.setAttribute('id', 'show-code');
 
-    var showCodeLink = document.createElement('div');
-    showCodeLink.className = 'show-code-div';
-    showCodeLink.innerHTML = require('./templates/showCode.html')();
-    var button = showCodeLink.querySelector('#show-code-button');
+  var numLinesWritten = exports.getNumBlocksUsed();
+  var shouldShowTotalLines =
+    (options.response &&
+      options.response.total_lines &&
+      (options.response.total_lines !== numLinesWritten));
+  var totalNumLinesWritten = shouldShowTotalLines ? options.response.total_lines : 0;
 
-    button.addEventListener('click', function() {
-      var codeDiv = getGeneratedCodeElement();
-      showCodeDiv.appendChild(codeDiv);
-      button.style.display = 'none';
-    });
+  showCodeDiv.innerHTML = require('./templates/showCode.html')({
+    numLinesWritten: numLinesWritten,
+    totalNumLinesWritten: totalNumLinesWritten
+  });
 
-    if (BlocklyApps.enableShowCode) {
-      showCodeDiv.appendChild(lines);
-      showCodeDiv.appendChild(showCodeLink);
-    } else if (options.showingSharing) {
-      // want a breaking line if this is a sharing dialog
-      lines.innerHTML = '<br>';
-      showCodeDiv.appendChild(lines);
-    }
-    return showCodeDiv;
-  }
+  var showCodeButton = showCodeDiv.querySelector('#show-code-button');
+  showCodeButton.addEventListener('click', function () {
+    showCodeDiv.appendChild(getGeneratedCodeElement());
+    showCodeButton.style.display = 'none';
+  });
+
+  return showCodeDiv;
 };
 
 /**
@@ -1884,7 +1836,7 @@ var generateXMLForBlocks = function(blocks) {
 };
 
 
-},{"../locale/bn_bd/common":35,"./codegen":6,"./dom":7,"./templates/buttons.html":13,"./templates/code.html":14,"./templates/readonly.html":19,"./templates/showCode.html":20,"./templates/trophy.html":21,"./utils":33}],9:[function(require,module,exports){
+},{"../locale/bn_bd/common":36,"./codegen":6,"./dom":7,"./templates/buttons.html":13,"./templates/code.html":14,"./templates/readonly.html":19,"./templates/sharing.html":20,"./templates/showCode.html":21,"./templates/trophy.html":22,"./utils":34}],9:[function(require,module,exports){
 // Functions for checking required blocks.
 
 /**
@@ -2209,7 +2161,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":37}],13:[function(require,module,exports){
+},{"ejs":38}],13:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2222,7 +2174,7 @@ escape = escape || function (html){
 };
 var buf = [];
 with (locals || {}) { (function(){ 
- buf.push('');1; var msg = require('../../locale/bn_bd/common'); ; buf.push('\n\n');3; if (data.ok) {; buf.push('  <div class="farSide" style="padding: 1ex 3ex 0">\n    <button id="ok-button" class="secondary">\n      ', escape((5,  msg.dialogOK() )), '\n    </button>\n  </div>\n');8; };; buf.push('\n');9; if (data.previousLevel) {; buf.push('  <button id="back-button" class="launch">\n    ', escape((10,  msg.backToPreviousLevel() )), '\n  </button>\n');12; };; buf.push('\n');13; if (data.tryAgain) {; buf.push('  <button id="again-button" class="launch">\n    ', escape((14,  msg.tryAgain() )), '\n  </button>\n');16; };; buf.push('\n');17; if (data.nextLevel) {; buf.push('  <button id="continue-button" class="launch">\n    ', escape((18,  msg.continue() )), '\n  </button>\n');20; };; buf.push('\n');21; if (data.facebookUrl) {; buf.push('  <a href=', escape((21,  data.facebookUrl )), ' target="_blank">\n    <img src=', escape((22,  BlocklyApps.assetUrl("media/facebook_purple.png") )), '>\n  </a>\n');24; };; buf.push('\n');25; if (data.twitterUrl) {; buf.push('  <a href=', escape((25,  data.twitterUrl )), ' target="_blank">\n    <img src=', escape((26,  BlocklyApps.assetUrl("media/twitter_purple.png") )), ' >\n  </a>\n  <br>\n');29; };; buf.push('\n');30; if (data.sharingUrl) {; buf.push('  <input type="text" id="sharing-input" value=', escape((30,  data.sharingUrl )), ' readonly>\n');31; };; buf.push('\n');32; if (data.saveToGalleryUrl) {; buf.push('  <button id="save-to-gallery-button" class="launch">\n    ', escape((33,  msg.saveToGallery() )), '\n  </button>\n');35; };; buf.push(''); })();
+ buf.push('');1; var msg = require('../../locale/bn_bd/common'); ; buf.push('\n\n');3; if (data.ok) {; buf.push('  <div class="farSide" style="padding: 1ex 3ex 0">\n    <button id="ok-button" class="secondary">\n      ', escape((5,  msg.dialogOK() )), '\n    </button>\n  </div>\n');8; }; buf.push('\n');9; if (data.previousLevel) {; buf.push('  <button id="back-button" class="launch">\n    ', escape((10,  msg.backToPreviousLevel() )), '\n  </button>\n');12; }; buf.push('\n');13; if (data.tryAgain) {; buf.push('  <button id="again-button" class="launch">\n    ', escape((14,  msg.tryAgain() )), '\n  </button>\n');16; }; buf.push('\n');17; if (data.nextLevel) {; buf.push('  <button id="continue-button" class="launch">\n    ', escape((18,  msg.continue() )), '\n  </button>\n');20; }; buf.push(''); })();
 } 
 return buf.join('');
 };
@@ -2230,7 +2182,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/bn_bd/common":35,"ejs":37}],14:[function(require,module,exports){
+},{"../../locale/bn_bd/common":36,"ejs":38}],14:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2251,7 +2203,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":37}],15:[function(require,module,exports){
+},{"ejs":38}],15:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2272,7 +2224,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/bn_bd/common":35,"ejs":37}],16:[function(require,module,exports){
+},{"../../locale/bn_bd/common":36,"ejs":38}],16:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2295,7 +2247,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/bn_bd/common":35,"ejs":37}],17:[function(require,module,exports){
+},{"../../locale/bn_bd/common":36,"ejs":38}],17:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2316,7 +2268,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/bn_bd/common":35,"ejs":37}],18:[function(require,module,exports){
+},{"../../locale/bn_bd/common":36,"ejs":38}],18:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2330,7 +2282,7 @@ escape = escape || function (html){
 var buf = [];
 with (locals || {}) { (function(){ 
  buf.push('');1; var msg = require('../../locale/bn_bd/common'); ; buf.push('\n\n<div id="rotateContainer" style="background-image: url(', escape((3,  assetUrl('media/mobile_tutorial_turnphone.png') )), ')">\n  <div id="rotateText">\n    <p>', escape((5,  msg.rotateText() )), '<br>', escape((5,  msg.orientationLock() )), '</p>\n  </div>\n</div>\n\n');9; var instructions = function() {; buf.push('  <div id="bubble">\n    <img id="prompt-icon">\n    <p id="prompt">\n    </p>\n  </div>\n');14; };; buf.push('\n');15; // A spot for the server to inject some HTML for help content.
-var helpArea = function(html) {; buf.push('  ');16; if (html) {; buf.push('    <div id="helpArea">\n      ', (17,  html ), '\n    </div>\n  ');19; }; buf.push('');19; };; buf.push('\n');20; var codeArea = function() {; buf.push('  <div id="codeTextbox" contenteditable spellcheck=false>\n    // ', escape((21,  msg.typeCode() )), '\n    <br>\n    // ', escape((23,  msg.typeHint() )), '\n    <br>\n  </div>\n');26; }; ; buf.push('\n\n<div id="visualization">\n  ', (29,  data.visualization ), '\n</div>\n\n<div id="belowVisualization">\n\n  <table id="gameButtons">\n    <tr>\n      <td style="width:100%;">\n        <button id="runButton" class="launch">\n          <img src="', escape((38,  assetUrl('media/1x1.gif') )), '" class="run icon21">\n          ', escape((39,  msg.runProgram() )), '\n        </button>\n        <button id="resetButton" class="launch" style="display: none">\n          <img src="', escape((42,  assetUrl('media/1x1.gif') )), '" class="stop icon21">\n            ', escape((43,  msg.resetProgram() )), '\n        </button>\n      </td>\n      ');46; if (data.controls) { ; buf.push('\n        ', (47,  data.controls ), '\n      ');48; } ; buf.push('\n    </tr>\n  </table>\n\n  ');52; instructions() ; buf.push('\n  ');53; helpArea(data.helpHtml) ; buf.push('\n\n</div>\n\n<div id="blockly">\n  <div id="headers" dir="', escape((58,  data.localeDirection )), '">\n    <div id="toolbox-header" class="blockly-header"><span>', escape((59,  msg.toolboxHeader() )), '</span></div>\n    <div id="workspace-header" class="blockly-header">\n      <span id="blockCounter">', escape((61,  msg.workspaceHeader() )), '</span>\n      <div id="blockUsed" class=', escape((62,  data.blockCounterClass )), '>\n        ', escape((63,  data.blockUsed )), '\n      </div>\n      <span>&nbsp;/</span>\n      <span id="idealBlockNumber">', escape((66,  data.idealBlockNumber )), '</span>\n    </div>\n    <div id="show-code-header" class="blockly-header"><span>', escape((68,  msg.showCodeHeader() )), '</span></div>\n  </div>\n</div>\n\n<div class="clear"></div>\n\n');74; codeArea() ; buf.push('\n'); })();
+var helpArea = function(html) {; buf.push('  ');16; if (html) {; buf.push('    <div id="helpArea">\n      ', (17,  html ), '\n    </div>\n  ');19; }; buf.push('');19; };; buf.push('\n');20; var codeArea = function() {; buf.push('  <div id="codeTextbox" contenteditable spellcheck=false>\n    // ', escape((21,  msg.typeCode() )), '\n    <br>\n    // ', escape((23,  msg.typeHint() )), '\n    <br>\n  </div>\n');26; }; ; buf.push('\n\n<div id="visualization">\n  ', (29,  data.visualization ), '\n</div>\n\n<div id="belowVisualization">\n\n  <table id="gameButtons">\n    <tr>\n      <td style="width:100%;">\n        <button id="runButton" class="launch">\n          <img src="', escape((38,  assetUrl('media/1x1.gif') )), '" class="run icon21">\n          ', escape((39,  msg.runProgram() )), '\n        </button>\n        <button id="resetButton" class="launch" style="display: none">\n          <img src="', escape((42,  assetUrl('media/1x1.gif') )), '" class="stop icon21">\n            ', escape((43,  msg.resetProgram() )), '\n        </button>\n      </td>\n      ');46; if (data.controls) { ; buf.push('\n        ', (47,  data.controls ), '\n      ');48; } ; buf.push('\n    </tr>\n    ');50; if (data.extraControlRows) { ; buf.push('\n      ', (51,  data.extraControlRows ), '\n    ');52; } ; buf.push('\n  </table>\n\n  ');55; instructions() ; buf.push('\n  ');56; helpArea(data.helpHtml) ; buf.push('\n\n</div>\n\n<div id="blockly">\n  <div id="headers" dir="', escape((61,  data.localeDirection )), '">\n    <div id="toolbox-header" class="blockly-header"><span>', escape((62,  msg.toolboxHeader() )), '</span></div>\n    <div id="workspace-header" class="blockly-header">\n      <span id="blockCounter">', escape((64,  msg.workspaceHeader() )), '</span>\n      <div id="blockUsed" class=', escape((65,  data.blockCounterClass )), '>\n        ', escape((66,  data.blockUsed )), '\n      </div>\n      <span>&nbsp;/</span>\n      <span id="idealBlockNumber">', escape((69,  data.idealBlockNumber )), '</span>\n    </div>\n    <div id="show-code-header" class="blockly-header"><span>', escape((71,  msg.showCodeHeader() )), '</span></div>\n  </div>\n</div>\n\n<div class="clear"></div>\n\n');77; codeArea() ; buf.push('\n'); })();
 } 
 return buf.join('');
 };
@@ -2338,7 +2290,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/bn_bd/common":35,"ejs":37}],19:[function(require,module,exports){
+},{"../../locale/bn_bd/common":36,"ejs":38}],19:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2360,7 +2312,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":37}],20:[function(require,module,exports){
+},{"ejs":38}],20:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2373,7 +2325,7 @@ escape = escape || function (html){
 };
 var buf = [];
 with (locals || {}) { (function(){ 
- buf.push('');1; var msg = require('../../locale/bn_bd/common'); ; buf.push('\n\n<a id="show-code-button" href="#">', escape((3,  msg.showGeneratedCode() )), '</a>\n'); })();
+ buf.push('');1; var msg = require('../../locale/bn_bd/common'); ; buf.push('\n');2; if (options.feedbackImage) { ; buf.push('\n  <div class="sharing-image">\n    <img class="feedback-image" src="', escape((4,  options.feedbackImage )), '">\n  </div>\n');6; } ; buf.push('\n\n<div class="sharing">\n');9; if (options.alreadySaved) { ; buf.push('\n  <div class="saved-to-gallery">\n    ', escape((11,  msg.savedToGallery() )), '\n  </div>\n');13; } else if (options.saveToGalleryUrl) { ; buf.push('\n  <div class="social-buttons">\n  <button id="save-to-gallery-button" class="launch">\n    ', escape((16,  msg.saveToGallery() )), '\n  </button>\n  </div>\n');19; } ; buf.push('\n\n');21; if (options.response && options.response.level_source) { ; buf.push('\n  ');22; if (options.appStrings && options.appStrings.sharingText) { ; buf.push('\n    <div>', escape((23,  options.appStrings.sharingText )), '</div>\n  ');24; } ; buf.push('\n\n  <div>\n    <input type="text" id="sharing-input" value=', escape((27,  options.response.level_source )), ' readonly>\n  </div>\n\n  <div class=\'social-buttons\'>\n    ');31; if (options.facebookUrl) {; buf.push('      <a href=', escape((31,  options.facebookUrl )), ' target="_blank">\n        <img src=', escape((32,  BlocklyApps.assetUrl("media/facebook_purple.png") )), '>\n      </a>\n    ');34; }; buf.push('  \n    ');35; if (options.twitterUrl) {; buf.push('      <a href=', escape((35,  options.twitterUrl )), ' target="_blank">\n        <img src=', escape((36,  BlocklyApps.assetUrl("media/twitter_purple.png") )), ' >\n      </a>\n    ');38; }; buf.push('  </div>\n');39; } ; buf.push('\n</div>\n\n'); })();
 } 
 return buf.join('');
 };
@@ -2381,7 +2333,28 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/bn_bd/common":35,"ejs":37}],21:[function(require,module,exports){
+},{"../../locale/bn_bd/common":36,"ejs":38}],21:[function(require,module,exports){
+module.exports= (function() {
+  var t = function anonymous(locals, filters, escape, rethrow) {
+escape = escape || function (html){
+  return String(html)
+    .replace(/&(?!#?[a-zA-Z0-9]+;)/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/'/g, '&#39;')
+    .replace(/"/g, '&quot;');
+};
+var buf = [];
+with (locals || {}) { (function(){ 
+ buf.push('');1; var msg = require('../../locale/bn_bd/common'); ; buf.push('\n\n<p id="num-lines-of-code" class="lines-of-code-message">\n  ', escape((4,  msg.numLinesOfCodeWritten({ numLines: numLinesWritten }) )), '\n  <button id="show-code-button" href="#">\n    ', escape((6,  msg.showGeneratedCode() )), '\n  </button>\n</p>\n\n');10; if (totalNumLinesWritten !== 0) { ; buf.push('\n  <p id="total-num-lines-of-code" class="lines-of-code-message">\n    ', escape((12,  msg.totalNumLinesOfCodeWritten({ numLines: totalNumLinesWritten }) )), '\n  </p>\n');14; } ; buf.push('\n'); })();
+} 
+return buf.join('');
+};
+  return function(locals) {
+    return t(locals, require("ejs").filters);
+  }
+}());
+},{"../../locale/bn_bd/common":36,"ejs":38}],22:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2402,7 +2375,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":37}],22:[function(require,module,exports){
+},{"ejs":38}],23:[function(require,module,exports){
 /**
  * Blockly Demo: Turtle Graphics
  *
@@ -2753,7 +2726,7 @@ exports.answer = function(page, level) {
   return BlocklyApps.log;
 };
 
-},{"../base":2,"./api":23}],23:[function(require,module,exports){
+},{"../base":2,"./api":24}],24:[function(require,module,exports){
 var BlocklyApps = require('../base');
 
 exports.moveForward = function(distance, id) {
@@ -2836,7 +2809,7 @@ exports.showTurtle = function(id) {
   BlocklyApps.log.push(['ST', id]);
 };
 
-},{"../base":2}],24:[function(require,module,exports){
+},{"../base":2}],25:[function(require,module,exports){
 /**
  * Blockly Demo: Turtle Graphics
  *
@@ -3290,8 +3263,20 @@ exports.install = function(blockly, skin) {
       jump_left: { letter: 'W', moveFunction: 'jumpLeft', image: skin.leftJumpArrow, image_width: 42, image_height: 42 },
       jump_right: { letter: 'E', moveFunction: 'jumpRight', image: skin.rightJumpArrow, image_width: 42, image_height: 42 },
       jump_up: { letter: 'N', moveFunction: 'jumpUp', image: skin.upJumpArrow, image_width: 42, image_height: 42 },
-      jump_down: { letter: 'S', moveFunction: 'jumpDown', image: skin.downJumpArrow, image_width: 42, image_height: 42 }
+      jump_down: { letter: 'S', moveFunction: 'jumpDown', image: skin.downJumpArrow, image_width: 42, image_height: 42 },
+      jump_left_long: { letter: 'W long', moveFunction: 'jumpLeft', image: skin.leftJumpArrow, image_width: 42, image_height: 42 },
+      jump_right_long: { letter: 'E long', moveFunction: 'jumpRight', image: skin.rightJumpArrow, image_width: 42, image_height: 42 },
+      jump_up_long: { letter: 'N long', moveFunction: 'jumpUp', image: skin.upJumpArrow, image_width: 42, image_height: 42 },
+      jump_down_long: { letter: 'S long', moveFunction: 'jumpDown', image: skin.downJumpArrow, image_width: 42, image_height: 42 },
+      jump_left_short: { letter: 'W short', moveFunction: 'jumpLeft', image: skin.leftJumpArrow, image_width: 42, image_height: 42 },
+      jump_right_short: { letter: 'E short', moveFunction: 'jumpRight', image: skin.rightJumpArrow, image_width: 42, image_height: 42 },
+      jump_up_short: { letter: 'N short', moveFunction: 'jumpUp', image: skin.upJumpArrow, image_width: 42, image_height: 42 },
+      jump_down_short: { letter: 'S short', moveFunction: 'jumpDown', image: skin.downJumpArrow, image_width: 42, image_height: 42 }
     },
+    LENGTHS: [
+      ['short', "SHORT_MOVE_LENGTH"],
+      ['long', "LONG_MOVE_LENGTH"]
+    ],
     generateBlocksForAllDirections: function() {
       SimpleMove.generateBlocksForDirection("up");
       SimpleMove.generateBlocksForDirection("down");
@@ -3302,9 +3287,11 @@ exports.install = function(blockly, skin) {
       generator["simple_move_" + direction] = SimpleMove.generateCodeGenerator(direction);
       generator["simple_jump_" + direction] = SimpleMove.generateCodeGenerator('jump_' + direction);
       generator["simple_move_" + direction + "_length"] = SimpleMove.generateCodeGenerator(direction, true);
-      generator["simple_jump_" + direction + "_length"] = SimpleMove.generateCodeGenerator('jump_' + direction, true);
+      generator["simple_jump_" + direction + "_long"] = SimpleMove.generateCodeGenerator('jump_' + direction, false, SimpleMove.LONG_MOVE_LENGTH);
+      generator["simple_jump_" + direction + "_short"] = SimpleMove.generateCodeGenerator('jump_' + direction, false, SimpleMove.SHORT_MOVE_LENGTH);
       blockly.Blocks['simple_move_' + direction + '_length'] = SimpleMove.generateBlock(direction, true);
-      blockly.Blocks['simple_jump_' + direction + '_length'] = SimpleMove.generateBlock('jump_' + direction, true);
+      blockly.Blocks['simple_jump_' + direction + '_long'] = SimpleMove.generateBlock('jump_' + direction + '_long');
+      blockly.Blocks['simple_jump_' + direction + '_short'] = SimpleMove.generateBlock('jump_' + direction + '_short');
       blockly.Blocks['simple_move_' + direction] = SimpleMove.generateBlock(direction);
       blockly.Blocks['simple_jump_' + direction] = SimpleMove.generateBlock('jump_' + direction);
     },
@@ -3314,26 +3301,26 @@ exports.install = function(blockly, skin) {
         helpUrl: '',
         init: function () {
           this.setHSV(184, 1.00, 0.74);
-          this.appendDummyInput()
+          var input = this.appendDummyInput()
             .appendTitle(directionConfig.letter)
             .appendTitle(new blockly.FieldImage(directionConfig.image, directionConfig.image_width, directionConfig.image_height));
           this.setPreviousStatement(true);
           this.setNextStatement(true);
           this.setTooltip(msg.jumpTooltip());
           if (hasLengthInput) {
-            this.setInputsInline(true);
-            this.appendValueInput("length").setCheck("Number");
+            var dropdown = new blockly.FieldDropdown(SimpleMove.LENGTHS);
+            dropdown.setValue(SimpleMove.LENGTHS[0][1]);
+            input.appendTitle(dropdown, 'length');
           }
         }
       };
     },
-    generateCodeGenerator: function(direction, hasLengthInput) {
+    generateCodeGenerator: function(direction, hasLengthInput, length) {
       return function() {
-        var length = SimpleMove.DEFAULT_MOVE_LENGTH;
+        length = length || SimpleMove.DEFAULT_MOVE_LENGTH;
 
         if (hasLengthInput) {
-          var lengthInputResult = generator.valueToCode(this, 'length', generator.ORDER_ATOMIC);
-          length = lengthInputResult || length; // Allow empty input
+          length = SimpleMove[this.getTitleValue("length")];
         }
         return 'Turtle.' + SimpleMove.DIRECTION_CONFIGS[direction].moveFunction + '(' + length + ',' + '\'block_id_' + this.id + '\');\n';
       };
@@ -3346,28 +3333,6 @@ exports.install = function(blockly, skin) {
   };
 
   SimpleMove.generateBlocksForAllDirections();
-
-  blockly.Blocks.simple_move_length_short = {
-    init: function() {
-      this.setHSV(258, 0.35, 0.62);
-      this.appendDummyInput().appendTitle(SimpleMove.stretchedLine(SimpleMove.SHORT_MOVE_LENGTH));
-      this.setOutput(true, 'Number');
-    }
-  };
-  blockly.Blocks.simple_move_length_long = {
-    init: function() {
-      this.setHSV(258, 0.35, 0.62);
-      this.appendDummyInput().appendTitle(SimpleMove.stretchedLine(SimpleMove.LONG_MOVE_LENGTH));
-      this.setOutput(true, 'Number');
-    }
-  };
-
-  generator.simple_move_length_short = function () {
-    return [SimpleMove.SHORT_MOVE_LENGTH, generator.ORDER_ATOMIC];
-  };
-  generator.simple_move_length_long = function () {
-    return [SimpleMove.LONG_MOVE_LENGTH, generator.ORDER_ATOMIC];
-  };
 
   blockly.Blocks.jump.DIRECTIONS =
       [[msg.jumpForward(), 'jumpForward'],
@@ -3523,7 +3488,7 @@ exports.install = function(blockly, skin) {
 
 };
 
-},{"../../locale/bn_bd/turtle":36,"./core":26}],25:[function(require,module,exports){
+},{"../../locale/bn_bd/turtle":37,"./core":27}],26:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -3544,7 +3509,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":37}],26:[function(require,module,exports){
+},{"ejs":38}],27:[function(require,module,exports){
 // Create a limited colour palette to avoid overwhelming new users
 // and to make colour checking easier.  These definitions cannot be
 // moved to blocks.js, which is loaded later, since they are used in
@@ -3565,7 +3530,7 @@ exports.Colours = {
   PLUM: '#843179'
 };
 
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 var levelBase = require('../level_base');
 var Colours = require('./core').Colours;
 var answer = require('./answers').answer;
@@ -3622,12 +3587,14 @@ var blocks = {
   SIMPLE_MOVE_DOWN_LENGTH: blockUtils.blockOfType('simple_move_down_length'),
   SIMPLE_MOVE_LEFT_LENGTH: blockUtils.blockOfType('simple_move_left_length'),
   SIMPLE_MOVE_RIGHT_LENGTH: blockUtils.blockOfType('simple_move_right_length'),
-  SIMPLE_JUMP_UP_LENGTH: blockUtils.blockOfType('simple_jump_up_length'),
-  SIMPLE_JUMP_DOWN_LENGTH: blockUtils.blockOfType('simple_jump_down_length'),
-  SIMPLE_JUMP_LEFT_LENGTH: blockUtils.blockOfType('simple_jump_left_length'),
-  SIMPLE_JUMP_RIGHT_LENGTH: blockUtils.blockOfType('simple_jump_right_length'),
-  SIMPLE_MOVE_LENGTH_SHORT: blockUtils.blockOfType('simple_move_length_short'),
-  SIMPLE_MOVE_LENGTH_LONG: blockUtils.blockOfType('simple_move_length_long'),
+  SIMPLE_JUMP_UP_LONG: blockUtils.blockOfType('simple_jump_up_long'),
+  SIMPLE_JUMP_DOWN_LONG: blockUtils.blockOfType('simple_jump_down_long'),
+  SIMPLE_JUMP_LEFT_LONG: blockUtils.blockOfType('simple_jump_left_long'),
+  SIMPLE_JUMP_RIGHT_LONG: blockUtils.blockOfType('simple_jump_right_long'),
+  SIMPLE_JUMP_UP_SHORT: blockUtils.blockOfType('simple_jump_up_short'),
+  SIMPLE_JUMP_DOWN_SHORT: blockUtils.blockOfType('simple_jump_down_short'),
+  SIMPLE_JUMP_LEFT_SHORT: blockUtils.blockOfType('simple_jump_left_short'),
+  SIMPLE_JUMP_RIGHT_SHORT: blockUtils.blockOfType('simple_jump_right_short'),
   simpleMoveBlocks: function() {
     return this.SIMPLE_MOVE_UP +
       this.SIMPLE_MOVE_DOWN +
@@ -3647,14 +3614,14 @@ var blocks = {
       this.SIMPLE_MOVE_RIGHT_LENGTH;
   },
   simpleJumpLengthBlocks: function() {
-    return this.SIMPLE_JUMP_UP_LENGTH +
-      this.SIMPLE_JUMP_DOWN_LENGTH +
-      this.SIMPLE_JUMP_LEFT_LENGTH +
-      this.SIMPLE_JUMP_RIGHT_LENGTH;
-  },
-  simpleLengthBlocks: function() {
-    return this.SIMPLE_MOVE_LENGTH_SHORT +
-      this.SIMPLE_MOVE_LENGTH_LONG;
+    return this.SIMPLE_JUMP_UP_LONG +
+      this.SIMPLE_JUMP_UP_SHORT +
+      this.SIMPLE_JUMP_DOWN_LONG +
+      this.SIMPLE_JUMP_DOWN_SHORT +
+      this.SIMPLE_JUMP_LEFT_LONG +
+      this.SIMPLE_JUMP_LEFT_SHORT +
+      this.SIMPLE_JUMP_RIGHT_LONG +
+      this.SIMPLE_JUMP_RIGHT_SHORT;
   }
 };
 
@@ -4405,7 +4372,6 @@ module.exports = {
         blocks.simpleJumpBlocks() +
         blocks.simpleMoveLengthBlocks() +
         blocks.simpleJumpLengthBlocks() +
-        blocks.simpleLengthBlocks() +
         blockUtils.blockOfType('controls_repeat_simplified')
       ),
     startBlocks: '',
@@ -4414,7 +4380,7 @@ module.exports = {
   }
 };
 
-},{"../../locale/bn_bd/turtle":36,"../block_utils":3,"../level_base":9,"./answers":22,"./core":26,"./requiredBlocks":29,"./startBlocks.xml":30,"./toolbox.xml":31}],28:[function(require,module,exports){
+},{"../../locale/bn_bd/turtle":37,"../block_utils":3,"../level_base":9,"./answers":23,"./core":27,"./requiredBlocks":30,"./startBlocks.xml":31,"./toolbox.xml":32}],29:[function(require,module,exports){
 var appMain = require('../appMain');
 window.Turtle = require('./turtle');
 var blocks = require('./blocks');
@@ -4427,7 +4393,7 @@ window.turtleMain = function(options) {
   appMain(window.Turtle, levels, options);
 };
 
-},{"../appMain":1,"../skins":10,"./blocks":24,"./levels":27,"./turtle":32}],29:[function(require,module,exports){
+},{"../appMain":1,"../skins":10,"./blocks":25,"./levels":28,"./turtle":33}],30:[function(require,module,exports){
 /**
  * Sets BlocklyApp constants that depend on the page and level.
  * This encapsulates many functions used for BlocklyApps.REQUIRED_BLOCKS.
@@ -4660,7 +4626,7 @@ module.exports = {
   SET_COLOUR_RANDOM: SET_COLOUR_RANDOM,
   defineWithArg: defineWithArg
 };
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4727,7 +4693,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/bn_bd/turtle":36,"ejs":37}],31:[function(require,module,exports){
+},{"../../locale/bn_bd/turtle":37,"ejs":38}],32:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4851,7 +4817,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/bn_bd/turtle":36,"ejs":37}],32:[function(require,module,exports){
+},{"../../locale/bn_bd/turtle":37,"ejs":38}],33:[function(require,module,exports){
 /**
  * Blockly Demo: Turtle Graphics
  *
@@ -5458,7 +5424,10 @@ var displayFeedback = function() {
     feedbackImage: Turtle.ctxScratch.canvas.toDataURL("image/png"),
     // add 'impressive':true to non-freeplay levels that we deem are relatively impressive (see #66990480)
     showingSharing: level.freePlay || level.impressive,
-    saveToGalleryUrl: (level.freePlay || level.impressive) && Turtle.response.save_to_gallery_url,
+    // impressive levels are already saved
+    alreadySaved: level.impressive,
+    // allow users to save freeplay levels to their gallery (impressive non-freeplay levels are autosaved)
+    saveToGalleryUrl: level.freePlay && Turtle.response.save_to_gallery_url,
     appStrings: {
       reinfFeedbackMsg: msg.reinfFeedbackMsg(),
       sharingText: msg.shareDrawing()
@@ -5571,20 +5540,7 @@ Turtle.checkAnswer = function() {
     BlocklyApps.playAudio('failure', {volume : 0.5});
   }
 
-  // Get the canvas data for feedback.
-  if (Turtle.testResults >= BlocklyApps.TestResults.TOO_MANY_BLOCKS_FAIL) {
-    BlocklyApps.report({
-      app: 'turtle',
-      level: level.id,
-      builder: level.builder,
-      result: BlocklyApps.levelComplete,
-      testResult: Turtle.testResults,
-      program: encodeURIComponent(textBlocks),
-      onComplete: Turtle.onReportComplete,
-      image : getFeedbackImage()
-    });
-  } else {
-    BlocklyApps.report({
+  var reportData = {
       app: 'turtle',
       level: level.id,
       builder: level.builder,
@@ -5592,8 +5548,18 @@ Turtle.checkAnswer = function() {
       testResult: Turtle.testResults,
       program: encodeURIComponent(textBlocks),
       onComplete: Turtle.onReportComplete
-    });
+  };
+
+  // Get the canvas data for feedback.
+  if (Turtle.testResults >= BlocklyApps.TestResults.TOO_MANY_BLOCKS_FAIL) {
+    reportData.image = getFeedbackImage();
   }
+
+  if (level.impressive) {
+    reportData.save_to_gallery = true;
+  }
+
+  BlocklyApps.report(reportData);
 
   // The call to displayFeedback() will happen later in onReportComplete()
 };
@@ -5607,7 +5573,7 @@ var getFeedbackImage = function() {
       feedbackCanvas.toDataURL("image/png").split(',')[1]);
 };
 
-},{"../../locale/bn_bd/turtle":36,"../base":2,"../codegen":6,"../skins":10,"../templates/page.html":18,"./api":23,"./controls.html":25,"./core":26,"./levels":27}],33:[function(require,module,exports){
+},{"../../locale/bn_bd/turtle":37,"../base":2,"../codegen":6,"../skins":10,"../templates/page.html":18,"./api":24,"./controls.html":26,"./core":27,"./levels":28}],34:[function(require,module,exports){
 exports.shallowCopy = function(source) {
   var result = {};
   for (var prop in source) {
@@ -5649,7 +5615,7 @@ exports.mod = function(number, mod) {
   return ((number % mod) + mod) % mod;
 };
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 // Serializes an XML DOM node to a string.
 exports.serialize = function(node) {
   var serializer = new XMLSerializer();
@@ -5677,7 +5643,7 @@ exports.parseElement = function(text) {
   return element;
 };
 
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.bn=function(n){return n===1?"one":"other"}
 exports.blocklyMessage = function(d){return "Blockly"};
 
@@ -5779,6 +5745,8 @@ exports.backToPreviousLevel = function(d){return "Back to previous level"};
 
 exports.saveToGallery = function(d){return "Save to your gallery"};
 
+exports.savedToGallery = function(d){return "Saved to your gallery!"};
+
 exports.typeCode = function(d){return "Type your JavaScript code below these instructions."};
 
 exports.typeFuncs = function(d){return "Available functions:%1"};
@@ -5804,7 +5772,7 @@ exports.signup = function(d){return "Sign up for the intro course"};
 exports.hintHeader = function(d){return "Here's a tip:"};
 
 
-},{"messageformat":48}],36:[function(require,module,exports){
+},{"messageformat":49}],37:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.bn=function(n){return n===1?"one":"other"}
 exports.blocksUsed = function(d){return "Blocks used: %1"};
 
@@ -5901,7 +5869,7 @@ exports.widthTooltip = function(d){return "পেন্সিলের প্র
 exports.wrongColour = function(d){return "আপনার ছবির রঙ ভুল আছে।  এই ধাঁধার জন্য এটি %1 করা প্রয়োজন।"};
 
 
-},{"messageformat":48}],37:[function(require,module,exports){
+},{"messageformat":49}],38:[function(require,module,exports){
 
 /*!
  * EJS
@@ -6260,7 +6228,7 @@ if (require.extensions) {
   });
 }
 
-},{"./filters":38,"./utils":39,"fs":40,"path":42}],38:[function(require,module,exports){
+},{"./filters":39,"./utils":40,"fs":41,"path":43}],39:[function(require,module,exports){
 /*!
  * EJS - Filters
  * Copyright(c) 2010 TJ Holowaychuk <tj@vision-media.ca>
@@ -6463,7 +6431,7 @@ exports.json = function(obj){
   return JSON.stringify(obj);
 };
 
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 
 /*!
  * EJS
@@ -6489,9 +6457,9 @@ exports.escape = function(html){
 };
  
 
-},{}],40:[function(require,module,exports){
-
 },{}],41:[function(require,module,exports){
+
+},{}],42:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -6546,7 +6514,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],42:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -6774,7 +6742,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require("/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":41}],43:[function(require,module,exports){
+},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":42}],44:[function(require,module,exports){
 (function (global){
 /*! http://mths.be/punycode v1.2.4 by @mathias */
 ;(function(root) {
@@ -7285,7 +7253,7 @@ var substr = 'ab'.substr(-1) === 'b'
 }(this));
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],44:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -7371,7 +7339,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],45:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -7458,13 +7426,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],46:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":44,"./encode":45}],47:[function(require,module,exports){
+},{"./decode":45,"./encode":46}],48:[function(require,module,exports){
 /*jshint strict:true node:true es5:true onevar:true laxcomma:true laxbreak:true eqeqeq:true immed:true latedef:true*/
 (function () {
   "use strict";
@@ -8097,7 +8065,7 @@ function parseHost(host) {
 
 }());
 
-},{"punycode":43,"querystring":46}],48:[function(require,module,exports){
+},{"punycode":44,"querystring":47}],49:[function(require,module,exports){
 /**
  * messageformat.js
  *
@@ -9680,4 +9648,4 @@ function parseHost(host) {
 
 })( this );
 
-},{}]},{},[28])
+},{}]},{},[29])

@@ -2,35 +2,58 @@
 - script_levels = user ? user.levels_from_script(script) : script.script_levels
 - concept_progress = user ? user.concept_progress : nil
 
--if (!defined? trophies_on_right) || !trophies_on_right
-  =render partial: 'shared/concept_trophy_block', locals: { concept_progress: concept_progress, user: user, added_style: 'padding-right:10px;' }
 
-%div{style:"display:inline-block;width:315px;position:relative;overflow:hidden;float:left;"}
-  %h4 #{t('nav.popup.puzzle_map')}
+-if (!defined? hide_trophies)
+  -if (defined? trophies_above) && trophies_above
+    =render partial: 'shared/concept_trophy_block', locals: { concept_progress: concept_progress, user: user, added_style: 'padding-right:10px;' }
 
-  - script_levels.group_by{ |sl| sl.stage ? sl.stage : sl.level.game }.each_pair do |game, sl_group|
-    - title = data_t_suffix('script.name', script.name, game.name) + ' ' + (data_t('game.name', game.name) || game.name)
-    .game-group
+.user-stats-block
+  - levels = script_levels.group_by{ |sl| sl.stage ? sl.stage : sl.level.game }
+  - index = 0
+  - levels.each_pair do |game, sl_group|
+    - title = data_t_suffix('script.name', script.name, game.name) + ': ' + (data_t('game.name', game.name) || game.name)
+    - stage_title = data_t_suffix('script.name', script.name, game.name)
+    - game_title = (data_t('game.name', game.name) || game.name)
+    - color = index % 2 == 1 ? '#dadada' : '#eeeeee'
+    .game-group{style:"background-color: #{color}"}
       - if sl_group.length == 1
+        .stage
+          %span
+            =stage_title + ": "
+          %span.game-title<
+            =game_title
         .single-game
           - sl = sl_group.first
           - passed, link = level_info(user, sl)
           %a{href: link, class: ('level-done' if passed)}
-            %span=title
+            %span=t('user_stats.classroom_activity')
             - if passed
               = check_mark_html
       - else
-        %div=title
-        - sl_group.each do |sl|
-          - passed, link = level_info(user, sl)
-          - if passed
-            %a{ href: link, class: "level_link level_link_done"}
-              = check_mark_html
-          - else
-            %a{ href: link, class: "level_link"}
-              #{sl.stage_or_game_position}
+        .stage
+          %span
+            =stage_title + ": "
+          %span.game-title<
+            =game_title
+        .games
+          - sl_group.each do |sl|
+            - passed, link = level_info(user, sl)
+            - if passed
+              %a{ href: link, class: "level_link level_link_done"}
+                = check_mark_html
+            - else
+              %a{ href: link, class: "level_link"}
+                %span.puzzle-number
+                  #{sl.stage_or_game_position}
+    
+    -# keep stage_separator for tests
+    .stage_separator{style:"display:none"}
+    
+    - index += 1
 
-    .stage_separator
+-if (!defined? hide_trophies)
+  -if (!defined? trophies_below) || trophies_below
+    %div{style:"clear:both"}
+    #trophies
+      =render partial: 'shared/concept_trophy_block', locals: { concept_progress: concept_progress, user: user, added_style: 'padding:10px;' }
 
--if (defined? trophies_on_right) && trophies_on_right
-  =render partial: 'shared/concept_trophy_block', locals: { concept_progress: concept_progress, user: user, added_style: 'padding-left:30px;' }

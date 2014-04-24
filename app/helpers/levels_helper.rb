@@ -101,7 +101,7 @@ module LevelsHelper
     if app == 'flappy'
       request.protocol + request.host_with_port + ActionController::Base.helpers.asset_path('flappy_sharing_drawing.png')
     elsif app == 'bounce'
-      request.protocol + request.host_with_port + ActionController::Base.helpers.asset_path('bounce_sharing_drawing.png')    
+      request.protocol + request.host_with_port + ActionController::Base.helpers.asset_path('bounce_sharing_drawing.png')
     else
       level_source_image = LevelSourceImage.find_by_level_source_id(level_source.id)
       if !level_source_image.nil? && !level_source_image.image.nil?
@@ -110,5 +110,51 @@ module LevelsHelper
         request.protocol + request.host_with_port + ActionController::Base.helpers.asset_path('sharing_drawing.png')
       end
     end
+  end
+
+  # Code for generating the blockly options hash
+  def blockly_options(local_assigns)
+    # Use values from properties json when available (use String keys instead of Symbols for consistency)
+    level = @level.properties || {}
+
+    # Set some specific values
+    level['puzzle_number'] = @script_level ? @script_level.game_chapter : 1
+    level['stage_total'] = @script ? @script.script_levels_from_game(@level.game_id).length : @level.game.levels.count
+
+    # Map Dashboard-style names to Blockly-style names in level object.
+    # Dashboard underscore_names mapped to Blockly lowerCamelCase, or explicit 'Dashboard:Blockly'
+    Hash[%w(
+      start_blocks solution_blocks slider_speed start_direction instructions initial_dirt final_dirt
+      toolbox_blocks:toolbox
+      x:initialX
+      y:initialY
+      maze:map
+      artist_builder:builder
+    ).map{ |x| x.include?(':') ? x.split(':') : [x,x.camelize(:lower)]}]
+    .each do |dashboard, blockly|
+      # Select first valid value from 1. local_assigns, 2. property of @level object, 3. named instance variable, 4. properties json
+      # Don't override existing valid (non-nil/empty) values
+      property = local_assigns[dashboard].presence ||
+        @level[dashboard].presence ||
+        instance_variable_get("@#{dashboard}").presence ||
+        level[dashboard.to_s].presence
+      level[blockly.to_s] ||= property if property.present?
+    end
+
+    # Blockly requires startDirection as an integer not a string
+    level['startDirection'] = level['startDirection'].to_i if level['startDirection'].present?
+
+    # Fetch localized strings
+    %w(instructions levelIncompleteError other1StarError tooFewBlocksMsg).each do |label|
+      level[label] ||= [@level.game.app, @level.game.name].map { |name|
+        data_t("level.#{label}", "#{name}_#{@level.level_num}")
+      }.compact!.first
+    end
+
+    # Set some values that Blockly expects on the root of its options string
+    app_options = {'levelId' => @level.level_num}
+    app_options['scriptId'] = @script.id if @script
+    app_options['levelGameName'] = @level.game.name if @level.game
+    [level, app_options]
   end
 end

@@ -270,6 +270,7 @@ en:
   user_stats:
     recent_activity: Recent activity
     show_more: Show more
+    classroom_activity: 'Unplugged Activity'
   home:
     signin_message: "Already registered? %{link}"
     student_reg_link: 'Student Sign Up'
@@ -363,3 +364,6 @@ en:
     picture_count: "In the past <b>%{days}</b> days, students have drawn <b>%{count}</b> pictures by writing their own computer programs. Click on the pictures to see each program in action."
     want_to_make_your_own: "Want to make your own?"
     more: "More &rarr;"
+  landing:
+    prerelease: "This page is still under development."
+
