@@ -6285,7 +6285,8 @@ var CONFIGS = {
 
   pvz: {
     look: '#FFF',
-    obstacleScale: 1.4
+    obstacleScale: 1.4,
+    pegmanYOffset: -8
   },
 
   birds: {
