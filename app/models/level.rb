@@ -1,4 +1,5 @@
-# An individual Blockly level definition
+# Maps to an individual Blockly level definition
+# "name" is unique (except for custom-built levels)
 class Level < ActiveRecord::Base
   serialize :properties, JSON
   belongs_to :game

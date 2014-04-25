@@ -1,3 +1,4 @@
+# Joins a Script to a Level. (A single Level can be contained in multiple Scripts)
 class ScriptLevel < ActiveRecord::Base
   belongs_to :level
   belongs_to :script
@@ -30,7 +31,14 @@ class ScriptLevel < ActiveRecord::Base
   end
 
   def self.cache_find(id)
-    @@script_level_map ||= ScriptLevel.includes(:level, :script).index_by(&:id)
-    @@script_level_map[id]
+    Rails.cache.fetch("script_level/#{id}/#{@@last_updated}") {
+      ScriptLevel.includes(:level, :script).index_by(&:id)
+    }[id]
   end
+
+  def self.touch
+    @@last_updated = Time.now
+  end
+
+  touch
 end
