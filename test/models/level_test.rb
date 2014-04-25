@@ -15,25 +15,25 @@ class LevelTest < ActiveSupport::TestCase
   test "throws argument error on bad data" do
     maze = CSV.new(fixture_file_upload("maze_level_invalid.csv", "r"))
     assert_raises ArgumentError do
-      Level.read_and_convert_maze_to_integer(maze, 8)
+      Maze.read_and_convert_maze_to_integer(maze, 8)
     end
   end
 
   test "reads and converts data" do
     csv = stub(:read => [['0', '1'], ['1', '2']])
-    maze = Level.read_and_convert_maze_to_integer(csv, 2)
+    maze = Maze.read_and_convert_maze_to_integer(csv, 2)
     assert_equal [[0, 1], [1, 2]], maze
   end
 
   test "parses maze data" do
     csv = stub(:read => [['0', '1'], ['1', '2']])
-    maze = Level.parse_maze(csv, 'maze', 2)
+    maze = Maze.parse_maze(csv, 2)
     assert_equal({'maze' => [[0, 1], [1, 2]]}, maze)
   end
 
   test "parses karel data" do
     csv = stub(:read => [['100', '101'], ['102', '5']])
-    maze = Level.parse_maze(csv, 'karel', 2)
+    maze = Karel.parse_maze(csv, 2)
     assert_equal({'maze' => [[0, 1], [2, 0]], 'initial_dirt' => [[0, 0], [0, 5]], 'final_dirt' => [[0, 0], [0, 0]]}, maze)
   end
 
