@@ -86,12 +86,12 @@ class LevelsController < ApplicationController
     size = params[:size].to_i
 
     begin
-      maze = Level.parse_maze(contents, params[:type], size)
+      maze = Level.parse_maze(contents, params[:level_type], size)
     rescue ArgumentError
       render status: :not_acceptable, text: "There is a non integer value in the grid." and return
     end
 
-    skin = params[:type] == 'maze' ? 'birds' : 'farmer'
+    skin = params[:level_type] == 'maze' ? 'birds' : 'farmer'
     @level = Level.create(level_params.merge(game: game, user: current_user, level_num: 'custom', skin: skin))
     @level.properties.update(maze)
     @level.save!
