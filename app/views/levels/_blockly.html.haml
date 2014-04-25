@@ -93,7 +93,8 @@
         if (#{@artist_builder.to_json}) {
           ['program', 'name', 'instructions', 'type'].forEach(function(key) {
             report['level[' + key + ']'] = report[key];
-          };
+          });
+          delete report.level;
           report.onComplete = function(response) {
             window.location.href = nextRedirect;
           };

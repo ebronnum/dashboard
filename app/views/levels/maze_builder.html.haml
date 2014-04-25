@@ -6,7 +6,7 @@
 - else
   = link_to "Karel Builder Form", "https://docs.google.com/a/code.org/spreadsheet/ccc?key=0Au-CEJJ_kBL3dGpmbmcxQnF6Z0lZZDcxY0p2LWFIaGc&usp=drive_web#gid=0"
 
-= form_for [@game, @level], html: {multipart: true} do |level_form|
+= form_for [@game, @level], method: :post, data: { remote: true }, html: {multipart: true} do |level_form|
   = hidden_field_tag :size, 8
   = level_form.hidden_field :type, value: @type.capitalize
   = file_field_tag "maze_source"
@@ -17,3 +17,9 @@
   = level_form.label 'Step options'
   = level_form.select :step_mode, options_for_select([['Run Button Only', 0], ['Run and Step', 1], ['Step Button Only', 2]])
   = level_form.submit "Create Level"
+
+:javascript
+  $('#new_level').on('ajax:success', function(e, data) {
+    window.location.href = data.redirect;
+  });
+

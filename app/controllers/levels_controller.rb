@@ -77,16 +77,8 @@ class LevelsController < ApplicationController
     rescue ArgumentError
       render status: :not_acceptable, text: "There is a non integer value in the grid." and return
     end
-    redirect = game_level_url(@level.game, @level)
 
-    case level_params[:type]
-    when 'Maze', 'Karel'
-      redirect_to redirect
-    when 'Artist'
-      render json: { redirect: redirect }
-    else
-      raise "Unkown level type #{type}"
-    end
+    render json: { redirect: game_level_url(@level.game, @level) }
   end
 
   # DELETE /levels/1
@@ -100,9 +92,9 @@ class LevelsController < ApplicationController
     authorize! :create, :level
     @type = params[:type]
     case @type
-    when 'artist'
+    when 'Artist'
       artist_builder
-    when 'maze', 'karel'
+    when 'Maze', 'Karel'
       @game = Game.custom_maze
       @level = Level.new
       render :maze_builder
