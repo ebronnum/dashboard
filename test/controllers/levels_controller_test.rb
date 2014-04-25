@@ -10,6 +10,11 @@ class LevelsControllerTest < ActionController::TestCase
     @program = "<hey>"
 
     @not_admin = create(:user)
+    Rails.env = "staging"
+  end
+
+  teardown do
+    Rails.env = "test"
   end
 
   test "should get index" do
@@ -20,6 +25,14 @@ class LevelsControllerTest < ActionController::TestCase
 
   test "should get new" do
     get :new, game_id: @level.game
+    assert_response :success
+  end
+
+  test "should get new karel" do
+    get :new, type: 'karel'
+
+    css = css_select "#level_type"
+    assert_equal "karel", css.first.attributes['value']
     assert_response :success
   end
 
@@ -61,6 +74,31 @@ class LevelsControllerTest < ActionController::TestCase
     assert_response :not_acceptable
   end
 
+  test "should create karel level" do
+    karel = fixture_file_upload("karel_level.csv", "r")
+    game = Game.find_by_name("CustomMaze")
+
+    assert_difference('Level.count') do
+      post :create, :level => {:name => "NewCustomLevel", :instructions => "Some Instructions"}, :game_id => game.id, :program => @program, :level_type => 'karel', :maze_source => karel, :size => 8
+    end
+
+    assert assigns(:level)
+    assert assigns(:level).game
+
+    assert_redirected_to game_level_path(assigns(:level).game, assigns(:level))
+  end
+
+  test "should not create invalid karel level" do
+    karel = fixture_file_upload("karel_level_invalid.csv", "r")
+    game = Game.find_by_name("CustomMaze")
+
+    assert_no_difference('Level.count') do
+      post :create, :level => {:name => "NewCustomLevel", :instructions => "Some Instructions"}, :game_id => game.id, :program => @program, :level_type => 'karel', :maze_source => karel, :size => 8
+    end
+
+    assert_response :not_acceptable
+  end
+
   test "should create artist level" do
     game = Game.find_by_name("Custom")
     assert_difference('Level.count') do
@@ -73,7 +111,7 @@ class LevelsControllerTest < ActionController::TestCase
   test "should update blocks" do
     post :update_blocks, :level_id => @level.id, :game_id => @level.game.id, :type => 'toolbox_blocks', :program => @program
     level = assigns(:level)
-    assert_equal level.toolbox_blocks, @program
+    assert_equal level.properties[:toolbox_blocks.to_s], @program
   end
 
   test "should not update blocks if not admin" do
@@ -107,7 +145,20 @@ class LevelsControllerTest < ActionController::TestCase
     assert_response :forbidden
   end
 
+  # This should represent the behavior on production.
+  test "should not modify level if on test env" do
+    Rails.env = "test"
+    post :create, :name => "NewCustomLevel", :program => @program, game_id: 1
+    assert_response :forbidden
+  end
+
   test "should show level" do
+    get :show, id: @level, game_id: @level.game
+    assert_response :success
+  end
+
+  test "should show level on test env" do
+    Rails.env = "test"
     get :show, id: @level, game_id: @level.game
     assert_response :success
   end

@@ -196,7 +196,7 @@ BlocklyApps.init = function(config) {
       openWorkspace.setAttribute('id', 'open-workspace');
       openWorkspace.appendChild(document.createTextNode(msg.openWorkspace()));
 
-      belowViz.appendChild(feedback.createSharingButtons({
+      belowViz.appendChild(feedback.createSharingDiv({
         response: {
           level_source: window.location
         },
@@ -874,7 +874,7 @@ var getIdealBlockNumberMsg = function() {
       msg.infinity() : BlocklyApps.IDEAL_BLOCK_NUM;
 };
 
-},{"../locale/it_it/common":40,"./builder":5,"./dom":7,"./feedback.js":8,"./slider":27,"./templates/buttons.html":29,"./templates/instructions.html":31,"./templates/learn.html":32,"./templates/makeYourOwn.html":33,"./utils":38,"./xml":39}],3:[function(require,module,exports){
+},{"../locale/it_it/common":42,"./builder":5,"./dom":7,"./feedback.js":8,"./slider":27,"./templates/buttons.html":29,"./templates/instructions.html":31,"./templates/learn.html":32,"./templates/makeYourOwn.html":33,"./utils":40,"./xml":41}],3:[function(require,module,exports){
 exports.createToolbox = function(blocks) {
   return '<xml id="toolbox" style="display: none;">' + blocks + '</xml>';
 };
@@ -950,7 +950,7 @@ exports.builderForm = function(onAttemptCallback) {
   dialog.show({ backdrop: 'static' });
 };
 
-},{"./dom.js":7,"./feedback.js":8,"./templates/builder.html":28,"./utils.js":38,"url":52}],6:[function(require,module,exports){
+},{"./dom.js":7,"./feedback.js":8,"./templates/builder.html":28,"./utils.js":40,"url":54}],6:[function(require,module,exports){
 var INFINITE_LOOP_TRAP = '  BlocklyApps.checkTimeout();\n';
 var INFINITE_LOOP_TRAP_RE =
     new RegExp(INFINITE_LOOP_TRAP.replace(/\(.*\)/, '\\(.*\\)'), 'g');
@@ -1116,10 +1116,12 @@ exports.displayFeedback = function(options) {
   options.level = options.level || {};
   options.numTrophies = numTrophiesEarned(options);
 
+  var canContinue = exports.canContinueToNextLevel(options.feedbackType);
+  var displayShowCode = BlocklyApps.enableShowCode && canContinue;
   var feedback = document.createElement('div');
   var feedbackMessage = getFeedbackMessage(options);
-  var sharingDiv = createSharingDiv(options);
-  var showCode = getShowCodeElement(options);
+  var sharingDiv = (canContinue && options.showingSharing) ? exports.createSharingDiv(options) : null;
+  var showCode = displayShowCode ? getShowCodeElement(options) : null;
   var feedbackBlocks = new FeedbackBlocks(options);
 
   if (feedbackMessage) {
@@ -1135,10 +1137,15 @@ exports.displayFeedback = function(options) {
   if (sharingDiv) {
     feedback.appendChild(sharingDiv);
   }
+  if (options.showingSharing) {
+    var shareCodeSpacer = document.createElement('div');
+    shareCodeSpacer.className = "share-code-spacer";
+    feedback.appendChild(shareCodeSpacer);
+  }
   if (showCode) {
     feedback.appendChild(showCode);
   }
-  var canContinue = exports.canContinueToNextLevel(options.feedbackType);
+
   feedback.appendChild(getFeedbackButtons(
     options.feedbackType, options.level.showPreviousLevelButton));
 
@@ -1398,18 +1405,14 @@ var isFeedbackMessageCustomized = function(options) {
        options.level.other1StarError);
 };
 
-exports.createSharingButtons = function(options) {
-  var sharingWrapper = document.createElement('div');
-  var sharingButtons = document.createElement('div');
-  var sharingUrl = document.createElement('div');
-  sharingButtons.className = 'social-buttons';
-  sharingUrl.className = 'feedback-links';
-  sharingUrl.innerHTML = require('./templates/buttons.html')({
-    data: {
-      sharingUrl: options.response.level_source
-    }
-  });
+exports.createSharingDiv = function(options) {
+  if (!options.response || !options.response.level_source) {
+    // don't even try if our caller didn't give us something that can be shared
+    // options.response.level_source is the url that we are sharing
+    return null;
+  } 
 
+  // set up the twitter share url
   var twitterUrl = "https://twitter.com/intent/tweet?url=" +
                    options.response.level_source;
 
@@ -1419,71 +1422,35 @@ exports.createSharingButtons = function(options) {
   if (options.twitter  && options.twitter.hashtag !== undefined) {
     twitterUrl += "&button_hashtag=" + options.twitter.hashtag;
   }
+  options.twitterUrl = twitterUrl;
 
-  sharingButtons.innerHTML = require('./templates/buttons.html')({
-    data: {
-      facebookUrl: "https://www.facebook.com/sharer/sharer.php?u=" +
-                    options.response.level_source,
-      twitterUrl: twitterUrl,
-      makeYourOwn: options.makeYourOwn,
-      saveToGalleryUrl: options.saveToGalleryUrl
-    }
+  // set up the facebook share url
+  var facebookUrl = "https://www.facebook.com/sharer/sharer.php?u=" +
+                    options.response.level_source;
+  options.facebookUrl = facebookUrl;
+
+  // use a generic image for the level if a feedback image has not been supplied.
+  if (options.level && options.level.instructionImageUrl && !options.feedbackImage) {
+    options.feedbackImage = options.level.instructionImageUrl;
+  }
+
+  var sharingDiv = document.createElement('div');
+  sharingDiv.setAttribute('style', 'display:inline-block');
+  sharingDiv.innerHTML = require('./templates/sharing.html')({
+    options: options
   });
-  var sharingInput = sharingUrl.querySelector('#sharing-input');
+
+  var sharingInput = sharingDiv.querySelector('#sharing-input');
   if (sharingInput) {
     dom.addClickTouchEvent(sharingInput, function() {
       sharingInput.focus();
       sharingInput.select();
     });
   }
-  sharingWrapper.appendChild(sharingUrl);
-  sharingWrapper.appendChild(sharingButtons);
-  return sharingWrapper;
+
+  return sharingDiv;
 };
 
-
-var createSharingDiv = function(options) {
-  // Creates the sharing div only when showingSharing is set and the solution is
-  // a passing solution.
-  if (options.showingSharing &&
-      exports.canContinueToNextLevel(options.feedbackType)) {
-    var sharingDiv = document.createElement('div');
-    sharingDiv.setAttribute('style', 'display:inline-block');
-    var sharingImage = document.createElement('div');
-
-    var feedbackImage = createFeedbackImage(options);
-    if (feedbackImage) {
-        sharingImage.appendChild(feedbackImage);
-        sharingDiv.appendChild(sharingImage);
-    }
-
-    if (options.response && options.response.level_source) {
-      var sharingText = document.createElement('div');
-      if (options.appStrings) {
-        dom.setText(sharingText, options.appStrings.sharingText);
-      }
-      sharingText.className = 'shareDrawingMsg';
-      sharingDiv.appendChild(sharingText);
-
-      sharingDiv.appendChild(exports.createSharingButtons(options));
-    }
-    return sharingDiv;
-  } else {
-    return null;
-  }
-};
-
-var createFeedbackImage = function(options) {
-  var feedbackImage;
-  var feedbackImageSrc =
-      options.level.instructionImageUrl || options.feedbackImage;
-  if (feedbackImageSrc) {
-    feedbackImage = document.createElement('img');
-    feedbackImage.className = 'feedback-image';
-    feedbackImage.src = feedbackImageSrc;
-  }
-  return feedbackImage;
-};
 
 var numTrophiesEarned = function(options) {
   if (options.response && options.response.trophy_updates) {
@@ -1507,43 +1474,28 @@ var getTrophiesElement = function(options) {
 };
 
 var getShowCodeElement = function(options) {
-  if (exports.canContinueToNextLevel(options.feedbackType)) {
-    var linesWritten = exports.getNumBlocksUsed();
-    var showCodeDiv = document.createElement('div');
-    showCodeDiv.setAttribute('id', 'show-code');
-    var lines = document.createElement('span');
-    lines.className = 'linesOfCodeMsg';
-    lines.innerHTML = msg.numLinesOfCodeWritten({
-      numLines: linesWritten
-    });
-    if (options.response && options.response.total_lines &&
-        (options.response.total_lines !== linesWritten)) {
-      lines.innerHTML += '<br>' + msg.totalNumLinesOfCodeWritten({
-        numLines: options.response.total_lines
-      });
-    }
+  var showCodeDiv = document.createElement('div');
+  showCodeDiv.setAttribute('id', 'show-code');
 
-    var showCodeLink = document.createElement('div');
-    showCodeLink.className = 'show-code-div';
-    showCodeLink.innerHTML = require('./templates/showCode.html')();
-    var button = showCodeLink.querySelector('#show-code-button');
+  var numLinesWritten = exports.getNumBlocksUsed();
+  var shouldShowTotalLines =
+    (options.response &&
+      options.response.total_lines &&
+      (options.response.total_lines !== numLinesWritten));
+  var totalNumLinesWritten = shouldShowTotalLines ? options.response.total_lines : 0;
 
-    button.addEventListener('click', function() {
-      var codeDiv = getGeneratedCodeElement();
-      showCodeDiv.appendChild(codeDiv);
-      button.style.display = 'none';
-    });
+  showCodeDiv.innerHTML = require('./templates/showCode.html')({
+    numLinesWritten: numLinesWritten,
+    totalNumLinesWritten: totalNumLinesWritten
+  });
 
-    if (BlocklyApps.enableShowCode) {
-      showCodeDiv.appendChild(lines);
-      showCodeDiv.appendChild(showCodeLink);
-    } else if (options.showingSharing) {
-      // want a breaking line if this is a sharing dialog
-      lines.innerHTML = '<br>';
-      showCodeDiv.appendChild(lines);
-    }
-    return showCodeDiv;
-  }
+  var showCodeButton = showCodeDiv.querySelector('#show-code-button');
+  showCodeButton.addEventListener('click', function () {
+    showCodeDiv.appendChild(getGeneratedCodeElement());
+    showCodeButton.style.display = 'none';
+  });
+
+  return showCodeDiv;
 };
 
 /**
@@ -1884,7 +1836,7 @@ var generateXMLForBlocks = function(blocks) {
 };
 
 
-},{"../locale/it_it/common":40,"./codegen":6,"./dom":7,"./templates/buttons.html":29,"./templates/code.html":30,"./templates/readonly.html":35,"./templates/showCode.html":36,"./templates/trophy.html":37,"./utils":38}],9:[function(require,module,exports){
+},{"../locale/it_it/common":42,"./codegen":6,"./dom":7,"./templates/buttons.html":29,"./templates/code.html":30,"./templates/readonly.html":35,"./templates/sharing.html":36,"./templates/showCode.html":37,"./templates/trophy.html":38,"./utils":40}],9:[function(require,module,exports){
 // Functions for checking required blocks.
 
 /**
@@ -2585,7 +2537,7 @@ exports.install = function(blockly, skin) {
 
 };
 
-},{"../../locale/it_it/maze":41,"../codegen":6}],12:[function(require,module,exports){
+},{"../../locale/it_it/maze":43,"../codegen":6}],12:[function(require,module,exports){
 var levelBase = require('../level_base');
 var Direction = require('./tiles').Direction;
 var msg = require('../../locale/it_it/maze');
@@ -4086,7 +4038,7 @@ module.exports = {
   }
 };
 
-},{"../../locale/it_it/maze":41,"../level_base":9,"./karelStartBlocks.xml":13,"./tiles":20,"./toolboxes/karel1.xml":21,"./toolboxes/karel2.xml":22,"./toolboxes/karel3.xml":23}],13:[function(require,module,exports){
+},{"../../locale/it_it/maze":43,"../level_base":9,"./karelStartBlocks.xml":13,"./tiles":20,"./toolboxes/karel1.xml":21,"./toolboxes/karel2.xml":22,"./toolboxes/karel3.xml":23}],13:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4118,7 +4070,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/it_it/maze":41,"ejs":42}],14:[function(require,module,exports){
+},{"../../locale/it_it/maze":43,"ejs":44}],14:[function(require,module,exports){
 var Direction = require('./tiles').Direction;
 var karelLevels = require('./karelLevels');
 var reqBlocks = require('./requiredBlocks');
@@ -4785,6 +4737,7 @@ var api = require('./api');
 var page = require('../templates/page.html');
 var feedback = require('../feedback.js');
 var dom = require('../dom');
+var utils = require('../utils');
 
 var Direction = tiles.Direction;
 var SquareType = tiles.SquareType;
@@ -4823,7 +4776,7 @@ Maze.scale = {
 
 var loadLevel = function() {
   // Load maps.
-  Maze.map = level.maze ? JSON.parse(level.maze) : level.map;
+  Maze.map = level.map;
   Maze.initialDirtMap = level.initialDirt;
   Maze.finalDirtMap = level.finalDirt;
   Maze.startDirection = level.startDirection;
@@ -4871,7 +4824,7 @@ var initWallMap = function() {
 /**
  * PIDs of animation tasks currently executing.
  */
-Maze.pidList = [];
+var timeoutList = require('../timeoutList');
 
 // Map each possible shape to a sprite.
 // Input: Binary string representing Centre/North/West/South/East squares.
@@ -5211,7 +5164,7 @@ Maze.init = function(config) {
 
     Maze.start_ = undefined;
     Maze.finish_ = undefined;
-    
+
     // Locate the start and finish squares.
     for (var y = 0; y < Maze.ROWS; y++) {
       for (var x = 0; x < Maze.COLS; x++) {
@@ -5312,10 +5265,18 @@ var removeDirt = function(row, col) {
 /**
  * Calculate the y coordinates for pegman sprite.
  */
-var getPegmanYCoordinate = function(options) {
-  var y = Maze.SQUARE_SIZE * (options.mazeRow + 0.5) - Maze.PEGMAN_HEIGHT / 2 -
-      (options.pegmanRow || 0) * Maze.PEGMAN_HEIGHT + Maze.PEGMAN_Y_OFFSET - 8;
+var getPegmanYForRow = function (mazeRow) {
+  var y = Maze.SQUARE_SIZE * (mazeRow + 0.5) - Maze.PEGMAN_HEIGHT / 2 +
+    Maze.PEGMAN_Y_OFFSET;
   return Math.floor(y);
+};
+
+/**
+ * Calculate the Y offset within the sheet
+ */
+var getPegmanFrameOffsetY = function (animationRow) {
+  animationRow = animationRow || 0;
+  return animationRow * Maze.PEGMAN_HEIGHT;
 };
 
 /**
@@ -5326,7 +5287,6 @@ var getPegmanYCoordinate = function(options) {
   * col which column the pegman is at.
   * row which row the pegman is at.
   * direction which direction the pegman is facing at.
-  * rowIdx which column of the pegman the animation needs, default is 0.
   * numColPegman number of the pegman in each row, default is 4.
   * numRowPegman number of the pegman in each column, default is 1.
   */
@@ -5341,9 +5301,7 @@ var createPegmanAnimation = function(options) {
     rect.setAttribute('x', options.col * Maze.SQUARE_SIZE + 1);
   }
   if (options.row !== undefined) {
-    rect.setAttribute('y', getPegmanYCoordinate({
-      mazeRow : options.row
-    }));
+    rect.setAttribute('y', getPegmanYForRow(options.row));
   }
   rect.setAttribute('width', Maze.PEGMAN_WIDTH);
   rect.setAttribute('height', Maze.PEGMAN_HEIGHT);
@@ -5367,11 +5325,7 @@ var createPegmanAnimation = function(options) {
     img.setAttribute('x', x);
   }
   if (options.row !== undefined) {
-    var y = getPegmanYCoordinate({
-      mazeRow : options.row,
-      pegmanRow : options.rowIdx
-    });
-    img.setAttribute('y', y);
+    img.setAttribute('y', getPegmanYForRow(options.row));
   }
 };
 
@@ -5382,22 +5336,17 @@ var createPegmanAnimation = function(options) {
   * col required which column the pegman is at.
   * row required which row the pegman is at.
   * direction required which direction the pegman is facing at.
-  * rowIdx which column of the pegman the animation needs, default is 0.
+  * animationRow which row of the sprite sheet the pegman animation needs
   */
 var updatePegmanAnimation = function(options) {
   var rect = document.getElementById(options.idStr + 'PegmanClipRect');
   rect.setAttribute('x', options.col * Maze.SQUARE_SIZE + 1);
-  rect.setAttribute('y', getPegmanYCoordinate({
-    mazeRow : options.row
-  }));
+  rect.setAttribute('y', getPegmanYForRow(options.row));
   var img = document.getElementById(options.idStr + 'Pegman');
   var x = Maze.SQUARE_SIZE * options.col -
       options.direction * Maze.PEGMAN_WIDTH + 1;
   img.setAttribute('x', x);
-  var y = getPegmanYCoordinate({
-    mazeRow : options.row,
-    pegmanRow : options.rowIdx
-  });
+  var y = getPegmanYForRow(options.row) - getPegmanFrameOffsetY(options.animationRow);
   img.setAttribute('y', y);
   img.setAttribute('visibility', 'visible');
 };
@@ -5409,27 +5358,21 @@ var updatePegmanAnimation = function(options) {
 BlocklyApps.reset = function(first) {
   var i;
   // Kill all tasks.
-  for (i = 0; i < Maze.pidList.length; i++) {
-    window.clearTimeout(Maze.pidList[i]);
-  }
-  Maze.pidList = [];
+  timeoutList.clearTimeouts();
 
   // Move Pegman into position.
   Maze.pegmanX = Maze.start_.x;
   Maze.pegmanY = Maze.start_.y;
 
+  Maze.pegmanD = Maze.startDirection;
   if (first) {
-    Maze.pegmanD = Maze.startDirection + 1;
     Maze.scheduleFinish(false);
-    Maze.pidList.push(window.setTimeout(function() {
+    timeoutList.setTimeout(function() {
       stepSpeed = 100;
-      Maze.schedule([Maze.pegmanX, Maze.pegmanY, tiles.direction4to16(Maze.pegmanD)],
-                    [Maze.pegmanX, Maze.pegmanY, tiles.direction4to16(Maze.pegmanD + TurnDirection.LEFT)]);
-      Maze.pegmanD++;
-    }, stepSpeed * 5));
+      Maze.scheduleTurn(Maze.startDirection);
+    }, stepSpeed * 5);
   } else {
-    Maze.pegmanD = Maze.startDirection;
-    Maze.displayPegman(Maze.pegmanX, Maze.pegmanY, tiles.direction4to16(Maze.pegmanD));
+    Maze.displayPegman(Maze.pegmanX, Maze.pegmanY, tiles.directionToFrame(Maze.pegmanD));
   }
 
   var svg = document.getElementById('svgMaze');
@@ -5709,7 +5652,7 @@ Maze.execute = function() {
   // Speeding up specific levels
   var scaledStepSpeed =
       stepSpeed * Maze.scale.stepSpeed * skin.movePegmanAnimationSpeedScale;
-  Maze.pidList.push(window.setTimeout(Maze.animate,scaledStepSpeed));
+  timeoutList.setTimeout(Maze.animate, scaledStepSpeed);
 };
 
 /**
@@ -5717,7 +5660,7 @@ Maze.execute = function() {
  */
 Maze.animate = function() {
   // All tasks should be complete now.  Clean up the PID list.
-  Maze.pidList = [];
+  timeoutList.clearTimeouts();
 
   var action = BlocklyApps.log.shift();
   if (!action) {
@@ -5769,14 +5712,12 @@ Maze.animate = function() {
       break;
     case 'left':
       var newDirection = Maze.pegmanD + TurnDirection.LEFT;
-      Maze.schedule([Maze.pegmanX, Maze.pegmanY, tiles.direction4to16(Maze.pegmanD)],
-                    [Maze.pegmanX, Maze.pegmanY, tiles.direction4to16(newDirection)]);
+      Maze.scheduleTurn(newDirection);
       Maze.pegmanD = tiles.constrainDirection4(newDirection);
       break;
     case 'right':
       newDirection = Maze.pegmanD + TurnDirection.RIGHT;
-      Maze.schedule([Maze.pegmanX, Maze.pegmanY, tiles.direction4to16(Maze.pegmanD)],
-                    [Maze.pegmanX, Maze.pegmanY, tiles.direction4to16(newDirection)]);
+      Maze.scheduleTurn(newDirection);
       Maze.pegmanD = tiles.constrainDirection4(newDirection);
       break;
     case 'finish':
@@ -5788,9 +5729,9 @@ Maze.animate = function() {
           Maze.scheduleFinish(true);
           break;
         default:
-          Maze.pidList.push(window.setTimeout(function() {
+          timeoutList.setTimeout(function() {
             BlocklyApps.playAudio('failure', {volume: 0.5});
-          }, stepSpeed));
+          }, stepSpeed);
           break;
       }
       break;
@@ -5811,103 +5752,104 @@ Maze.animate = function() {
   // Speeding up specific levels
   var scaledStepSpeed =
       stepSpeed * Maze.scale.stepSpeed * skin.movePegmanAnimationSpeedScale;
-  Maze.pidList.push(window.setTimeout(Maze.animate, scaledStepSpeed));
+  timeoutList.setTimeout(Maze.animate, scaledStepSpeed);
 };
 
 Maze.animatedMove = function (direction) {
   var positionChange = tiles.directionToDxDy(direction);
   var newX = Maze.pegmanX + positionChange.dx;
   var newY = Maze.pegmanY + positionChange.dy;
-  Maze.schedule(
-    [Maze.pegmanX, Maze.pegmanY, tiles.direction4to16(Maze.pegmanD)],
-    [newX, newY, tiles.direction4to16(Maze.pegmanD)]);
+  Maze.scheduleMove(newX, newY);
   Maze.pegmanX = newX;
   Maze.pegmanY = newY;
 };
 
 /**
- * Schedule the animations for a move or turn.
- * @param {!Array.<number>} startPos X, Y and direction starting points.
- * @param {!Array.<number>} endPos X, Y and direction ending points.
+ * Schedule the animations for a move from the current position
+ * @param {number} endX X coordinate of the target position
+ * @param {number} endY Y coordinate of the target position
  */
-Maze.schedule = function(startPos, endPos) {
-  function updateMoveFrame(frameIdx) {
-    Maze.pidList.push(window.setTimeout(function() {
-      pegmanIcon.setAttribute('visibility', 'hidden');
-      updatePegmanAnimation({
-        idStr: 'move',
-        col: startPos[0] + deltaX * frameIdx,
-        row: startPos[1] + deltaY * frameIdx,
-        direction: direction,
-        rowIdx: frameIdx
-      });
-    }, stepSpeed * 6 / numFrames * frameIdx));
-  }
+Maze.scheduleMove = function (endX, endY) {
+  var startX = Maze.pegmanX;
+  var startY = Maze.pegmanY;
+  var direction = Maze.pegmanD;
 
-  var deltaX, deltaY, deltaDirection, numFrames;
-  if (skin.movePegmanAnimation && endPos[2] - startPos[2] === 0) {
+  var deltaX = (endX - startX);
+  var deltaY = (endY - startY);
+  var numFrames;
+
+  if (skin.movePegmanAnimation) {
+    numFrames = skin.movePegmanAnimationFrameNumber;
     // If move animation of pegman is set, and this is not a turn.
     // Show the animation.
     var pegmanIcon = document.getElementById('pegman');
     var movePegmanIcon = document.getElementById('movePegman');
+    var animateSpeed = stepSpeed * 6 / numFrames;
 
-    numFrames = skin.movePegmanAnimationFrameNumber;
-    deltaX = (endPos[0] - startPos[0]) / numFrames;
-    deltaY = (endPos[1] - startPos[1]) / numFrames;
-    deltaDirection = (endPos[2] - startPos[2]) / numFrames;
-    var direction = startPos[2] / 4;
-    var frameIdx;
-
-    for (frameIdx = 0; frameIdx < numFrames; frameIdx++) {
-      updateMoveFrame(frameIdx);
-    }
+    utils.range(0, numFrames - 1).forEach(function (frame) {
+      timeoutList.setTimeout(function() {
+        pegmanIcon.setAttribute('visibility', 'hidden');
+        updatePegmanAnimation({
+          idStr: 'move',
+          col: startX + deltaX * frame / numFrames,
+          row: startY + deltaY * frame / numFrames,
+          direction: direction,
+          animationRow: frame
+        });
+      }, animateSpeed * frame);
+    });
 
     // Hide movePegman and set pegman to the end position.
-    Maze.pidList.push(window.setTimeout(function() {
+    timeoutList.setTimeout(function() {
       movePegmanIcon.setAttribute('visibility', 'hidden');
       pegmanIcon.setAttribute('visibility', 'visible');
-      Maze.displayPegman(endPos[0], endPos[1],
-                         tiles.constrainDirection16(endPos[2]));
-    }, stepSpeed * 6 / numFrames * frameIdx));
+      Maze.displayPegman(endX, endY, tiles.directionToFrame(direction));
+    }, animateSpeed * numFrames);
   } else {
     numFrames = 4;
-    deltaX = (endPos[0] - startPos[0]) / numFrames;
-    deltaY = (endPos[1] - startPos[1]) / numFrames;
-    deltaDirection = (endPos[2] - startPos[2]) / numFrames;
-    Maze.displayPegman(startPos[0] + deltaX,
-                       startPos[1] + deltaY,
-                       tiles.constrainDirection16(startPos[2] + deltaDirection));
-    Maze.pidList.push(window.setTimeout(function() {
+    utils.range(1, numFrames).forEach(function (frame) {
+      timeoutList.setTimeout(function() {
         Maze.displayPegman(
-            startPos[0] + deltaX * 2,
-            startPos[1] + deltaY * 2,
-            tiles.constrainDirection16(startPos[2] + deltaDirection * 2));
-    }, stepSpeed));
-    Maze.pidList.push(window.setTimeout(function() {
-        Maze.displayPegman(
-            startPos[0] + deltaX * 3,
-            startPos[1] + deltaY * 3,
-            tiles.constrainDirection16(startPos[2] + deltaDirection * 3));
-    }, stepSpeed * 2));
-      Maze.pidList.push(window.setTimeout(function() {
-          Maze.displayPegman(endPos[0], endPos[1],
-                             tiles.constrainDirection16(endPos[2]));
-    }, stepSpeed * 3));
+          startX + deltaX * frame / numFrames,
+          startY + deltaY * frame / numFrames,
+          tiles.directionToFrame(direction));
+      }, stepSpeed * (frame - 1));
+    });
   }
 
   if (skin.approachingGoalAnimation) {
     var finishIcon = document.getElementById('finish');
     // If pegman is close to the goal
     // Replace the goal file with approachingGoalAnimation
-    if (Maze.finish_ && Math.abs(endPos[0] - Maze.finish_.x) <= 1 &&
-        Math.abs(endPos[1] - Maze.finish_.y) <= 1) {
+    if (Maze.finish_ && Math.abs(endX - Maze.finish_.x) <= 1 &&
+        Math.abs(endY - Maze.finish_.y) <= 1) {
       finishIcon.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href',
-                                skin.approachingGoalAnimation);
+        skin.approachingGoalAnimation);
     } else {
       finishIcon.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href',
-                                skin.goal);
+        skin.goal);
     }
   }
+
+};
+
+
+/**
+ * Schedule the animations for a turn from the current direction
+ * @param {number} endDirection The direction we're turning to
+ */
+Maze.scheduleTurn = function (endDirection) {
+  var numFrames = 4;
+  var startDirection = Maze.pegmanD;
+  var deltaDirection = endDirection - startDirection;
+  utils.range(1, numFrames).forEach(function (frame) {
+    timeoutList.setTimeout(function() {
+      Maze.displayPegman(
+        Maze.pegmanX,
+        Maze.pegmanY,
+        tiles.directionToFrame(startDirection + deltaDirection * frame / numFrames));
+    }, stepSpeed * (frame - 1));
+  });
 };
 
 /**
@@ -5951,10 +5893,10 @@ Maze.scheduleFail = function(forward) {
 
   var targetX = Maze.pegmanX + deltaX;
   var targetY = Maze.pegmanY + deltaY;
-  var direction16 = tiles.constrainDirection16(tiles.direction4to16(Maze.pegmanD));
+  var frame = tiles.directionToFrame(Maze.pegmanD);
   Maze.displayPegman(Maze.pegmanX + deltaX / 4,
                      Maze.pegmanY + deltaY / 4,
-                     direction16);
+                     frame);
   // Play sound and animation for hitting wall or obstacle
   var squareType = Maze.map[targetY] && Maze.map[targetY][targetX];
   if (squareType === SquareType.WALL || squareType === undefined) {
@@ -5968,7 +5910,7 @@ Maze.scheduleFail = function(forward) {
 
     // Play the animation of hitting the wall
     if (skin.hittingWallAnimation) {
-      Maze.pidList.push(window.setTimeout(function() {
+      timeoutList.setTimeout(function() {
         var wallAnimationIcon = document.getElementById('wallAnimation');
         wallAnimationIcon.setAttribute(
             'x',
@@ -5982,24 +5924,24 @@ Maze.scheduleFail = function(forward) {
         wallAnimationIcon.setAttributeNS(
           'http://www.w3.org/1999/xlink', 'xlink:href',
           skin.hittingWallAnimation);
-      }, stepSpeed / 2));
+      }, stepSpeed / 2);
     }
-    Maze.pidList.push(window.setTimeout(function() {
+    timeoutList.setTimeout(function() {
       Maze.displayPegman(Maze.pegmanX,
                          Maze.pegmanY,
-                         direction16);
-    }, stepSpeed));
-    Maze.pidList.push(window.setTimeout(function() {
+                         frame);
+    }, stepSpeed);
+    timeoutList.setTimeout(function() {
       Maze.displayPegman(Maze.pegmanX + deltaX / 4,
                          Maze.pegmanY + deltaY / 4,
-                         direction16);
+                         frame);
       BlocklyApps.playAudio('failure', {volume: 0.5});
-    }, stepSpeed * 2));
-    Maze.pidList.push(window.setTimeout(function() {
-      Maze.displayPegman(Maze.pegmanX, Maze.pegmanY, direction16);
-    }, stepSpeed * 3));
+    }, stepSpeed * 2);
+    timeoutList.setTimeout(function() {
+      Maze.displayPegman(Maze.pegmanX, Maze.pegmanY, frame);
+    }, stepSpeed * 3);
     if (skin.wallPegmanAnimation) {
-      Maze.pidList.push(window.setTimeout(function() {
+      timeoutList.setTimeout(function() {
         var pegmanIcon = document.getElementById('pegman');
         pegmanIcon.setAttribute('visibility', 'hidden');
         updatePegmanAnimation({
@@ -6008,7 +5950,7 @@ Maze.scheduleFail = function(forward) {
           col: Maze.pegmanX,
           direction: Maze.pegmanD
         });
-      }, stepSpeed * 4));
+      }, stepSpeed * 4);
     }
   } else if (squareType == SquareType.OBSTACLE) {
     // Play the sound
@@ -6020,18 +5962,18 @@ Maze.scheduleFail = function(forward) {
     obsIcon.setAttributeNS(
         'http://www.w3.org/1999/xlink', 'xlink:href',
         skin.obstacleAnimation);
-    Maze.pidList.push(window.setTimeout(function() {
+    timeoutList.setTimeout(function() {
       Maze.displayPegman(Maze.pegmanX + deltaX / 2,
                          Maze.pegmanY + deltaY / 2,
-                         direction16);
-    }, stepSpeed));
+                         frame);
+    }, stepSpeed);
 
     // Replace the objects around obstacles with broken objects
     if (skin.largerObstacleAnimationTiles) {
-      Maze.pidList.push(window.setTimeout(function() {
+      timeoutList.setTimeout(function() {
         Maze.updateSurroundingTiles(
             targetY, targetX, skin.largerObstacleAnimationTiles);
-      }, stepSpeed));
+      }, stepSpeed);
     }
 
     // Remove pegman
@@ -6039,13 +5981,13 @@ Maze.scheduleFail = function(forward) {
       var svgMaze = document.getElementById('svgMaze');
       var pegmanIcon = document.getElementById('pegman');
 
-      Maze.pidList.push(window.setTimeout(function() {
+      timeoutList.setTimeout(function() {
         pegmanIcon.setAttribute('visibility', 'hidden');
-      }, stepSpeed * 2));
+      }, stepSpeed * 2);
     }
-    Maze.pidList.push(window.setTimeout(function() {
+    timeoutList.setTimeout(function() {
       BlocklyApps.playAudio('failure', {volume: 0.5});
-    }, stepSpeed));
+    }, stepSpeed);
   }
 };
 
@@ -6076,7 +6018,7 @@ Maze.setTileTransparent = function() {
  * @param {boolean} sound Play the victory sound.
  */
 Maze.scheduleFinish = function(sound) {
-  var direction16 = tiles.constrainDirection16(tiles.direction4to16(Maze.pegmanD));
+  var frame = tiles.directionToFrame(Maze.pegmanD);
   Maze.displayPegman(Maze.pegmanX, Maze.pegmanY, 16);
 
   // Setting the tiles to be transparent
@@ -6096,36 +6038,34 @@ Maze.scheduleFinish = function(sound) {
     BlocklyApps.playAudio('win', {volume: 0.5});
   }
   stepSpeed = 150;  // Slow down victory animation a bit.
-  Maze.pidList.push(window.setTimeout(function() {
+  timeoutList.setTimeout(function() {
     Maze.displayPegman(Maze.pegmanX, Maze.pegmanY, 18);
-  }, stepSpeed));
-  Maze.pidList.push(window.setTimeout(function() {
+  }, stepSpeed);
+  timeoutList.setTimeout(function() {
     Maze.displayPegman(Maze.pegmanX, Maze.pegmanY, 20);
-  }, stepSpeed * 2));
-  Maze.pidList.push(window.setTimeout(function() {
+  }, stepSpeed * 2);
+  timeoutList.setTimeout(function() {
     Maze.displayPegman(Maze.pegmanX, Maze.pegmanY, 18);
-  }, stepSpeed * 3));
-  Maze.pidList.push(window.setTimeout(function() {
+  }, stepSpeed * 3);
+  timeoutList.setTimeout(function() {
     Maze.displayPegman(Maze.pegmanX, Maze.pegmanY, 20);
-  }, stepSpeed * 4));
-  Maze.pidList.push(window.setTimeout(function() {
-    Maze.displayPegman(Maze.pegmanX, Maze.pegmanY, direction16);
-  }, stepSpeed * 5));
+  }, stepSpeed * 4);
+  timeoutList.setTimeout(function() {
+    Maze.displayPegman(Maze.pegmanX, Maze.pegmanY, frame);
+  }, stepSpeed * 5);
 };
 
 /**
  * Display Pegman at the specified location, facing the specified direction.
  * @param {number} x Horizontal grid (or fraction thereof).
  * @param {number} y Vertical grid (or fraction thereof).
- * @param {number} d Direction (0 - 15) or dance (16 - 17).
+ * @param {number} frame Direction (0 - 15) or dance (16 - 17).
  */
-Maze.displayPegman = function(x, y, d) {
+Maze.displayPegman = function(x, y, frame) {
   var pegmanIcon = document.getElementById('pegman');
   pegmanIcon.setAttribute('x',
-      x * Maze.SQUARE_SIZE - d * Maze.PEGMAN_WIDTH + 1);
-  pegmanIcon.setAttribute('y', getPegmanYCoordinate({
-    mazeRow : y
-  }));
+      x * Maze.SQUARE_SIZE - frame * Maze.PEGMAN_WIDTH + 1);
+  pegmanIcon.setAttribute('y', getPegmanYForRow(y));
 
   var clipRect = document.getElementById('clipRect');
   clipRect.setAttribute('x', x * Maze.SQUARE_SIZE + 1);
@@ -6215,12 +6155,12 @@ Maze.scheduleLook = function(d) {
  * @param {number} delay Milliseconds to wait before making wave appear.
  */
 Maze.scheduleLookStep = function(path, delay) {
-  Maze.pidList.push(window.setTimeout(function() {
+  timeoutList.setTimeout(function() {
     path.style.display = 'inline';
     window.setTimeout(function() {
       path.style.display = 'none';
     }, stepSpeed * 2);
-  }, delay));
+  }, delay);
 };
 
 var atFinish = function() {
@@ -6248,7 +6188,7 @@ Maze.checkSuccess = function() {
   return false;
 };
 
-},{"../../locale/it_it/common":40,"../../locale/it_it/maze":41,"../base":2,"../codegen":6,"../dom":7,"../feedback.js":8,"../skins":26,"../templates/page.html":34,"./api":10,"./tiles":20,"./visualization.html":25}],17:[function(require,module,exports){
+},{"../../locale/it_it/common":42,"../../locale/it_it/maze":43,"../base":2,"../codegen":6,"../dom":7,"../feedback.js":8,"../skins":26,"../templates/page.html":34,"../timeoutList":39,"../utils":40,"./api":10,"./tiles":20,"./visualization.html":25}],17:[function(require,module,exports){
 var MOVE_FORWARD = {'test': 'moveForward', 'type': 'maze_moveForward'};
 var TURN_LEFT = {'test': 'turnLeft', 'type': 'maze_turn', 'titles': {'DIR': 'turnLeft'}};
 var TURN_RIGHT = {'test': 'turnRight', 'type': 'maze_turn', 'titles': {'DIR': 'turnRight'}};
@@ -6288,7 +6228,8 @@ var CONFIGS = {
     transparentTileEnding: true,
     nonDisappearingPegmanHittingObstacle: true,
     background: 4,
-    dirtSound: true
+    dirtSound: true,
+    pegmanYOffset: -8
   },
 
   farmer_night: {
@@ -6296,12 +6237,14 @@ var CONFIGS = {
     transparentTileEnding: true,
     nonDisappearingPegmanHittingObstacle: true,
     background: 4,
-    dirtSound: true
+    dirtSound: true,
+    pegmanYOffset: -8
   },
 
   pvz: {
     look: '#FFF',
-    obstacleScale: 1.4
+    obstacleScale: 1.4,
+    pegmanYOffset: -8
   },
 
   birds: {
@@ -6318,7 +6261,7 @@ var CONFIGS = {
     approachingGoalAnimation: 'close_goal.png',
     pegmanHeight: 68,
     pegmanWidth: 51,
-    pegmanYOffset: -6
+    pegmanYOffset: -14
   }
 
 };
@@ -6412,7 +6355,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":42}],20:[function(require,module,exports){
+},{"ejs":44}],20:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -6462,8 +6405,8 @@ Tiles.directionToDxDy = function(direction) {
   throw new Error('Invalid direction value' + direction);
 };
 
-Tiles.direction4to16 = function(direction4) {
-  return direction4 * 4;
+Tiles.directionToFrame = function(direction4) {
+  return utils.mod(direction4 * 4, 16);
 };
 
 /**
@@ -6475,16 +6418,7 @@ Tiles.constrainDirection4 = function(d) {
   return utils.mod(d, 4);
 };
 
-/**
- * Keep the direction within 0-15, wrapping at both ends.
- * @param {number} d Potentially out-of-bounds direction value.
- * @return {number} Legal direction value.
- */
-Tiles.constrainDirection16 = function(d) {
-  return utils.mod(d, 16);
-};
-
-},{"../utils":38}],21:[function(require,module,exports){
+},{"../utils":40}],21:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6505,7 +6439,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":42}],22:[function(require,module,exports){
+},{"ejs":44}],22:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6531,7 +6465,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../../locale/it_it/common":40,"../../../locale/it_it/maze":41,"ejs":42}],23:[function(require,module,exports){
+},{"../../../locale/it_it/common":42,"../../../locale/it_it/maze":43,"ejs":44}],23:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6565,7 +6499,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../../locale/it_it/common":40,"ejs":42}],24:[function(require,module,exports){
+},{"../../../locale/it_it/common":42,"ejs":44}],24:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6586,7 +6520,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":42}],25:[function(require,module,exports){
+},{"ejs":44}],25:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6607,7 +6541,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":42}],26:[function(require,module,exports){
+},{"ejs":44}],26:[function(require,module,exports){
 // avatar: A 1029x51 set of 21 avatar images.
 
 exports.load = function(assetUrl, id) {
@@ -6873,7 +6807,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":42}],29:[function(require,module,exports){
+},{"ejs":44}],29:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6886,7 +6820,7 @@ escape = escape || function (html){
 };
 var buf = [];
 with (locals || {}) { (function(){ 
- buf.push('');1; var msg = require('../../locale/it_it/common'); ; buf.push('\n\n');3; if (data.ok) {; buf.push('  <div class="farSide" style="padding: 1ex 3ex 0">\n    <button id="ok-button" class="secondary">\n      ', escape((5,  msg.dialogOK() )), '\n    </button>\n  </div>\n');8; };; buf.push('\n');9; if (data.previousLevel) {; buf.push('  <button id="back-button" class="launch">\n    ', escape((10,  msg.backToPreviousLevel() )), '\n  </button>\n');12; };; buf.push('\n');13; if (data.tryAgain) {; buf.push('  <button id="again-button" class="launch">\n    ', escape((14,  msg.tryAgain() )), '\n  </button>\n');16; };; buf.push('\n');17; if (data.nextLevel) {; buf.push('  <button id="continue-button" class="launch">\n    ', escape((18,  msg.continue() )), '\n  </button>\n');20; };; buf.push('\n');21; if (data.facebookUrl) {; buf.push('  <a href=', escape((21,  data.facebookUrl )), ' target="_blank">\n    <img src=', escape((22,  BlocklyApps.assetUrl("media/facebook_purple.png") )), '>\n  </a>\n');24; };; buf.push('\n');25; if (data.twitterUrl) {; buf.push('  <a href=', escape((25,  data.twitterUrl )), ' target="_blank">\n    <img src=', escape((26,  BlocklyApps.assetUrl("media/twitter_purple.png") )), ' >\n  </a>\n  <br>\n');29; };; buf.push('\n');30; if (data.sharingUrl) {; buf.push('  <input type="text" id="sharing-input" value=', escape((30,  data.sharingUrl )), ' readonly>\n');31; };; buf.push('\n');32; if (data.saveToGalleryUrl) {; buf.push('  <button id="save-to-gallery-button" class="launch">\n    ', escape((33,  msg.saveToGallery() )), '\n  </button>\n');35; };; buf.push(''); })();
+ buf.push('');1; var msg = require('../../locale/it_it/common'); ; buf.push('\n\n');3; if (data.ok) {; buf.push('  <div class="farSide" style="padding: 1ex 3ex 0">\n    <button id="ok-button" class="secondary">\n      ', escape((5,  msg.dialogOK() )), '\n    </button>\n  </div>\n');8; }; buf.push('\n');9; if (data.previousLevel) {; buf.push('  <button id="back-button" class="launch">\n    ', escape((10,  msg.backToPreviousLevel() )), '\n  </button>\n');12; }; buf.push('\n');13; if (data.tryAgain) {; buf.push('  <button id="again-button" class="launch">\n    ', escape((14,  msg.tryAgain() )), '\n  </button>\n');16; }; buf.push('\n');17; if (data.nextLevel) {; buf.push('  <button id="continue-button" class="launch">\n    ', escape((18,  msg.continue() )), '\n  </button>\n');20; }; buf.push(''); })();
 } 
 return buf.join('');
 };
@@ -6894,7 +6828,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/it_it/common":40,"ejs":42}],30:[function(require,module,exports){
+},{"../../locale/it_it/common":42,"ejs":44}],30:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6915,7 +6849,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":42}],31:[function(require,module,exports){
+},{"ejs":44}],31:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6936,7 +6870,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/it_it/common":40,"ejs":42}],32:[function(require,module,exports){
+},{"../../locale/it_it/common":42,"ejs":44}],32:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6959,7 +6893,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/it_it/common":40,"ejs":42}],33:[function(require,module,exports){
+},{"../../locale/it_it/common":42,"ejs":44}],33:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6980,7 +6914,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/it_it/common":40,"ejs":42}],34:[function(require,module,exports){
+},{"../../locale/it_it/common":42,"ejs":44}],34:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -6994,7 +6928,7 @@ escape = escape || function (html){
 var buf = [];
 with (locals || {}) { (function(){ 
  buf.push('');1; var msg = require('../../locale/it_it/common'); ; buf.push('\n\n<div id="rotateContainer" style="background-image: url(', escape((3,  assetUrl('media/mobile_tutorial_turnphone.png') )), ')">\n  <div id="rotateText">\n    <p>', escape((5,  msg.rotateText() )), '<br>', escape((5,  msg.orientationLock() )), '</p>\n  </div>\n</div>\n\n');9; var instructions = function() {; buf.push('  <div id="bubble">\n    <img id="prompt-icon">\n    <p id="prompt">\n    </p>\n  </div>\n');14; };; buf.push('\n');15; // A spot for the server to inject some HTML for help content.
-var helpArea = function(html) {; buf.push('  ');16; if (html) {; buf.push('    <div id="helpArea">\n      ', (17,  html ), '\n    </div>\n  ');19; }; buf.push('');19; };; buf.push('\n');20; var codeArea = function() {; buf.push('  <div id="codeTextbox" contenteditable spellcheck=false>\n    // ', escape((21,  msg.typeCode() )), '\n    <br>\n    // ', escape((23,  msg.typeHint() )), '\n    <br>\n  </div>\n');26; }; ; buf.push('\n\n<div id="visualization">\n  ', (29,  data.visualization ), '\n</div>\n\n<div id="belowVisualization">\n\n  <table id="gameButtons">\n    <tr>\n      <td style="width:100%;">\n        <button id="runButton" class="launch">\n          <img src="', escape((38,  assetUrl('media/1x1.gif') )), '" class="run icon21">\n          ', escape((39,  msg.runProgram() )), '\n        </button>\n        <button id="resetButton" class="launch" style="display: none">\n          <img src="', escape((42,  assetUrl('media/1x1.gif') )), '" class="stop icon21">\n            ', escape((43,  msg.resetProgram() )), '\n        </button>\n      </td>\n      ');46; if (data.controls) { ; buf.push('\n        ', (47,  data.controls ), '\n      ');48; } ; buf.push('\n    </tr>\n  </table>\n\n  ');52; instructions() ; buf.push('\n  ');53; helpArea(data.helpHtml) ; buf.push('\n\n</div>\n\n<div id="blockly">\n  <div id="headers" dir="', escape((58,  data.localeDirection )), '">\n    <div id="toolbox-header" class="blockly-header"><span>', escape((59,  msg.toolboxHeader() )), '</span></div>\n    <div id="workspace-header" class="blockly-header">\n      <span id="blockCounter">', escape((61,  msg.workspaceHeader() )), '</span>\n      <div id="blockUsed" class=', escape((62,  data.blockCounterClass )), '>\n        ', escape((63,  data.blockUsed )), '\n      </div>\n      <span>&nbsp;/</span>\n      <span id="idealBlockNumber">', escape((66,  data.idealBlockNumber )), '</span>\n    </div>\n    <div id="show-code-header" class="blockly-header"><span>', escape((68,  msg.showCodeHeader() )), '</span></div>\n  </div>\n</div>\n\n<div class="clear"></div>\n\n');74; codeArea() ; buf.push('\n'); })();
+var helpArea = function(html) {; buf.push('  ');16; if (html) {; buf.push('    <div id="helpArea">\n      ', (17,  html ), '\n    </div>\n  ');19; }; buf.push('');19; };; buf.push('\n');20; var codeArea = function() {; buf.push('  <div id="codeTextbox" contenteditable spellcheck=false>\n    // ', escape((21,  msg.typeCode() )), '\n    <br>\n    // ', escape((23,  msg.typeHint() )), '\n    <br>\n  </div>\n');26; }; ; buf.push('\n\n<div id="visualization">\n  ', (29,  data.visualization ), '\n</div>\n\n<div id="belowVisualization">\n\n  <table id="gameButtons">\n    <tr>\n      <td style="width:100%;">\n        <button id="runButton" class="launch">\n          <img src="', escape((38,  assetUrl('media/1x1.gif') )), '" class="run icon21">\n          ', escape((39,  msg.runProgram() )), '\n        </button>\n        <button id="resetButton" class="launch" style="display: none">\n          <img src="', escape((42,  assetUrl('media/1x1.gif') )), '" class="stop icon21">\n            ', escape((43,  msg.resetProgram() )), '\n        </button>\n      </td>\n      ');46; if (data.controls) { ; buf.push('\n        ', (47,  data.controls ), '\n      ');48; } ; buf.push('\n    </tr>\n    ');50; if (data.extraControlRows) { ; buf.push('\n      ', (51,  data.extraControlRows ), '\n    ');52; } ; buf.push('\n  </table>\n\n  ');55; instructions() ; buf.push('\n  ');56; helpArea(data.helpHtml) ; buf.push('\n\n</div>\n\n<div id="blockly">\n  <div id="headers" dir="', escape((61,  data.localeDirection )), '">\n    <div id="toolbox-header" class="blockly-header"><span>', escape((62,  msg.toolboxHeader() )), '</span></div>\n    <div id="workspace-header" class="blockly-header">\n      <span id="blockCounter">', escape((64,  msg.workspaceHeader() )), '</span>\n      <div id="blockUsed" class=', escape((65,  data.blockCounterClass )), '>\n        ', escape((66,  data.blockUsed )), '\n      </div>\n      <span>&nbsp;/</span>\n      <span id="idealBlockNumber">', escape((69,  data.idealBlockNumber )), '</span>\n    </div>\n    <div id="show-code-header" class="blockly-header"><span>', escape((71,  msg.showCodeHeader() )), '</span></div>\n  </div>\n</div>\n\n<div class="clear"></div>\n\n');77; codeArea() ; buf.push('\n'); })();
 } 
 return buf.join('');
 };
@@ -7002,7 +6936,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/it_it/common":40,"ejs":42}],35:[function(require,module,exports){
+},{"../../locale/it_it/common":42,"ejs":44}],35:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -7024,7 +6958,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":42}],36:[function(require,module,exports){
+},{"ejs":44}],36:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -7037,7 +6971,7 @@ escape = escape || function (html){
 };
 var buf = [];
 with (locals || {}) { (function(){ 
- buf.push('');1; var msg = require('../../locale/it_it/common'); ; buf.push('\n\n<a id="show-code-button" href="#">', escape((3,  msg.showGeneratedCode() )), '</a>\n'); })();
+ buf.push('');1; var msg = require('../../locale/it_it/common'); ; buf.push('\n');2; if (options.feedbackImage) { ; buf.push('\n  <div class="sharing-image">\n    <img class="feedback-image" src="', escape((4,  options.feedbackImage )), '">\n  </div>\n');6; } ; buf.push('\n\n<div class="sharing">\n');9; if (options.alreadySaved) { ; buf.push('\n  <div class="saved-to-gallery">\n    ', escape((11,  msg.savedToGallery() )), '\n  </div>\n');13; } else if (options.saveToGalleryUrl) { ; buf.push('\n  <div class="social-buttons">\n  <button id="save-to-gallery-button" class="launch">\n    ', escape((16,  msg.saveToGallery() )), '\n  </button>\n  </div>\n');19; } ; buf.push('\n\n');21; if (options.response && options.response.level_source) { ; buf.push('\n  ');22; if (options.appStrings && options.appStrings.sharingText) { ; buf.push('\n    <div>', escape((23,  options.appStrings.sharingText )), '</div>\n  ');24; } ; buf.push('\n\n  <div>\n    <input type="text" id="sharing-input" value=', escape((27,  options.response.level_source )), ' readonly>\n  </div>\n\n  <div class=\'social-buttons\'>\n    ');31; if (options.facebookUrl) {; buf.push('      <a href=', escape((31,  options.facebookUrl )), ' target="_blank">\n        <img src=', escape((32,  BlocklyApps.assetUrl("media/facebook_purple.png") )), '>\n      </a>\n    ');34; }; buf.push('  \n    ');35; if (options.twitterUrl) {; buf.push('      <a href=', escape((35,  options.twitterUrl )), ' target="_blank">\n        <img src=', escape((36,  BlocklyApps.assetUrl("media/twitter_purple.png") )), ' >\n      </a>\n    ');38; }; buf.push('  </div>\n');39; } ; buf.push('\n</div>\n\n'); })();
 } 
 return buf.join('');
 };
@@ -7045,7 +6979,28 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/it_it/common":40,"ejs":42}],37:[function(require,module,exports){
+},{"../../locale/it_it/common":42,"ejs":44}],37:[function(require,module,exports){
+module.exports= (function() {
+  var t = function anonymous(locals, filters, escape, rethrow) {
+escape = escape || function (html){
+  return String(html)
+    .replace(/&(?!#?[a-zA-Z0-9]+;)/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/'/g, '&#39;')
+    .replace(/"/g, '&quot;');
+};
+var buf = [];
+with (locals || {}) { (function(){ 
+ buf.push('');1; var msg = require('../../locale/it_it/common'); ; buf.push('\n\n<p id="num-lines-of-code" class="lines-of-code-message">\n  ', escape((4,  msg.numLinesOfCodeWritten({ numLines: numLinesWritten }) )), '\n  <button id="show-code-button" href="#">\n    ', escape((6,  msg.showGeneratedCode() )), '\n  </button>\n</p>\n\n');10; if (totalNumLinesWritten !== 0) { ; buf.push('\n  <p id="total-num-lines-of-code" class="lines-of-code-message">\n    ', escape((12,  msg.totalNumLinesOfCodeWritten({ numLines: totalNumLinesWritten }) )), '\n  </p>\n');14; } ; buf.push('\n'); })();
+} 
+return buf.join('');
+};
+  return function(locals) {
+    return t(locals, require("ejs").filters);
+  }
+}());
+},{"../../locale/it_it/common":42,"ejs":44}],38:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -7066,7 +7021,25 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":42}],38:[function(require,module,exports){
+},{"ejs":44}],39:[function(require,module,exports){
+var list = [];
+
+/**
+ * call setTimeout and track the returned id
+ */
+exports.setTimeout = function (fn, time) {
+  list.push(window.setTimeout(fn, time));
+};
+
+/**
+ * Clears all timeouts in our list and resets the list
+ */
+exports.clearTimeouts = function () {
+  list.forEach(window.clearTimeout);
+  list = [];
+};
+
+},{}],40:[function(require,module,exports){
 exports.shallowCopy = function(source) {
   var result = {};
   for (var prop in source) {
@@ -7108,7 +7081,18 @@ exports.mod = function(number, mod) {
   return ((number % mod) + mod) % mod;
 };
 
-},{}],39:[function(require,module,exports){
+/**
+ * Generates an array of integers from start to end inclusive
+ */
+exports.range = function(start, end) {
+  var ints = [];
+  for (var i = start; i <= end; i++) {
+    ints.push(i);
+  }
+  return ints;
+};
+
+},{}],41:[function(require,module,exports){
 // Serializes an XML DOM node to a string.
 exports.serialize = function(node) {
   var serializer = new XMLSerializer();
@@ -7136,7 +7120,7 @@ exports.parseElement = function(text) {
   return element;
 };
 
-},{}],40:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.it=function(n){return n===1?"one":"other"}
 exports.blocklyMessage = function(d){return "Blockly"};
 
@@ -7238,6 +7222,8 @@ exports.backToPreviousLevel = function(d){return "Torna al livello precedente"};
 
 exports.saveToGallery = function(d){return "Save to your gallery"};
 
+exports.savedToGallery = function(d){return "Saved to your gallery!"};
+
 exports.typeCode = function(d){return "Digita il tuo codice JavaScript sotto queste istruzioni."};
 
 exports.typeFuncs = function(d){return "Funzioni disponibili: %1"};
@@ -7263,7 +7249,7 @@ exports.signup = function(d){return "Iscriviti al corso introduttivo"};
 exports.hintHeader = function(d){return "Here's a tip:"};
 
 
-},{"messageformat":53}],41:[function(require,module,exports){
+},{"messageformat":55}],43:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.it=function(n){return n===1?"one":"other"}
 exports.avoidCowAndRemove = function(d){return "evita la mucca e rimuovi 1"};
 
@@ -7366,7 +7352,7 @@ exports.whileTooltip = function(d){return "Ripeti le azioni incluse per tutto il
 exports.yes = function(d){return "Sì"};
 
 
-},{"messageformat":53}],42:[function(require,module,exports){
+},{"messageformat":55}],44:[function(require,module,exports){
 
 /*!
  * EJS
@@ -7725,7 +7711,7 @@ if (require.extensions) {
   });
 }
 
-},{"./filters":43,"./utils":44,"fs":45,"path":47}],43:[function(require,module,exports){
+},{"./filters":45,"./utils":46,"fs":47,"path":49}],45:[function(require,module,exports){
 /*!
  * EJS - Filters
  * Copyright(c) 2010 TJ Holowaychuk <tj@vision-media.ca>
@@ -7928,7 +7914,7 @@ exports.json = function(obj){
   return JSON.stringify(obj);
 };
 
-},{}],44:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 
 /*!
  * EJS
@@ -7954,9 +7940,9 @@ exports.escape = function(html){
 };
  
 
-},{}],45:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 
-},{}],46:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -8011,7 +7997,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],47:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -8239,7 +8225,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require("/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":46}],48:[function(require,module,exports){
+},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":48}],50:[function(require,module,exports){
 (function (global){
 /*! http://mths.be/punycode v1.2.4 by @mathias */
 ;(function(root) {
@@ -8750,7 +8736,7 @@ var substr = 'ab'.substr(-1) === 'b'
 }(this));
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],49:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -8836,7 +8822,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],50:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -8923,13 +8909,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],51:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":49,"./encode":50}],52:[function(require,module,exports){
+},{"./decode":51,"./encode":52}],54:[function(require,module,exports){
 /*jshint strict:true node:true es5:true onevar:true laxcomma:true laxbreak:true eqeqeq:true immed:true latedef:true*/
 (function () {
   "use strict";
@@ -9562,7 +9548,7 @@ function parseHost(host) {
 
 }());
 
-},{"punycode":48,"querystring":51}],53:[function(require,module,exports){
+},{"punycode":50,"querystring":53}],55:[function(require,module,exports){
 /**
  * messageformat.js
  *

@@ -196,7 +196,7 @@ BlocklyApps.init = function(config) {
       openWorkspace.setAttribute('id', 'open-workspace');
       openWorkspace.appendChild(document.createTextNode(msg.openWorkspace()));
 
-      belowViz.appendChild(feedback.createSharingButtons({
+      belowViz.appendChild(feedback.createSharingDiv({
         response: {
           level_source: window.location
         },
@@ -874,7 +874,7 @@ var getIdealBlockNumberMsg = function() {
       msg.infinity() : BlocklyApps.IDEAL_BLOCK_NUM;
 };
 
-},{"../locale/hu_hu/common":29,"./builder":5,"./dom":7,"./feedback.js":8,"./slider":16,"./templates/buttons.html":18,"./templates/instructions.html":20,"./templates/learn.html":21,"./templates/makeYourOwn.html":22,"./utils":27,"./xml":28}],3:[function(require,module,exports){
+},{"../locale/hu_hu/common":30,"./builder":5,"./dom":7,"./feedback.js":8,"./slider":16,"./templates/buttons.html":18,"./templates/instructions.html":20,"./templates/learn.html":21,"./templates/makeYourOwn.html":22,"./utils":28,"./xml":29}],3:[function(require,module,exports){
 exports.createToolbox = function(blocks) {
   return '<xml id="toolbox" style="display: none;">' + blocks + '</xml>';
 };
@@ -950,7 +950,7 @@ exports.builderForm = function(onAttemptCallback) {
   dialog.show({ backdrop: 'static' });
 };
 
-},{"./dom.js":7,"./feedback.js":8,"./templates/builder.html":17,"./utils.js":27,"url":41}],6:[function(require,module,exports){
+},{"./dom.js":7,"./feedback.js":8,"./templates/builder.html":17,"./utils.js":28,"url":42}],6:[function(require,module,exports){
 var INFINITE_LOOP_TRAP = '  BlocklyApps.checkTimeout();\n';
 var INFINITE_LOOP_TRAP_RE =
     new RegExp(INFINITE_LOOP_TRAP.replace(/\(.*\)/, '\\(.*\\)'), 'g');
@@ -1116,10 +1116,12 @@ exports.displayFeedback = function(options) {
   options.level = options.level || {};
   options.numTrophies = numTrophiesEarned(options);
 
+  var canContinue = exports.canContinueToNextLevel(options.feedbackType);
+  var displayShowCode = BlocklyApps.enableShowCode && canContinue;
   var feedback = document.createElement('div');
   var feedbackMessage = getFeedbackMessage(options);
-  var sharingDiv = createSharingDiv(options);
-  var showCode = getShowCodeElement(options);
+  var sharingDiv = (canContinue && options.showingSharing) ? exports.createSharingDiv(options) : null;
+  var showCode = displayShowCode ? getShowCodeElement(options) : null;
   var feedbackBlocks = new FeedbackBlocks(options);
 
   if (feedbackMessage) {
@@ -1135,10 +1137,15 @@ exports.displayFeedback = function(options) {
   if (sharingDiv) {
     feedback.appendChild(sharingDiv);
   }
+  if (options.showingSharing) {
+    var shareCodeSpacer = document.createElement('div');
+    shareCodeSpacer.className = "share-code-spacer";
+    feedback.appendChild(shareCodeSpacer);
+  }
   if (showCode) {
     feedback.appendChild(showCode);
   }
-  var canContinue = exports.canContinueToNextLevel(options.feedbackType);
+
   feedback.appendChild(getFeedbackButtons(
     options.feedbackType, options.level.showPreviousLevelButton));
 
@@ -1398,18 +1405,14 @@ var isFeedbackMessageCustomized = function(options) {
        options.level.other1StarError);
 };
 
-exports.createSharingButtons = function(options) {
-  var sharingWrapper = document.createElement('div');
-  var sharingButtons = document.createElement('div');
-  var sharingUrl = document.createElement('div');
-  sharingButtons.className = 'social-buttons';
-  sharingUrl.className = 'feedback-links';
-  sharingUrl.innerHTML = require('./templates/buttons.html')({
-    data: {
-      sharingUrl: options.response.level_source
-    }
-  });
+exports.createSharingDiv = function(options) {
+  if (!options.response || !options.response.level_source) {
+    // don't even try if our caller didn't give us something that can be shared
+    // options.response.level_source is the url that we are sharing
+    return null;
+  } 
 
+  // set up the twitter share url
   var twitterUrl = "https://twitter.com/intent/tweet?url=" +
                    options.response.level_source;
 
@@ -1419,71 +1422,35 @@ exports.createSharingButtons = function(options) {
   if (options.twitter  && options.twitter.hashtag !== undefined) {
     twitterUrl += "&button_hashtag=" + options.twitter.hashtag;
   }
+  options.twitterUrl = twitterUrl;
 
-  sharingButtons.innerHTML = require('./templates/buttons.html')({
-    data: {
-      facebookUrl: "https://www.facebook.com/sharer/sharer.php?u=" +
-                    options.response.level_source,
-      twitterUrl: twitterUrl,
-      makeYourOwn: options.makeYourOwn,
-      saveToGalleryUrl: options.saveToGalleryUrl
-    }
+  // set up the facebook share url
+  var facebookUrl = "https://www.facebook.com/sharer/sharer.php?u=" +
+                    options.response.level_source;
+  options.facebookUrl = facebookUrl;
+
+  // use a generic image for the level if a feedback image has not been supplied.
+  if (options.level && options.level.instructionImageUrl && !options.feedbackImage) {
+    options.feedbackImage = options.level.instructionImageUrl;
+  }
+
+  var sharingDiv = document.createElement('div');
+  sharingDiv.setAttribute('style', 'display:inline-block');
+  sharingDiv.innerHTML = require('./templates/sharing.html')({
+    options: options
   });
-  var sharingInput = sharingUrl.querySelector('#sharing-input');
+
+  var sharingInput = sharingDiv.querySelector('#sharing-input');
   if (sharingInput) {
     dom.addClickTouchEvent(sharingInput, function() {
       sharingInput.focus();
       sharingInput.select();
     });
   }
-  sharingWrapper.appendChild(sharingUrl);
-  sharingWrapper.appendChild(sharingButtons);
-  return sharingWrapper;
+
+  return sharingDiv;
 };
 
-
-var createSharingDiv = function(options) {
-  // Creates the sharing div only when showingSharing is set and the solution is
-  // a passing solution.
-  if (options.showingSharing &&
-      exports.canContinueToNextLevel(options.feedbackType)) {
-    var sharingDiv = document.createElement('div');
-    sharingDiv.setAttribute('style', 'display:inline-block');
-    var sharingImage = document.createElement('div');
-
-    var feedbackImage = createFeedbackImage(options);
-    if (feedbackImage) {
-        sharingImage.appendChild(feedbackImage);
-        sharingDiv.appendChild(sharingImage);
-    }
-
-    if (options.response && options.response.level_source) {
-      var sharingText = document.createElement('div');
-      if (options.appStrings) {
-        dom.setText(sharingText, options.appStrings.sharingText);
-      }
-      sharingText.className = 'shareDrawingMsg';
-      sharingDiv.appendChild(sharingText);
-
-      sharingDiv.appendChild(exports.createSharingButtons(options));
-    }
-    return sharingDiv;
-  } else {
-    return null;
-  }
-};
-
-var createFeedbackImage = function(options) {
-  var feedbackImage;
-  var feedbackImageSrc =
-      options.level.instructionImageUrl || options.feedbackImage;
-  if (feedbackImageSrc) {
-    feedbackImage = document.createElement('img');
-    feedbackImage.className = 'feedback-image';
-    feedbackImage.src = feedbackImageSrc;
-  }
-  return feedbackImage;
-};
 
 var numTrophiesEarned = function(options) {
   if (options.response && options.response.trophy_updates) {
@@ -1507,43 +1474,28 @@ var getTrophiesElement = function(options) {
 };
 
 var getShowCodeElement = function(options) {
-  if (exports.canContinueToNextLevel(options.feedbackType)) {
-    var linesWritten = exports.getNumBlocksUsed();
-    var showCodeDiv = document.createElement('div');
-    showCodeDiv.setAttribute('id', 'show-code');
-    var lines = document.createElement('span');
-    lines.className = 'linesOfCodeMsg';
-    lines.innerHTML = msg.numLinesOfCodeWritten({
-      numLines: linesWritten
-    });
-    if (options.response && options.response.total_lines &&
-        (options.response.total_lines !== linesWritten)) {
-      lines.innerHTML += '<br>' + msg.totalNumLinesOfCodeWritten({
-        numLines: options.response.total_lines
-      });
-    }
+  var showCodeDiv = document.createElement('div');
+  showCodeDiv.setAttribute('id', 'show-code');
 
-    var showCodeLink = document.createElement('div');
-    showCodeLink.className = 'show-code-div';
-    showCodeLink.innerHTML = require('./templates/showCode.html')();
-    var button = showCodeLink.querySelector('#show-code-button');
+  var numLinesWritten = exports.getNumBlocksUsed();
+  var shouldShowTotalLines =
+    (options.response &&
+      options.response.total_lines &&
+      (options.response.total_lines !== numLinesWritten));
+  var totalNumLinesWritten = shouldShowTotalLines ? options.response.total_lines : 0;
 
-    button.addEventListener('click', function() {
-      var codeDiv = getGeneratedCodeElement();
-      showCodeDiv.appendChild(codeDiv);
-      button.style.display = 'none';
-    });
+  showCodeDiv.innerHTML = require('./templates/showCode.html')({
+    numLinesWritten: numLinesWritten,
+    totalNumLinesWritten: totalNumLinesWritten
+  });
 
-    if (BlocklyApps.enableShowCode) {
-      showCodeDiv.appendChild(lines);
-      showCodeDiv.appendChild(showCodeLink);
-    } else if (options.showingSharing) {
-      // want a breaking line if this is a sharing dialog
-      lines.innerHTML = '<br>';
-      showCodeDiv.appendChild(lines);
-    }
-    return showCodeDiv;
-  }
+  var showCodeButton = showCodeDiv.querySelector('#show-code-button');
+  showCodeButton.addEventListener('click', function () {
+    showCodeDiv.appendChild(getGeneratedCodeElement());
+    showCodeButton.style.display = 'none';
+  });
+
+  return showCodeDiv;
 };
 
 /**
@@ -1884,7 +1836,7 @@ var generateXMLForBlocks = function(blocks) {
 };
 
 
-},{"../locale/hu_hu/common":29,"./codegen":6,"./dom":7,"./templates/buttons.html":18,"./templates/code.html":19,"./templates/readonly.html":24,"./templates/showCode.html":25,"./templates/trophy.html":26,"./utils":27}],9:[function(require,module,exports){
+},{"../locale/hu_hu/common":30,"./codegen":6,"./dom":7,"./templates/buttons.html":18,"./templates/code.html":19,"./templates/readonly.html":24,"./templates/sharing.html":25,"./templates/showCode.html":26,"./templates/trophy.html":27,"./utils":28}],9:[function(require,module,exports){
 /**
  * Blockly App: Jigsaw
  *
@@ -2142,7 +2094,7 @@ function generateJigsawBlocksForLevel(blockly, skin, options) {
   }
 }
 
-},{"../../locale/hu_hu/jigsaw":30,"../dom":7,"./levels":12}],10:[function(require,module,exports){
+},{"../../locale/hu_hu/jigsaw":31,"../dom":7,"./levels":12}],10:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2163,7 +2115,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/hu_hu/jigsaw":30,"ejs":31}],11:[function(require,module,exports){
+},{"../../locale/hu_hu/jigsaw":31,"ejs":32}],11:[function(require,module,exports){
 /**
  * Blockly App: Jigsaw
  *
@@ -3219,7 +3171,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":31}],18:[function(require,module,exports){
+},{"ejs":32}],18:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -3232,7 +3184,7 @@ escape = escape || function (html){
 };
 var buf = [];
 with (locals || {}) { (function(){ 
- buf.push('');1; var msg = require('../../locale/hu_hu/common'); ; buf.push('\n\n');3; if (data.ok) {; buf.push('  <div class="farSide" style="padding: 1ex 3ex 0">\n    <button id="ok-button" class="secondary">\n      ', escape((5,  msg.dialogOK() )), '\n    </button>\n  </div>\n');8; };; buf.push('\n');9; if (data.previousLevel) {; buf.push('  <button id="back-button" class="launch">\n    ', escape((10,  msg.backToPreviousLevel() )), '\n  </button>\n');12; };; buf.push('\n');13; if (data.tryAgain) {; buf.push('  <button id="again-button" class="launch">\n    ', escape((14,  msg.tryAgain() )), '\n  </button>\n');16; };; buf.push('\n');17; if (data.nextLevel) {; buf.push('  <button id="continue-button" class="launch">\n    ', escape((18,  msg.continue() )), '\n  </button>\n');20; };; buf.push('\n');21; if (data.facebookUrl) {; buf.push('  <a href=', escape((21,  data.facebookUrl )), ' target="_blank">\n    <img src=', escape((22,  BlocklyApps.assetUrl("media/facebook_purple.png") )), '>\n  </a>\n');24; };; buf.push('\n');25; if (data.twitterUrl) {; buf.push('  <a href=', escape((25,  data.twitterUrl )), ' target="_blank">\n    <img src=', escape((26,  BlocklyApps.assetUrl("media/twitter_purple.png") )), ' >\n  </a>\n  <br>\n');29; };; buf.push('\n');30; if (data.sharingUrl) {; buf.push('  <input type="text" id="sharing-input" value=', escape((30,  data.sharingUrl )), ' readonly>\n');31; };; buf.push('\n');32; if (data.saveToGalleryUrl) {; buf.push('  <button id="save-to-gallery-button" class="launch">\n    ', escape((33,  msg.saveToGallery() )), '\n  </button>\n');35; };; buf.push(''); })();
+ buf.push('');1; var msg = require('../../locale/hu_hu/common'); ; buf.push('\n\n');3; if (data.ok) {; buf.push('  <div class="farSide" style="padding: 1ex 3ex 0">\n    <button id="ok-button" class="secondary">\n      ', escape((5,  msg.dialogOK() )), '\n    </button>\n  </div>\n');8; }; buf.push('\n');9; if (data.previousLevel) {; buf.push('  <button id="back-button" class="launch">\n    ', escape((10,  msg.backToPreviousLevel() )), '\n  </button>\n');12; }; buf.push('\n');13; if (data.tryAgain) {; buf.push('  <button id="again-button" class="launch">\n    ', escape((14,  msg.tryAgain() )), '\n  </button>\n');16; }; buf.push('\n');17; if (data.nextLevel) {; buf.push('  <button id="continue-button" class="launch">\n    ', escape((18,  msg.continue() )), '\n  </button>\n');20; }; buf.push(''); })();
 } 
 return buf.join('');
 };
@@ -3240,7 +3192,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/hu_hu/common":29,"ejs":31}],19:[function(require,module,exports){
+},{"../../locale/hu_hu/common":30,"ejs":32}],19:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -3261,7 +3213,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":31}],20:[function(require,module,exports){
+},{"ejs":32}],20:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -3282,7 +3234,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/hu_hu/common":29,"ejs":31}],21:[function(require,module,exports){
+},{"../../locale/hu_hu/common":30,"ejs":32}],21:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -3305,7 +3257,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/hu_hu/common":29,"ejs":31}],22:[function(require,module,exports){
+},{"../../locale/hu_hu/common":30,"ejs":32}],22:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -3326,7 +3278,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/hu_hu/common":29,"ejs":31}],23:[function(require,module,exports){
+},{"../../locale/hu_hu/common":30,"ejs":32}],23:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -3340,7 +3292,7 @@ escape = escape || function (html){
 var buf = [];
 with (locals || {}) { (function(){ 
  buf.push('');1; var msg = require('../../locale/hu_hu/common'); ; buf.push('\n\n<div id="rotateContainer" style="background-image: url(', escape((3,  assetUrl('media/mobile_tutorial_turnphone.png') )), ')">\n  <div id="rotateText">\n    <p>', escape((5,  msg.rotateText() )), '<br>', escape((5,  msg.orientationLock() )), '</p>\n  </div>\n</div>\n\n');9; var instructions = function() {; buf.push('  <div id="bubble">\n    <img id="prompt-icon">\n    <p id="prompt">\n    </p>\n  </div>\n');14; };; buf.push('\n');15; // A spot for the server to inject some HTML for help content.
-var helpArea = function(html) {; buf.push('  ');16; if (html) {; buf.push('    <div id="helpArea">\n      ', (17,  html ), '\n    </div>\n  ');19; }; buf.push('');19; };; buf.push('\n');20; var codeArea = function() {; buf.push('  <div id="codeTextbox" contenteditable spellcheck=false>\n    // ', escape((21,  msg.typeCode() )), '\n    <br>\n    // ', escape((23,  msg.typeHint() )), '\n    <br>\n  </div>\n');26; }; ; buf.push('\n\n<div id="visualization">\n  ', (29,  data.visualization ), '\n</div>\n\n<div id="belowVisualization">\n\n  <table id="gameButtons">\n    <tr>\n      <td style="width:100%;">\n        <button id="runButton" class="launch">\n          <img src="', escape((38,  assetUrl('media/1x1.gif') )), '" class="run icon21">\n          ', escape((39,  msg.runProgram() )), '\n        </button>\n        <button id="resetButton" class="launch" style="display: none">\n          <img src="', escape((42,  assetUrl('media/1x1.gif') )), '" class="stop icon21">\n            ', escape((43,  msg.resetProgram() )), '\n        </button>\n      </td>\n      ');46; if (data.controls) { ; buf.push('\n        ', (47,  data.controls ), '\n      ');48; } ; buf.push('\n    </tr>\n  </table>\n\n  ');52; instructions() ; buf.push('\n  ');53; helpArea(data.helpHtml) ; buf.push('\n\n</div>\n\n<div id="blockly">\n  <div id="headers" dir="', escape((58,  data.localeDirection )), '">\n    <div id="toolbox-header" class="blockly-header"><span>', escape((59,  msg.toolboxHeader() )), '</span></div>\n    <div id="workspace-header" class="blockly-header">\n      <span id="blockCounter">', escape((61,  msg.workspaceHeader() )), '</span>\n      <div id="blockUsed" class=', escape((62,  data.blockCounterClass )), '>\n        ', escape((63,  data.blockUsed )), '\n      </div>\n      <span>&nbsp;/</span>\n      <span id="idealBlockNumber">', escape((66,  data.idealBlockNumber )), '</span>\n    </div>\n    <div id="show-code-header" class="blockly-header"><span>', escape((68,  msg.showCodeHeader() )), '</span></div>\n  </div>\n</div>\n\n<div class="clear"></div>\n\n');74; codeArea() ; buf.push('\n'); })();
+var helpArea = function(html) {; buf.push('  ');16; if (html) {; buf.push('    <div id="helpArea">\n      ', (17,  html ), '\n    </div>\n  ');19; }; buf.push('');19; };; buf.push('\n');20; var codeArea = function() {; buf.push('  <div id="codeTextbox" contenteditable spellcheck=false>\n    // ', escape((21,  msg.typeCode() )), '\n    <br>\n    // ', escape((23,  msg.typeHint() )), '\n    <br>\n  </div>\n');26; }; ; buf.push('\n\n<div id="visualization">\n  ', (29,  data.visualization ), '\n</div>\n\n<div id="belowVisualization">\n\n  <table id="gameButtons">\n    <tr>\n      <td style="width:100%;">\n        <button id="runButton" class="launch">\n          <img src="', escape((38,  assetUrl('media/1x1.gif') )), '" class="run icon21">\n          ', escape((39,  msg.runProgram() )), '\n        </button>\n        <button id="resetButton" class="launch" style="display: none">\n          <img src="', escape((42,  assetUrl('media/1x1.gif') )), '" class="stop icon21">\n            ', escape((43,  msg.resetProgram() )), '\n        </button>\n      </td>\n      ');46; if (data.controls) { ; buf.push('\n        ', (47,  data.controls ), '\n      ');48; } ; buf.push('\n    </tr>\n    ');50; if (data.extraControlRows) { ; buf.push('\n      ', (51,  data.extraControlRows ), '\n    ');52; } ; buf.push('\n  </table>\n\n  ');55; instructions() ; buf.push('\n  ');56; helpArea(data.helpHtml) ; buf.push('\n\n</div>\n\n<div id="blockly">\n  <div id="headers" dir="', escape((61,  data.localeDirection )), '">\n    <div id="toolbox-header" class="blockly-header"><span>', escape((62,  msg.toolboxHeader() )), '</span></div>\n    <div id="workspace-header" class="blockly-header">\n      <span id="blockCounter">', escape((64,  msg.workspaceHeader() )), '</span>\n      <div id="blockUsed" class=', escape((65,  data.blockCounterClass )), '>\n        ', escape((66,  data.blockUsed )), '\n      </div>\n      <span>&nbsp;/</span>\n      <span id="idealBlockNumber">', escape((69,  data.idealBlockNumber )), '</span>\n    </div>\n    <div id="show-code-header" class="blockly-header"><span>', escape((71,  msg.showCodeHeader() )), '</span></div>\n  </div>\n</div>\n\n<div class="clear"></div>\n\n');77; codeArea() ; buf.push('\n'); })();
 } 
 return buf.join('');
 };
@@ -3348,7 +3300,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/hu_hu/common":29,"ejs":31}],24:[function(require,module,exports){
+},{"../../locale/hu_hu/common":30,"ejs":32}],24:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -3370,7 +3322,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":31}],25:[function(require,module,exports){
+},{"ejs":32}],25:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -3383,7 +3335,7 @@ escape = escape || function (html){
 };
 var buf = [];
 with (locals || {}) { (function(){ 
- buf.push('');1; var msg = require('../../locale/hu_hu/common'); ; buf.push('\n\n<a id="show-code-button" href="#">', escape((3,  msg.showGeneratedCode() )), '</a>\n'); })();
+ buf.push('');1; var msg = require('../../locale/hu_hu/common'); ; buf.push('\n');2; if (options.feedbackImage) { ; buf.push('\n  <div class="sharing-image">\n    <img class="feedback-image" src="', escape((4,  options.feedbackImage )), '">\n  </div>\n');6; } ; buf.push('\n\n<div class="sharing">\n');9; if (options.alreadySaved) { ; buf.push('\n  <div class="saved-to-gallery">\n    ', escape((11,  msg.savedToGallery() )), '\n  </div>\n');13; } else if (options.saveToGalleryUrl) { ; buf.push('\n  <div class="social-buttons">\n  <button id="save-to-gallery-button" class="launch">\n    ', escape((16,  msg.saveToGallery() )), '\n  </button>\n  </div>\n');19; } ; buf.push('\n\n');21; if (options.response && options.response.level_source) { ; buf.push('\n  ');22; if (options.appStrings && options.appStrings.sharingText) { ; buf.push('\n    <div>', escape((23,  options.appStrings.sharingText )), '</div>\n  ');24; } ; buf.push('\n\n  <div>\n    <input type="text" id="sharing-input" value=', escape((27,  options.response.level_source )), ' readonly>\n  </div>\n\n  <div class=\'social-buttons\'>\n    ');31; if (options.facebookUrl) {; buf.push('      <a href=', escape((31,  options.facebookUrl )), ' target="_blank">\n        <img src=', escape((32,  BlocklyApps.assetUrl("media/facebook_purple.png") )), '>\n      </a>\n    ');34; }; buf.push('  \n    ');35; if (options.twitterUrl) {; buf.push('      <a href=', escape((35,  options.twitterUrl )), ' target="_blank">\n        <img src=', escape((36,  BlocklyApps.assetUrl("media/twitter_purple.png") )), ' >\n      </a>\n    ');38; }; buf.push('  </div>\n');39; } ; buf.push('\n</div>\n\n'); })();
 } 
 return buf.join('');
 };
@@ -3391,7 +3343,28 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/hu_hu/common":29,"ejs":31}],26:[function(require,module,exports){
+},{"../../locale/hu_hu/common":30,"ejs":32}],26:[function(require,module,exports){
+module.exports= (function() {
+  var t = function anonymous(locals, filters, escape, rethrow) {
+escape = escape || function (html){
+  return String(html)
+    .replace(/&(?!#?[a-zA-Z0-9]+;)/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/'/g, '&#39;')
+    .replace(/"/g, '&quot;');
+};
+var buf = [];
+with (locals || {}) { (function(){ 
+ buf.push('');1; var msg = require('../../locale/hu_hu/common'); ; buf.push('\n\n<p id="num-lines-of-code" class="lines-of-code-message">\n  ', escape((4,  msg.numLinesOfCodeWritten({ numLines: numLinesWritten }) )), '\n  <button id="show-code-button" href="#">\n    ', escape((6,  msg.showGeneratedCode() )), '\n  </button>\n</p>\n\n');10; if (totalNumLinesWritten !== 0) { ; buf.push('\n  <p id="total-num-lines-of-code" class="lines-of-code-message">\n    ', escape((12,  msg.totalNumLinesOfCodeWritten({ numLines: totalNumLinesWritten }) )), '\n  </p>\n');14; } ; buf.push('\n'); })();
+} 
+return buf.join('');
+};
+  return function(locals) {
+    return t(locals, require("ejs").filters);
+  }
+}());
+},{"../../locale/hu_hu/common":30,"ejs":32}],27:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -3412,7 +3385,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":31}],27:[function(require,module,exports){
+},{"ejs":32}],28:[function(require,module,exports){
 exports.shallowCopy = function(source) {
   var result = {};
   for (var prop in source) {
@@ -3454,7 +3427,18 @@ exports.mod = function(number, mod) {
   return ((number % mod) + mod) % mod;
 };
 
-},{}],28:[function(require,module,exports){
+/**
+ * Generates an array of integers from start to end inclusive
+ */
+exports.range = function(start, end) {
+  var ints = [];
+  for (var i = start; i <= end; i++) {
+    ints.push(i);
+  }
+  return ints;
+};
+
+},{}],29:[function(require,module,exports){
 // Serializes an XML DOM node to a string.
 exports.serialize = function(node) {
   var serializer = new XMLSerializer();
@@ -3482,7 +3466,7 @@ exports.parseElement = function(text) {
   return element;
 };
 
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.hu=function(n){return "other"}
 exports.blocklyMessage = function(d){return "Blockly"};
 
@@ -3584,6 +3568,8 @@ exports.backToPreviousLevel = function(d){return "Vissza az előző szintre"};
 
 exports.saveToGallery = function(d){return "Save to your gallery"};
 
+exports.savedToGallery = function(d){return "Saved to your gallery!"};
+
 exports.typeCode = function(d){return "Írd be a JavaScript kódod az instrukciók alá."};
 
 exports.typeFuncs = function(d){return "Elérhető funkciók:%1"};
@@ -3609,7 +3595,7 @@ exports.signup = function(d){return "Regisztrálj a bevezető képzésre"};
 exports.hintHeader = function(d){return "Here's a tip:"};
 
 
-},{"messageformat":42}],30:[function(require,module,exports){
+},{"messageformat":43}],31:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.hu=function(n){return "other"}
 exports.continue = function(d){return "Tovább"};
 
@@ -3630,7 +3616,7 @@ exports.shareGame = function(d){return "Share your game:"};
 exports.yes = function(d){return "igen"};
 
 
-},{"messageformat":42}],31:[function(require,module,exports){
+},{"messageformat":43}],32:[function(require,module,exports){
 
 /*!
  * EJS
@@ -3989,7 +3975,7 @@ if (require.extensions) {
   });
 }
 
-},{"./filters":32,"./utils":33,"fs":34,"path":36}],32:[function(require,module,exports){
+},{"./filters":33,"./utils":34,"fs":35,"path":37}],33:[function(require,module,exports){
 /*!
  * EJS - Filters
  * Copyright(c) 2010 TJ Holowaychuk <tj@vision-media.ca>
@@ -4192,7 +4178,7 @@ exports.json = function(obj){
   return JSON.stringify(obj);
 };
 
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 
 /*!
  * EJS
@@ -4218,9 +4204,9 @@ exports.escape = function(html){
 };
  
 
-},{}],34:[function(require,module,exports){
-
 },{}],35:[function(require,module,exports){
+
+},{}],36:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -4275,7 +4261,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -4503,7 +4489,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require("/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":35}],37:[function(require,module,exports){
+},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":36}],38:[function(require,module,exports){
 (function (global){
 /*! http://mths.be/punycode v1.2.4 by @mathias */
 ;(function(root) {
@@ -5014,7 +5000,7 @@ var substr = 'ab'.substr(-1) === 'b'
 }(this));
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -5100,7 +5086,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -5187,13 +5173,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":38,"./encode":39}],41:[function(require,module,exports){
+},{"./decode":39,"./encode":40}],42:[function(require,module,exports){
 /*jshint strict:true node:true es5:true onevar:true laxcomma:true laxbreak:true eqeqeq:true immed:true latedef:true*/
 (function () {
   "use strict";
@@ -5826,7 +5812,7 @@ function parseHost(host) {
 
 }());
 
-},{"punycode":37,"querystring":40}],42:[function(require,module,exports){
+},{"punycode":38,"querystring":41}],43:[function(require,module,exports){
 /**
  * messageformat.js
  *

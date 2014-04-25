@@ -196,7 +196,7 @@ BlocklyApps.init = function(config) {
       openWorkspace.setAttribute('id', 'open-workspace');
       openWorkspace.appendChild(document.createTextNode(msg.openWorkspace()));
 
-      belowViz.appendChild(feedback.createSharingButtons({
+      belowViz.appendChild(feedback.createSharingDiv({
         response: {
           level_source: window.location
         },
@@ -874,7 +874,7 @@ var getIdealBlockNumberMsg = function() {
       msg.infinity() : BlocklyApps.IDEAL_BLOCK_NUM;
 };
 
-},{"../locale/eu_es/common":32,"./builder":5,"./dom":7,"./feedback.js":8,"./slider":10,"./templates/buttons.html":21,"./templates/instructions.html":23,"./templates/learn.html":24,"./templates/makeYourOwn.html":25,"./utils":30,"./xml":31}],3:[function(require,module,exports){
+},{"../locale/eu_es/common":34,"./builder":5,"./dom":7,"./feedback.js":8,"./slider":10,"./templates/buttons.html":22,"./templates/instructions.html":24,"./templates/learn.html":25,"./templates/makeYourOwn.html":26,"./utils":32,"./xml":33}],3:[function(require,module,exports){
 exports.createToolbox = function(blocks) {
   return '<xml id="toolbox" style="display: none;">' + blocks + '</xml>';
 };
@@ -950,7 +950,7 @@ exports.builderForm = function(onAttemptCallback) {
   dialog.show({ backdrop: 'static' });
 };
 
-},{"./dom.js":7,"./feedback.js":8,"./templates/builder.html":20,"./utils.js":30,"url":44}],6:[function(require,module,exports){
+},{"./dom.js":7,"./feedback.js":8,"./templates/builder.html":21,"./utils.js":32,"url":46}],6:[function(require,module,exports){
 var INFINITE_LOOP_TRAP = '  BlocklyApps.checkTimeout();\n';
 var INFINITE_LOOP_TRAP_RE =
     new RegExp(INFINITE_LOOP_TRAP.replace(/\(.*\)/, '\\(.*\\)'), 'g');
@@ -1116,10 +1116,12 @@ exports.displayFeedback = function(options) {
   options.level = options.level || {};
   options.numTrophies = numTrophiesEarned(options);
 
+  var canContinue = exports.canContinueToNextLevel(options.feedbackType);
+  var displayShowCode = BlocklyApps.enableShowCode && canContinue;
   var feedback = document.createElement('div');
   var feedbackMessage = getFeedbackMessage(options);
-  var sharingDiv = createSharingDiv(options);
-  var showCode = getShowCodeElement(options);
+  var sharingDiv = (canContinue && options.showingSharing) ? exports.createSharingDiv(options) : null;
+  var showCode = displayShowCode ? getShowCodeElement(options) : null;
   var feedbackBlocks = new FeedbackBlocks(options);
 
   if (feedbackMessage) {
@@ -1135,10 +1137,15 @@ exports.displayFeedback = function(options) {
   if (sharingDiv) {
     feedback.appendChild(sharingDiv);
   }
+  if (options.showingSharing) {
+    var shareCodeSpacer = document.createElement('div');
+    shareCodeSpacer.className = "share-code-spacer";
+    feedback.appendChild(shareCodeSpacer);
+  }
   if (showCode) {
     feedback.appendChild(showCode);
   }
-  var canContinue = exports.canContinueToNextLevel(options.feedbackType);
+
   feedback.appendChild(getFeedbackButtons(
     options.feedbackType, options.level.showPreviousLevelButton));
 
@@ -1398,18 +1405,14 @@ var isFeedbackMessageCustomized = function(options) {
        options.level.other1StarError);
 };
 
-exports.createSharingButtons = function(options) {
-  var sharingWrapper = document.createElement('div');
-  var sharingButtons = document.createElement('div');
-  var sharingUrl = document.createElement('div');
-  sharingButtons.className = 'social-buttons';
-  sharingUrl.className = 'feedback-links';
-  sharingUrl.innerHTML = require('./templates/buttons.html')({
-    data: {
-      sharingUrl: options.response.level_source
-    }
-  });
+exports.createSharingDiv = function(options) {
+  if (!options.response || !options.response.level_source) {
+    // don't even try if our caller didn't give us something that can be shared
+    // options.response.level_source is the url that we are sharing
+    return null;
+  } 
 
+  // set up the twitter share url
   var twitterUrl = "https://twitter.com/intent/tweet?url=" +
                    options.response.level_source;
 
@@ -1419,71 +1422,35 @@ exports.createSharingButtons = function(options) {
   if (options.twitter  && options.twitter.hashtag !== undefined) {
     twitterUrl += "&button_hashtag=" + options.twitter.hashtag;
   }
+  options.twitterUrl = twitterUrl;
 
-  sharingButtons.innerHTML = require('./templates/buttons.html')({
-    data: {
-      facebookUrl: "https://www.facebook.com/sharer/sharer.php?u=" +
-                    options.response.level_source,
-      twitterUrl: twitterUrl,
-      makeYourOwn: options.makeYourOwn,
-      saveToGalleryUrl: options.saveToGalleryUrl
-    }
+  // set up the facebook share url
+  var facebookUrl = "https://www.facebook.com/sharer/sharer.php?u=" +
+                    options.response.level_source;
+  options.facebookUrl = facebookUrl;
+
+  // use a generic image for the level if a feedback image has not been supplied.
+  if (options.level && options.level.instructionImageUrl && !options.feedbackImage) {
+    options.feedbackImage = options.level.instructionImageUrl;
+  }
+
+  var sharingDiv = document.createElement('div');
+  sharingDiv.setAttribute('style', 'display:inline-block');
+  sharingDiv.innerHTML = require('./templates/sharing.html')({
+    options: options
   });
-  var sharingInput = sharingUrl.querySelector('#sharing-input');
+
+  var sharingInput = sharingDiv.querySelector('#sharing-input');
   if (sharingInput) {
     dom.addClickTouchEvent(sharingInput, function() {
       sharingInput.focus();
       sharingInput.select();
     });
   }
-  sharingWrapper.appendChild(sharingUrl);
-  sharingWrapper.appendChild(sharingButtons);
-  return sharingWrapper;
+
+  return sharingDiv;
 };
 
-
-var createSharingDiv = function(options) {
-  // Creates the sharing div only when showingSharing is set and the solution is
-  // a passing solution.
-  if (options.showingSharing &&
-      exports.canContinueToNextLevel(options.feedbackType)) {
-    var sharingDiv = document.createElement('div');
-    sharingDiv.setAttribute('style', 'display:inline-block');
-    var sharingImage = document.createElement('div');
-
-    var feedbackImage = createFeedbackImage(options);
-    if (feedbackImage) {
-        sharingImage.appendChild(feedbackImage);
-        sharingDiv.appendChild(sharingImage);
-    }
-
-    if (options.response && options.response.level_source) {
-      var sharingText = document.createElement('div');
-      if (options.appStrings) {
-        dom.setText(sharingText, options.appStrings.sharingText);
-      }
-      sharingText.className = 'shareDrawingMsg';
-      sharingDiv.appendChild(sharingText);
-
-      sharingDiv.appendChild(exports.createSharingButtons(options));
-    }
-    return sharingDiv;
-  } else {
-    return null;
-  }
-};
-
-var createFeedbackImage = function(options) {
-  var feedbackImage;
-  var feedbackImageSrc =
-      options.level.instructionImageUrl || options.feedbackImage;
-  if (feedbackImageSrc) {
-    feedbackImage = document.createElement('img');
-    feedbackImage.className = 'feedback-image';
-    feedbackImage.src = feedbackImageSrc;
-  }
-  return feedbackImage;
-};
 
 var numTrophiesEarned = function(options) {
   if (options.response && options.response.trophy_updates) {
@@ -1507,43 +1474,28 @@ var getTrophiesElement = function(options) {
 };
 
 var getShowCodeElement = function(options) {
-  if (exports.canContinueToNextLevel(options.feedbackType)) {
-    var linesWritten = exports.getNumBlocksUsed();
-    var showCodeDiv = document.createElement('div');
-    showCodeDiv.setAttribute('id', 'show-code');
-    var lines = document.createElement('span');
-    lines.className = 'linesOfCodeMsg';
-    lines.innerHTML = msg.numLinesOfCodeWritten({
-      numLines: linesWritten
-    });
-    if (options.response && options.response.total_lines &&
-        (options.response.total_lines !== linesWritten)) {
-      lines.innerHTML += '<br>' + msg.totalNumLinesOfCodeWritten({
-        numLines: options.response.total_lines
-      });
-    }
+  var showCodeDiv = document.createElement('div');
+  showCodeDiv.setAttribute('id', 'show-code');
 
-    var showCodeLink = document.createElement('div');
-    showCodeLink.className = 'show-code-div';
-    showCodeLink.innerHTML = require('./templates/showCode.html')();
-    var button = showCodeLink.querySelector('#show-code-button');
+  var numLinesWritten = exports.getNumBlocksUsed();
+  var shouldShowTotalLines =
+    (options.response &&
+      options.response.total_lines &&
+      (options.response.total_lines !== numLinesWritten));
+  var totalNumLinesWritten = shouldShowTotalLines ? options.response.total_lines : 0;
 
-    button.addEventListener('click', function() {
-      var codeDiv = getGeneratedCodeElement();
-      showCodeDiv.appendChild(codeDiv);
-      button.style.display = 'none';
-    });
+  showCodeDiv.innerHTML = require('./templates/showCode.html')({
+    numLinesWritten: numLinesWritten,
+    totalNumLinesWritten: totalNumLinesWritten
+  });
 
-    if (BlocklyApps.enableShowCode) {
-      showCodeDiv.appendChild(lines);
-      showCodeDiv.appendChild(showCodeLink);
-    } else if (options.showingSharing) {
-      // want a breaking line if this is a sharing dialog
-      lines.innerHTML = '<br>';
-      showCodeDiv.appendChild(lines);
-    }
-    return showCodeDiv;
-  }
+  var showCodeButton = showCodeDiv.querySelector('#show-code-button');
+  showCodeButton.addEventListener('click', function () {
+    showCodeDiv.appendChild(getGeneratedCodeElement());
+    showCodeButton.style.display = 'none';
+  });
+
+  return showCodeDiv;
 };
 
 /**
@@ -1884,7 +1836,7 @@ var generateXMLForBlocks = function(blocks) {
 };
 
 
-},{"../locale/eu_es/common":32,"./codegen":6,"./dom":7,"./templates/buttons.html":21,"./templates/code.html":22,"./templates/readonly.html":27,"./templates/showCode.html":28,"./templates/trophy.html":29,"./utils":30}],9:[function(require,module,exports){
+},{"../locale/eu_es/common":34,"./codegen":6,"./dom":7,"./templates/buttons.html":22,"./templates/code.html":23,"./templates/readonly.html":28,"./templates/sharing.html":29,"./templates/showCode.html":30,"./templates/trophy.html":31,"./utils":32}],9:[function(require,module,exports){
 // avatar: A 1029x51 set of 21 avatar images.
 
 exports.load = function(assetUrl, id) {
@@ -2158,14 +2110,19 @@ exports.setSprite = function (id, spriteIndex, value) {
   Studio.setSprite(spriteIndex, value);
 };
 
-exports.saySprite = function (id, numHandler, spriteIndex, text) {
+exports.saySprite = function (id, executionCtx, spriteIndex, text) {
   BlocklyApps.highlight(id);
-  Studio.saySprite(numHandler, spriteIndex, text);
+  Studio.saySprite(executionCtx, spriteIndex, text);
 };
 
 exports.setBackground = function (id, value) {
   BlocklyApps.highlight(id);
   Studio.setBackground(value);
+};
+
+exports.setSpriteEmotion = function (id, spriteIndex, value) {
+  BlocklyApps.highlight(id);
+  Studio.sprite[spriteIndex].emotion = value;
 };
 
 exports.setSpriteSpeed = function (id, spriteIndex, value) {
@@ -2183,9 +2140,9 @@ exports.move = function(id, spriteIndex, dir) {
   Studio.moveSingle(spriteIndex, dir);
 };
 
-exports.moveDistance = function(id, spriteIndex, dir, distance) {
+exports.moveDistance = function(id, executionCtx, spriteIndex, dir, distance) {
   BlocklyApps.highlight(id);
-  Studio.moveDistance(spriteIndex, dir, distance);
+  Studio.moveDistance(executionCtx, spriteIndex, dir, distance);
 };
 
 exports.incrementScore = function(id, player) {
@@ -2212,6 +2169,7 @@ var codegen = require('../codegen');
 var tiles = require('./tiles');
 
 var Direction = tiles.Direction;
+var Emotions = tiles.Emotions;
 
 var generateSetterCode = function (opts) {
   var value = opts.ctx.getTitleValue('VALUE');
@@ -2225,7 +2183,7 @@ var generateSetterCode = function (opts) {
 
   if (opts.index) {
     return 'Studio.' + opts.name + '(\'block_id_' + opts.ctx.id + '\', ' +
-      opts.ctx.getTitleValue(opts.index) + ', ' + value + ');\n';
+      (opts.ctx.getTitleValue(opts.index) || '0') + ', ' + value + ');\n';
   }
   else {
     return 'Studio.' + opts.name + '(\'block_id_' + opts.ctx.id + '\', ' +
@@ -2244,7 +2202,7 @@ exports.install = function(blockly, skin) {
   blockly.JavaScript = generator;
   
   generator.studio_eventHandlerPrologue = function() {
-    return 'var numHandler = Studio.acquireEventHandlerNum();\n\n';
+    return 'var executionCtx = Studio.acquireEventHandlerNum();\n\n';
   };
 
   blockly.Blocks.studio_spriteCount = 6;
@@ -2346,8 +2304,13 @@ exports.install = function(blockly, skin) {
       this.setHSV(140, 1.00, 0.74);
       var dropdownArray =
           this.SPRITE.slice(0, blockly.Blocks.studio_spriteCount);
-      this.appendDummyInput()
-        .appendTitle(new blockly.FieldDropdown(dropdownArray), 'SPRITE');
+      if (blockly.Blocks.studio_spriteCount > 1) {
+        this.appendDummyInput()
+          .appendTitle(new blockly.FieldDropdown(dropdownArray), 'SPRITE');
+      } else {
+        this.appendDummyInput()
+          .appendTitle(msg.whenSpriteClicked());
+      }
       this.setPreviousStatement(false);
       this.setInputsInline(true);
       this.setNextStatement(true);
@@ -2374,7 +2337,9 @@ exports.install = function(blockly, skin) {
       var dropdownArray2 =
           this.SPRITE2.slice(0, blockly.Blocks.studio_spriteCount);
       var dropdown2 = new blockly.FieldDropdown(dropdownArray2);
-      dropdown2.setValue(dropdownArray2[1][1]); // default to 2
+      if (blockly.Blocks.studio_spriteCount > 1) {
+        dropdown2.setValue(dropdownArray2[1][1]); // default to 2
+      }
 
       this.setHSV(140, 1.00, 0.74);
       this.appendDummyInput()
@@ -2413,10 +2378,15 @@ exports.install = function(blockly, skin) {
       var dropdownArray =
           this.SPRITE.slice(0, blockly.Blocks.studio_spriteCount);
       this.setHSV(184, 1.00, 0.74);
-      this.appendDummyInput()
-        .appendTitle(new blockly.FieldDropdown(dropdownArray), 'SPRITE');
-      this.appendDummyInput()
-        .appendTitle(msg.moveSeparator());
+      if (blockly.Blocks.studio_spriteCount > 1) {
+        this.appendDummyInput()
+          .appendTitle(new blockly.FieldDropdown(dropdownArray), 'SPRITE');
+        this.appendDummyInput()
+          .appendTitle('\t');
+      } else {
+        this.appendDummyInput()
+          .appendTitle(msg.moveSprite());
+      }
       this.appendDummyInput()
         .appendTitle(new blockly.FieldDropdown(this.DIR), 'DIR');
       this.setPreviousStatement(true);
@@ -2443,7 +2413,7 @@ exports.install = function(blockly, skin) {
   generator.studio_move = function() {
     // Generate JavaScript for moving.
     return 'Studio.move(\'block_id_' + this.id + '\', ' +
-        this.getTitleValue('SPRITE') + ', ' +
+        (this.getTitleValue('SPRITE') || '0') + ', ' +
         this.getTitleValue('DIR') + ');\n';
   };
 
@@ -2454,14 +2424,19 @@ exports.install = function(blockly, skin) {
       var dropdownArray =
           this.SPRITE.slice(0, blockly.Blocks.studio_spriteCount);
       this.setHSV(184, 1.00, 0.74);
-      this.appendDummyInput()
-        .appendTitle(new blockly.FieldDropdown(dropdownArray), 'SPRITE');
-      this.appendDummyInput()
-        .appendTitle(msg.moveSeparator());
+      if (blockly.Blocks.studio_spriteCount > 1) {
+        this.appendDummyInput()
+          .appendTitle(new blockly.FieldDropdown(dropdownArray), 'SPRITE');
+        this.appendDummyInput()
+          .appendTitle('\t');
+      } else {
+        this.appendDummyInput()
+          .appendTitle(msg.moveSprite());
+      }
       this.appendDummyInput()
         .appendTitle(new blockly.FieldDropdown(this.DIR), 'DIR');
       this.appendDummyInput()
-        .appendTitle(msg.moveSeparator());
+        .appendTitle('\t');
       this.appendDummyInput()
         .appendTitle(new blockly.FieldDropdown(this.DISTANCE), 'DISTANCE');
       this.setPreviousStatement(true);
@@ -2494,8 +2469,9 @@ exports.install = function(blockly, skin) {
 
   generator.studio_moveDistance = function() {
     // Generate JavaScript for moving.
-    return 'Studio.moveDistance(\'block_id_' + this.id + '\', ' +
-        this.getTitleValue('SPRITE') + ', ' +
+    return 'Studio.moveDistance(\'block_id_' + this.id +
+        '\', executionCtx || 0, ' +
+        (this.getTitleValue('SPRITE') || '0') + ', ' +
         this.getTitleValue('DIR') + ', ' +
         this.getTitleValue('DISTANCE') + ');\n';
   };
@@ -2567,8 +2543,13 @@ exports.install = function(blockly, skin) {
           this.SPRITE.slice(0, blockly.Blocks.studio_spriteCount);
 
       this.setHSV(184, 1.00, 0.74);
-      this.appendDummyInput()
-        .appendTitle(new blockly.FieldDropdown(dropdownArray), 'SPRITE');
+      if (blockly.Blocks.studio_spriteCount > 1) {
+        this.appendDummyInput()
+          .appendTitle(new blockly.FieldDropdown(dropdownArray), 'SPRITE');
+      } else {
+        this.appendDummyInput()
+          .appendTitle(msg.setSprite());
+      }
       this.appendDummyInput()
         .appendTitle(dropdown, 'VALUE');
       this.setInputsInline(true);
@@ -2640,14 +2621,19 @@ exports.install = function(blockly, skin) {
     helpUrl: '',
     init: function() {
       var dropdown = new blockly.FieldDropdown(this.VALUES);
-      dropdown.setValue(this.VALUES[2][1]);  // default to green
+      dropdown.setValue(this.VALUES[2][1]);  // default to witch
 
       var dropdownArray =
           this.SPRITE.slice(0, blockly.Blocks.studio_spriteCount);
 
       this.setHSV(312, 0.32, 0.62);
-      this.appendDummyInput()
-        .appendTitle(new blockly.FieldDropdown(dropdownArray), 'SPRITE');
+      if (blockly.Blocks.studio_spriteCount > 1) {
+        this.appendDummyInput()
+          .appendTitle(new blockly.FieldDropdown(dropdownArray), 'SPRITE');
+      } else {
+        this.appendDummyInput()
+          .appendTitle(msg.setSprite());
+      }
       this.appendDummyInput()
         .appendTitle(dropdown, 'VALUE');
       this.setInputsInline(true);
@@ -2668,6 +2654,7 @@ exports.install = function(blockly, skin) {
   blockly.Blocks.studio_setSprite.VALUES =
       [[msg.setSpriteHidden(), '"hidden"'],
        [msg.setSpriteRandom(), 'random'],
+       [msg.setSpriteWitch(), '"witch"'],
        [msg.setSpriteGreen(), '"green"'],
        [msg.setSpritePurple(), '"purple"'],
        [msg.setSpritePink(), '"pink"'],
@@ -2678,14 +2665,65 @@ exports.install = function(blockly, skin) {
               {ctx: this, random: 2, index: 'SPRITE', name: 'setSprite'});
   };
 
+  blockly.Blocks.studio_setSpriteEmotion = {
+    helpUrl: '',
+    init: function() {
+      var dropdown = new blockly.FieldDropdown(this.VALUES);
+      dropdown.setValue(this.VALUES[1][1]);  // default to normal
+
+      var dropdownArray =
+          this.SPRITE.slice(0, blockly.Blocks.studio_spriteCount);
+
+      this.setHSV(184, 1.00, 0.74);
+      if (blockly.Blocks.studio_spriteCount > 1) {
+        this.appendDummyInput()
+          .appendTitle(new blockly.FieldDropdown(dropdownArray), 'SPRITE');
+      } else {
+        this.appendDummyInput()
+          .appendTitle(msg.setSprite());
+      }
+      this.appendDummyInput()
+        .appendTitle(dropdown, 'VALUE');
+      this.setInputsInline(true);
+      this.setPreviousStatement(true);
+      this.setNextStatement(true);
+      this.setTooltip(msg.setSpriteEmotionTooltip());
+    }
+  };
+
+  blockly.Blocks.studio_setSpriteEmotion.SPRITE =
+      [[msg.setSprite1(), '0'],
+       [msg.setSprite2(), '1'],
+       [msg.setSprite3(), '2'],
+       [msg.setSprite4(), '3'],
+       [msg.setSprite5(), '4'],
+       [msg.setSprite6(), '5']];
+
+  blockly.Blocks.studio_setSpriteEmotion.VALUES =
+      [[msg.setSpriteEmotionRandom(), 'random'],
+       [msg.setSpriteEmotionNormal(), Emotions.NORMAL.toString()],
+       [msg.setSpriteEmotionHappy(), Emotions.HAPPY.toString()],
+       [msg.setSpriteEmotionAngry(), Emotions.ANGRY.toString()],
+       [msg.setSpriteEmotionSad(), Emotions.SAD.toString()]];
+
+  generator.studio_setSpriteEmotion = function() {
+    return generateSetterCode(
+              {ctx: this, index: 'SPRITE', name: 'setSpriteEmotion'});
+  };
+
   blockly.Blocks.studio_saySprite = {
     helpUrl: '',
     init: function() {
       var dropdownArray =
           this.SPRITE.slice(0, blockly.Blocks.studio_spriteCount);
       this.setHSV(184, 1.00, 0.74);
-      this.appendDummyInput()
-        .appendTitle(new blockly.FieldDropdown(dropdownArray), 'SPRITE');
+      if (blockly.Blocks.studio_spriteCount > 1) {
+        this.appendDummyInput()
+          .appendTitle(new blockly.FieldDropdown(dropdownArray), 'SPRITE');
+      } else {
+        this.appendDummyInput()
+          .appendTitle(msg.saySprite());
+      }
       this.appendDummyInput()
         .appendTitle(new Blockly.FieldImage(
                 Blockly.assetUrl('media/quote0.png'), 12, 12))
@@ -2709,8 +2747,9 @@ exports.install = function(blockly, skin) {
 
   generator.studio_saySprite = function() {
     // Generate JavaScript for saying.
-    return 'Studio.saySprite(\'block_id_' + this.id + '\', numHandler || 0, ' +
-               this.getTitleValue('SPRITE') + ', ' +
+    return 'Studio.saySprite(\'block_id_' + this.id +
+               '\', executionCtx || 0, ' +
+               (this.getTitleValue('SPRITE') || '0') + ', ' +
                blockly.JavaScript.quote_(this.getTitleValue('TEXT')) + ');\n';
   };
   
@@ -2718,7 +2757,7 @@ exports.install = function(blockly, skin) {
   delete blockly.Blocks.procedures_ifreturn;
 };
 
-},{"../../locale/eu_es/studio":33,"../codegen":6,"./tiles":18}],13:[function(require,module,exports){
+},{"../../locale/eu_es/studio":35,"../codegen":6,"./tiles":19}],13:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2731,7 +2770,7 @@ escape = escape || function (html){
 };
 var buf = [];
 with (locals || {}) { (function(){ 
- buf.push('');1; var msg = require('../../locale/eu_es/studio') ; buf.push('\n\n<td id="share-cell" class="share-cell-none">\n  <button id="shareButton" class="share">\n    <img src="', escape((5,  assetUrl('media/1x1.gif') )), '">\n    ', escape((6,  msg.share() )), '\n  </button>\n</td>\n<td id="soft-buttons" class="soft-buttons-none">\n  <button id="leftButton" class="arrow">\n    <img src="', escape((11,  assetUrl('media/1x1.gif') )), '" class="left-btn icon21">\n  <button id="rightButton" class="arrow">\n    <img src="', escape((13,  assetUrl('media/1x1.gif') )), '" class="right-btn icon21">\n  <button id="upButton" class="arrow">\n    <img src="', escape((15,  assetUrl('media/1x1.gif') )), '" class="up-btn icon21">\n  <button id="downButton" class="arrow">\n    <img src="', escape((17,  assetUrl('media/1x1.gif') )), '" class="down-btn icon21">\n</td>\n'); })();
+ buf.push('');1; var msg = require('../../locale/eu_es/studio') ; buf.push('\n\n<td id="soft-buttons" class="soft-buttons-none">\n  <button id="leftButton" class="arrow">\n    <img src="', escape((5,  assetUrl('media/1x1.gif') )), '" class="left-btn icon21">\n  <button id="rightButton" class="arrow">\n    <img src="', escape((7,  assetUrl('media/1x1.gif') )), '" class="right-btn icon21">\n  <button id="upButton" class="arrow">\n    <img src="', escape((9,  assetUrl('media/1x1.gif') )), '" class="up-btn icon21">\n  <button id="downButton" class="arrow">\n    <img src="', escape((11,  assetUrl('media/1x1.gif') )), '" class="down-btn icon21">\n</td>\n'); })();
 } 
 return buf.join('');
 };
@@ -2739,11 +2778,34 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/eu_es/studio":33,"ejs":34}],14:[function(require,module,exports){
+},{"../../locale/eu_es/studio":35,"ejs":36}],14:[function(require,module,exports){
+module.exports= (function() {
+  var t = function anonymous(locals, filters, escape, rethrow) {
+escape = escape || function (html){
+  return String(html)
+    .replace(/&(?!#?[a-zA-Z0-9]+;)/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/'/g, '&#39;')
+    .replace(/"/g, '&quot;');
+};
+var buf = [];
+with (locals || {}) { (function(){ 
+ buf.push('');1; var msg = require('../../locale/eu_es/studio') ; buf.push('\n\n<tr>\n  <td id="share-cell" class="share-cell-none">\n    <button id="shareButton" class="share">\n      <img src="', escape((6,  assetUrl('media/1x1.gif') )), '">\n      ', escape((7,  msg.share() )), '\n    </button>\n  </td>\n</tr>\n'); })();
+} 
+return buf.join('');
+};
+  return function(locals) {
+    return t(locals, require("ejs").filters);
+  }
+}());
+},{"../../locale/eu_es/studio":35,"ejs":36}],15:[function(require,module,exports){
 /*jshint multistr: true */
 
+var blockUtils = require('../block_utils');
 var Direction = require('./tiles').Direction;
-var tb = require('../block_utils').createToolbox;
+var tb = blockUtils.createToolbox;
+var blockOfType = blockUtils.blockOfType;
 
 /*
  * Configuration for all levels.
@@ -2752,85 +2814,92 @@ module.exports = {
 
   '1': {
     'requiredBlocks': [
-      [{'test': 'move', 'type': 'studio_move'}]
+      [{'test': 'saySprite', 'type': 'studio_saySprite'}]
     ],
     'scale': {
       'snapRadius': 2
     },
-    'softButtons': [
-      'leftButton'
-    ],
     'map': [
       [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 16,0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
-      [8, 0, 0,16, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0]
     ],
+    'goal': {
+      successCondition: function () {
+        return (Studio.sayComplete > 0);
+      }
+    },
+    'timeoutFailureTick': 100,
     'toolbox':
-      tb('<block type="studio_move"></block>'),
+      tb('<block type="studio_moveDistance"><title name="DIR">2</title></block>' +
+         blockOfType('studio_saySprite')),
     'startBlocks':
-     '<block type="studio_whenLeft" deletable="false" x="20" y="20"></block>'
+     '<block type="studio_whenGameStarts" deletable="false" x="20" y="20"></block>'
   },
   '2': {
-    'ideal': 4,
     'requiredBlocks': [
-      [{'test': 'move', 'type': 'studio_move'}],
+      [{'test': 'moveDistance', 'type': 'studio_moveDistance'}]
     ],
     'scale': {
       'snapRadius': 2
     },
-    'softButtons': [
-      'leftButton',
-      'rightButton'
-    ],
     'map': [
       [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0,16, 0, 0, 1, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
-      [8, 0, 0,16, 0, 0, 0, 8],
       [0, 0, 0, 0, 0, 0, 0, 0]
     ],
+    'timeoutFailureTick': 100,
     'toolbox':
-      tb('<block type="studio_move"></block>'),
+      tb('<block type="studio_moveDistance"><title name="DIR">2</title></block>' +
+         blockOfType('studio_saySprite')),
     'startBlocks':
-     '<block type="studio_whenLeft" deletable="false" x="20" y="20"></block> \
-      <block type="studio_whenRight" deletable="false" x="180" y="20"></block>'
+     '<block type="studio_whenGameStarts" deletable="false" x="20" y="20"></block>'
   },
   '3': {
     'requiredBlocks': [
-      [{'test': 'moveUp', 'type': 'studio_moveUp'}]
+      [{'test': 'moveDistance', 'type': 'studio_moveDistance'}],
+      [{'test': 'saySprite', 'type': 'studio_saySprite'}]
     ],
     'scale': {
       'snapRadius': 2
     },
-    'softButtons': [
-      'upButton'
-    ],
     'map': [
-      [0, 0, 0, 8, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0,16, 0, 0,16, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0,16, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0]
     ],
+    'goal': {
+      successCondition: function () {
+        return ((Studio.sayComplete > 0) &&
+                (Studio.sprite[0].collisionMask & 2));
+      }
+    },
+    'timeoutFailureTick': 200,
     'toolbox':
-      tb('<block type="studio_move"></block>'),
+      tb('<block type="studio_moveDistance"><title name="DIR">2</title></block>' +
+         blockOfType('studio_saySprite')),
     'startBlocks':
-     '<block type="studio_whenUp" deletable="false" x="20" y="20"></block>'
+     '<block type="studio_whenGameStarts" deletable="false" x="20" y="20"></block> \
+      <block type="studio_whenSpriteCollided" deletable="false" x="20" y="120"></block>'
   },
   '4': {
     'requiredBlocks': [
-      [{'test': 'move', 'type': 'studio_move'}],
+      [{'test': 'move', 'type': 'studio_move'}]
     ],
     'scale': {
       'snapRadius': 2
@@ -2842,22 +2911,106 @@ module.exports = {
       'upButton'
     ],
     'map': [
-      [0, 0, 8, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 8],
+      [1, 0, 0, 0, 0, 1, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0,16, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
-      [8, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0,16, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 8, 0, 0]
+      [0, 1, 0, 0, 0, 0, 1, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0]
     ],
     'toolbox':
-      tb('<block type="studio_move"></block>'),
+      tb(blockOfType('studio_move') +
+         blockOfType('studio_saySprite')),
     'startBlocks':
      '<block type="studio_whenLeft" deletable="false" x="20" y="20"></block> \
       <block type="studio_whenRight" deletable="false" x="180" y="20"></block> \
       <block type="studio_whenUp" deletable="false" x="20" y="120"></block> \
       <block type="studio_whenDown" deletable="false" x="180" y="120"></block>'
+  },
+  '5': {
+    'requiredBlocks': [
+      [{'test': 'moveDistance', 'type': 'studio_moveDistance'}]
+    ],
+    'scale': {
+      'snapRadius': 2
+    },
+    'map': [
+      [0, 0, 0, 0, 1, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0,16, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 1, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0]
+    ],
+    'spriteStartingImage': 1,
+    'timeoutFailureTick': 200,
+    'toolbox':
+      tb(blockOfType('studio_moveDistance') +
+         blockOfType('studio_saySprite')),
+    'startBlocks':
+     '<block type="studio_whenGameIsRunning" deletable="false" x="20" y="20"></block>'
+  },
+  '6': {
+    'requiredBlocks': [
+      [{'test': 'move', 'type': 'studio_move'}],
+      [{'test': 'saySprite', 'type': 'studio_saySprite'}]
+    ],
+    'scale': {
+      'snapRadius': 2
+    },
+    'softButtons': [
+      'leftButton',
+      'rightButton',
+      'downButton',
+      'upButton'
+    ],
+    'map': [
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [16,0, 0, 0,16, 0, 1, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0]
+    ],
+    'toolbox':
+      tb(blockOfType('studio_moveDistance') +
+         blockOfType('studio_move') +
+         blockOfType('studio_saySprite')),
+    'minWorkspaceHeight': 600,
+    'startBlocks':
+     '<block type="studio_whenLeft" deletable="false" x="20" y="20"> \
+        <next><block type="studio_move"> \
+                <title name="DIR">8</title></block> \
+        </next></block> \
+      <block type="studio_whenRight" deletable="false" x="20" y="100"> \
+        <next><block type="studio_move"> \
+                <title name="DIR">2</title></block> \
+        </next></block> \
+      <block type="studio_whenUp" deletable="false" x="20" y="180"> \
+        <next><block type="studio_move"> \
+                <title name="DIR">1</title></block> \
+        </next></block> \
+      <block type="studio_whenDown" deletable="false" x="20" y="260"> \
+        <next><block type="studio_move"> \
+                <title name="DIR">4</title></block> \
+        </next></block> \
+      <block type="studio_whenGameIsRunning" deletable="false" x="20" y="340"> \
+        <next><block type="studio_moveDistance"> \
+                <title name="SPRITE">1</title> \
+                <title name="DISTANCE">400</title> \
+          <next><block type="studio_moveDistance"> \
+                  <title name="SPRITE">1</title> \
+                  <title name="DISTANCE">400</title> \
+                  <title name="DIR">4</title></block> \
+          </next></block> \
+      </next></block> \
+      <block type="studio_whenSpriteCollided" deletable="false" x="20" y="440"></block>'
   },
   '99': {
     'requiredBlocks': [
@@ -2873,9 +3026,8 @@ module.exports = {
     ],
     'minWorkspaceHeight': 800,
     'freePlay': true,
-    'showScore': true,
     'map': [
-      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0,16, 0, 0, 0,16, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
       [0,16, 0, 0, 0,16, 0, 0],
@@ -2885,17 +3037,18 @@ module.exports = {
       [0, 0, 0, 0, 0, 0, 0, 0]
     ],
     'toolbox':
-      tb('<block type="studio_whenSpriteClicked"></block> \
-          <block type="studio_whenSpriteCollided"></block> \
-          <block type="studio_whenGameIsRunning"></block> \
-          <block type="studio_move"></block> \
-          <block type="studio_moveDistance"></block> \
-          <block type="studio_playSound"></block> \
-          <block type="studio_incrementScore"></block> \
-          <block type="studio_saySprite"></block> \
-          <block type="studio_setSpriteSpeed"></block> \
-          <block type="studio_setBackground"></block> \
-          <block type="studio_setSprite"></block>'),
+      tb(blockOfType('studio_whenSpriteClicked') +
+         blockOfType('studio_whenSpriteCollided') +
+         blockOfType('studio_whenGameIsRunning') +
+         blockOfType('studio_move') +
+         blockOfType('studio_moveDistance') +
+         blockOfType('studio_playSound') +
+         blockOfType('studio_incrementScore') +
+         blockOfType('studio_saySprite') +
+         blockOfType('studio_setSpriteSpeed') +
+         blockOfType('studio_setSpriteEmotion') +
+         blockOfType('studio_setBackground') +
+         blockOfType('studio_setSprite')),
     'startBlocks':
      '<block type="studio_whenGameStarts" deletable="false" x="20" y="20"></block> \
       <block type="studio_whenLeft" deletable="false" x="20" y="120"></block> \
@@ -2905,7 +3058,7 @@ module.exports = {
   },
 };
 
-},{"../block_utils":3,"./tiles":18}],15:[function(require,module,exports){
+},{"../block_utils":3,"./tiles":19}],16:[function(require,module,exports){
 (function (global){
 var appMain = require('../appMain');
 window.Studio = require('./studio');
@@ -2923,7 +3076,7 @@ window.studioMain = function(options) {
 };
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../appMain":1,"./blocks":12,"./levels":14,"./skins":16,"./studio":17}],16:[function(require,module,exports){
+},{"../appMain":1,"./blocks":12,"./levels":15,"./skins":17,"./studio":18}],17:[function(require,module,exports){
 /**
  * Load Skin for Studio.
  */
@@ -2960,20 +3113,28 @@ exports.load = function(assetUrl, id) {
   skin.underwater = {
     background: skin.assetUrl('background_underwater.png'),
   };
+  skin.green = {
+    sprite: skin.assetUrl('avatar1.png'),
+    spriteFlags: 0,
+  };
   skin.purple = {
     sprite: skin.assetUrl('avatar2.png'),
+    spriteFlags: 0,
   };
   skin.orange = {
     sprite: skin.assetUrl('avatar3.png'),
+    spriteFlags: 0,
   };
   skin.pink = {
     sprite: skin.assetUrl('avatar4.png'),
+    spriteFlags: 0,
   };
 
   // Images
   skin.goal = skin.assetUrl('goal.png');
   skin.goalSuccess = skin.assetUrl('goal_success.png');
-  skin.sprite = skin.assetUrl('avatar1.png');
+  skin.sprite = skin.assetUrl('witch_sprite_200px.png');
+  skin.spriteFlags = 28; // flags: emotions, animation, turns
   skin.goalAnimation = skin.assetUrl('goal.gif');
   skin.approachingGoalAnimation =
       skin.assetUrl(config.approachingGoalAnimation);
@@ -3014,7 +3175,7 @@ exports.load = function(assetUrl, id) {
   return skin;
 };
 
-},{"../skins":9}],17:[function(require,module,exports){
+},{"../skins":9}],18:[function(require,module,exports){
 /**
  * Blockly App: Studio
  *
@@ -3037,7 +3198,9 @@ var feedback = require('../feedback.js');
 var dom = require('../dom');
 
 var Direction = tiles.Direction;
+var NextTurn = tiles.NextTurn;
 var SquareType = tiles.SquareType;
+var Emotions = tiles.Emotions;
 
 /**
  * Create a namespace for the application.
@@ -3052,10 +3215,21 @@ var ButtonState = {
   DOWN: 1
 };
 
-Studio.SpriteFlags = {
-  MISSED_PADDLE: 1,
-  IN_GOAL: 2,
-  LAUNCHING: 4
+var SpriteFlags = {
+  LOOPING_MOVE_X_PENDING: 1,
+  LOOPING_MOVE_Y_PENDING: 2,
+  EMOTIONS: 4,
+  ANIMATION: 8,
+  TURNS: 16,
+};
+
+var SF_SKINS_MASK =
+  SpriteFlags.EMOTIONS | SpriteFlags.ANIMATION | SpriteFlags.TURNS;
+
+var SpriteOffsets = {
+  EMOTIONS: 3,
+  ANIMATION: 1,
+  TURNS: 7,
 };
 
 var ArrowIds = {
@@ -3105,6 +3279,7 @@ var loadLevel = function() {
   Studio.map = level.map;
   Studio.timeoutFailureTick = level.timeoutFailureTick || Infinity;
   Studio.minWorkspaceHeight = level.minWorkspaceHeight;
+  Studio.spriteStartingImage = level.spriteStartingImage;
   Studio.softButtons_ = level.softButtons || [];
 
   // Override scalars.
@@ -3123,18 +3298,13 @@ var loadLevel = function() {
   Studio.SPRITE_WIDTH = skin.spriteWidth;
   Studio.SPRITE_Y_OFFSET = skin.spriteYOffset;
   // Height and width of the goal and obstacles.
-  Studio.MARKER_HEIGHT = 43;
-  Studio.MARKER_WIDTH = 50;
+  Studio.MARKER_HEIGHT = 100;
+  Studio.MARKER_WIDTH = 100;
 
   Studio.MAZE_WIDTH = Studio.SQUARE_SIZE * Studio.COLS;
   Studio.MAZE_HEIGHT = Studio.SQUARE_SIZE * Studio.ROWS;
   Studio.PATH_WIDTH = Studio.SQUARE_SIZE / 3;
 };
-
-/**
- * PIDs of async tasks currently executing.
- */
-Studio.pidList = [];
 
 var drawMap = function() {
   var svg = document.getElementById('svgStudio');
@@ -3185,13 +3355,10 @@ var drawMap = function() {
       spriteClip.appendChild(spriteClipRect);
       svg.appendChild(spriteClip);
       
-      // Add sprite.
+      // Add sprite (not setting href attribute or width until displaySprite).
       var spriteIcon = document.createElementNS(Blockly.SVG_NS, 'image');
       spriteIcon.setAttribute('id', 'sprite' + i);
-      spriteIcon.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href',
-                                skin.sprite);
       spriteIcon.setAttribute('height', Studio.SPRITE_HEIGHT);
-      spriteIcon.setAttribute('width', Studio.SPRITE_WIDTH);
       spriteIcon.setAttribute('clip-path', 'url(#spriteClipPath' + i + ')');
       svg.appendChild(spriteIcon);
       
@@ -3210,17 +3377,17 @@ var drawMap = function() {
     }
   }
   
-  if (Studio.paddleFinish_) {
-    for (i = 0; i < Studio.paddleFinishCount; i++) {
+  if (Studio.sprite0Finish_) {
+    for (i = 0; i < Studio.sprite0FinishCount; i++) {
       // Add finish markers.
-      var paddleFinishMarker = document.createElementNS(Blockly.SVG_NS, 'image');
-      paddleFinishMarker.setAttribute('id', 'paddlefinish' + i);
-      paddleFinishMarker.setAttributeNS('http://www.w3.org/1999/xlink',
-                                        'xlink:href',
-                                        skin.goal);
-      paddleFinishMarker.setAttribute('height', Studio.MARKER_HEIGHT);
-      paddleFinishMarker.setAttribute('width', Studio.MARKER_WIDTH);
-      svg.appendChild(paddleFinishMarker);
+      var sprite0FinishMarker = document.createElementNS(Blockly.SVG_NS, 'image');
+      sprite0FinishMarker.setAttribute('id', 'sprite0finish' + i);
+      sprite0FinishMarker.setAttributeNS('http://www.w3.org/1999/xlink',
+                                         'xlink:href',
+                                         skin.goal);
+      sprite0FinishMarker.setAttribute('height', Studio.MARKER_HEIGHT);
+      sprite0FinishMarker.setAttribute('width', Studio.MARKER_WIDTH);
+      svg.appendChild(sprite0FinishMarker);
     }
   }
 
@@ -3259,7 +3426,7 @@ var delegate = function(scope, func, data)
 var performQueuedMoves = function(i)
 {
   // Make queued moves in the X axis (fixed to .01 values):
-  if (Studio.sprite[i].queuedX && Studio.sprite[i].queuedX !== 0.00) {
+  if (Studio.sprite[i].queuedX) {
     var nextX = Studio.sprite[i].x;
     if (Studio.sprite[i].queuedX < 0) {
       nextX -= Math.min(Math.abs(Studio.sprite[i].queuedX),
@@ -3273,12 +3440,27 @@ var performQueuedMoves = function(i)
       Studio.sprite[i].queuedX = 0;
     } else {
       var newQX = Studio.sprite[i].queuedX - (nextX - Studio.sprite[i].x);
-      Studio.sprite[i].queuedX = newQX.toFixed(2);
+      Studio.sprite[i].queuedX = newQX;
+      // for very small numbers, reset to integer zero
+      if ("0.00" === newQX.toFixed(2)) {
+        Studio.sprite[i].queuedX = 0;
+      }
     }
     Studio.sprite[i].x = newX;
+  } else {
+    // no X movement, check for queued commands
+    var newQueuedX = Studio.sprite[i].xMoveQueue.shift();
+    if (newQueuedX) {
+      Studio.sprite[i].queuedX = newQueuedX;
+    }
+    else {
+      // flip off async flags and reset any stored context
+      Studio.sprite[i].flags &= ~(SpriteFlags.LOOPING_MOVE_X_PENDING);
+      Studio.sprite[i].queuedXContext = -1;
+    }
   }
   // Make queued moves in the Y axis (fixed to .01 values):
-  if (Studio.sprite[i].queuedY && Studio.sprite[i].queuedY !== 0.00) {
+  if (Studio.sprite[i].queuedY) {
     var nextY = Studio.sprite[i].y;
     if (Studio.sprite[i].queuedY < 0) {
       nextY -= Math.min(Math.abs(Studio.sprite[i].queuedY),
@@ -3292,9 +3474,24 @@ var performQueuedMoves = function(i)
       Studio.sprite[i].queuedY = 0;
     } else {
       var newQY = Studio.sprite[i].queuedY - (nextY - Studio.sprite[i].y);
-      Studio.sprite[i].queuedY = newQY.toFixed(2);
+      Studio.sprite[i].queuedY = newQY;
+      // for very small numbers, reset to integer zero
+      if ("0.00" === newQY.toFixed(2)) {
+        Studio.sprite[i].queuedY = 0;
+      }
     }
     Studio.sprite[i].y = newY;
+  } else {
+    // no Y movement, check for queued commands
+    var newQueuedY = Studio.sprite[i].yMoveQueue.shift();
+    if (newQueuedY) {
+      Studio.sprite[i].queuedY = newQueuedY;
+    }
+    else {
+      // flip off async flags and reset any stored context
+      Studio.sprite[i].flags &= ~(SpriteFlags.LOOPING_MOVE_Y_PENDING);
+      Studio.sprite[i].queuedYContext = -1;
+    }
   }
 };
 
@@ -3315,10 +3512,28 @@ var showSpeechBubbles = function() {
       speechBubble.setAttribute('visibility', 'visible');
       window.clearTimeout(Studio.sprite[sayCmd.index].bubbleTimeout);
       Studio.sprite[sayCmd.index].bubbleTimeout = window.setTimeout(
-          delegate(this, Studio.hideSpeechBubble, sayCmd.index),
+          delegate(this, Studio.hideSpeechBubble, sayCmd),
           Studio.SPEECH_BUBBLE_TIMEOUT);
     }
   }
+};
+
+//
+// Check to see if all async code executed inside the whenGameIsRunning event
+// is complete. This means checking for moveDistance blocks or SaySprite blocks
+// that started during a previous whenGameIsRunning event and are still going.
+//
+// If this function returns true, it is reasonable to fire the event again...
+//
+
+var loopingAsyncCodeComplete = function() {
+  for (var i = 0; i < Studio.spriteCount; i++) {
+    if (Studio.sprite[i].flags & (SpriteFlags.LOOPING_MOVE_X_PENDING |
+                                  SpriteFlags.LOOPING_MOVE_Y_PENDING)) {
+      return false;
+    }
+  }
+  return Studio.loopingPendingSayCmds === 0;
 };
 
 Studio.onTick = function() {
@@ -3328,7 +3543,11 @@ Studio.onTick = function() {
     try { Studio.whenGameStarts(BlocklyApps, api); } catch (e) { }
   }
 
-  try { Studio.whenGameIsRunning(BlocklyApps, api); } catch (e) { }
+  Studio.calledFromWhenGameRunning = true;
+  if (loopingAsyncCodeComplete()) {
+    try { Studio.whenGameIsRunning(BlocklyApps, api); } catch (e) { }
+  }
+  Studio.calledFromWhenGameRunning = false;
   
   // Run key event handlers for any keys that are down:
   for (var key in Keycodes) {
@@ -3461,6 +3680,8 @@ Studio.init = function(config) {
       localeDirection: BlocklyApps.localeDirection(),
       visualization: require('./visualization.html')(),
       controls: require('./controls.html')({assetUrl: BlocklyApps.assetUrl}),
+      extraControlRows:
+          require('./extraControlRows.html')({assetUrl: BlocklyApps.assetUrl}),
       blockUsed: undefined,
       idealBlockNumber: undefined,
       blockCounterClass: 'block-counter-default'
@@ -3539,19 +3760,19 @@ Studio.init = function(config) {
 
   config.preventExtraTopLevelBlocks = true;
 
-  Studio.paddleFinishCount = 0;
+  Studio.sprite0FinishCount = 0;
   Studio.spriteCount = 0;
   Studio.sprite = [];
   
   // Locate the start and finish squares.
   for (var y = 0; y < Studio.ROWS; y++) {
     for (var x = 0; x < Studio.COLS; x++) {
-      if (Studio.map[y][x] & SquareType.PADDLEFINISH) {
-        if (0 === Studio.paddleFinishCount) {
-          Studio.paddleFinish_ = [];
+      if (Studio.map[y][x] & SquareType.SPRITE0FINISH) {
+        if (0 === Studio.sprite0FinishCount) {
+          Studio.sprite0Finish_ = [];
         }
-        Studio.paddleFinish_[Studio.paddleFinishCount] = {x: x, y: y};
-        Studio.paddleFinishCount++;
+        Studio.sprite0Finish_[Studio.sprite0FinishCount] = {x: x, y: y};
+        Studio.sprite0FinishCount++;
       } else if (Studio.map[y][x] & SquareType.SPRITESTART) {
         if (0 === Studio.spriteCount) {
           Studio.spriteStart_ = [];
@@ -3590,12 +3811,7 @@ Studio.clearEventHandlersKillTickLoop = function() {
     window.clearInterval(Studio.intervalId);
   }
   Studio.intervalId = 0;
-  // Kill all tasks.
-  for (var i = 0; i < Studio.pidList.length; i++) {
-    window.clearTimeout(Studio.pidList[i]);
-  }
-  Studio.pidList = [];
-  for (i = 0; i < Studio.spriteCount; i++) {
+  for (var i = 0; i < Studio.spriteCount; i++) {
     window.clearTimeout(Studio.sprite[i].bubbleTimeout);
   }
 };
@@ -3627,12 +3843,15 @@ BlocklyApps.reset = function(first) {
   // Reset configurable variables
   Studio.setBackground('cave');
   
-  // Reset the eventHandlerNumber
+  // Reset the eventHandlerNumber, say queues, pending, and complete counts:
   Studio.eventHandlerNumber = 0;
   Studio.sayQueues = [];
+  Studio.sayComplete = 0;
+  Studio.loopingPendingSayCmds = 0;
 
-  var spriteStartingSkins = [ "green", "purple", "pink", "orange" ];
+  var spriteStartingSkins = [ "witch", "green", "purple", "pink", "orange" ];
   var numStartingSkins = spriteStartingSkins.length;
+  var skinBias = Studio.spriteStartingImage || 0;
 
   // Move sprites into position.
   for (i = 0; i < Studio.spriteCount; i++) {
@@ -3641,9 +3860,17 @@ BlocklyApps.reset = function(first) {
     Studio.sprite[i].speed = tiles.DEFAULT_SPRITE_SPEED;
     Studio.sprite[i].collisionMask = 0;
     Studio.sprite[i].queuedX = 0;
+    Studio.sprite[i].queuedXContext = -1;
     Studio.sprite[i].queuedY = 0;
+    Studio.sprite[i].queuedYContext = -1;
+    Studio.sprite[i].flags = 0;
+    Studio.sprite[i].dir = 0;
+    Studio.sprite[i].displayDir = Direction.SOUTH;
+    Studio.sprite[i].emotion = Emotions.NORMAL;
+    Studio.sprite[i].xMoveQueue = [];
+    Studio.sprite[i].yMoveQueue = [];
     
-    Studio.setSprite(i, spriteStartingSkins[i % numStartingSkins]);
+    Studio.setSprite(i, spriteStartingSkins[(i + skinBias) % numStartingSkins]);
     Studio.displaySprite(i);
     document.getElementById('speechBubble' + i)
       .setAttribute('visibility', 'hidden');
@@ -3651,22 +3878,20 @@ BlocklyApps.reset = function(first) {
 
   var svg = document.getElementById('svgStudio');
 
-  if (Studio.paddleFinish_) {
-    for (i = 0; i < Studio.paddleFinishCount; i++) {
+  if (Studio.sprite0Finish_) {
+    for (i = 0; i < Studio.sprite0FinishCount; i++) {
       // Mark each finish as incomplete.
-      Studio.paddleFinish_[i].finished = false;
+      Studio.sprite0Finish_[i].finished = false;
 
       // Move the finish icons into position.
-      var paddleFinishIcon = document.getElementById('paddlefinish' + i);
-      paddleFinishIcon.setAttribute(
+      var sprite0FinishIcon = document.getElementById('sprite0finish' + i);
+      sprite0FinishIcon.setAttribute(
           'x',
-          Studio.SQUARE_SIZE * (Studio.paddleFinish_[i].x + 0.5) -
-          paddleFinishIcon.getAttribute('width') / 2);
-      paddleFinishIcon.setAttribute(
+          Studio.SQUARE_SIZE * Studio.sprite0Finish_[i].x);
+      sprite0FinishIcon.setAttribute(
           'y',
-          Studio.SQUARE_SIZE * (Studio.paddleFinish_[i].y + 0.9) -
-          paddleFinishIcon.getAttribute('height'));
-      paddleFinishIcon.setAttributeNS(
+          Studio.SQUARE_SIZE * Studio.sprite0Finish_[i].y);
+      sprite0FinishIcon.setAttributeNS(
           'http://www.w3.org/1999/xlink',
           'xlink:href',
           skin.goal);
@@ -3703,8 +3928,7 @@ BlocklyApps.runButtonClick = function() {
     shareCell.className = 'share-cell-enabled';
   }
   
-  if (level.showScore) {
-    document.getElementById('score').setAttribute('visibility', 'visible');
+  if (level.showZeroZeroScore) {
     Studio.displayScore();
   }
 };
@@ -3949,15 +4173,114 @@ Studio.onPuzzleComplete = function() {
                      });
 };
 
+var spriteFrameNumber = function (index) {
+  var sprite = Studio.sprite[index];
+  var showThisAnimFrame = 0;
+  if ((sprite.flags & SpriteFlags.TURNS) &&
+      (sprite.displayDir !== Direction.SOUTH)) {
+    var frameOffset = 1;
+    frameOffset += (sprite.flags & SpriteFlags.EMOTIONS) ?
+                    SpriteOffsets.EMOTIONS : 0;
+    // BUGBUG: +1's are temporary until we get a new PNG
+    frameOffset += (sprite.flags & SpriteFlags.ANIMATION) ?
+                    SpriteOffsets.ANIMATION + 1 : 0;
+    frameOffset += 1;
+    
+    var frameDirection;
+    switch (sprite.displayDir) {
+      case Direction.NORTH:
+      case Direction.NORTHEAST:
+      case Direction.NORTHWEST:
+        // BUGBUG: need new frames once we get a new PNG
+        frameDirection = 2;
+        break;
+      case Direction.EAST:
+        frameDirection = 0;
+        break;
+      case Direction.WEST:
+        frameDirection = 1;
+        break;
+      case Direction.SOUTHEAST:
+        frameDirection = 3;
+        break;
+      case Direction.SOUTHWEST:
+        frameDirection = 4;
+        break;
+    }
+    return frameOffset + frameDirection;
+  }
+  if ((sprite.flags & SpriteFlags.ANIMATION) &&
+      Studio.tickCount &&
+      Math.round(Studio.tickCount / 20) % 2) {
+    // BUGBUG: +2 is temporary until we get a new PNG
+    showThisAnimFrame = (sprite.flags & SpriteFlags.EMOTIONS) ?
+                         SpriteOffsets.EMOTIONS + 2 : 0;
+  }
+  if (sprite.emotion !== Emotions.NORMAL &&
+      sprite.flags & SpriteFlags.EMOTIONS) {
+    return showThisAnimFrame ? showThisAnimFrame : sprite.emotion;
+  }
+  return showThisAnimFrame;
+};
+
+var spriteTotalFrames = function (index) {
+  var frames = 1;
+  if (Studio.sprite[index].flags & SpriteFlags.EMOTIONS) {
+    frames += SpriteOffsets.EMOTIONS;
+  }
+  if (Studio.sprite[index].flags & SpriteFlags.ANIMATION) {
+    frames += SpriteOffsets.ANIMATION;
+  }
+  if (Studio.sprite[index].flags & SpriteFlags.TURNS) {
+    frames += SpriteOffsets.TURNS;
+  }
+  return frames;
+};
+
 Studio.displaySprite = function(i) {
   var xCoord = Studio.sprite[i].x * Studio.SQUARE_SIZE;
   var yCoord = Studio.sprite[i].y * Studio.SQUARE_SIZE + Studio.SPRITE_Y_OFFSET;
+  
+  // BUGBUG: -2 is temporary until we get a fixed bitmap
+  var xOffset = (Studio.SPRITE_WIDTH - 2.083333) * spriteFrameNumber(i);
 
   var spriteIcon = document.getElementById('sprite' + i);
-  spriteIcon.setAttribute('x', xCoord);
+  var spriteClipRect = document.getElementById('spriteClipRect' + i);
+
+  var xCoordPrev = spriteClipRect.getAttribute('x');
+  var yCoordPrev = spriteClipRect.getAttribute('y');
+  
+  var dirPrev = Studio.sprite[i].dir;
+  if (dirPrev === 0) {
+    // direction not yet set, start at SOUTH (forward facing)
+    Studio.sprite[i].dir = Direction.SOUTH;
+  }
+  else if ((xCoord != xCoordPrev) || (yCoord != yCoordPrev)) {
+    Studio.sprite[i].dir = 0;
+    if (xCoord < xCoordPrev) {
+      Studio.sprite[i].dir |= Direction.WEST;
+    } else if (xCoord > xCoordPrev) {
+      Studio.sprite[i].dir |= Direction.EAST;
+    }
+    if (yCoord < yCoordPrev) {
+      Studio.sprite[i].dir |= Direction.NORTH;
+    } else if (yCoord > yCoordPrev) {
+      Studio.sprite[i].dir |= Direction.SOUTH;
+    }
+  }
+  
+  if (Studio.sprite[i].dir !== Studio.sprite[i].displayDir) {
+    // Every other frame, assign a new displayDir from state table
+    // (only one turn at a time):
+    if (Studio.tickCount && (0 === Studio.tickCount % 2)) {
+      Studio.sprite[i].displayDir =
+          NextTurn[Studio.sprite[i].displayDir][Studio.sprite[i].dir];
+    }
+  }
+  
+  spriteIcon.setAttribute('x', xCoord - xOffset);
   spriteIcon.setAttribute('y', yCoord);
   
-  var spriteClipRect = document.getElementById('spriteClipRect' + i);
   spriteClipRect.setAttribute('x', xCoord);
   spriteClipRect.setAttribute('y', yCoord);
 
@@ -3972,10 +4295,11 @@ Studio.displayScore = function() {
     playerScore: Studio.playerScore,
     opponentScore: Studio.opponentScore
   });
+  score.setAttribute('visibility', 'visible');
 };
 
 var skinTheme = function (value) {
-  if (value === 'green') {
+  if (value === 'witch') {
     return skin;
   }
   return skin[value];
@@ -3988,23 +4312,36 @@ Studio.setBackground = function (value) {
 };
 
 Studio.setSprite = function (index, value) {
+  // Inherit some flags from the skin:
+  Studio.sprite[index].flags &= ~SF_SKINS_MASK;
+  Studio.sprite[index].flags |= (value !== 'hidden') ?
+                                  skinTheme(value).spriteFlags : 0;
+  
   var element = document.getElementById('sprite' + index);
   element.setAttribute('visibility',
                        (value === 'hidden') ? 'hidden' : 'visible');
-  if (value != 'hidden') {
+  if (value !== 'hidden') {
     element.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href',
                            skinTheme(value).sprite);
- }
+    element.setAttribute('width',
+                         (Studio.SPRITE_WIDTH - 2.083333) * spriteTotalFrames(index));
+    // call display right away since the frame number may have changed:
+    Studio.displaySprite(index);
+  }
 };
 
-Studio.hideSpeechBubble = function (index) {
-  var speechBubble = document.getElementById('speechBubble' + index);
+Studio.hideSpeechBubble = function (sayCmd) {
+  var speechBubble = document.getElementById('speechBubble' + sayCmd.index);
   speechBubble.setAttribute('visibility', 'hidden');
+  Studio.sayComplete++;
+  if (sayCmd.calledFromWhenGameRunning) {
+    Studio.loopingPendingSayCmds--;
+  }
 };
 
-var stampNextQueuedSayTick = function (numHandler) {
+var stampNextQueuedSayTick = function (executionCtx) {
   var tickCount = Studio.tickCount;
-  var sayQueue = Studio.sayQueues[numHandler];
+  var sayQueue = Studio.sayQueues[executionCtx];
   if (sayQueue) {
     // Use the last item in this event handler's queue of say commands,
     // clone that tickCount and add the SPEECH_BUBBLE_TIMEOUT (in ticks)
@@ -4017,17 +4354,21 @@ var stampNextQueuedSayTick = function (numHandler) {
   return tickCount;
 };
 
-Studio.saySprite = function (numHandler, index, text) {
-  if (!Studio.sayQueues[numHandler]) {
-    Studio.sayQueues[numHandler] = [];
+Studio.saySprite = function (executionCtx, index, text) {
+  if (!Studio.sayQueues[executionCtx]) {
+    Studio.sayQueues[executionCtx] = [];
   }
   
   var sayCmd = {
-      'tickCount': stampNextQueuedSayTick(numHandler),
+      'tickCount': stampNextQueuedSayTick(executionCtx),
+      'calledFromWhenGameRunning': Studio.calledFromWhenGameRunning,
       'index': index,
       'text': text
   };
-  Studio.sayQueues[numHandler].push(sayCmd);
+  if (Studio.calledFromWhenGameRunning) {
+    Studio.loopingPendingSayCmds++;
+  }
+  Studio.sayQueues[executionCtx].push(sayCmd);
 };
 
 Studio.moveSingle = function (spriteIndex, dir) {
@@ -4059,20 +4400,53 @@ Studio.moveSingle = function (spriteIndex, dir) {
   }
 };
 
-Studio.moveDistance = function (index, dir, distance) {
+Studio.moveDistance = function (executionCtx, index, dir, distance) {
+  var loopingFlag;
+
   switch (dir) {
     case Direction.NORTH:
-      Studio.sprite[index].queuedY = -distance / Studio.SQUARE_SIZE;
+    case Direction.SOUTH:
+      loopingFlag = SpriteFlags.LOOPING_MOVE_Y_PENDING;
+      if (dir === Direction.NORTH) {
+        distance *= -1;
+      }
+      var queuedY = distance / Studio.SQUARE_SIZE;
+      if ((0 !== Studio.sprite[index].queuedY) &&
+          (executionCtx === Studio.sprite[index].queuedYContext)) {
+        // Only queue a move if it is the same sprite, in the same direction,
+        // and in the same execution context:
+        Studio.sprite[index].yMoveQueue.push(queuedY);
+      } else {
+        // Reset any queued movement of this sprite on this axis
+        Studio.sprite[index].queuedYContext = executionCtx;
+        Studio.sprite[index].queuedY = queuedY;
+        Studio.sprite[index].yMoveQueue = [];
+      }
       break;
     case Direction.EAST:
-      Studio.sprite[index].queuedX = distance / Studio.SQUARE_SIZE;
-      break;
-    case Direction.SOUTH:
-      Studio.sprite[index].queuedY = distance / Studio.SQUARE_SIZE;
-      break;
     case Direction.WEST:
-      Studio.sprite[index].queuedX = -distance / Studio.SQUARE_SIZE;
+      loopingFlag = SpriteFlags.LOOPING_MOVE_X_PENDING;
+      if (dir === Direction.WEST) {
+        distance *= -1;
+      }
+      var queuedX = distance / Studio.SQUARE_SIZE;
+      if ((0 !== Studio.sprite[index].queuedX) &&
+          (executionCtx === Studio.sprite[index].queuedXContext)) {
+        // Only queue a move if it is the same sprite, in the same direction,
+        // and in the same execution context:
+        Studio.sprite[index].xMoveQueue.push(queuedX);
+      } else {
+        // Reset any queued movement of this sprite on this axis
+        Studio.sprite[index].queuedXContext = executionCtx;
+        Studio.sprite[index].queuedX = queuedX;
+        Studio.sprite[index].xMoveQueue = [];
+      }
       break;
+  }
+  if (Studio.calledFromWhenGameRunning) {
+    Studio.sprite[index].flags |= loopingFlag;
+  } else {
+    Studio.sprite[index].flags &= ~loopingFlag;
   }
 };
 
@@ -4082,23 +4456,23 @@ Studio.timedOut = function() {
 
 Studio.allFinishesComplete = function() {
   var i;
-  if (Studio.paddleFinish_) {
+  if (Studio.sprite0Finish_) {
     var finished, playSound;
-    for (i = 0, finished = 0; i < Studio.paddleFinishCount; i++) {
-      if (!Studio.paddleFinish_[i].finished) {
+    for (i = 0, finished = 0; i < Studio.sprite0FinishCount; i++) {
+      if (!Studio.sprite0Finish_[i].finished) {
         if (essentiallyEqual(Studio.sprite[0].x,
-                             Studio.paddleFinish_[i].x,
+                             Studio.sprite0Finish_[i].x,
                              tiles.FINISH_COLLIDE_DISTANCE) &&
             essentiallyEqual(Studio.sprite[0].y,
-                             Studio.paddleFinish_[i].y,
+                             Studio.sprite0Finish_[i].y,
                              tiles.FINISH_COLLIDE_DISTANCE)) {
-          Studio.paddleFinish_[i].finished = true;
+          Studio.sprite0Finish_[i].finished = true;
           finished++;
           playSound = true;
 
           // Change the finish icon to goalSuccess.
-          var paddleFinishIcon = document.getElementById('paddlefinish' + i);
-          paddleFinishIcon.setAttributeNS(
+          var sprite0FinishIcon = document.getElementById('sprite0finish' + i);
+          sprite0FinishIcon.setAttributeNS(
               'http://www.w3.org/1999/xlink',
               'xlink:href',
               skin.goalSuccess);
@@ -4107,11 +4481,11 @@ Studio.allFinishesComplete = function() {
         finished++;
       }
     }
-    if (playSound && finished != Studio.paddleFinishCount) {
+    if (playSound && finished != Studio.sprite0FinishCount) {
       // Play a sound unless we've hit the last flag
       BlocklyApps.playAudio('flag', {volume: 0.5});
     }
-    return (finished == Studio.paddleFinishCount);
+    return (finished == Studio.sprite0FinishCount);
   }
   return false;
 };
@@ -4142,19 +4516,114 @@ var checkFinished = function () {
   return false;
 };
 
-},{"../../locale/eu_es/common":32,"../../locale/eu_es/studio":33,"../base":2,"../codegen":6,"../dom":7,"../feedback.js":8,"../skins":9,"../templates/page.html":26,"./api":11,"./blocks":12,"./controls.html":13,"./tiles":18,"./visualization.html":19}],18:[function(require,module,exports){
+},{"../../locale/eu_es/common":34,"../../locale/eu_es/studio":35,"../base":2,"../codegen":6,"../dom":7,"../feedback.js":8,"../skins":9,"../templates/page.html":27,"./api":11,"./blocks":12,"./controls.html":13,"./extraControlRows.html":14,"./tiles":19,"./visualization.html":20}],19:[function(require,module,exports){
 'use strict';
 
-/**
- * Constants for cardinal directions.  Subsequent code assumes these are
- * in the range 0..3 and that opposites have an absolute difference of 2.
- * @enum {number}
- */
 exports.Direction = {
-  NORTH: 0,
-  EAST: 1,
-  SOUTH: 2,
-  WEST: 3
+  NORTH: 1,
+  EAST: 2,
+  SOUTH: 4,
+  WEST: 8,
+  NORTHEAST: 3,
+  SOUTHEAST: 6,
+  SOUTHWEST: 12,
+  NORTHWEST: 9,
+};
+
+var Dir = exports.Direction;
+
+//
+// Turn state machine, use as NextTurn[fromDir][toDir]
+//
+
+exports.NextTurn = {};
+
+exports.NextTurn[Dir.NORTH] = {};
+exports.NextTurn[Dir.NORTH][Dir.NORTH] = Dir.NORTH;
+exports.NextTurn[Dir.NORTH][Dir.EAST] = Dir.NORTHEAST;
+exports.NextTurn[Dir.NORTH][Dir.SOUTH] = Dir.NORTHEAST;
+exports.NextTurn[Dir.NORTH][Dir.WEST] = Dir.NORTHWEST;
+exports.NextTurn[Dir.NORTH][Dir.NORTHEAST] = Dir.NORTHEAST;
+exports.NextTurn[Dir.NORTH][Dir.SOUTHEAST] = Dir.NORTHEAST;
+exports.NextTurn[Dir.NORTH][Dir.SOUTHWEST] = Dir.NORTHWEST;
+exports.NextTurn[Dir.NORTH][Dir.NORTHWEST] = Dir.NORTHWEST;
+
+exports.NextTurn[Dir.EAST] = {};
+exports.NextTurn[Dir.EAST][Dir.NORTH] = Dir.NORTHEAST;
+exports.NextTurn[Dir.EAST][Dir.EAST] = Dir.EAST;
+exports.NextTurn[Dir.EAST][Dir.SOUTH] = Dir.SOUTHEAST;
+exports.NextTurn[Dir.EAST][Dir.WEST] = Dir.SOUTHEAST;
+exports.NextTurn[Dir.EAST][Dir.NORTHEAST] = Dir.NORTHEAST;
+exports.NextTurn[Dir.EAST][Dir.SOUTHEAST] = Dir.SOUTHEAST;
+exports.NextTurn[Dir.EAST][Dir.SOUTHWEST] = Dir.SOUTHEAST;
+exports.NextTurn[Dir.EAST][Dir.NORTHWEST] = Dir.NORTHEAST;
+
+exports.NextTurn[Dir.SOUTH] = {};
+exports.NextTurn[Dir.SOUTH][Dir.NORTH] = Dir.SOUTHEAST;
+exports.NextTurn[Dir.SOUTH][Dir.EAST] = Dir.SOUTHEAST;
+exports.NextTurn[Dir.SOUTH][Dir.SOUTH] = Dir.SOUTH;
+exports.NextTurn[Dir.SOUTH][Dir.WEST] = Dir.SOUTHWEST;
+exports.NextTurn[Dir.SOUTH][Dir.NORTHEAST] = Dir.SOUTHEAST;
+exports.NextTurn[Dir.SOUTH][Dir.SOUTHEAST] = Dir.SOUTHEAST;
+exports.NextTurn[Dir.SOUTH][Dir.SOUTHWEST] = Dir.SOUTHWEST;
+exports.NextTurn[Dir.SOUTH][Dir.NORTHWEST] = Dir.SOUTHWEST;
+
+exports.NextTurn[Dir.WEST] = {};
+exports.NextTurn[Dir.WEST][Dir.NORTH] = Dir.NORTHWEST;
+exports.NextTurn[Dir.WEST][Dir.EAST] = Dir.SOUTHWEST;
+exports.NextTurn[Dir.WEST][Dir.SOUTH] = Dir.SOUTHWEST;
+exports.NextTurn[Dir.WEST][Dir.WEST] = Dir.WEST;
+exports.NextTurn[Dir.WEST][Dir.NORTHEAST] = Dir.NORTHWEST;
+exports.NextTurn[Dir.WEST][Dir.SOUTHEAST] = Dir.SOUTHWEST;
+exports.NextTurn[Dir.WEST][Dir.SOUTHWEST] = Dir.SOUTHWEST;
+exports.NextTurn[Dir.WEST][Dir.NORTHWEST] = Dir.NORTHWEST;
+
+exports.NextTurn[Dir.NORTHEAST] = {};
+exports.NextTurn[Dir.NORTHEAST][Dir.NORTH] = Dir.NORTH;
+exports.NextTurn[Dir.NORTHEAST][Dir.EAST] = Dir.EAST;
+exports.NextTurn[Dir.NORTHEAST][Dir.SOUTH] = Dir.EAST;
+exports.NextTurn[Dir.NORTHEAST][Dir.WEST] = Dir.NORTH;
+exports.NextTurn[Dir.NORTHEAST][Dir.NORTHEAST] = Dir.NORTHEAST;
+exports.NextTurn[Dir.NORTHEAST][Dir.SOUTHEAST] = Dir.EAST;
+exports.NextTurn[Dir.NORTHEAST][Dir.SOUTHWEST] = Dir.EAST;
+exports.NextTurn[Dir.NORTHEAST][Dir.NORTHWEST] = Dir.NORTH;
+
+exports.NextTurn[Dir.SOUTHEAST] = {};
+exports.NextTurn[Dir.SOUTHEAST][Dir.NORTH] = Dir.EAST;
+exports.NextTurn[Dir.SOUTHEAST][Dir.EAST] = Dir.EAST;
+exports.NextTurn[Dir.SOUTHEAST][Dir.SOUTH] = Dir.SOUTH;
+exports.NextTurn[Dir.SOUTHEAST][Dir.WEST] = Dir.SOUTH;
+exports.NextTurn[Dir.SOUTHEAST][Dir.NORTHEAST] = Dir.EAST;
+exports.NextTurn[Dir.SOUTHEAST][Dir.SOUTHEAST] = Dir.SOUTHEAST;
+exports.NextTurn[Dir.SOUTHEAST][Dir.SOUTHWEST] = Dir.SOUTH;
+exports.NextTurn[Dir.SOUTHEAST][Dir.NORTHWEST] = Dir.SOUTH;
+
+exports.NextTurn[Dir.SOUTHWEST] = {};
+exports.NextTurn[Dir.SOUTHWEST][Dir.NORTH] = Dir.WEST;
+exports.NextTurn[Dir.SOUTHWEST][Dir.EAST] = Dir.SOUTH;
+exports.NextTurn[Dir.SOUTHWEST][Dir.SOUTH] = Dir.SOUTH;
+exports.NextTurn[Dir.SOUTHWEST][Dir.WEST] = Dir.WEST;
+exports.NextTurn[Dir.SOUTHWEST][Dir.NORTHEAST] = Dir.SOUTH;
+exports.NextTurn[Dir.SOUTHWEST][Dir.SOUTHEAST] = Dir.SOUTH;
+exports.NextTurn[Dir.SOUTHWEST][Dir.SOUTHWEST] = Dir.SOUTHWEST;
+exports.NextTurn[Dir.SOUTHWEST][Dir.NORTHWEST] = Dir.WEST;
+
+exports.NextTurn[Dir.NORTHWEST] = {};
+exports.NextTurn[Dir.NORTHWEST][Dir.NORTH] = Dir.NORTH;
+exports.NextTurn[Dir.NORTHWEST][Dir.EAST] = Dir.NORTH;
+exports.NextTurn[Dir.NORTHWEST][Dir.SOUTH] = Dir.WEST;
+exports.NextTurn[Dir.NORTHWEST][Dir.WEST] = Dir.WEST;
+exports.NextTurn[Dir.NORTHWEST][Dir.NORTHEAST] = Dir.NORTH;
+exports.NextTurn[Dir.NORTHWEST][Dir.SOUTHEAST] = Dir.WEST;
+exports.NextTurn[Dir.NORTHWEST][Dir.SOUTHWEST] = Dir.WEST;
+exports.NextTurn[Dir.NORTHWEST][Dir.NORTHWEST] = Dir.NORTHWEST;
+
+
+exports.Emotions = {
+  NORMAL: 0,
+  HAPPY: 1,
+  ANGRY: 2,
+  SAD: 3,
 };
 
 exports.FINISH_COLLIDE_DISTANCE = 1.5;
@@ -4168,11 +4637,11 @@ exports.DEFAULT_SPRITE_SPEED = 0.1;
  */
 exports.SquareType = {
   OPEN: 0,
-  PADDLEFINISH: 8,
+  SPRITE0FINISH: 1,
   SPRITESTART: 16,
 };
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4193,7 +4662,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":34}],20:[function(require,module,exports){
+},{"ejs":36}],21:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4214,7 +4683,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":34}],21:[function(require,module,exports){
+},{"ejs":36}],22:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4227,7 +4696,7 @@ escape = escape || function (html){
 };
 var buf = [];
 with (locals || {}) { (function(){ 
- buf.push('');1; var msg = require('../../locale/eu_es/common'); ; buf.push('\n\n');3; if (data.ok) {; buf.push('  <div class="farSide" style="padding: 1ex 3ex 0">\n    <button id="ok-button" class="secondary">\n      ', escape((5,  msg.dialogOK() )), '\n    </button>\n  </div>\n');8; };; buf.push('\n');9; if (data.previousLevel) {; buf.push('  <button id="back-button" class="launch">\n    ', escape((10,  msg.backToPreviousLevel() )), '\n  </button>\n');12; };; buf.push('\n');13; if (data.tryAgain) {; buf.push('  <button id="again-button" class="launch">\n    ', escape((14,  msg.tryAgain() )), '\n  </button>\n');16; };; buf.push('\n');17; if (data.nextLevel) {; buf.push('  <button id="continue-button" class="launch">\n    ', escape((18,  msg.continue() )), '\n  </button>\n');20; };; buf.push('\n');21; if (data.facebookUrl) {; buf.push('  <a href=', escape((21,  data.facebookUrl )), ' target="_blank">\n    <img src=', escape((22,  BlocklyApps.assetUrl("media/facebook_purple.png") )), '>\n  </a>\n');24; };; buf.push('\n');25; if (data.twitterUrl) {; buf.push('  <a href=', escape((25,  data.twitterUrl )), ' target="_blank">\n    <img src=', escape((26,  BlocklyApps.assetUrl("media/twitter_purple.png") )), ' >\n  </a>\n  <br>\n');29; };; buf.push('\n');30; if (data.sharingUrl) {; buf.push('  <input type="text" id="sharing-input" value=', escape((30,  data.sharingUrl )), ' readonly>\n');31; };; buf.push('\n');32; if (data.saveToGalleryUrl) {; buf.push('  <button id="save-to-gallery-button" class="launch">\n    ', escape((33,  msg.saveToGallery() )), '\n  </button>\n');35; };; buf.push(''); })();
+ buf.push('');1; var msg = require('../../locale/eu_es/common'); ; buf.push('\n\n');3; if (data.ok) {; buf.push('  <div class="farSide" style="padding: 1ex 3ex 0">\n    <button id="ok-button" class="secondary">\n      ', escape((5,  msg.dialogOK() )), '\n    </button>\n  </div>\n');8; }; buf.push('\n');9; if (data.previousLevel) {; buf.push('  <button id="back-button" class="launch">\n    ', escape((10,  msg.backToPreviousLevel() )), '\n  </button>\n');12; }; buf.push('\n');13; if (data.tryAgain) {; buf.push('  <button id="again-button" class="launch">\n    ', escape((14,  msg.tryAgain() )), '\n  </button>\n');16; }; buf.push('\n');17; if (data.nextLevel) {; buf.push('  <button id="continue-button" class="launch">\n    ', escape((18,  msg.continue() )), '\n  </button>\n');20; }; buf.push(''); })();
 } 
 return buf.join('');
 };
@@ -4235,7 +4704,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/eu_es/common":32,"ejs":34}],22:[function(require,module,exports){
+},{"../../locale/eu_es/common":34,"ejs":36}],23:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4256,7 +4725,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":34}],23:[function(require,module,exports){
+},{"ejs":36}],24:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4277,7 +4746,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/eu_es/common":32,"ejs":34}],24:[function(require,module,exports){
+},{"../../locale/eu_es/common":34,"ejs":36}],25:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4300,7 +4769,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/eu_es/common":32,"ejs":34}],25:[function(require,module,exports){
+},{"../../locale/eu_es/common":34,"ejs":36}],26:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4321,7 +4790,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/eu_es/common":32,"ejs":34}],26:[function(require,module,exports){
+},{"../../locale/eu_es/common":34,"ejs":36}],27:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4335,7 +4804,7 @@ escape = escape || function (html){
 var buf = [];
 with (locals || {}) { (function(){ 
  buf.push('');1; var msg = require('../../locale/eu_es/common'); ; buf.push('\n\n<div id="rotateContainer" style="background-image: url(', escape((3,  assetUrl('media/mobile_tutorial_turnphone.png') )), ')">\n  <div id="rotateText">\n    <p>', escape((5,  msg.rotateText() )), '<br>', escape((5,  msg.orientationLock() )), '</p>\n  </div>\n</div>\n\n');9; var instructions = function() {; buf.push('  <div id="bubble">\n    <img id="prompt-icon">\n    <p id="prompt">\n    </p>\n  </div>\n');14; };; buf.push('\n');15; // A spot for the server to inject some HTML for help content.
-var helpArea = function(html) {; buf.push('  ');16; if (html) {; buf.push('    <div id="helpArea">\n      ', (17,  html ), '\n    </div>\n  ');19; }; buf.push('');19; };; buf.push('\n');20; var codeArea = function() {; buf.push('  <div id="codeTextbox" contenteditable spellcheck=false>\n    // ', escape((21,  msg.typeCode() )), '\n    <br>\n    // ', escape((23,  msg.typeHint() )), '\n    <br>\n  </div>\n');26; }; ; buf.push('\n\n<div id="visualization">\n  ', (29,  data.visualization ), '\n</div>\n\n<div id="belowVisualization">\n\n  <table id="gameButtons">\n    <tr>\n      <td style="width:100%;">\n        <button id="runButton" class="launch">\n          <img src="', escape((38,  assetUrl('media/1x1.gif') )), '" class="run icon21">\n          ', escape((39,  msg.runProgram() )), '\n        </button>\n        <button id="resetButton" class="launch" style="display: none">\n          <img src="', escape((42,  assetUrl('media/1x1.gif') )), '" class="stop icon21">\n            ', escape((43,  msg.resetProgram() )), '\n        </button>\n      </td>\n      ');46; if (data.controls) { ; buf.push('\n        ', (47,  data.controls ), '\n      ');48; } ; buf.push('\n    </tr>\n  </table>\n\n  ');52; instructions() ; buf.push('\n  ');53; helpArea(data.helpHtml) ; buf.push('\n\n</div>\n\n<div id="blockly">\n  <div id="headers" dir="', escape((58,  data.localeDirection )), '">\n    <div id="toolbox-header" class="blockly-header"><span>', escape((59,  msg.toolboxHeader() )), '</span></div>\n    <div id="workspace-header" class="blockly-header">\n      <span id="blockCounter">', escape((61,  msg.workspaceHeader() )), '</span>\n      <div id="blockUsed" class=', escape((62,  data.blockCounterClass )), '>\n        ', escape((63,  data.blockUsed )), '\n      </div>\n      <span>&nbsp;/</span>\n      <span id="idealBlockNumber">', escape((66,  data.idealBlockNumber )), '</span>\n    </div>\n    <div id="show-code-header" class="blockly-header"><span>', escape((68,  msg.showCodeHeader() )), '</span></div>\n  </div>\n</div>\n\n<div class="clear"></div>\n\n');74; codeArea() ; buf.push('\n'); })();
+var helpArea = function(html) {; buf.push('  ');16; if (html) {; buf.push('    <div id="helpArea">\n      ', (17,  html ), '\n    </div>\n  ');19; }; buf.push('');19; };; buf.push('\n');20; var codeArea = function() {; buf.push('  <div id="codeTextbox" contenteditable spellcheck=false>\n    // ', escape((21,  msg.typeCode() )), '\n    <br>\n    // ', escape((23,  msg.typeHint() )), '\n    <br>\n  </div>\n');26; }; ; buf.push('\n\n<div id="visualization">\n  ', (29,  data.visualization ), '\n</div>\n\n<div id="belowVisualization">\n\n  <table id="gameButtons">\n    <tr>\n      <td style="width:100%;">\n        <button id="runButton" class="launch">\n          <img src="', escape((38,  assetUrl('media/1x1.gif') )), '" class="run icon21">\n          ', escape((39,  msg.runProgram() )), '\n        </button>\n        <button id="resetButton" class="launch" style="display: none">\n          <img src="', escape((42,  assetUrl('media/1x1.gif') )), '" class="stop icon21">\n            ', escape((43,  msg.resetProgram() )), '\n        </button>\n      </td>\n      ');46; if (data.controls) { ; buf.push('\n        ', (47,  data.controls ), '\n      ');48; } ; buf.push('\n    </tr>\n    ');50; if (data.extraControlRows) { ; buf.push('\n      ', (51,  data.extraControlRows ), '\n    ');52; } ; buf.push('\n  </table>\n\n  ');55; instructions() ; buf.push('\n  ');56; helpArea(data.helpHtml) ; buf.push('\n\n</div>\n\n<div id="blockly">\n  <div id="headers" dir="', escape((61,  data.localeDirection )), '">\n    <div id="toolbox-header" class="blockly-header"><span>', escape((62,  msg.toolboxHeader() )), '</span></div>\n    <div id="workspace-header" class="blockly-header">\n      <span id="blockCounter">', escape((64,  msg.workspaceHeader() )), '</span>\n      <div id="blockUsed" class=', escape((65,  data.blockCounterClass )), '>\n        ', escape((66,  data.blockUsed )), '\n      </div>\n      <span>&nbsp;/</span>\n      <span id="idealBlockNumber">', escape((69,  data.idealBlockNumber )), '</span>\n    </div>\n    <div id="show-code-header" class="blockly-header"><span>', escape((71,  msg.showCodeHeader() )), '</span></div>\n  </div>\n</div>\n\n<div class="clear"></div>\n\n');77; codeArea() ; buf.push('\n'); })();
 } 
 return buf.join('');
 };
@@ -4343,7 +4812,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/eu_es/common":32,"ejs":34}],27:[function(require,module,exports){
+},{"../../locale/eu_es/common":34,"ejs":36}],28:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4365,7 +4834,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":34}],28:[function(require,module,exports){
+},{"ejs":36}],29:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4378,7 +4847,7 @@ escape = escape || function (html){
 };
 var buf = [];
 with (locals || {}) { (function(){ 
- buf.push('');1; var msg = require('../../locale/eu_es/common'); ; buf.push('\n\n<a id="show-code-button" href="#">', escape((3,  msg.showGeneratedCode() )), '</a>\n'); })();
+ buf.push('');1; var msg = require('../../locale/eu_es/common'); ; buf.push('\n');2; if (options.feedbackImage) { ; buf.push('\n  <div class="sharing-image">\n    <img class="feedback-image" src="', escape((4,  options.feedbackImage )), '">\n  </div>\n');6; } ; buf.push('\n\n<div class="sharing">\n');9; if (options.alreadySaved) { ; buf.push('\n  <div class="saved-to-gallery">\n    ', escape((11,  msg.savedToGallery() )), '\n  </div>\n');13; } else if (options.saveToGalleryUrl) { ; buf.push('\n  <div class="social-buttons">\n  <button id="save-to-gallery-button" class="launch">\n    ', escape((16,  msg.saveToGallery() )), '\n  </button>\n  </div>\n');19; } ; buf.push('\n\n');21; if (options.response && options.response.level_source) { ; buf.push('\n  ');22; if (options.appStrings && options.appStrings.sharingText) { ; buf.push('\n    <div>', escape((23,  options.appStrings.sharingText )), '</div>\n  ');24; } ; buf.push('\n\n  <div>\n    <input type="text" id="sharing-input" value=', escape((27,  options.response.level_source )), ' readonly>\n  </div>\n\n  <div class=\'social-buttons\'>\n    ');31; if (options.facebookUrl) {; buf.push('      <a href=', escape((31,  options.facebookUrl )), ' target="_blank">\n        <img src=', escape((32,  BlocklyApps.assetUrl("media/facebook_purple.png") )), '>\n      </a>\n    ');34; }; buf.push('  \n    ');35; if (options.twitterUrl) {; buf.push('      <a href=', escape((35,  options.twitterUrl )), ' target="_blank">\n        <img src=', escape((36,  BlocklyApps.assetUrl("media/twitter_purple.png") )), ' >\n      </a>\n    ');38; }; buf.push('  </div>\n');39; } ; buf.push('\n</div>\n\n'); })();
 } 
 return buf.join('');
 };
@@ -4386,7 +4855,28 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/eu_es/common":32,"ejs":34}],29:[function(require,module,exports){
+},{"../../locale/eu_es/common":34,"ejs":36}],30:[function(require,module,exports){
+module.exports= (function() {
+  var t = function anonymous(locals, filters, escape, rethrow) {
+escape = escape || function (html){
+  return String(html)
+    .replace(/&(?!#?[a-zA-Z0-9]+;)/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/'/g, '&#39;')
+    .replace(/"/g, '&quot;');
+};
+var buf = [];
+with (locals || {}) { (function(){ 
+ buf.push('');1; var msg = require('../../locale/eu_es/common'); ; buf.push('\n\n<p id="num-lines-of-code" class="lines-of-code-message">\n  ', escape((4,  msg.numLinesOfCodeWritten({ numLines: numLinesWritten }) )), '\n  <button id="show-code-button" href="#">\n    ', escape((6,  msg.showGeneratedCode() )), '\n  </button>\n</p>\n\n');10; if (totalNumLinesWritten !== 0) { ; buf.push('\n  <p id="total-num-lines-of-code" class="lines-of-code-message">\n    ', escape((12,  msg.totalNumLinesOfCodeWritten({ numLines: totalNumLinesWritten }) )), '\n  </p>\n');14; } ; buf.push('\n'); })();
+} 
+return buf.join('');
+};
+  return function(locals) {
+    return t(locals, require("ejs").filters);
+  }
+}());
+},{"../../locale/eu_es/common":34,"ejs":36}],31:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4407,7 +4897,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":34}],30:[function(require,module,exports){
+},{"ejs":36}],32:[function(require,module,exports){
 exports.shallowCopy = function(source) {
   var result = {};
   for (var prop in source) {
@@ -4449,7 +4939,18 @@ exports.mod = function(number, mod) {
   return ((number % mod) + mod) % mod;
 };
 
-},{}],31:[function(require,module,exports){
+/**
+ * Generates an array of integers from start to end inclusive
+ */
+exports.range = function(start, end) {
+  var ints = [];
+  for (var i = start; i <= end; i++) {
+    ints.push(i);
+  }
+  return ints;
+};
+
+},{}],33:[function(require,module,exports){
 // Serializes an XML DOM node to a string.
 exports.serialize = function(node) {
   var serializer = new XMLSerializer();
@@ -4477,7 +4978,7 @@ exports.parseElement = function(text) {
   return element;
 };
 
-},{}],32:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.eu=function(n){return n===1?"one":"other"}
 exports.blocklyMessage = function(d){return "Blockly"};
 
@@ -4579,6 +5080,8 @@ exports.backToPreviousLevel = function(d){return "Back to previous level"};
 
 exports.saveToGallery = function(d){return "Save to your gallery"};
 
+exports.savedToGallery = function(d){return "Saved to your gallery!"};
+
 exports.typeCode = function(d){return "Type your JavaScript code below these instructions."};
 
 exports.typeFuncs = function(d){return "Available functions:%1"};
@@ -4604,7 +5107,7 @@ exports.signup = function(d){return "Sign up for the intro course"};
 exports.hintHeader = function(d){return "Here's a tip:"};
 
 
-},{"messageformat":45}],33:[function(require,module,exports){
+},{"messageformat":47}],35:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.eu=function(n){return n===1?"one":"other"}
 exports.continue = function(d){return "Continue"};
 
@@ -4634,6 +5137,8 @@ exports.moveDistance400 = function(d){return "400 pixels"};
 
 exports.moveDistanceTooltip = function(d){return "Move a character a specific distance in the specified direction."};
 
+exports.moveSprite = function(d){return "move"};
+
 exports.moveSprite1 = function(d){return "move character 1"};
 
 exports.moveSprite2 = function(d){return "move character 2"};
@@ -4657,8 +5162,6 @@ exports.moveLeftTooltip = function(d){return "Move the paddle to the left."};
 exports.moveRight = function(d){return "move right"};
 
 exports.moveRightTooltip = function(d){return "Move the paddle to the right."};
-
-exports.moveSeparator = function(d){return " "};
 
 exports.moveUp = function(d){return "move up"};
 
@@ -4708,6 +5211,8 @@ exports.repeatUntilFinish = function(d){return "repeat until finish"};
 
 exports.right = function(d){return "right"};
 
+exports.saySprite = function(d){return "say"};
+
 exports.saySprite1 = function(d){return "character 1 say"};
 
 exports.saySprite2 = function(d){return "character 2 say"};
@@ -4740,6 +5245,18 @@ exports.setBackgroundUnderwater = function(d){return "set underwater background"
 
 exports.setBackgroundTooltip = function(d){return "Sets the background image"};
 
+exports.setSpriteEmotionAngry = function(d){return "to a angry emotion"};
+
+exports.setSpriteEmotionHappy = function(d){return "to a happy emotion"};
+
+exports.setSpriteEmotionNormal = function(d){return "to a normal emotion"};
+
+exports.setSpriteEmotionRandom = function(d){return "to a random emotion"};
+
+exports.setSpriteEmotionSad = function(d){return "to a sad emotion"};
+
+exports.setSpriteEmotionTooltip = function(d){return "Sets the sprite emotion"};
+
 exports.setSpriteGreen = function(d){return "to a green image"};
 
 exports.setSpriteHidden = function(d){return "to a hidden image"};
@@ -4751,6 +5268,8 @@ exports.setSpritePink = function(d){return "to a pink image"};
 exports.setSpritePurple = function(d){return "to a purple image"};
 
 exports.setSpriteRandom = function(d){return "to a random image"};
+
+exports.setSpriteWitch = function(d){return "to a witch image"};
 
 exports.setSpriteTooltip = function(d){return "Sets the character image"};
 
@@ -4773,6 +5292,8 @@ exports.share = function(d){return "Share"};
 exports.shareStudioTwitter = function(d){return "Check out the story I made. I wrote it myself with @codeorg"};
 
 exports.shareGame = function(d){return "Share your story:"};
+
+exports.setSprite = function(d){return "set"};
 
 exports.setSprite1 = function(d){return "set character 1"};
 
@@ -4807,6 +5328,8 @@ exports.whenLeftTooltip = function(d){return "Execute the actions below when the
 exports.whenRight = function(d){return "when Right arrow"};
 
 exports.whenRightTooltip = function(d){return "Execute the actions below when the Right arrow button is pressed."};
+
+exports.whenSpriteClicked = function(d){return "when sprite clicked"};
 
 exports.whenSpriteClicked1 = function(d){return "when character 1 clicked"};
 
@@ -4855,7 +5378,7 @@ exports.whenUpTooltip = function(d){return "Execute the actions below when the U
 exports.yes = function(d){return "Yes"};
 
 
-},{"messageformat":45}],34:[function(require,module,exports){
+},{"messageformat":47}],36:[function(require,module,exports){
 
 /*!
  * EJS
@@ -5214,7 +5737,7 @@ if (require.extensions) {
   });
 }
 
-},{"./filters":35,"./utils":36,"fs":37,"path":39}],35:[function(require,module,exports){
+},{"./filters":37,"./utils":38,"fs":39,"path":41}],37:[function(require,module,exports){
 /*!
  * EJS - Filters
  * Copyright(c) 2010 TJ Holowaychuk <tj@vision-media.ca>
@@ -5417,7 +5940,7 @@ exports.json = function(obj){
   return JSON.stringify(obj);
 };
 
-},{}],36:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 
 /*!
  * EJS
@@ -5443,9 +5966,9 @@ exports.escape = function(html){
 };
  
 
-},{}],37:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 
-},{}],38:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -5500,7 +6023,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],39:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -5728,7 +6251,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require("/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":38}],40:[function(require,module,exports){
+},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":40}],42:[function(require,module,exports){
 (function (global){
 /*! http://mths.be/punycode v1.2.4 by @mathias */
 ;(function(root) {
@@ -6239,7 +6762,7 @@ var substr = 'ab'.substr(-1) === 'b'
 }(this));
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],41:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -6325,7 +6848,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],42:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -6412,13 +6935,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],43:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":41,"./encode":42}],44:[function(require,module,exports){
+},{"./decode":43,"./encode":44}],46:[function(require,module,exports){
 /*jshint strict:true node:true es5:true onevar:true laxcomma:true laxbreak:true eqeqeq:true immed:true latedef:true*/
 (function () {
   "use strict";
@@ -7051,7 +7574,7 @@ function parseHost(host) {
 
 }());
 
-},{"punycode":40,"querystring":43}],45:[function(require,module,exports){
+},{"punycode":42,"querystring":45}],47:[function(require,module,exports){
 /**
  * messageformat.js
  *
@@ -8634,4 +9157,4 @@ function parseHost(host) {
 
 })( this );
 
-},{}]},{},[15])
+},{}]},{},[16])

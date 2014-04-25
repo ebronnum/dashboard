@@ -80,16 +80,21 @@ namespace :seed do
   COL_X = 'X'
   COL_Y = 'Y'
   COL_START_DIRECTION = 'Start_direction'
+  COL_START_BLOCKS = 'Start_blocks'
+  COL_TOOLBOX_BLOCKS = 'Toolbox_blocks'
   COL_SOLUTION = 'Solution'
 
   task custom_levels: :environment do
     Level.transaction do
-      CSV.read("config/scripts/custom_levels.csv", headers: true).each do |row|
-        levels = get_level_by_name(row[COL_NAME])
+      JSON.parse(File.read("config/scripts/custom_levels.json")).each do |row|
+        levels = get_level_by_name(row['name'])
         level = levels.first_or_create
-        game = Game.where(name: row[COL_GAME]).first
-        solution = LevelSource.lookup(level, row[COL_SOLUTION])
-        level.update(instructions: row[COL_INSTRUCTIONS], skin: row[COL_SKIN], maze: row[COL_MAZE], x: row[COL_X], y: row[COL_Y], start_direction: row[COL_START_DIRECTION], game: game, solution_level_source: solution)
+        game = Game.find(row['game_id'])
+        level.update(instructions: row['instructions'], skin: row['skin'], maze: row['maze'], x: row['x'], y: row['y'], start_blocks: row['start_blocks'], toolbox_blocks: row['start_blocks'], start_direction: row['start_direction'], game: game)
+        solution = row['properties']['solution_blocks']
+        if solution
+          level.update(solution_level_source: LevelSource.lookup(level, solution))
+        end
       end
     end
   end
@@ -102,7 +107,7 @@ namespace :seed do
     levels
   end
 
-  task scripts: :environment do
+  task scripts: [:games, :environment] do
     Rake::Task["seed:custom_levels"].invoke
     Script.transaction do
       game_map = Game.all.index_by(&:name)
@@ -115,10 +120,13 @@ namespace :seed do
                  { file: 'config/2014_script.csv', params: { name: '2014 Levels', trophies: false, hidden: true }},
                  { file: 'config/builder_script.csv', params: { name: 'Builder Levels', trophies: false, hidden: true }},
                  { file: 'config/flappy_script.csv', params: { name: 'Flappy Levels', trophies: false, hidden: true }},
-                 { file: 'config/jigsaw_script.csv', params: { name: 'Jigsaw Levels', trophies: false, hidden: true }},
-                 { file: 'config/scripts/sample_level_builder.script.csv', custom: true, params: { name: 'sample_level_builder', trophies: false, hidden: true}}
+                 { file: 'config/jigsaw_script.csv', params: { name: 'Jigsaw Levels', trophies: false, hidden: true }}
                 ]
-      sources.each do |source|
+      custom_sources = Dir.glob("config/scripts/*.script.csv").map do |script|
+        { file: script, custom: true, params: { name: File.basename(script, ".script.csv"), trophies: false, hidden: true }}
+      end
+
+      (sources + custom_sources).each do |source|
         script = Script.where(source[:params]).first_or_create
         old_script_levels = ScriptLevel.where(script: script).to_a  # tracks which levels are no longer included in script.
         game_index = Hash.new{|h,k| h[k] = 0}
@@ -127,9 +135,10 @@ namespace :seed do
           if source[:custom]
             level = get_level_by_name(row[COL_NAME]).first
             if level.nil?
-              raise "There does not exist a level with the name '#{row[COL_NAME]}'. From the row: #{row}"
+              raise "There does not exist a level with the name '#{row[COL_NAME]}'. From the row: #{row}, From the script: #{source}."
             end
             game = level.game
+            raise "Level #{level.to_json}, does not have a game." if game.nil?
           else
             game = game_map[row[COL_GAME].squish]
             level = Level.where(game: game, level_num: row[COL_LEVEL]).first_or_create
@@ -361,6 +370,6 @@ namespace :seed do
 
   task analyze_data: [:ideal_solutions, :frequent_level_sources]
 
-  task all: [:videos, :concepts, :games, :scripts, :trophies, :prize_providers, :callouts]
+  task all: [:videos, :concepts, :scripts, :trophies, :prize_providers, :callouts]
 
 end
