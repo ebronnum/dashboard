@@ -69,14 +69,14 @@ class Script < ActiveRecord::Base
       ApplicationHelper.reset_db self
       # array of script hashes
       Dir.glob("config/scripts/default/*.yml").map do |yml|
-        options, data = ApplicationHelper.load_yaml(yml, SCRIPT_MAP)
+        ApplicationHelper.load_yaml(yml, SCRIPT_MAP)
+      end.sort_by { |options, _| options['id'] }.map do |options, data|
         add_scripts(options, data)
       end
 
       SCRIPTS_GLOB.each do |file|
         script_name = file.gsub(/.*\/(\w+).script$/, '\1')
-        puts "file=#{file},name=#{script_name}"
-        csv, _ = Open3.capture2("config/generate_scripts #{file}")
+        csv = `config/generate_scripts #{file}`
         params = {name: script_name, trophies: false, hidden: true}
         data = ApplicationHelper.parse_csv(csv, "\t", SCRIPT_MAP)
         add_scripts(params, data, true)
@@ -86,9 +86,9 @@ class Script < ActiveRecord::Base
   end
 
   def self.add_scripts(options, data, custom=false)
-    options.keys.each { |k|
+    options.each_key do |k|
       options[k] = Video.find_by_key(options[k]) if k == 'wrapup_video'
-    }
+    end
     game_map = Game.all.index_by(&:name)
     concept_map = Concept.all.index_by(&:name)
 
@@ -129,7 +129,12 @@ class Script < ActiveRecord::Base
 
       # Update script_level with script and chapter. Note: we should not have two script_levels associated with the
       # same script and chapter ids.
-      script_level = ScriptLevel.where(script: script, chapter: (index + 1), game_chapter: (game_index[game.id] += 1), level: level).first_or_create
+      script_level = ScriptLevel.where(
+          script: script,
+          chapter: (index + 1),
+          game_chapter: (game_index[game.id] += 1),
+          level: level
+      ).first_or_create
       old_script_levels.delete(script_level) # we found this ScriptLevel in a script, so don't delete it
 
       # Set stage in custom ScriptLevels
