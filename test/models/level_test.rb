@@ -4,7 +4,7 @@ include ActionDispatch::TestProcess
 class LevelTest < ActiveSupport::TestCase
   setup do
     @turtle_data = {:game_id=>23, :name=>"__bob4", :level_num=>"custom", :skin=>"artist", :instructions=>"sdfdfs"}
-    @custom_turtle_data = @turtle_data.merge(:solution_level_source_id=>4, :user_id=>1, :program=>"<hey>")
+    @custom_turtle_data = {:solution_level_source_id=>4, :user_id=>1}
     @maze_data = {:game_id=>25, :name=>"__bob4", :level_num=>"custom", :skin=>"birds", :instructions=>"sdfdfs"}
     @custom_maze_data = @maze_data.merge(:user_id=>1)
 
@@ -59,8 +59,8 @@ class LevelTest < ActiveSupport::TestCase
   end
 
   test "create turtle level of correct subclass" do
-    level = Turtle.create(@turtle_data)
-    assert_equal "Turtle", level.type
+    level = Artist.create(@turtle_data)
+    assert_equal "Artist", level.type
   end
 
   test "create maze level of correct subclass" do
@@ -69,9 +69,8 @@ class LevelTest < ActiveSupport::TestCase
   end
 
   test "create turtle level from level builder" do
-    level = Turtle.create_from_level_builder(@custom_turtle_data)
+    level = Artist.create_from_level_builder(@turtle_data.merge(:program=>"<hey>"), @custom_turtle_data)
 
-    assert_equal "Turtle", level.type
-    assert_equal level.instructions, @custom_turtle_data[:instructions]
+    assert_equal "Artist", level.type
   end
 end
