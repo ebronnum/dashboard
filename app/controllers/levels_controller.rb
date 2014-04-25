@@ -98,7 +98,8 @@ class LevelsController < ApplicationController
 
   def new
     authorize! :create, :level
-    case params[:type]
+    @type = params[:type]
+    case @type
     when 'artist'
       artist_builder
     when 'maze', 'karel'
