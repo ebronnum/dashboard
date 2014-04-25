@@ -35,7 +35,7 @@ namespace :seed do
     Rake::Task["seed:custom_levels"].invoke
     Script.setup
     # Generate locale file for scripts
-    hash = {'en' => {'data' => {'script' => {'name' => {}}}}}
+    # hash = {'en' => {'data' => {'script' => {'name' => {}}}}}
     # hash["en"]["data"]["script"]["name"][script_name][stage] = stage
     # hash["en"]["data"]["script"]["name"][script_name] = {'desc' => "Custom script #{script_name}"}
     File::open(File.expand_path('config/locales/scripts.en.yml'), "w+") do |f|
