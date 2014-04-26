@@ -62,23 +62,22 @@ class Script < ActiveRecord::Base
 
   SCRIPT_CSV_MAPPING = %w(Game Name Level:level_num Skin Concepts Url:level_url Stage)
   SCRIPT_MAP = Hash[SCRIPT_CSV_MAPPING.map { |x| x.include?(':') ? x.split(':') : [x, x.downcase] }]
-  SCRIPTS_GLOB = Dir.glob('config/scripts/**/*.script').flatten
 
   def self.setup
     Script.transaction do
       ApplicationHelper.reset_db self
-      # array of script hashes
+
+      # Load default scripts from yml (csv embedded)
       Dir.glob("config/scripts/default/*.yml").map do |yml|
         ApplicationHelper.load_yaml(yml, SCRIPT_MAP)
       end.sort_by { |options, _| options['id'] }.map do |options, data|
         add_scripts(options, data)
       end
 
-      SCRIPTS_GLOB.each do |file|
-        script_name = file.gsub(/.*\/(\w+).script$/, '\1')
-        csv = `config/generate_scripts #{file}`
-        params = {name: script_name, trophies: false, hidden: true}
-        data = ApplicationHelper.parse_csv(csv, "\t", SCRIPT_MAP)
+      # Load custom scripts from generate_scripts ruby DSL (csv as intermediate format)
+      Dir.glob('config/scripts/**/*.script').flatten.each do |script|
+        params = {name: File.basename(script, ".script"), trophies: false, hidden: true}
+        data = ApplicationHelper.parse_csv(`config/generate_scripts #{script}`, "\t", SCRIPT_MAP)
         add_scripts(params, data, true)
       end
       touch
@@ -86,58 +85,38 @@ class Script < ActiveRecord::Base
   end
 
   def self.add_scripts(options, data, custom=false)
-    options.each_key do |k|
-      options[k] = Video.find_by_key(options[k]) if k == 'wrapup_video'
-    end
-    game_map = Game.all.index_by(&:name)
-    concept_map = Concept.all.index_by(&:name)
-
-    # Create Script entry
+    v = 'wrapup_video'; options[v] = Video.find_by_key(options[v]) if options.has_key? v
     script = Script.where(options).first_or_create
-    old_script_levels = ScriptLevel.where(script: script).to_a # tracks which levels are no longer included in script.
-    game_index = Hash.new(0)
-
-    data.each_with_index do |row, index|
+    chapter = 0; game_chapter = Hash.new(0)
+    script_levels = data.map do |row|
       # Reference one Level per element
       if custom
         level = get_level_by_name(row['name']).first
-        if level.nil?
-          raise "There does not exist a level with the name '#{row['name']}'. From the row: #{row}"
-        end
+        raise "There does not exist a level with the name '#{row['name']}'. From the row: #{row}" if level.nil?
         game = level.game
         raise "Level #{level.to_json}, does not have a game." if game.nil?
       else
-        game = game_map[row['game'].squish]
+        game = Game.find_by_name row['game']
         level = Level.where(game: game, level_num: row['level_num']).first_or_create
         level.name = row['name']
         level.level_url ||= row['level_url']
         level.skin = row['skin']
       end
-
-      # Concepts are comma-separated CSV column, indexed by name
-      if level.concepts.empty? && row['concepts']
-        row['concepts'].split(',').each do |concept_name|
-          concept = concept_map[concept_name.squish]
-          if concept
-            level.concepts << concept
-          else
-            raise "missing concept '#{concept_name}'"
-          end
-        end
+      # Concepts are comma-separated, indexed by name
+      level.concepts ||= (concepts=row['concepts']) && concepts.split(',').map do |concept_name|
+          concept = Concept.find_by_name concept_name
+          raise "missing concept '#{concept_name}'" if concept.nil?
       end
       level.save!
-
-      # Update script_level with script and chapter. Note: we should not have two script_levels associated with the
-      # same script and chapter ids.
+      # Update script_level with script and chapter.
+      # Note: we should not have two script_levels associated with the same script and chapter ids.
       script_level = ScriptLevel.where(
           script: script,
-          chapter: (index + 1),
-          game_chapter: (game_index[game.id] += 1),
+          chapter: (chapter += 1),
+          game_chapter: (game_chapter[game] += 1),
           level: level
       ).first_or_create
-      old_script_levels.delete(script_level) # we found this ScriptLevel in a script, so don't delete it
-
-      # Set stage in custom ScriptLevels
+      # Set/create Stage in custom ScriptLevels
       if row['stage']
         stage = Stage.where(name: row['stage'], script: script).first_or_create
         script_level.update(stage: stage)
@@ -145,7 +124,7 @@ class Script < ActiveRecord::Base
       end
     end
     # Delete all ScriptLevels no longer found in the current script
-    old_script_levels.each { |sl| ScriptLevel.delete(sl) }
+    (ScriptLevel.where(script: script).to_a - script_levels).each { |sl| ScriptLevel.delete(sl) }
   end
 
 end

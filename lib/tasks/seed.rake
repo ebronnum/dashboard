@@ -34,8 +34,6 @@ namespace :seed do
   task scripts: [:games, :environment] do
     Rake::Task["seed:custom_levels"].invoke
     Script.setup
-
-    puts "generating locale file for scripts"
     # Generate locale file for scripts
     hash = {'en' => {'data' => {'script' => {'name' => {}}}}}
     # hash["en"]["data"]["script"]["name"][script_name][stage] = stage

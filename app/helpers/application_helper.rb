@@ -164,7 +164,7 @@ module ApplicationHelper
     data, options = data.partition { |x| x['Options'].nil? }
     options = options.empty? ? {} : options[0]['Options']
 
-    [['TSV', "\t"], %w(CSV ,)].each do |xsv, sep|
+    [%W(TSV \t), %w(CSV ,)].each do |xsv, sep|
       data, xsv_data = data.partition { |x| !x || x[xsv].nil? }
       var = xsv_data.flat_map { |entry| parse_csv(entry[xsv], sep, map_hash) }
       data += var unless var.nil?
