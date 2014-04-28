@@ -3,10 +3,7 @@ require "csv"
 namespace :seed do
   task videos: :environment do
     Video.transaction do
-      Video.delete_all # use delete instead of destroy so callbacks are not called
-      Video.connection.execute("ALTER TABLE videos auto_increment = 1")
-
-      video_id = 0
+      ApplicationHelper.reset_db(Video)
       CSV.read('config/videos.csv', { col_sep: "\t", headers: true }).each do |row|
         Video.create!(key: row['Key'], youtube_code: row['YoutubeCode'], download: row['Download'], :id => video_id += 1)
       end
@@ -49,24 +46,12 @@ namespace :seed do
   task custom_levels: :environment do
     Level.transaction do
       JSON.parse(File.read("config/scripts/custom_levels.json")).each do |row|
-        levels = get_level_by_name(row['name'])
-        level = levels.first_or_create
-        game = Game.find(row['game_id'])
-        level.update(instructions: row['instructions'], skin: row['skin'], maze: row['maze'], x: row['x'], y: row['y'], start_blocks: row['start_blocks'], toolbox_blocks: row['start_blocks'], start_direction: row['start_direction'], game: game)
-        solution = row['properties']['solution_blocks']
-        if solution
-          level.update(solution_level_source: LevelSource.lookup(level, solution))
-        end
+        level = Level.where(name: row['name']).first_or_create
+        row['solution_level_source_id'] = !(s = row['properties']['solution_blocks']).blank? && LevelSource.lookup(level, s).id
+        row.delete 'id'
+        level.update row
       end
     end
-  end
-
-  def get_level_by_name(name)
-    levels = Level.where(name: name)
-    if levels.count > 1
-      raise "There exists more than one level with name '#{name}'."
-    end
-    levels
   end
 
   task callouts: :environment do
