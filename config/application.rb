@@ -59,5 +59,8 @@ module Dashboard
     # Puts the app in to a read-only mode without logins.
     config.minimal_mode = false
 
+    # zendesk config
+    config.zendesk_secret = nil
+    config.zendesk_subdomain = 'codeorg'
   end
 end
