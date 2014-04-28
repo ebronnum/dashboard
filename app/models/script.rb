@@ -91,11 +91,13 @@ class Script < ActiveRecord::Base
     script_levels = data.map do |row|
       # Reference one Level per element
       if custom
+        # Custom scripts require levels to be in the database
         level = get_level_by_name(row['name']).first
         raise "There does not exist a level with the name '#{row['name']}'. From the row: #{row}" if level.nil?
         game = level.game
         raise "Level #{level.to_json}, does not have a game." if game.nil?
       else
+        # Hardcoded scripts create new level entries (the level is already in Blockly)
         game = Game.find_by_name row['game']
         level = Level.where(game: game, level_num: row['level_num']).first_or_create
         level.name = row['name']
