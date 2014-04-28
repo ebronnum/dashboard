@@ -883,6 +883,12 @@ exports.blockOfType = function(type) {
   return '<block type="' + type + '"></block>';
 };
 
+exports.createCategory = function(name, blocks, custom) {
+  return '<category name="' + name + '"' +
+          (custom ? ' custom="' + custom + '"' : '') +
+          '>' + blocks + '</category>';
+};
+
 },{}],4:[function(require,module,exports){
 /**
  * Defines blocks useful in multiple blockly apps

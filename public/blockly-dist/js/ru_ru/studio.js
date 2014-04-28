@@ -883,6 +883,12 @@ exports.blockOfType = function(type) {
   return '<block type="' + type + '"></block>';
 };
 
+exports.createCategory = function(name, blocks, custom) {
+  return '<category name="' + name + '"' +
+          (custom ? ' custom="' + custom + '"' : '') +
+          '>' + blocks + '</category>';
+};
+
 },{}],4:[function(require,module,exports){
 /**
  * Defines blocks useful in multiple blockly apps
@@ -2174,21 +2180,17 @@ var Emotions = tiles.Emotions;
 var generateSetterCode = function (opts) {
   var value = opts.ctx.getTitleValue('VALUE');
   if (value === "random") {
-    var randomIndex = opts.random || 1;
-    var allValues = opts.ctx.VALUES.slice(randomIndex).map(function (item) {
+    var randomIndex = opts.random || 0;
+    // opts.random is the index of where the 'random' items is in beginning of
+    // the VALUES table (defaults to 0).
+    var allValues = opts.ctx.VALUES.slice(randomIndex + 1).map(function (item) {
       return item[1];
     });
     value = 'Studio.random([' + allValues + '])';
   }
 
-  if (opts.index) {
-    return 'Studio.' + opts.name + '(\'block_id_' + opts.ctx.id + '\', ' +
-      (opts.ctx.getTitleValue(opts.index) || '0') + ', ' + value + ');\n';
-  }
-  else {
-    return 'Studio.' + opts.name + '(\'block_id_' + opts.ctx.id + '\', ' +
-      value + ');\n';
-  }
+  return 'Studio.' + opts.name + '(\'block_id_' + opts.ctx.id + '\', ' +
+    (opts.extraParams ? opts.extraParams + ', ' : '') + value + ');\n';
 };
 
 exports.setSpriteCount = function(blockly, count) {
@@ -2465,15 +2467,26 @@ exports.install = function(blockly, skin) {
        [msg.moveDistance50(), '50'],
        [msg.moveDistance100(), '100'],
        [msg.moveDistance200(), '200'],
-       [msg.moveDistance400(), '400']];
+       [msg.moveDistance400(), '400'],
+       [msg.moveDistanceRandom(), 'random']];
 
   generator.studio_moveDistance = function() {
     // Generate JavaScript for moving.
+
+    var allDistances = this.DISTANCE.slice(0, -1).map(function (item) {
+      return item[1];
+    });
+    var distParam = this.getTitleValue('DISTANCE');
+    
+    if (distParam === 'random') {
+      distParam = 'Studio.random([' + allDistances + '])';
+    }
+
     return 'Studio.moveDistance(\'block_id_' + this.id +
         '\', executionCtx || 0, ' +
         (this.getTitleValue('SPRITE') || '0') + ', ' +
         this.getTitleValue('DIR') + ', ' +
-        this.getTitleValue('DISTANCE') + ');\n';
+        distParam + ');\n';
   };
 
   blockly.Blocks.studio_playSound = {
@@ -2578,7 +2591,7 @@ exports.install = function(blockly, skin) {
   generator.studio_setSpriteSpeed = function () {
     return generateSetterCode({
       ctx: this,
-      index: 'SPRITE',
+      extraParams: (this.getTitleValue('SPRITE') || '0'),
       name: 'setSpriteSpeed'});
   };
 
@@ -2661,8 +2674,11 @@ exports.install = function(blockly, skin) {
        [msg.setSpriteOrange(), '"orange"']];
 
   generator.studio_setSprite = function() {
-    return generateSetterCode(
-              {ctx: this, random: 2, index: 'SPRITE', name: 'setSprite'});
+    return generateSetterCode({
+      ctx: this,
+      random: 2,
+      extraParams: (this.getTitleValue('SPRITE') || '0'),
+      name: 'setSprite'});
   };
 
   blockly.Blocks.studio_setSpriteEmotion = {
@@ -2707,8 +2723,10 @@ exports.install = function(blockly, skin) {
        [msg.setSpriteEmotionSad(), Emotions.SAD.toString()]];
 
   generator.studio_setSpriteEmotion = function() {
-    return generateSetterCode(
-              {ctx: this, index: 'SPRITE', name: 'setSpriteEmotion'});
+    return generateSetterCode({
+      ctx: this,
+      extraParams: (this.getTitleValue('SPRITE') || '0'),
+      name: 'setSpriteEmotion'});
   };
 
   blockly.Blocks.studio_saySprite = {
@@ -2802,10 +2820,12 @@ return buf.join('');
 },{"../../locale/ru_ru/studio":35,"ejs":36}],15:[function(require,module,exports){
 /*jshint multistr: true */
 
+var msg = require('../../locale/ru_ru/studio');
 var blockUtils = require('../block_utils');
 var Direction = require('./tiles').Direction;
 var tb = blockUtils.createToolbox;
 var blockOfType = blockUtils.blockOfType;
+var createCategory = blockUtils.createCategory;
 
 /*
  * Configuration for all levels.
@@ -3056,9 +3076,67 @@ module.exports = {
       <block type="studio_whenUp" deletable="false" x="20" y="280"></block> \
       <block type="studio_whenDown" deletable="false" x="20" y="360"></block>'
   },
+  '100': {
+    'requiredBlocks': [
+    ],
+    'scale': {
+      'snapRadius': 2
+    },
+    'softButtons': [
+      'leftButton',
+      'rightButton',
+      'downButton',
+      'upButton'
+    ],
+    'minWorkspaceHeight': 800,
+    'freePlay': true,
+    'map': [
+      [0,16, 0, 0, 0,16, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0,16, 0, 0, 0,16, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0,16, 0, 0, 0,16, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0]
+    ],
+    'toolbox':
+      tb(createCategory(msg.catActions(),
+                          blockOfType('studio_move') +
+                          blockOfType('studio_moveDistance') +
+                          blockOfType('studio_playSound') +
+                          blockOfType('studio_incrementScore') +
+                          blockOfType('studio_saySprite') +
+                          blockOfType('studio_setSpriteSpeed') +
+                          blockOfType('studio_setSpriteEmotion') +
+                          blockOfType('studio_setBackground') +
+                          blockOfType('studio_setSprite')) +
+         createCategory(msg.catEvents(),
+                          blockOfType('studio_whenSpriteClicked') +
+                          blockOfType('studio_whenSpriteCollided') +
+                          blockOfType('studio_whenGameIsRunning')) +
+         createCategory(msg.catControl(),
+                          blockOfType('controls_repeat')) +
+         createCategory(msg.catLogic(),
+                          blockOfType('controls_if') +
+                          blockOfType('logic_compare') +
+                          blockOfType('logic_operation') +
+                          blockOfType('logic_negate') +
+                          blockOfType('logic_boolean')) +
+         createCategory(msg.catMath(),
+                          blockOfType('math_number') +
+                          blockOfType('math_arithmetic')) +
+         createCategory(msg.catVariables(), '', 'VARIABLE')),
+    'startBlocks':
+     '<block type="studio_whenGameStarts" deletable="false" x="20" y="20"></block> \
+      <block type="studio_whenLeft" deletable="false" x="20" y="120"></block> \
+      <block type="studio_whenRight" deletable="false" x="20" y="200"></block> \
+      <block type="studio_whenUp" deletable="false" x="20" y="280"></block> \
+      <block type="studio_whenDown" deletable="false" x="20" y="360"></block>'
+  },
 };
 
-},{"../block_utils":3,"./tiles":19}],16:[function(require,module,exports){
+},{"../../locale/ru_ru/studio":35,"../block_utils":3,"./tiles":19}],16:[function(require,module,exports){
 (function (global){
 var appMain = require('../appMain');
 window.Studio = require('./studio');
@@ -3443,7 +3521,7 @@ var performQueuedMoves = function(i)
       var newQX = Studio.sprite[i].queuedX - (nextX - Studio.sprite[i].x);
       Studio.sprite[i].queuedX = newQX;
       // for very small numbers, reset to integer zero
-      if ("0.00" === newQX.toFixed(2)) {
+      if ("0.00" === Math.abs(newQX).toFixed(2)) {
         Studio.sprite[i].queuedX = 0;
       }
     }
@@ -3477,7 +3555,7 @@ var performQueuedMoves = function(i)
       var newQY = Studio.sprite[i].queuedY - (nextY - Studio.sprite[i].y);
       Studio.sprite[i].queuedY = newQY;
       // for very small numbers, reset to integer zero
-      if ("0.00" === newQY.toFixed(2)) {
+      if ("0.00" === Math.abs(newQY).toFixed(2)) {
         Studio.sprite[i].queuedY = 0;
       }
     }
@@ -5126,6 +5204,20 @@ var MessageFormat = require("messageformat");MessageFormat.locale.ru = function 
   }
   return 'other';
 };
+exports.catActions = function(d){return "Actions"};
+
+exports.catControl = function(d){return "Loops"};
+
+exports.catEvents = function(d){return "Events"};
+
+exports.catLogic = function(d){return "Logic"};
+
+exports.catMath = function(d){return "Math"};
+
+exports.catProcedures = function(d){return "Functions"};
+
+exports.catVariables = function(d){return "Variables"};
+
 exports.continue = function(d){return "Продолжить"};
 
 exports.down = function(d){return "down"};
@@ -5151,6 +5243,8 @@ exports.moveDistance100 = function(d){return "100 pixels"};
 exports.moveDistance200 = function(d){return "200 pixels"};
 
 exports.moveDistance400 = function(d){return "400 pixels"};
+
+exports.moveDistanceRandom = function(d){return "random pixels"};
 
 exports.moveDistanceTooltip = function(d){return "Move a character a specific distance in the specified direction."};
 
