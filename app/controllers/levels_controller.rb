@@ -145,6 +145,6 @@ class LevelsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def level_params
-      params[:level].permit([:name, :level_url, :level_num, :skin, :instructions, :x, :y, :start_direction, {concept_ids: []}])
+      params[:level].permit([:name, :level_url, :level_num, :skin, :instructions, :x, :y, :start_direction, :step_mode, {concept_ids: []}])
     end
 end

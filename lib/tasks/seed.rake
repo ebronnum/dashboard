@@ -65,6 +65,7 @@ namespace :seed do
       Game.create!(id: game_id += 1, name: "CustomMaze", app: "maze")
       Game.create!(id: game_id += 1, name: "Studio", app: "studio")
       Game.create!(id: game_id += 1, name: "Jigsaw", app: 'jigsaw')
+      Game.create!(id: game_id += 1, name: "MazeStep", app: 'maze')
     end
   end
 
@@ -116,6 +117,7 @@ namespace :seed do
                  { file: 'config/builder_script.csv', params: { name: 'Builder Levels', trophies: false, hidden: true }},
                  { file: 'config/flappy_script.csv', params: { name: 'Flappy Levels', trophies: false, hidden: true }},
                  { file: 'config/jigsaw_script.csv', params: { name: 'Jigsaw Levels', trophies: false, hidden: true }},
+                 { file: 'config/step_script.csv', params: { name: 'Maze Step Levels', trophies: false, hidden: true }},
                  { file: 'config/scripts/sample_level_builder.script.csv', custom: true, params: { name: 'sample_level_builder', trophies: false, hidden: true}}
                 ]
       sources.each do |source|

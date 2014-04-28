@@ -51,6 +51,9 @@ en:
         'Jigsaw Levels':
           desc: 'Jigsaw (beta)'
           'Jigsaw': 'Stage 1'
+        'Step Levels':
+          desc: 'Maze (beta)'
+          'MazeStep': 'Stage Step'
     game:
       name:
         'Unplug1': 'Introduction to Computer Science'
@@ -77,6 +80,7 @@ en:
         'Bounce': 'Bounce'
         'Flappy': 'Flappy Bird'
         'Jigsaw': 'Jigsaw'
+        'MazeStep': 'Maze Step Mode'
     trophy:
       name:
         'Bronze': 'Bronze'
@@ -232,6 +236,11 @@ en:
         'jigsaw_10': "Arrange the blocks to form the image"
         'jigsaw_11': "Arrange the blocks to form the image"
         'jigsaw_12': "Arrange the blocks to form the image"
+        'mazestep_1': "Maze step description here"
+        'mazestep_2': "Maze step description here"
+        'mazestep_3': "Maze step description here"
+        'mazestep_4': "Maze step description here"
+        'mazestep_5': "Maze step description here"
       levelIncompleteError:
         # Keyed by "#{game.name}_#{level.level_num}" with fallback "#{game.app}_#{level.level_num}"
         'maze_2_8': "To solve this, find the pattern that repeats. Use a \"repeat\" block with these 3 blocks inside it: move, move, turn right."

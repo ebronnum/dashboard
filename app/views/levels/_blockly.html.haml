@@ -53,7 +53,7 @@
         this.callouts.every(function(callout) {
           var selector = callout.element_id; // jquery selector.
           if ($(selector).length <= 0) { console.log("Couldn't find callout target."); return true;}
-          
+
           var defaultConfig = {
             content: {
               text: callout.localized_text,
@@ -69,7 +69,7 @@
               }
             },
             position: {
-              my: "bottom left", 
+              my: "bottom left",
               at: "top right"
             },
             hide: {
@@ -77,14 +77,14 @@
             },
             show: false // don't show on mouseover
           };
-          
+
           var customConfig = $.parseJSON(callout.qtip_config);
           var config = $.extend(true, {}, defaultConfig, customConfig);
           config.style.classes = config.style.classes.concat(" cdo-qtips");
-          
+
           var calloutDomElement = $(selector).qtip(config);
           calloutDomElement.qtip('show');
-          
+
           return true;
         });
       },
@@ -169,6 +169,8 @@
         #{("initialX: #{@level[:x]},") if @level[:x]}
         #{("initialY: #{@level[:y]},") if @level[:y]}
         #{("startDirection: #{@level[:start_direction]},") if @level[:start_direction]}
+        #{("step: true,") if @level[:step_mode] == 1 || @level[:step_mode] == 2}
+        #{("stepOnly: true,") if @level[:step_mode] == 2}
       },
       skinId: '#{@level.skin}'
     });
