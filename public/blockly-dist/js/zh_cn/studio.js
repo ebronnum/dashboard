@@ -3226,10 +3226,11 @@ var SpriteFlags = {
 var SF_SKINS_MASK =
   SpriteFlags.EMOTIONS | SpriteFlags.ANIMATION | SpriteFlags.TURNS;
 
-var SpriteOffsets = {
-  EMOTIONS: 3,
+var SpriteCounts = {
+  NORMAL: 1,
   ANIMATION: 1,
   TURNS: 7,
+  EMOTIONS: 3,
 };
 
 var ArrowIds = {
@@ -4173,66 +4174,46 @@ Studio.onPuzzleComplete = function() {
                      });
 };
 
+var frameDirTable = {};
+frameDirTable[Direction.SOUTHEAST]  = 0;
+frameDirTable[Direction.EAST]       = 1;
+frameDirTable[Direction.NORTHEAST]  = 2;
+frameDirTable[Direction.NORTH]      = 3;
+frameDirTable[Direction.NORTHWEST]  = 4;
+frameDirTable[Direction.WEST]       = 5;
+frameDirTable[Direction.SOUTHWEST]  = 6;
+
 var spriteFrameNumber = function (index) {
   var sprite = Studio.sprite[index];
   var showThisAnimFrame = 0;
   if ((sprite.flags & SpriteFlags.TURNS) &&
       (sprite.displayDir !== Direction.SOUTH)) {
-    var frameOffset = 1;
-    frameOffset += (sprite.flags & SpriteFlags.EMOTIONS) ?
-                    SpriteOffsets.EMOTIONS : 0;
-    // BUGBUG: +1's are temporary until we get a new PNG
-    frameOffset += (sprite.flags & SpriteFlags.ANIMATION) ?
-                    SpriteOffsets.ANIMATION + 1 : 0;
-    frameOffset += 1;
-    
-    var frameDirection;
-    switch (sprite.displayDir) {
-      case Direction.NORTH:
-      case Direction.NORTHEAST:
-      case Direction.NORTHWEST:
-        // BUGBUG: need new frames once we get a new PNG
-        frameDirection = 2;
-        break;
-      case Direction.EAST:
-        frameDirection = 0;
-        break;
-      case Direction.WEST:
-        frameDirection = 1;
-        break;
-      case Direction.SOUTHEAST:
-        frameDirection = 3;
-        break;
-      case Direction.SOUTHWEST:
-        frameDirection = 4;
-        break;
-    }
-    return frameOffset + frameDirection;
+    return sprite.firstTurnFrameNum + frameDirTable[sprite.displayDir];
   }
   if ((sprite.flags & SpriteFlags.ANIMATION) &&
       Studio.tickCount &&
       Math.round(Studio.tickCount / 20) % 2) {
-    // BUGBUG: +2 is temporary until we get a new PNG
-    showThisAnimFrame = (sprite.flags & SpriteFlags.EMOTIONS) ?
-                         SpriteOffsets.EMOTIONS + 2 : 0;
+    showThisAnimFrame = sprite.firstAnimFrameNum;
   }
   if (sprite.emotion !== Emotions.NORMAL &&
       sprite.flags & SpriteFlags.EMOTIONS) {
-    return showThisAnimFrame ? showThisAnimFrame : sprite.emotion;
+    return showThisAnimFrame ?
+            showThisAnimFrame :
+            sprite.firstEmotionFrameNum + (sprite.emotion - 1);
   }
   return showThisAnimFrame;
 };
 
 var spriteTotalFrames = function (index) {
-  var frames = 1;
-  if (Studio.sprite[index].flags & SpriteFlags.EMOTIONS) {
-    frames += SpriteOffsets.EMOTIONS;
-  }
+  var frames = SpriteCounts.NORMAL;
   if (Studio.sprite[index].flags & SpriteFlags.ANIMATION) {
-    frames += SpriteOffsets.ANIMATION;
+    frames += SpriteCounts.ANIMATION;
   }
   if (Studio.sprite[index].flags & SpriteFlags.TURNS) {
-    frames += SpriteOffsets.TURNS;
+    frames += SpriteCounts.TURNS;
+  }
+  if (Studio.sprite[index].flags & SpriteFlags.EMOTIONS) {
+    frames += SpriteCounts.EMOTIONS;
   }
   return frames;
 };
@@ -4241,8 +4222,7 @@ Studio.displaySprite = function(i) {
   var xCoord = Studio.sprite[i].x * Studio.SQUARE_SIZE;
   var yCoord = Studio.sprite[i].y * Studio.SQUARE_SIZE + Studio.SPRITE_Y_OFFSET;
   
-  // BUGBUG: -2 is temporary until we get a fixed bitmap
-  var xOffset = (Studio.SPRITE_WIDTH - 2.083333) * spriteFrameNumber(i);
+  var xOffset = Studio.SPRITE_WIDTH * spriteFrameNumber(i);
 
   var spriteIcon = document.getElementById('sprite' + i);
   var spriteClipRect = document.getElementById('spriteClipRect' + i);
@@ -4311,6 +4291,16 @@ Studio.setBackground = function (value) {
     skinTheme(value).background);
 };
 
+var computeSpriteFrameNums = function (index) {
+  var flags = Studio.sprite[index].flags;
+  Studio.sprite[index].firstAnimFrameNum = SpriteCounts.NORMAL;
+  Studio.sprite[index].firstTurnFrameNum = SpriteCounts.NORMAL +
+      ((flags & SpriteFlags.ANIMATION) ? SpriteCounts.ANIMATION : 0);
+  Studio.sprite[index].firstEmotionFrameNum =
+      Studio.sprite[index].firstTurnFrameNum +
+      ((flags & SpriteFlags.TURNS) ? SpriteCounts.TURNS : 0);
+};
+
 Studio.setSprite = function (index, value) {
   // Inherit some flags from the skin:
   Studio.sprite[index].flags &= ~SF_SKINS_MASK;
@@ -4324,7 +4314,8 @@ Studio.setSprite = function (index, value) {
     element.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href',
                            skinTheme(value).sprite);
     element.setAttribute('width',
-                         (Studio.SPRITE_WIDTH - 2.083333) * spriteTotalFrames(index));
+                         Studio.SPRITE_WIDTH * spriteTotalFrames(index));
+    computeSpriteFrameNums(index);
     // call display right away since the frame number may have changed:
     Studio.displaySprite(index);
   }
