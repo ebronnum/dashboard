@@ -5,7 +5,7 @@ namespace :seed do
     Video.transaction do
       ApplicationHelper.reset_db(Video)
       CSV.read('config/videos.csv', { col_sep: "\t", headers: true }).each do |row|
-        Video.create!(key: row['Key'], youtube_code: row['YoutubeCode'], download: row['Download'], :id => video_id += 1)
+        Video.create!(key: row['Key'], youtube_code: row['YoutubeCode'], download: row['Download'])
       end
     end
 
@@ -32,7 +32,7 @@ namespace :seed do
     Rake::Task["seed:custom_levels"].invoke
     Script.setup
     # Generate locale file for scripts
-    # hash = {'en' => {'data' => {'script' => {'name' => {}}}}}
+    hash = {'en' => {'data' => {'script' => {'name' => {}}}}}
     # hash["en"]["data"]["script"]["name"][script_name][stage] = stage
     # hash["en"]["data"]["script"]["name"][script_name] = {'desc' => "Custom script #{script_name}"}
     File::open(File.expand_path('config/locales/scripts.en.yml'), "w+") do |f|
@@ -99,8 +99,8 @@ namespace :seed do
       Activity.all.where(['level_id = ?', level.id]).order('id desc').limit(10000).each do |activity|
         level_source_id_count_map[activity.level_source_id] += 1 if activity.test_result >= Activity::FREE_PLAY_RESULT
       end
-      best =  level_source_id_count_map.max_by{ |k, v| v}
-      level.update_attributes(ideal_level_source_id: best[0]) if best
+      best_level_source_id = level_source_id_count_map.max_by(&:second).try(:first)
+      level.update_attributes(ideal_level_source_id: best_level_source_id) if best_level_source_id
     end
   end
 

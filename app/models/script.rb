@@ -89,41 +89,39 @@ class Script < ActiveRecord::Base
     script = Script.where(options).first_or_create
     chapter = 0; game_chapter = Hash.new(0)
     script_levels = data.map do |row|
+
+      # Concepts are comma-separated, indexed by name
+      row['concept_ids'] = (concepts=row.delete('concepts')) && concepts.split(',').map(&:strip).map do |concept_name|
+        (Concept.find_by_name(concept_name)|| raise("missing concept '#{concept_name}'")).id
+      end
+
       # Reference one Level per element
       if custom
         # Custom scripts require levels to be in the database
-        level = get_level_by_name(row['name']).first
-        raise "There does not exist a level with the name '#{row['name']}'. From the row: #{row}" if level.nil?
-        game = level.game
-        raise "Level #{level.to_json}, does not have a game." if game.nil?
+        level = Level.find_by name: row['name']
       else
         # Hardcoded scripts create new level entries (the level is already in Blockly)
-        game = Game.find_by_name row['game']
-        level = Level.where(game: game, level_num: row['level_num']).first_or_create
-        level.name = row['name']
-        level.level_url ||= row['level_url']
-        level.skin = row['skin']
+        level = Level.where(game: Game.find_by(name: row.delete('game')), level_num: row['level_num']).first_or_create
       end
-      # Concepts are comma-separated, indexed by name
-      level.concepts ||= (concepts=row['concepts']) && concepts.split(',').map do |concept_name|
-          concept = Concept.find_by_name concept_name
-          raise "missing concept '#{concept_name}'" if concept.nil?
-      end
-      level.save!
-      # Update script_level with script and chapter.
-      # Note: we should not have two script_levels associated with the same script and chapter ids.
+
+      raise "There does not exist a level with the name '#{row['name']}'. From the row: #{row}" if level.nil?
+      raise "Level #{level.to_json}, does not have a game." if level.game.nil?
+      stage = row.delete('stage')
+      level.update(row)
+
       script_level = ScriptLevel.where(
           script: script,
+          level: level,
           chapter: (chapter += 1),
-          game_chapter: (game_chapter[game] += 1),
-          level: level
+          game_chapter: (game_chapter[level.game] += 1)
       ).first_or_create
-      # Set/create Stage in custom ScriptLevels
-      if row['stage']
-        stage = Stage.where(name: row['stage'], script: script).first_or_create
-        script_level.update(stage: stage)
+
+      # Set/create Stage containing custom ScriptLevel
+      if stage
+        script_level.update(stage: Stage.where(name: stage, script: script).first_or_create)
         script_level.move_to_bottom
       end
+      script_level
     end
     # Delete all ScriptLevels no longer found in the current script
     (ScriptLevel.where(script: script).to_a - script_levels).each { |sl| ScriptLevel.delete(sl) }
