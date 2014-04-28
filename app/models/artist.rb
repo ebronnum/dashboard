@@ -1,4 +1,4 @@
-class Turtle < Level
+class Artist < Level
   # Fix STI routing http://stackoverflow.com/a/9463495
   def self.model_name
     Level.model_name
