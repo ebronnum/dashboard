@@ -29,7 +29,7 @@ class LevelsControllerTest < ActionController::TestCase
   end
 
   test "should get new karel" do
-    get :new, type: 'karel'
+    get :new, type: 'Karel'
 
     css = css_select "#level_type"
     assert_equal "Karel", css.first.attributes['value']
@@ -96,7 +96,7 @@ class LevelsControllerTest < ActionController::TestCase
     assert assigns(:level)
     assert assigns(:level).game
 
-    assert_redirected_to game_level_path(assigns(:level).game, assigns(:level))
+    assert_equal game_level_url(assigns(:level).game, assigns(:level)), JSON.parse(@response.body)["redirect"]
   end
 
   test "should not create invalid karel level" do
@@ -132,7 +132,7 @@ class LevelsControllerTest < ActionController::TestCase
   end
 
   test "should set coordinates and direction from query string" do
-    get :new, :type => "artist", :x => 5, :y => 10, :start_direction => 90
+    get :new, :type => "Artist", :x => 5, :y => 10, :start_direction => 90
     level = assigns(:level)
     assert_equal 5, level.x
     assert_equal 10, level.y
@@ -140,7 +140,7 @@ class LevelsControllerTest < ActionController::TestCase
   end
 
   test "should handle coordinates if non integer" do
-    get :new, :type => "artist", :x => "", :y => 5.5, :start_direction => "hi"
+    get :new, :type => "Artist", :x => "", :y => 5.5, :start_direction => "hi"
     level = assigns(:level)
     assert level
     assert_nil level.x
@@ -205,7 +205,7 @@ class LevelsControllerTest < ActionController::TestCase
   end
 
   test "should use level for route helper" do
-    level = create(:turtle)
+    level = create(:artist)
     get :edit, id: level, game_id: level.game
     css = css_select "form[action=#{game_level_path(level.game, level)}]"
     assert_not css.empty?
