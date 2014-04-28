@@ -195,7 +195,7 @@ class LevelsControllerTest < ActionController::TestCase
   test "should use level for route helper" do
     level = create(:turtle)
     get :edit, id: level, game_id: level.game
-    css = css_select "form"
-    assert_equal game_level_path(level.game, level), css.first.attributes["action"]
+    css = css_select "form[action=#{game_level_path(level.game, level)}]"
+    assert_not css.empty?
   end
 end
