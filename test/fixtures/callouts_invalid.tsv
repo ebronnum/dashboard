@@ -1,2 +1,2 @@
-Name	script_id	level_num	text	my	at	element_id
-Run Button	12345	invalid_level	Click here to run your program.	bottom left	top right	#runButton
+Name	script_id	level_num	localization_key	element_id
+Run Button	12345	invalid_level	Click here to run your program.	#runButton

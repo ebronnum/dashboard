@@ -8,7 +8,7 @@ gem 'rails-i18n', '~> 4.0.0'
 gem 'mysql2', '0.3.13'
 gem 'seamless_database_pool'
 
-gem 'le'
+gem 'le', '2.2.2'
 
 group :development, :test do
   # Use debugger
@@ -23,6 +23,7 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'simplecov', require: false
   gem 'mocha', require: false
+  gem "codeclimate-test-reporter", require: false
 end
 
 group :test do
@@ -90,3 +91,7 @@ gem 'newrelic_rpm'
 gem 'geocoder'
 
 gem 'rmagick'
+
+gem 'acts_as_list'
+
+gem 'kaminari' # pagination

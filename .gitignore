@@ -55,3 +55,6 @@ config/deploy/private.rb
 
 # Ignore coverage output
 /coverage
+
+# Ignore dropbox file
+config/scripts/.dropbox

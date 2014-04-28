@@ -1,7 +1,7 @@
 "ar":
   devise:
     confirmations:
-      confirmed: تم تأكيد حسابك بنجاح , يمكنك الان تسجيل الدخول .
+      confirmed: تم تأكيد عنوان البريد الإلكتروني الخاص بك بنجاح.
       send_instructions: أنت ستستلم رسالة عبر البريد الالكتروني والتي تحتوي على ارشادات
         حول كيفية تأكيد الحساب الخاص بك في بضع دقائق .
       send_paranoid_instructions: أذا كان عنوان بريدك الالكتروني موجود في قاعدة بياناتنا
@@ -20,9 +20,9 @@
       unconfirmed: أنت يجب ان تقوم بتأكيد الحساب الخاص بك قبل الاستمرار .
     mailer:
       confirmation_instructions:
-        subject: تعليمات التأكيد
+        subject: تعليمات تأكيد Code.org
       reset_password_instructions:
-        subject: تعليمات اعادة تغيير كلمة المرور
+        subject: إرشادات إعادة تعيين كلمة المرور Code.org
       unlock_instructions:
         subject: تعليمات اعادة الفتح
     omniauth_callbacks:

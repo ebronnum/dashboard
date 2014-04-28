@@ -16,8 +16,13 @@ class Ability
       can :manage, user
       # don't want to run this for every request:
       # can :manage, user.students.where("email = ''")
+
+      # TODO a bunch of these should probably be limited by user_id
       can :manage, Section
       can :create, Activity
+      can :save_to_gallery, Activity, user_id: user.id
+      can :create, GalleryActivity, user_id: user.id
+      can :destroy, GalleryActivity, user_id: user.id
       can :create, UserLevel
       can :create, Follower
     end

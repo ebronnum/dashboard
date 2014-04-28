@@ -57,9 +57,18 @@ When /^I press "([^"]*)"$/ do |button|
   @button.click
 end
 
+When /^I press a button with xpath "([^"]*)"$/ do |xpath|
+  @button = @browser.find_element(:xpath, xpath)
+  @button.click
+end
+
+When /^I click selector "([^"]*)"$/ do |jquery_selector|
+  @browser.execute_script("$(\"#{jquery_selector}\").click();")
+end
+
 When /^I hold key "([^"]*)"$/ do |keyCode|
   script ="$(window).simulate('keydown',  {keyCode: $.simulate.keyCode['#{keyCode}']})"
-  @browser.execute_script(script);
+  @browser.execute_script(script)
 end
 
 Then /^I should see title "([^"]*)"$/ do |title|
@@ -89,6 +98,12 @@ And /^output url$/ do
 end
 
 Then /^there's an image "([^"]*)"$/ do |path|
-  exists = @browser.execute_script("return $('img[src$=\"#{path}\"]').length != 0;")
+  exists = @browser.execute_script("return $('img[src*=\"#{path}\"]').length != 0;")
   exists.should eq true
-  end
+end
+
+Then(/^"([^"]*)" should be in front of "([^"]*)"$/) do |selector_front, selector_behind|
+  front_z_index = @browser.execute_script("return $('#{selector_front}').css('z-index')").to_i
+  behind_z_index = @browser.execute_script("return $('#{selector_behind}').css('z-index')").to_i
+  front_z_index.should be > behind_z_index
+end

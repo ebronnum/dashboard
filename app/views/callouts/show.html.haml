@@ -5,7 +5,7 @@
   = @callout.element_id
 %p
   %b Text:
-  = @callout.text
+  = @callout.localization_key
 
 - if can? :update, @callout
   = link_to 'Edit', edit_callout_path(@callout)

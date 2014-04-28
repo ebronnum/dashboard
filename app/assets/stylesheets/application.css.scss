@@ -9,6 +9,8 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require jquery.ui.all
+ *= require jquery.qtip.min
+ *= require video-js
  *= require_self
  *= require_tree .
  */
@@ -195,10 +197,10 @@ th {
 }
 
 .level_link {
-  border-radius: 5px;
-  min-width: 20px;
+  border-radius: 20px;
+  min-width: 22px;
   line-height: 22px;
-  padding: 2px 3px;
+  padding: 4px;
   font-size: 16px;
   text-align: center;
   cursor: pointer;
@@ -211,16 +213,45 @@ th {
 
 .level_link_done {
   background-color: orange;
-  padding: 2px 2px 1px 2px;
+  padding: 4px;
+}
+
+.user-stats-block
+{
+  display:inline-block; 
+  position:relative; 
+  overflow:hidden; 
+  float:left;
+  width:100%;
 }
 
 .game-group {
+  display: table; 
+  padding: 10px; 
+  width: 100%;
+  .stage {
+    display: table-cell;
+    width: 200px;
+    vertical-align: middle;
+    margin-right: 5px;
+    .game-title {
+      font-weight: 500
+    }
+  }
   .single-game {
-    margin-top: 8px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    display: table-cell;
+    vertical-align: middle; 
+    padding-top: 4px; 
+    padding-bottom: 4px;
     a {
-      border-radius: 5px;
+      border-radius: 15px;
       line-height: 22px;
-      padding: 6px;
+      padding-top: 6px;
+      padding-bottom: 6px;
+      padding-left: 10px;
+      padding-right: 10px;
       background-color: $dark_color;
       &.level-done {
         background-color: $orange;
@@ -233,6 +264,14 @@ th {
         color: white;
         font-weight: normal;
       }
+    }
+  }
+  .games {
+    display: table-cell;
+    vertical-align: middle;
+    puzzle-number {
+      position: relative; 
+      top: 1px;
     }
   }
 }
@@ -385,6 +424,21 @@ a.level_link:active { color: white; font-weight: 400; background-color: black; }
   margin: 0;
 }
 
+.fallback-video-player-failed {
+  video, div {
+    visibility: hidden;
+  }
+  p {
+    font-size: 22px;
+    line-height: 26px;
+    padding: 5px;
+
+    a {
+      color: white;
+    }
+  }
+}
+
 .video-modal {
   z-index: 10000;
 
@@ -465,7 +519,6 @@ a.level_link:active { color: white; font-weight: 400; background-color: black; }
   position: relative;
   overflow-y: auto;
   display: block;
-  padding: 10px;
   min-height: 1100px;
   
   .loading {
@@ -754,19 +807,49 @@ tr.manage-tr {
   }
 }
 
-.x-close {
+@mixin close-button($cornerOffset) {
+  $startWidth: 61px;
+  $startHeight: 59px;
+  $growth: 3px;
+  $movement: 1px;
+  
   position: absolute;
-  top: -20px;
-  right: -20px;
-  width: 60px;
-  height: 60px;
-  z-index: 1;
   cursor: pointer;
+  z-index: 1;
+  
+  top: $cornerOffset;
+  right: $cornerOffset;
   &:hover {
-    width: 62px;
-    height: 62px;
-    top: -21px;
-    right: -21px;
+    top: $cornerOffset - $movement;
+    right: $cornerOffset - $movement;
+  }
+  
+  img {
+    width: $startWidth;
+    height: $startHeight;
+    &:hover {
+      width: $startWidth + $growth;
+      height: $startHeight + $growth;
+    }
+  }  
+}
+
+.x-close {
+  @include close-button($cornerOffset: -20px);
+}
+
+.no-tip .qtip-tip {
+  visibility: hidden;
+}
+
+.cdo-qtips {
+  z-index: 1;
+  
+  
+  .tooltip-x-close {
+    @include close-button($cornerOffset: -35px);
+    background: none;
+    color: none;
   }
 }
 
@@ -791,7 +874,7 @@ a.download-video {
   }
 }
 
-#warning-banner {
+@mixin warning-banner {
   font-size: 36px;
   line-height: 36px;
   background-color: $dark_color;
@@ -804,6 +887,19 @@ a.download-video {
       background-color: $dark_color;
     }
   }
+}
+
+#warning-banner {
+  @include warning-banner;
+}
+
+#warning-banner-chrome {
+  @include warning-banner;
+  color: white;
+  font-size: 22px;
+  line-height: 22px;
+  margin-bottom: 5px;
+  padding: 5px;
 }
 
 .quiet_links {
@@ -879,7 +975,10 @@ a.download-video {
     margin: 0
   }
   .smallwhitetext {
-    color:white; font-size:15px; font-size:13px; padding-right:10px; font-weight:normal;
+    color:white;
+    font-size:13px;
+    padding-right:10px;
+    font-weight:normal;
   }   
   .imgspan {
     margin-left: 0px;
@@ -898,7 +997,16 @@ a.download-video {
       font-weight:400;
     }
   }
+  .itemblock {
+    display:inline-block;
+    width:600px
+  }
+  .labelblock {
+    display:inline-block;
+    width:140px
+  }
 }
+
 
 .multi {
   .sortableq {
@@ -929,6 +1037,7 @@ a.download-video {
     }
   }
 }
+
 
 #current-script-levels, #all-levels {
   min-height: 50px;
@@ -967,3 +1076,37 @@ a.download-video {
     float: left;
   }
 }
+
+div.gallery_activity {
+  $img_size: 154px;
+  $img_border_size: 10px;
+  $img_total_size: $img_size + 2 * $img_border_size;
+  float: left;
+  width: $img_total_size;
+  margin: 10px 5px;
+  img {
+    width: $img_size;
+    height: $img_size;
+    border: $img_border_size groove lightgray;
+  }
+  .caption {
+    color: #666;
+    margin: 0 auto;
+    clear: both;
+    max-width: $img_size;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.infobox {
+  background-color: rgb(88, 103, 113);
+  margin-left: 0px;
+  color: white;
+  font-size: 13px;
+  padding-right: 10px;
+  font-weight: normal;
+  padding: 10px;
+}
+

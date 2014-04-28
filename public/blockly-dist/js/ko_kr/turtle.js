@@ -7,6 +7,7 @@ if (typeof global !== 'undefined') {
 }
 
 var addReadyListener = require('./dom').addReadyListener;
+var blocksCommon = require('./blocksCommon');
 
 function StubDialog() {
   for (var argument in arguments) {
@@ -53,6 +54,7 @@ module.exports = function(app, levels, options) {
   };
 
   options.skin = options.skinsModule.load(BlocklyApps.assetUrl, options.skinId);
+  blocksCommon.install(Blockly);
   options.blocksModule.install(Blockly, options.skin);
 
   addReadyListener(function() {
@@ -69,7 +71,7 @@ module.exports = function(app, levels, options) {
 };
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./base":2,"./dom":5}],2:[function(require,module,exports){
+},{"./base":2,"./blocksCommon":4,"./dom":7}],2:[function(require,module,exports){
 /**
  * Blockly Apps: Common code
  *
@@ -151,7 +153,10 @@ BlocklyApps.init = function(config) {
 
   BlocklyApps.share = config.share;
   BlocklyApps.noPadding = config.no_padding;
-  
+
+  BlocklyApps.IDEAL_BLOCK_NUM = config.level.ideal || Infinity;
+  BlocklyApps.REQUIRED_BLOCKS = config.level.requiredBlocks || [];
+
   // enableShowCode defaults to true if not defined
   BlocklyApps.enableShowCode = (config.enableShowCode === false) ? false : true;
 
@@ -191,7 +196,7 @@ BlocklyApps.init = function(config) {
       openWorkspace.setAttribute('id', 'open-workspace');
       openWorkspace.appendChild(document.createTextNode(msg.openWorkspace()));
 
-      belowViz.appendChild(feedback.createSharingButtons({
+      belowViz.appendChild(feedback.createSharingDiv({
         response: {
           level_source: window.location
         },
@@ -301,7 +306,7 @@ BlocklyApps.init = function(config) {
 
   BlocklyApps.Dialog = config.Dialog;
 
-  var showCode = document.getElementById('show-code-header');  
+  var showCode = document.getElementById('show-code-header');
   if (showCode) {
     if (BlocklyApps.enableShowCode) {
       dom.addClickTouchEvent(showCode, function() {
@@ -314,6 +319,11 @@ BlocklyApps.init = function(config) {
   BlocklyApps.SMALL_ICON = config.skin.smallStaticAvatar;
   BlocklyApps.WIN_ICON = config.skin.winAvatar;
   BlocklyApps.FAILURE_ICON = config.skin.failureAvatar;
+
+  if (config.level.instructionsIcon) {
+    BlocklyApps.ICON = config.skin[config.level.instructionsIcon];
+    BlocklyApps.WIN_ICON = config.skin[config.level.instructionsIcon];
+  }
 
   if (config.showInstructionsWrapper) {
     config.showInstructionsWrapper(function() {
@@ -353,9 +363,11 @@ BlocklyApps.init = function(config) {
   var options = {
     toolbox: config.level.toolbox
   };
-  if (config.trashcan !== undefined) {
-    options.trashcan = config.trashcan;
-  }
+  ['trashcan', 'scrollbars', 'concreteBlocks'].forEach(function (prop) {
+    if (config[prop] !== undefined) {
+      options[prop] = config[prop];
+    }
+  });
   BlocklyApps.inject(div, options);
 
   if (config.afterInject) {
@@ -518,7 +530,10 @@ BlocklyApps.arrangeBlockPosition = function(startBlocks, arrangement) {
 };
 
 var showInstructions = function(level) {
-  level.instructions = level.instructions || '';
+  if (!level.instructions) {
+    // Skip instructions if empty
+    return;
+  }
 
   var instructionsDiv = document.createElement('div');
   instructionsDiv.innerHTML = require('./templates/instructions.html')(level);
@@ -610,7 +625,7 @@ BlocklyApps.resizeHeaders = function() {
     showCodeWidth = 0;
     showCodeHeader.style.display = "none";
   }
-  
+
   toolboxHeader.style.width = (categoriesWidth + toolboxWidth) + 'px';
   workspaceHeader.style.width = (workspaceWidth -
                                  toolboxWidth -
@@ -859,9 +874,56 @@ var getIdealBlockNumberMsg = function() {
       msg.infinity() : BlocklyApps.IDEAL_BLOCK_NUM;
 };
 
-},{"../locale/ko_kr/common":33,"./builder":3,"./dom":5,"./feedback.js":6,"./slider":9,"./templates/buttons.html":11,"./templates/instructions.html":13,"./templates/learn.html":14,"./templates/makeYourOwn.html":15,"./utils":31,"./xml":32}],3:[function(require,module,exports){
+},{"../locale/ko_kr/common":36,"./builder":5,"./dom":7,"./feedback.js":8,"./slider":11,"./templates/buttons.html":13,"./templates/instructions.html":15,"./templates/learn.html":16,"./templates/makeYourOwn.html":17,"./utils":34,"./xml":35}],3:[function(require,module,exports){
+exports.createToolbox = function(blocks) {
+  return '<xml id="toolbox" style="display: none;">' + blocks + '</xml>';
+};
+
+exports.blockOfType = function(type) {
+  return '<block type="' + type + '"></block>';
+};
+
+},{}],4:[function(require,module,exports){
+/**
+ * Defines blocks useful in multiple blockly apps
+ */
+'use strict';
+
+var REPEAT_IMAGE_URL = 'media/sharedBlocks/repeat.png';
+var REPEAT_IMAGE_WIDTH = 53;
+var REPEAT_IMAGE_HEIGHT = 57;
+
+/**
+ * Install extensions to Blockly's language and JavaScript generator
+ * @param blockly instance of Blockly
+ */
+exports.install = function(blockly) {
+  // Re-uses the repeat block generator from core
+  blockly.JavaScript.controls_repeat_simplified = blockly.JavaScript.controls_repeat;
+
+  blockly.Blocks.controls_repeat_simplified = {
+    // Repeat n times (internal number) with simplified UI
+    init: function() {
+      this.setHelpUrl(blockly.Msg.CONTROLS_REPEAT_HELPURL);
+      this.setHSV(322, 0.90, 0.95);
+      this.appendStatementInput('DO')
+        .appendTitle(new blockly.FieldImage(
+          blockly.assetUrl(REPEAT_IMAGE_URL), REPEAT_IMAGE_WIDTH, REPEAT_IMAGE_HEIGHT));
+      this.appendDummyInput()
+        .appendTitle(blockly.Msg.CONTROLS_REPEAT_TITLE_REPEAT)
+        .appendTitle(new Blockly.FieldTextInput('10',
+          blockly.FieldTextInput.nonnegativeIntegerValidator), 'TIMES');
+      this.setPreviousStatement(true);
+      this.setNextStatement(true);
+      this.setTooltip(blockly.Msg.CONTROLS_REPEAT_TOOLTIP);
+    }
+  };
+};
+
+},{}],5:[function(require,module,exports){
 var feedback = require('./feedback.js');
 var dom = require('./dom.js');
+var utils = require('./utils.js');
 var url = require('url');
 // Builds the dom to get more info from the user. After user enters info
 // and click "create level" onAttemptCallback is called to deliver the info
@@ -879,18 +941,16 @@ exports.builderForm = function(onAttemptCallback) {
     var instructions = builderDetails.querySelector('[name="instructions"]').value;
     var name = builderDetails.querySelector('[name="level_name"]').value;
     var query = url.parse(window.location.href, true).query;
-    onAttemptCallback({
+    onAttemptCallback(utils.extend({
       "instructions": instructions,
-      "name": name,
-      "x": query.x,
-      "y": query.y
-    });
+      "name": name
+    }, query));
   });
 
   dialog.show({ backdrop: 'static' });
 };
 
-},{"./dom.js":5,"./feedback.js":6,"./templates/builder.html":10,"url":45}],4:[function(require,module,exports){
+},{"./dom.js":7,"./feedback.js":8,"./templates/builder.html":12,"./utils.js":34,"url":48}],6:[function(require,module,exports){
 var INFINITE_LOOP_TRAP = '  BlocklyApps.checkTimeout();\n';
 var INFINITE_LOOP_TRAP_RE =
     new RegExp(INFINITE_LOOP_TRAP.replace(/\(.*\)/, '\\(.*\\)'), 'g');
@@ -970,7 +1030,7 @@ exports.functionFromCode = function(code, options) {
   return new ctor();
 };
 
-},{}],5:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 exports.addReadyListener = function(callback) {
   if (document.readyState === "complete") {
     setTimeout(callback, 1);
@@ -1044,7 +1104,7 @@ exports.isMobile = function() {
   return reg.test(window.navigator.userAgent);
 };
 
-},{}],6:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 var trophy = require('./templates/trophy.html');
 var utils = require('./utils');
 var readonly = require('./templates/readonly.html');
@@ -1056,10 +1116,12 @@ exports.displayFeedback = function(options) {
   options.level = options.level || {};
   options.numTrophies = numTrophiesEarned(options);
 
+  var canContinue = exports.canContinueToNextLevel(options.feedbackType);
+  var displayShowCode = BlocklyApps.enableShowCode && canContinue;
   var feedback = document.createElement('div');
   var feedbackMessage = getFeedbackMessage(options);
-  var sharingDiv = createSharingDiv(options);
-  var showCode = getShowCodeElement(options);
+  var sharingDiv = (canContinue && options.showingSharing) ? exports.createSharingDiv(options) : null;
+  var showCode = displayShowCode ? getShowCodeElement(options) : null;
   var feedbackBlocks = new FeedbackBlocks(options);
 
   if (feedbackMessage) {
@@ -1075,10 +1137,15 @@ exports.displayFeedback = function(options) {
   if (sharingDiv) {
     feedback.appendChild(sharingDiv);
   }
+  if (options.showingSharing) {
+    var shareCodeSpacer = document.createElement('div');
+    shareCodeSpacer.className = "share-code-spacer";
+    feedback.appendChild(shareCodeSpacer);
+  }
   if (showCode) {
     feedback.appendChild(showCode);
   }
-  var canContinue = exports.canContinueToNextLevel(options.feedbackType);
+
   feedback.appendChild(getFeedbackButtons(
     options.feedbackType, options.level.showPreviousLevelButton));
 
@@ -1104,12 +1171,7 @@ exports.displayFeedback = function(options) {
   // Update the background color if it is set to be in special design.
   if (options.response && options.response.design &&
       isFeedbackMessageCustomized(options)) {
-    if (options.response.design == "yellow_background") {
-      document.getElementById('feedback-dialog')
-          .className += " yellow-background";
-      document.getElementById('feedback-content')
-          .className += " white-background";
-    } else if (options.response.design == "white_background") {
+    if (options.response.design == "white_background") {
       document.getElementById('feedback-dialog')
           .className += " white-background";
       document.getElementById('feedback-content')
@@ -1137,6 +1199,15 @@ exports.displayFeedback = function(options) {
       if (!onlyContinue) {
         options.onContinue();
       }
+    });
+  }
+
+  // set up the Save To Gallery button if necessary
+  var saveToGalleryButton = feedback.querySelector('#save-to-gallery-button');
+  if (saveToGalleryButton && options.response && options.response.save_to_gallery_url) {
+    dom.addClickTouchEvent(saveToGalleryButton, function() {
+      $.post(options.response.save_to_gallery_url,
+             function() { $('#save-to-gallery-button').prop('disabled', true).text("Saved!"); });
     });
   }
 
@@ -1208,6 +1279,7 @@ exports.getNumEnabledBlocks = function() {
 
 var getFeedbackButtons = function(feedbackType, showPreviousLevelButton) {
   var buttons = document.createElement('div');
+  buttons.id = 'feedbackButtons';
   buttons.innerHTML = require('./templates/buttons.html')({
     data: {
       previousLevel:
@@ -1333,18 +1405,14 @@ var isFeedbackMessageCustomized = function(options) {
        options.level.other1StarError);
 };
 
-exports.createSharingButtons = function(options) {
-  var sharingWrapper = document.createElement('div');
-  var sharingButtons = document.createElement('div');
-  var sharingUrl = document.createElement('div');
-  sharingButtons.className = 'social-buttons';
-  sharingUrl.className = 'feedback-links';
-  sharingUrl.innerHTML = require('./templates/buttons.html')({
-    data: {
-      sharingUrl: options.response.level_source
-    }
-  });
+exports.createSharingDiv = function(options) {
+  if (!options.response || !options.response.level_source) {
+    // don't even try if our caller didn't give us something that can be shared
+    // options.response.level_source is the url that we are sharing
+    return null;
+  } 
 
+  // set up the twitter share url
   var twitterUrl = "https://twitter.com/intent/tweet?url=" +
                    options.response.level_source;
 
@@ -1354,70 +1422,35 @@ exports.createSharingButtons = function(options) {
   if (options.twitter  && options.twitter.hashtag !== undefined) {
     twitterUrl += "&button_hashtag=" + options.twitter.hashtag;
   }
+  options.twitterUrl = twitterUrl;
 
-  sharingButtons.innerHTML = require('./templates/buttons.html')({
-    data: {
-      facebookUrl: "https://www.facebook.com/sharer/sharer.php?u=" +
-                    options.response.level_source,
-      twitterUrl: twitterUrl,
-      makeYourOwn: options.makeYourOwn
-    }
+  // set up the facebook share url
+  var facebookUrl = "https://www.facebook.com/sharer/sharer.php?u=" +
+                    options.response.level_source;
+  options.facebookUrl = facebookUrl;
+
+  // use a generic image for the level if a feedback image has not been supplied.
+  if (options.level && options.level.instructionImageUrl && !options.feedbackImage) {
+    options.feedbackImage = options.level.instructionImageUrl;
+  }
+
+  var sharingDiv = document.createElement('div');
+  sharingDiv.setAttribute('style', 'display:inline-block');
+  sharingDiv.innerHTML = require('./templates/sharing.html')({
+    options: options
   });
-  var sharingInput = sharingUrl.querySelector('#sharing-input');
+
+  var sharingInput = sharingDiv.querySelector('#sharing-input');
   if (sharingInput) {
     dom.addClickTouchEvent(sharingInput, function() {
       sharingInput.focus();
       sharingInput.select();
     });
   }
-  sharingWrapper.appendChild(sharingUrl);
-  sharingWrapper.appendChild(sharingButtons);
-  return sharingWrapper;
+
+  return sharingDiv;
 };
 
-
-var createSharingDiv = function(options) {
-  // Creates the sharing div only when showingSharing is set and the solution is
-  // a passing solution.
-  if (options.showingSharing &&
-      exports.canContinueToNextLevel(options.feedbackType)) {
-    var sharingDiv = document.createElement('div');
-    sharingDiv.setAttribute('style', 'display:inline-block');
-    var sharingImage = document.createElement('div');
-
-    var feedbackImage = createFeedbackImage(options);
-    if (feedbackImage) {
-        sharingImage.appendChild(feedbackImage);
-        sharingDiv.appendChild(sharingImage);
-    }
-
-    if (options.response && options.response.level_source) {
-      var sharingText = document.createElement('div');
-      if (options.appStrings) {
-        dom.setText(sharingText, options.appStrings.sharingText);
-      }
-      sharingText.className = 'shareDrawingMsg';
-      sharingDiv.appendChild(sharingText);
-
-      sharingDiv.appendChild(exports.createSharingButtons(options));
-    }
-    return sharingDiv;
-  } else {
-    return null;
-  }
-};
-
-var createFeedbackImage = function(options) {
-  var feedbackImage;
-  var feedbackImageSrc =
-      options.level.instructionImageUrl || options.feedbackImage;
-  if (feedbackImageSrc) {
-    feedbackImage = document.createElement('img');
-    feedbackImage.className = 'feedback-image';
-    feedbackImage.src = feedbackImageSrc;
-  }
-  return feedbackImage;
-};
 
 var numTrophiesEarned = function(options) {
   if (options.response && options.response.trophy_updates) {
@@ -1441,43 +1474,28 @@ var getTrophiesElement = function(options) {
 };
 
 var getShowCodeElement = function(options) {
-  if (exports.canContinueToNextLevel(options.feedbackType)) {
-    var linesWritten = exports.getNumBlocksUsed();
-    var showCodeDiv = document.createElement('div');
-    showCodeDiv.setAttribute('id', 'show-code');
-    var lines = document.createElement('span');
-    lines.className = 'linesOfCodeMsg';
-    lines.innerHTML = msg.numLinesOfCodeWritten({
-      numLines: linesWritten
-    });
-    if (options.response && options.response.total_lines &&
-        (options.response.total_lines !== linesWritten)) {
-      lines.innerHTML += '<br>' + msg.totalNumLinesOfCodeWritten({
-        numLines: options.response.total_lines
-      });
-    }
+  var showCodeDiv = document.createElement('div');
+  showCodeDiv.setAttribute('id', 'show-code');
 
-    var showCodeLink = document.createElement('div');
-    showCodeLink.className = 'show-code-div';
-    showCodeLink.innerHTML = require('./templates/showCode.html')();
-    var button = showCodeLink.querySelector('#show-code-button');
+  var numLinesWritten = exports.getNumBlocksUsed();
+  var shouldShowTotalLines =
+    (options.response &&
+      options.response.total_lines &&
+      (options.response.total_lines !== numLinesWritten));
+  var totalNumLinesWritten = shouldShowTotalLines ? options.response.total_lines : 0;
 
-    button.addEventListener('click', function() {
-      var codeDiv = getGeneratedCodeElement();
-      showCodeDiv.appendChild(codeDiv);
-      button.style.display = 'none';
-    });
+  showCodeDiv.innerHTML = require('./templates/showCode.html')({
+    numLinesWritten: numLinesWritten,
+    totalNumLinesWritten: totalNumLinesWritten
+  });
 
-    if (BlocklyApps.enableShowCode) {
-      showCodeDiv.appendChild(lines);
-      showCodeDiv.appendChild(showCodeLink);
-    } else {
-      lines.innerHTML = '<br>';
-      showCodeDiv.appendChild(lines);
-    }
+  var showCodeButton = showCodeDiv.querySelector('#show-code-button');
+  showCodeButton.addEventListener('click', function () {
+    showCodeDiv.appendChild(getGeneratedCodeElement());
+    showCodeButton.style.display = 'none';
+  });
 
-    return showCodeDiv;
-  }
+  return showCodeDiv;
 };
 
 /**
@@ -1818,7 +1836,7 @@ var generateXMLForBlocks = function(blocks) {
 };
 
 
-},{"../locale/ko_kr/common":33,"./codegen":4,"./dom":5,"./templates/buttons.html":11,"./templates/code.html":12,"./templates/readonly.html":17,"./templates/showCode.html":18,"./templates/trophy.html":19,"./utils":31}],7:[function(require,module,exports){
+},{"../locale/ko_kr/common":36,"./codegen":6,"./dom":7,"./templates/buttons.html":13,"./templates/code.html":14,"./templates/readonly.html":19,"./templates/sharing.html":20,"./templates/showCode.html":21,"./templates/trophy.html":22,"./utils":34}],9:[function(require,module,exports){
 // Functions for checking required blocks.
 
 /**
@@ -1877,7 +1895,7 @@ exports.define = function(name) {
   };
 };
 
-},{}],8:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 // avatar: A 1029x51 set of 21 avatar images.
 
 exports.load = function(assetUrl, id) {
@@ -1900,6 +1918,15 @@ exports.load = function(assetUrl, id) {
     staticAvatar: skinUrl('static_avatar.png'),
     winAvatar: skinUrl('win_avatar.png'),
     failureAvatar: skinUrl('failure_avatar.png'),
+    leftArrow: skinUrl('left.png'),
+    downArrow: skinUrl('down.png'),
+    upArrow: skinUrl('up.png'),
+    rightArrow: skinUrl('right.png'),
+    leftJumpArrow: skinUrl('left_jump.png'),
+    downJumpArrow: skinUrl('down_jump.png'),
+    upJumpArrow: skinUrl('up_jump.png'),
+    rightJumpArrow: skinUrl('right_jump.png'),
+    offsetLineSlice: skinUrl('offset_line_slice.png'),
     // Sounds
     startSound: [skinUrl('start.mp3'), skinUrl('start.ogg')],
     winSound: [skinUrl('win.mp3'), skinUrl('win.ogg')],
@@ -1908,7 +1935,7 @@ exports.load = function(assetUrl, id) {
   return skin;
 };
 
-},{}],9:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /**
  * Blockly Apps: SVG Slider
  *
@@ -2113,7 +2140,7 @@ Slider.bindEvent_ = function(element, name, func) {
 
 module.exports = Slider;
 
-},{}],10:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2134,7 +2161,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":35}],11:[function(require,module,exports){
+},{"ejs":38}],13:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2147,7 +2174,7 @@ escape = escape || function (html){
 };
 var buf = [];
 with (locals || {}) { (function(){ 
- buf.push('');1; var msg = require('../../locale/ko_kr/common'); ; buf.push('\n\n');3; if (data.ok) {; buf.push('  <div class="farSide" style="padding: 1ex 3ex 0">\n    <button id="ok-button" class="secondary">\n      ', escape((5,  msg.dialogOK() )), '\n    </button>\n  </div>\n');8; };; buf.push('\n');9; if (data.previousLevel) {; buf.push('  <button id="back-button" class="launch">\n    ', escape((10,  msg.backToPreviousLevel() )), '\n  </button>\n');12; };; buf.push('\n');13; if (data.tryAgain) {; buf.push('  <button id="again-button" class="launch">\n    ', escape((14,  msg.tryAgain() )), '\n  </button>\n');16; };; buf.push('\n');17; if (data.nextLevel) {; buf.push('  <button id="continue-button" class="launch">\n    ', escape((18,  msg.continue() )), '\n  </button>\n');20; };; buf.push('\n');21; if (data.facebookUrl) {; buf.push('  <a href=', escape((21,  data.facebookUrl )), ' target="_blank">\n    <img src=', escape((22,  BlocklyApps.assetUrl("media/facebook_purple.png") )), '>\n  </a>\n');24; };; buf.push('\n');25; if (data.twitterUrl) {; buf.push('  <a href=', escape((25,  data.twitterUrl )), ' target="_blank">\n    <img src=', escape((26,  BlocklyApps.assetUrl("media/twitter_purple.png") )), ' >\n  </a>\n  <br>\n');29; };; buf.push('\n');30; if (data.sharingUrl) {; buf.push('  <input type="text" id="sharing-input" value=', escape((30,  data.sharingUrl )), ' >\n');31; };; buf.push(''); })();
+ buf.push('');1; var msg = require('../../locale/ko_kr/common'); ; buf.push('\n\n');3; if (data.ok) {; buf.push('  <div class="farSide" style="padding: 1ex 3ex 0">\n    <button id="ok-button" class="secondary">\n      ', escape((5,  msg.dialogOK() )), '\n    </button>\n  </div>\n');8; }; buf.push('\n');9; if (data.previousLevel) {; buf.push('  <button id="back-button" class="launch">\n    ', escape((10,  msg.backToPreviousLevel() )), '\n  </button>\n');12; }; buf.push('\n');13; if (data.tryAgain) {; buf.push('  <button id="again-button" class="launch">\n    ', escape((14,  msg.tryAgain() )), '\n  </button>\n');16; }; buf.push('\n');17; if (data.nextLevel) {; buf.push('  <button id="continue-button" class="launch">\n    ', escape((18,  msg.continue() )), '\n  </button>\n');20; }; buf.push(''); })();
 } 
 return buf.join('');
 };
@@ -2155,7 +2182,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/ko_kr/common":33,"ejs":35}],12:[function(require,module,exports){
+},{"../../locale/ko_kr/common":36,"ejs":38}],14:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2176,7 +2203,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":35}],13:[function(require,module,exports){
+},{"ejs":38}],15:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2197,7 +2224,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/ko_kr/common":33,"ejs":35}],14:[function(require,module,exports){
+},{"../../locale/ko_kr/common":36,"ejs":38}],16:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2220,7 +2247,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/ko_kr/common":33,"ejs":35}],15:[function(require,module,exports){
+},{"../../locale/ko_kr/common":36,"ejs":38}],17:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2241,7 +2268,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/ko_kr/common":33,"ejs":35}],16:[function(require,module,exports){
+},{"../../locale/ko_kr/common":36,"ejs":38}],18:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2255,7 +2282,7 @@ escape = escape || function (html){
 var buf = [];
 with (locals || {}) { (function(){ 
  buf.push('');1; var msg = require('../../locale/ko_kr/common'); ; buf.push('\n\n<div id="rotateContainer" style="background-image: url(', escape((3,  assetUrl('media/mobile_tutorial_turnphone.png') )), ')">\n  <div id="rotateText">\n    <p>', escape((5,  msg.rotateText() )), '<br>', escape((5,  msg.orientationLock() )), '</p>\n  </div>\n</div>\n\n');9; var instructions = function() {; buf.push('  <div id="bubble">\n    <img id="prompt-icon">\n    <p id="prompt">\n    </p>\n  </div>\n');14; };; buf.push('\n');15; // A spot for the server to inject some HTML for help content.
-var helpArea = function(html) {; buf.push('  ');16; if (html) {; buf.push('    <div id="helpArea">\n      ', (17,  html ), '\n    </div>\n  ');19; }; buf.push('');19; };; buf.push('\n');20; var codeArea = function() {; buf.push('  <div id="codeTextbox" contenteditable spellcheck=false>\n    // ', escape((21,  msg.typeCode() )), '\n    <br>\n    // ', escape((23,  msg.typeHint() )), '\n    <br>\n  </div>\n');26; }; ; buf.push('\n\n<div id="visualization">\n  ', (29,  data.visualization ), '\n</div>\n\n<div id="belowVisualization">\n\n  <table id="gameButtons">\n    <tr>\n      <td style="width:100%;">\n        <button id="runButton" class="launch">\n          <img src="', escape((38,  assetUrl('media/1x1.gif') )), '" class="run icon21">\n          ', escape((39,  msg.runProgram() )), '\n        </button>\n        <button id="resetButton" class="launch" style="display: none">\n          <img src="', escape((42,  assetUrl('media/1x1.gif') )), '" class="stop icon21">\n            ', escape((43,  msg.resetProgram() )), '\n        </button>\n      </td>\n      ');46; if (data.controls) { ; buf.push('\n        ', (47,  data.controls ), '\n      ');48; } ; buf.push('\n    </tr>\n  </table>\n\n  ');52; instructions() ; buf.push('\n  ');53; helpArea(data.helpHtml) ; buf.push('\n\n</div>\n\n<div id="blockly">\n  <div id="headers" dir="', escape((58,  data.localeDirection )), '">\n    <div id="toolbox-header" class="blockly-header"><span>', escape((59,  msg.toolboxHeader() )), '</span></div>\n    <div id="workspace-header" class="blockly-header">\n      <span id="blockCounter">', escape((61,  msg.workspaceHeader() )), '</span>\n      <div id="blockUsed" class=', escape((62,  data.blockCounterClass )), '>\n        ', escape((63,  data.blockUsed )), '\n      </div>\n      <span>&nbsp;/</span>\n      <span id="idealBlockNumber">', escape((66,  data.idealBlockNumber )), '</span>\n    </div>\n    <div id="show-code-header" class="blockly-header"><span>', escape((68,  msg.showCodeHeader() )), '</span></div>\n  </div>\n</div>\n\n<div class="clear"></div>\n\n');74; codeArea() ; buf.push('\n'); })();
+var helpArea = function(html) {; buf.push('  ');16; if (html) {; buf.push('    <div id="helpArea">\n      ', (17,  html ), '\n    </div>\n  ');19; }; buf.push('');19; };; buf.push('\n');20; var codeArea = function() {; buf.push('  <div id="codeTextbox" contenteditable spellcheck=false>\n    // ', escape((21,  msg.typeCode() )), '\n    <br>\n    // ', escape((23,  msg.typeHint() )), '\n    <br>\n  </div>\n');26; }; ; buf.push('\n\n<div id="visualization">\n  ', (29,  data.visualization ), '\n</div>\n\n<div id="belowVisualization">\n\n  <table id="gameButtons">\n    <tr>\n      <td style="width:100%;">\n        <button id="runButton" class="launch">\n          <img src="', escape((38,  assetUrl('media/1x1.gif') )), '" class="run icon21">\n          ', escape((39,  msg.runProgram() )), '\n        </button>\n        <button id="resetButton" class="launch" style="display: none">\n          <img src="', escape((42,  assetUrl('media/1x1.gif') )), '" class="stop icon21">\n            ', escape((43,  msg.resetProgram() )), '\n        </button>\n      </td>\n      ');46; if (data.controls) { ; buf.push('\n        ', (47,  data.controls ), '\n      ');48; } ; buf.push('\n    </tr>\n    ');50; if (data.extraControlRows) { ; buf.push('\n      ', (51,  data.extraControlRows ), '\n    ');52; } ; buf.push('\n  </table>\n\n  ');55; instructions() ; buf.push('\n  ');56; helpArea(data.helpHtml) ; buf.push('\n\n</div>\n\n<div id="blockly">\n  <div id="headers" dir="', escape((61,  data.localeDirection )), '">\n    <div id="toolbox-header" class="blockly-header"><span>', escape((62,  msg.toolboxHeader() )), '</span></div>\n    <div id="workspace-header" class="blockly-header">\n      <span id="blockCounter">', escape((64,  msg.workspaceHeader() )), '</span>\n      <div id="blockUsed" class=', escape((65,  data.blockCounterClass )), '>\n        ', escape((66,  data.blockUsed )), '\n      </div>\n      <span>&nbsp;/</span>\n      <span id="idealBlockNumber">', escape((69,  data.idealBlockNumber )), '</span>\n    </div>\n    <div id="show-code-header" class="blockly-header"><span>', escape((71,  msg.showCodeHeader() )), '</span></div>\n  </div>\n</div>\n\n<div class="clear"></div>\n\n');77; codeArea() ; buf.push('\n'); })();
 } 
 return buf.join('');
 };
@@ -2263,7 +2290,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/ko_kr/common":33,"ejs":35}],17:[function(require,module,exports){
+},{"../../locale/ko_kr/common":36,"ejs":38}],19:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2285,7 +2312,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":35}],18:[function(require,module,exports){
+},{"ejs":38}],20:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2298,7 +2325,7 @@ escape = escape || function (html){
 };
 var buf = [];
 with (locals || {}) { (function(){ 
- buf.push('');1; var msg = require('../../locale/ko_kr/common'); ; buf.push('\n\n<a id="show-code-button" href="#">', escape((3,  msg.showGeneratedCode() )), '</a>\n'); })();
+ buf.push('');1; var msg = require('../../locale/ko_kr/common'); ; buf.push('\n');2; if (options.feedbackImage) { ; buf.push('\n  <div class="sharing-image">\n    <img class="feedback-image" src="', escape((4,  options.feedbackImage )), '">\n  </div>\n');6; } ; buf.push('\n\n<div class="sharing">\n');9; if (options.alreadySaved) { ; buf.push('\n  <div class="saved-to-gallery">\n    ', escape((11,  msg.savedToGallery() )), '\n  </div>\n');13; } else if (options.saveToGalleryUrl) { ; buf.push('\n  <div class="social-buttons">\n  <button id="save-to-gallery-button" class="launch">\n    ', escape((16,  msg.saveToGallery() )), '\n  </button>\n  </div>\n');19; } ; buf.push('\n\n');21; if (options.response && options.response.level_source) { ; buf.push('\n  ');22; if (options.appStrings && options.appStrings.sharingText) { ; buf.push('\n    <div>', escape((23,  options.appStrings.sharingText )), '</div>\n  ');24; } ; buf.push('\n\n  <div>\n    <input type="text" id="sharing-input" value=', escape((27,  options.response.level_source )), ' readonly>\n  </div>\n\n  <div class=\'social-buttons\'>\n    ');31; if (options.facebookUrl) {; buf.push('      <a href=', escape((31,  options.facebookUrl )), ' target="_blank">\n        <img src=', escape((32,  BlocklyApps.assetUrl("media/facebook_purple.png") )), '>\n      </a>\n    ');34; }; buf.push('  \n    ');35; if (options.twitterUrl) {; buf.push('      <a href=', escape((35,  options.twitterUrl )), ' target="_blank">\n        <img src=', escape((36,  BlocklyApps.assetUrl("media/twitter_purple.png") )), ' >\n      </a>\n    ');38; }; buf.push('  </div>\n');39; } ; buf.push('\n</div>\n\n'); })();
 } 
 return buf.join('');
 };
@@ -2306,7 +2333,28 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/ko_kr/common":33,"ejs":35}],19:[function(require,module,exports){
+},{"../../locale/ko_kr/common":36,"ejs":38}],21:[function(require,module,exports){
+module.exports= (function() {
+  var t = function anonymous(locals, filters, escape, rethrow) {
+escape = escape || function (html){
+  return String(html)
+    .replace(/&(?!#?[a-zA-Z0-9]+;)/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/'/g, '&#39;')
+    .replace(/"/g, '&quot;');
+};
+var buf = [];
+with (locals || {}) { (function(){ 
+ buf.push('');1; var msg = require('../../locale/ko_kr/common'); ; buf.push('\n\n<p id="num-lines-of-code" class="lines-of-code-message">\n  ', escape((4,  msg.numLinesOfCodeWritten({ numLines: numLinesWritten }) )), '\n  <button id="show-code-button" href="#">\n    ', escape((6,  msg.showGeneratedCode() )), '\n  </button>\n</p>\n\n');10; if (totalNumLinesWritten !== 0) { ; buf.push('\n  <p id="total-num-lines-of-code" class="lines-of-code-message">\n    ', escape((12,  msg.totalNumLinesOfCodeWritten({ numLines: totalNumLinesWritten }) )), '\n  </p>\n');14; } ; buf.push('\n'); })();
+} 
+return buf.join('');
+};
+  return function(locals) {
+    return t(locals, require("ejs").filters);
+  }
+}());
+},{"../../locale/ko_kr/common":36,"ejs":38}],22:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -2327,7 +2375,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":35}],20:[function(require,module,exports){
+},{"ejs":38}],23:[function(require,module,exports){
 /**
  * Blockly Demo: Turtle Graphics
  *
@@ -2678,7 +2726,7 @@ exports.answer = function(page, level) {
   return BlocklyApps.log;
 };
 
-},{"../base":2,"./api":21}],21:[function(require,module,exports){
+},{"../base":2,"./api":24}],24:[function(require,module,exports){
 var BlocklyApps = require('../base');
 
 exports.moveForward = function(distance, id) {
@@ -2687,6 +2735,38 @@ exports.moveForward = function(distance, id) {
 
 exports.moveBackward = function(distance, id) {
   BlocklyApps.log.push(['FD', -distance, id]);
+};
+
+exports.moveUp = function(distance, id) {
+  BlocklyApps.log.push(['MV', distance, 0, id]);
+};
+
+exports.moveDown = function(distance, id) {
+  BlocklyApps.log.push(['MV', distance, 180, id]);
+};
+
+exports.moveLeft = function(distance, id) {
+  BlocklyApps.log.push(['MV', distance, 270, id]);
+};
+
+exports.moveRight = function(distance, id) {
+  BlocklyApps.log.push(['MV', distance, 90, id]);
+};
+
+exports.jumpUp = function(distance, id) {
+  BlocklyApps.log.push(['JD', distance, 0, id]);
+};
+
+exports.jumpDown = function(distance, id) {
+  BlocklyApps.log.push(['JD', distance, 180, id]);
+};
+
+exports.jumpLeft = function(distance, id) {
+  BlocklyApps.log.push(['JD', distance, 270, id]);
+};
+
+exports.jumpRight = function(distance, id) {
+  BlocklyApps.log.push(['JD', distance, 90, id]);
 };
 
 exports.jumpForward = function(distance, id) {
@@ -2729,7 +2809,7 @@ exports.showTurtle = function(id) {
   BlocklyApps.log.push(['ST', id]);
 };
 
-},{"../base":2}],22:[function(require,module,exports){
+},{"../base":2}],25:[function(require,module,exports){
 /**
  * Blockly Demo: Turtle Graphics
  *
@@ -3171,6 +3251,89 @@ exports.install = function(blockly, skin) {
     }
   };
 
+  var SimpleMove = {
+    DEFAULT_MOVE_LENGTH: 50,
+    SHORT_MOVE_LENGTH: 25,
+    LONG_MOVE_LENGTH: 100,
+    DIRECTION_CONFIGS: {
+      left: { letter: 'W', moveFunction: 'moveLeft', image: skin.leftArrow, image_width: 42, image_height: 42 },
+      right: { letter: 'E', moveFunction: 'moveRight', image: skin.rightArrow, image_width: 42, image_height: 42 },
+      up: { letter: 'N', moveFunction: 'moveUp', image: skin.upArrow, image_width: 42, image_height: 42 },
+      down: { letter: 'S', moveFunction: 'moveDown', image: skin.downArrow, image_width: 42, image_height: 42 },
+      jump_left: { letter: 'W', moveFunction: 'jumpLeft', image: skin.leftJumpArrow, image_width: 42, image_height: 42 },
+      jump_right: { letter: 'E', moveFunction: 'jumpRight', image: skin.rightJumpArrow, image_width: 42, image_height: 42 },
+      jump_up: { letter: 'N', moveFunction: 'jumpUp', image: skin.upJumpArrow, image_width: 42, image_height: 42 },
+      jump_down: { letter: 'S', moveFunction: 'jumpDown', image: skin.downJumpArrow, image_width: 42, image_height: 42 },
+      jump_left_long: { letter: 'W long', moveFunction: 'jumpLeft', image: skin.leftJumpArrow, image_width: 42, image_height: 42 },
+      jump_right_long: { letter: 'E long', moveFunction: 'jumpRight', image: skin.rightJumpArrow, image_width: 42, image_height: 42 },
+      jump_up_long: { letter: 'N long', moveFunction: 'jumpUp', image: skin.upJumpArrow, image_width: 42, image_height: 42 },
+      jump_down_long: { letter: 'S long', moveFunction: 'jumpDown', image: skin.downJumpArrow, image_width: 42, image_height: 42 },
+      jump_left_short: { letter: 'W short', moveFunction: 'jumpLeft', image: skin.leftJumpArrow, image_width: 42, image_height: 42 },
+      jump_right_short: { letter: 'E short', moveFunction: 'jumpRight', image: skin.rightJumpArrow, image_width: 42, image_height: 42 },
+      jump_up_short: { letter: 'N short', moveFunction: 'jumpUp', image: skin.upJumpArrow, image_width: 42, image_height: 42 },
+      jump_down_short: { letter: 'S short', moveFunction: 'jumpDown', image: skin.downJumpArrow, image_width: 42, image_height: 42 }
+    },
+    LENGTHS: [
+      ['short', "SHORT_MOVE_LENGTH"],
+      ['long', "LONG_MOVE_LENGTH"]
+    ],
+    generateBlocksForAllDirections: function() {
+      SimpleMove.generateBlocksForDirection("up");
+      SimpleMove.generateBlocksForDirection("down");
+      SimpleMove.generateBlocksForDirection("left");
+      SimpleMove.generateBlocksForDirection("right");
+    },
+    generateBlocksForDirection: function(direction) {
+      generator["simple_move_" + direction] = SimpleMove.generateCodeGenerator(direction);
+      generator["simple_jump_" + direction] = SimpleMove.generateCodeGenerator('jump_' + direction);
+      generator["simple_move_" + direction + "_length"] = SimpleMove.generateCodeGenerator(direction, true);
+      generator["simple_jump_" + direction + "_long"] = SimpleMove.generateCodeGenerator('jump_' + direction, false, SimpleMove.LONG_MOVE_LENGTH);
+      generator["simple_jump_" + direction + "_short"] = SimpleMove.generateCodeGenerator('jump_' + direction, false, SimpleMove.SHORT_MOVE_LENGTH);
+      blockly.Blocks['simple_move_' + direction + '_length'] = SimpleMove.generateBlock(direction, true);
+      blockly.Blocks['simple_jump_' + direction + '_long'] = SimpleMove.generateBlock('jump_' + direction + '_long');
+      blockly.Blocks['simple_jump_' + direction + '_short'] = SimpleMove.generateBlock('jump_' + direction + '_short');
+      blockly.Blocks['simple_move_' + direction] = SimpleMove.generateBlock(direction);
+      blockly.Blocks['simple_jump_' + direction] = SimpleMove.generateBlock('jump_' + direction);
+    },
+    generateBlock: function(direction, hasLengthInput) {
+      var directionConfig = SimpleMove.DIRECTION_CONFIGS[direction];
+      return {
+        helpUrl: '',
+        init: function () {
+          this.setHSV(184, 1.00, 0.74);
+          var input = this.appendDummyInput()
+            .appendTitle(directionConfig.letter)
+            .appendTitle(new blockly.FieldImage(directionConfig.image, directionConfig.image_width, directionConfig.image_height));
+          this.setPreviousStatement(true);
+          this.setNextStatement(true);
+          this.setTooltip(msg.jumpTooltip());
+          if (hasLengthInput) {
+            var dropdown = new blockly.FieldDropdown(SimpleMove.LENGTHS);
+            dropdown.setValue(SimpleMove.LENGTHS[0][1]);
+            input.appendTitle(dropdown, 'length');
+          }
+        }
+      };
+    },
+    generateCodeGenerator: function(direction, hasLengthInput, length) {
+      return function() {
+        length = length || SimpleMove.DEFAULT_MOVE_LENGTH;
+
+        if (hasLengthInput) {
+          length = SimpleMove[this.getTitleValue("length")];
+        }
+        return 'Turtle.' + SimpleMove.DIRECTION_CONFIGS[direction].moveFunction + '(' + length + ',' + '\'block_id_' + this.id + '\');\n';
+      };
+    },
+    stretchedLine: function(width) {
+      var lineImage = new blockly.FieldImage(skin.offsetLineSlice, width, 9);
+      lineImage.setPreserveAspectRatio("none");
+      return lineImage;
+    }
+  };
+
+  SimpleMove.generateBlocksForAllDirections();
+
   blockly.Blocks.jump.DIRECTIONS =
       [[msg.jumpForward(), 'jumpForward'],
        [msg.jumpBackward(), 'jumpBackward']];
@@ -3279,6 +3442,26 @@ exports.install = function(blockly, skin) {
     return 'Turtle.penColour(' + colour + ', \'block_id_' +
         this.id + '\');\n';
   };
+  
+  blockly.Blocks.up_big = {
+    helpUrl: '',
+    init: function() {
+      this.setHSV(184, 1.00, 0.74);
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.appendDummyInput()
+        .appendTitle(new blockly.FieldDropdown(this.STATE), 'VISIBILITY');
+      this.setTooltip(msg.turtleVisibilityTooltip());
+    }
+  };
+
+  generator.up_big = function() {
+    // Generate JavaScript for setting the colour.
+    var colour = generator.valueToCode(this, 'COLOUR',
+      generator.ORDER_NONE) || '\'#000000\'';
+    return 'Turtle.penColour(' + colour + ', \'block_id_' +
+      this.id + '\');\n';
+  };
 
   blockly.Blocks.turtle_visibility = {
     // Block for changing turtle visiblity.
@@ -3305,7 +3488,7 @@ exports.install = function(blockly, skin) {
 
 };
 
-},{"../../locale/ko_kr/turtle":34,"./core":24}],23:[function(require,module,exports){
+},{"../../locale/ko_kr/turtle":37,"./core":27}],26:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -3326,7 +3509,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"ejs":35}],24:[function(require,module,exports){
+},{"ejs":38}],27:[function(require,module,exports){
 // Create a limited colour palette to avoid overwhelming new users
 // and to make colour checking easier.  These definitions cannot be
 // moved to blocks.js, which is loaded later, since they are used in
@@ -3347,11 +3530,12 @@ exports.Colours = {
   PLUM: '#843179'
 };
 
-},{}],25:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 var levelBase = require('../level_base');
 var Colours = require('./core').Colours;
 var answer = require('./answers').answer;
 var msg = require('../../locale/ko_kr/turtle');
+var blockUtils = require('../block_utils');
 
 //TODO: Fix hacky level-number-dependent toolbox.
 var toolbox = function(page, level) {
@@ -3389,6 +3573,57 @@ var drawTurn = req.drawTurn;
 var SET_COLOUR_PICKER = req.SET_COLOUR_PICKER;
 var SET_COLOUR_RANDOM = req.SET_COLOUR_RANDOM;
 var defineWithArg = req.defineWithArg;
+
+var blocks = {
+  SIMPLE_MOVE_UP: blockUtils.blockOfType('simple_move_up'),
+  SIMPLE_MOVE_DOWN: blockUtils.blockOfType('simple_move_down'),
+  SIMPLE_MOVE_LEFT: blockUtils.blockOfType('simple_move_left'),
+  SIMPLE_MOVE_RIGHT: blockUtils.blockOfType('simple_move_right'),
+  SIMPLE_JUMP_UP: blockUtils.blockOfType('simple_jump_up'),
+  SIMPLE_JUMP_DOWN: blockUtils.blockOfType('simple_jump_down'),
+  SIMPLE_JUMP_LEFT: blockUtils.blockOfType('simple_jump_left'),
+  SIMPLE_JUMP_RIGHT: blockUtils.blockOfType('simple_jump_right'),
+  SIMPLE_MOVE_UP_LENGTH: blockUtils.blockOfType('simple_move_up_length'),
+  SIMPLE_MOVE_DOWN_LENGTH: blockUtils.blockOfType('simple_move_down_length'),
+  SIMPLE_MOVE_LEFT_LENGTH: blockUtils.blockOfType('simple_move_left_length'),
+  SIMPLE_MOVE_RIGHT_LENGTH: blockUtils.blockOfType('simple_move_right_length'),
+  SIMPLE_JUMP_UP_LONG: blockUtils.blockOfType('simple_jump_up_long'),
+  SIMPLE_JUMP_DOWN_LONG: blockUtils.blockOfType('simple_jump_down_long'),
+  SIMPLE_JUMP_LEFT_LONG: blockUtils.blockOfType('simple_jump_left_long'),
+  SIMPLE_JUMP_RIGHT_LONG: blockUtils.blockOfType('simple_jump_right_long'),
+  SIMPLE_JUMP_UP_SHORT: blockUtils.blockOfType('simple_jump_up_short'),
+  SIMPLE_JUMP_DOWN_SHORT: blockUtils.blockOfType('simple_jump_down_short'),
+  SIMPLE_JUMP_LEFT_SHORT: blockUtils.blockOfType('simple_jump_left_short'),
+  SIMPLE_JUMP_RIGHT_SHORT: blockUtils.blockOfType('simple_jump_right_short'),
+  simpleMoveBlocks: function() {
+    return this.SIMPLE_MOVE_UP +
+      this.SIMPLE_MOVE_DOWN +
+      this.SIMPLE_MOVE_LEFT +
+      this.SIMPLE_MOVE_RIGHT;
+  },
+  simpleJumpBlocks: function() {
+    return this.SIMPLE_JUMP_UP +
+      this.SIMPLE_JUMP_DOWN +
+      this.SIMPLE_JUMP_LEFT +
+      this.SIMPLE_JUMP_RIGHT;
+  },
+  simpleMoveLengthBlocks: function() {
+    return this.SIMPLE_MOVE_UP_LENGTH +
+      this.SIMPLE_MOVE_DOWN_LENGTH +
+      this.SIMPLE_MOVE_LEFT_LENGTH +
+      this.SIMPLE_MOVE_RIGHT_LENGTH;
+  },
+  simpleJumpLengthBlocks: function() {
+    return this.SIMPLE_JUMP_UP_LONG +
+      this.SIMPLE_JUMP_UP_SHORT +
+      this.SIMPLE_JUMP_DOWN_LONG +
+      this.SIMPLE_JUMP_DOWN_SHORT +
+      this.SIMPLE_JUMP_LEFT_LONG +
+      this.SIMPLE_JUMP_LEFT_SHORT +
+      this.SIMPLE_JUMP_RIGHT_LONG +
+      this.SIMPLE_JUMP_RIGHT_SHORT;
+  }
+};
 
 /**
  * Information about level-specific requirements.
@@ -4127,10 +4362,25 @@ module.exports = {
     startBlocks: '',
     startDirection: 0,
     sliderSpeed: 1.0
+  },
+  'k1_demo': {
+    answer: [],
+    freePlay: false,
+    initialY: 300,
+    toolbox: blockUtils.createToolbox(
+        blocks.simpleMoveBlocks() +
+        blocks.simpleJumpBlocks() +
+        blocks.simpleMoveLengthBlocks() +
+        blocks.simpleJumpLengthBlocks() +
+        blockUtils.blockOfType('controls_repeat_simplified')
+      ),
+    startBlocks: '',
+    startDirection: 0,
+    sliderSpeed: 1.0
   }
 };
 
-},{"../../locale/ko_kr/turtle":34,"../level_base":7,"./answers":20,"./core":24,"./requiredBlocks":27,"./startBlocks.xml":28,"./toolbox.xml":29}],26:[function(require,module,exports){
+},{"../../locale/ko_kr/turtle":37,"../block_utils":3,"../level_base":9,"./answers":23,"./core":27,"./requiredBlocks":30,"./startBlocks.xml":31,"./toolbox.xml":32}],29:[function(require,module,exports){
 var appMain = require('../appMain');
 window.Turtle = require('./turtle');
 var blocks = require('./blocks');
@@ -4143,7 +4393,7 @@ window.turtleMain = function(options) {
   appMain(window.Turtle, levels, options);
 };
 
-},{"../appMain":1,"../skins":8,"./blocks":22,"./levels":25,"./turtle":30}],27:[function(require,module,exports){
+},{"../appMain":1,"../skins":10,"./blocks":25,"./levels":28,"./turtle":33}],30:[function(require,module,exports){
 /**
  * Sets BlocklyApp constants that depend on the page and level.
  * This encapsulates many functions used for BlocklyApps.REQUIRED_BLOCKS.
@@ -4376,7 +4626,7 @@ module.exports = {
   SET_COLOUR_RANDOM: SET_COLOUR_RANDOM,
   defineWithArg: defineWithArg
 };
-},{}],28:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4443,7 +4693,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/ko_kr/turtle":34,"ejs":35}],29:[function(require,module,exports){
+},{"../../locale/ko_kr/turtle":37,"ejs":38}],32:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -4567,7 +4817,7 @@ return buf.join('');
     return t(locals, require("ejs").filters);
   }
 }());
-},{"../../locale/ko_kr/turtle":34,"ejs":35}],30:[function(require,module,exports){
+},{"../../locale/ko_kr/turtle":37,"ejs":38}],33:[function(require,module,exports){
 /**
  * Blockly Demo: Turtle Graphics
  *
@@ -4649,9 +4899,6 @@ Turtle.init = function(config) {
 
   Turtle.AVATAR_HEIGHT = 51;
   Turtle.AVATAR_WIDTH = 70;
-
-  BlocklyApps.IDEAL_BLOCK_NUM = level.ideal || Infinity;
-  BlocklyApps.REQUIRED_BLOCKS = level.requiredBlocks || [];
 
   config.html = page({
     assetUrl: BlocklyApps.assetUrl,
@@ -4819,10 +5066,10 @@ BlocklyApps.reset = function(ignore) {
   Turtle.visible = true;
 
   // For special cases, use a different initial location.
-  if (level.initialX) {
+  if (level.initialX !== undefined) {
     Turtle.x = level.initialX;
   }
-  if (level.initialY) {
+  if (level.initialY !== undefined) {
     Turtle.y = level.initialY;
   }
   // Clear the display.
@@ -4949,39 +5196,25 @@ Turtle.animate = function() {
 Turtle.step = function(command, values) {
   switch (command) {
     case 'FD':  // Forward
-      if (Turtle.penDownValue) {
-        Turtle.ctxScratch.beginPath();
-        Turtle.ctxScratch.moveTo(Turtle.x, Turtle.y);
-      }
-      /* falls through */
+      Turtle.moveForwardAndDraw_(values[0]);
+      break;
     case 'JF':  // Jump forward
+      Turtle.moveForward_(values[0]);
+      break;
+    case 'MV':  // Move (direction)
       var distance = values[0];
-      var bump;
-      if (distance) {
-        Turtle.x += distance * Math.sin(2 * Math.PI * Turtle.heading / 360);
-        Turtle.y -= distance * Math.cos(2 * Math.PI * Turtle.heading / 360);
-        bump = 0;
-      } else {
-        // WebKit (unlike Gecko) draws nothing for a zero-length line.
-        bump = 0.1;
-      }
-      if (command == 'FD' && Turtle.penDownValue) {
-        Turtle.ctxScratch.lineTo(Turtle.x, Turtle.y + bump);
-        Turtle.ctxScratch.stroke();
-        if (distance) {
-          var colour = Turtle.ctxScratch.strokeStyle.toLowerCase();
-          if (Turtle.coloursUsed.indexOf(colour) == -1) {
-            Turtle.coloursUsed.push(colour);
-          }
-        }
-      }
+      var heading = values[1];
+      Turtle.setHeading_(heading);
+      Turtle.moveForwardAndDraw_(distance);
+      break;
+    case 'JD':  // Jump (direction)
+      distance = values[0];
+      heading = values[1];
+      Turtle.setHeading_(heading);
+      Turtle.moveForward_(distance);
       break;
     case 'RT':  // Right Turn
-      Turtle.heading += values[0];
-      Turtle.heading %= 360;
-      if (Turtle.heading < 0) {
-        Turtle.heading += 360;
-      }
+      Turtle.turnByDegrees_(values[0]);
       break;
     case 'DP':  // Draw Print
       Turtle.ctxScratch.save();
@@ -5013,6 +5246,81 @@ Turtle.step = function(command, values) {
       Turtle.visible = true;
       break;
   }
+};
+
+Turtle.startPathIfPenDown_ = function () {
+  if (!Turtle.penDownValue) {
+    return;
+  }
+
+  Turtle.ctxScratch.beginPath();
+  Turtle.ctxScratch.moveTo(Turtle.x, Turtle.y);
+};
+
+Turtle.moveForward_ = function (distance) {
+  Turtle.x += distance * Math.sin(2 * Math.PI * Turtle.heading / 360);
+  Turtle.y -= distance * Math.cos(2 * Math.PI * Turtle.heading / 360);
+};
+
+Turtle.moveByRelativePosition_ = function (x, y) {
+  Turtle.x += x;
+  Turtle.y += y;
+};
+
+Turtle.drawPathToTurtle_ = function (x, y) {
+  Turtle.ctxScratch.lineTo(x, y);
+  Turtle.ctxScratch.stroke();
+};
+
+Turtle.markCurrentColourUsed_ = function () {
+  var colour = Turtle.ctxScratch.strokeStyle.toLowerCase();
+  if (Turtle.coloursUsed.indexOf(colour) == -1) {
+    Turtle.coloursUsed.push(colour);
+  }
+};
+
+Turtle.drawDotAtTurtle_ = function (x, y) {
+  // WebKit (unlike Gecko) draws nothing for a zero-length line, so draw a very short line.
+  var dotLineLength = 0.1;
+  Turtle.ctxScratch.lineTo(x, y + dotLineLength);
+  Turtle.ctxScratch.stroke();
+};
+
+Turtle.drawToTurtleIfPenDown_ = function (distance) {
+  if (!Turtle.penDownValue) {
+    return;
+  }
+
+  var isDot = (distance === 0);
+  if (isDot) {
+    Turtle.drawDotAtTurtle_(Turtle.x, Turtle.y);
+  } else {
+    Turtle.drawPathToTurtle_(Turtle.x, Turtle.y);
+  }
+  Turtle.markCurrentColourUsed_();
+};
+
+Turtle.turnByDegrees_ = function (degreesRight) {
+  Turtle.setHeading_(Turtle.heading + degreesRight);
+};
+
+Turtle.setHeading_ = function (heading) {
+  heading = Turtle.constrainDegrees_(heading);
+  Turtle.heading = heading;
+};
+
+Turtle.constrainDegrees_ = function (degrees) {
+  degrees %= 360;
+  if (degrees < 0) {
+    degrees += 360;
+  }
+  return degrees;
+};
+
+Turtle.moveForwardAndDraw_ = function (distance) {
+  Turtle.startPathIfPenDown_();
+  Turtle.moveForward_(distance);
+  Turtle.drawToTurtleIfPenDown_(distance);
 };
 
 /**
@@ -5116,6 +5424,10 @@ var displayFeedback = function() {
     feedbackImage: Turtle.ctxScratch.canvas.toDataURL("image/png"),
     // add 'impressive':true to non-freeplay levels that we deem are relatively impressive (see #66990480)
     showingSharing: level.freePlay || level.impressive,
+    // impressive levels are already saved
+    alreadySaved: level.impressive,
+    // allow users to save freeplay levels to their gallery (impressive non-freeplay levels are autosaved)
+    saveToGalleryUrl: level.freePlay && Turtle.response.save_to_gallery_url,
     appStrings: {
       reinfFeedbackMsg: msg.reinfFeedbackMsg(),
       sharingText: msg.shareDrawing()
@@ -5228,20 +5540,7 @@ Turtle.checkAnswer = function() {
     BlocklyApps.playAudio('failure', {volume : 0.5});
   }
 
-  // Get the canvas data for feedback.
-  if (Turtle.testResults >= BlocklyApps.TestResults.TOO_MANY_BLOCKS_FAIL) {
-    BlocklyApps.report({
-      app: 'turtle',
-      level: level.id,
-      builder: level.builder,
-      result: BlocklyApps.levelComplete,
-      testResult: Turtle.testResults,
-      program: encodeURIComponent(textBlocks),
-      onComplete: Turtle.onReportComplete,
-      image : getFeedbackImage()
-    });
-  } else {
-    BlocklyApps.report({
+  var reportData = {
       app: 'turtle',
       level: level.id,
       builder: level.builder,
@@ -5249,8 +5548,18 @@ Turtle.checkAnswer = function() {
       testResult: Turtle.testResults,
       program: encodeURIComponent(textBlocks),
       onComplete: Turtle.onReportComplete
-    });
+  };
+
+  // Get the canvas data for feedback.
+  if (Turtle.testResults >= BlocklyApps.TestResults.TOO_MANY_BLOCKS_FAIL) {
+    reportData.image = getFeedbackImage();
   }
+
+  if (level.impressive) {
+    reportData.save_to_gallery = true;
+  }
+
+  BlocklyApps.report(reportData);
 
   // The call to displayFeedback() will happen later in onReportComplete()
 };
@@ -5264,7 +5573,7 @@ var getFeedbackImage = function() {
       feedbackCanvas.toDataURL("image/png").split(',')[1]);
 };
 
-},{"../../locale/ko_kr/turtle":34,"../base":2,"../codegen":4,"../skins":8,"../templates/page.html":16,"./api":21,"./controls.html":23,"./core":24,"./levels":25}],31:[function(require,module,exports){
+},{"../../locale/ko_kr/turtle":37,"../base":2,"../codegen":6,"../skins":10,"../templates/page.html":18,"./api":24,"./controls.html":26,"./core":27,"./levels":28}],34:[function(require,module,exports){
 exports.shallowCopy = function(source) {
   var result = {};
   for (var prop in source) {
@@ -5296,7 +5605,28 @@ exports.escapeHtml = function(unsafe) {
     .replace(/'/g, "&#039;");
 };
 
-},{}],32:[function(require,module,exports){
+/**
+ * Version of modulo which, unlike javascript's `%` operator,
+ * will always return a positive remainder.
+ * @param number
+ * @param mod
+ */
+exports.mod = function(number, mod) {
+  return ((number % mod) + mod) % mod;
+};
+
+/**
+ * Generates an array of integers from start to end inclusive
+ */
+exports.range = function(start, end) {
+  var ints = [];
+  for (var i = start; i <= end; i++) {
+    ints.push(i);
+  }
+  return ints;
+};
+
+},{}],35:[function(require,module,exports){
 // Serializes an XML DOM node to a string.
 exports.serialize = function(node) {
   var serializer = new XMLSerializer();
@@ -5324,7 +5654,7 @@ exports.parseElement = function(text) {
   return element;
 };
 
-},{}],33:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.ko=function(n){return "other"}
 exports.blocklyMessage = function(d){return "Blockly(블러클리)"};
 
@@ -5356,7 +5686,7 @@ exports.dialogOK = function(d){return "확인"};
 
 exports.emptyBlocksErrorMsg = function(d){return "\"반복\" 블럭이나 \"조건\" 블럭이 실행되려면, 그 안에 다른 블럭들이 있어야 합니다. 블럭 안쪽에 필요한 블럭들을 끼워 맞춰 연결하세요."};
 
-exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
+exports.extraTopBlocks = function(d){return "이벤트 블럭에 연결하지 않은 남는 블럭이 있습니다."};
 
 exports.finalStage = function(d){return "축하합니다! 마지막 단계까지 성공적으로 해결했습니다."};
 
@@ -5374,7 +5704,7 @@ exports.levelIncompleteError = function(d){return "필요한 블럭들을 모두
 
 exports.listVariable = function(d){return "리스트"};
 
-exports.makeYourOwnFlappy = function(d){return "Make Your Own Flappy Game"};
+exports.makeYourOwnFlappy = function(d){return "자신만의 플래피 게임을 만들어보세요."};
 
 exports.missingBlocksErrorMsg = function(d){return "퍼즐을 풀기 위해 아래 블럭들을 더 사용해 보세요."};
 
@@ -5412,7 +5742,7 @@ exports.tooManyBlocksMsg = function(d){return "이 퍼즐은  <x id='START_SPAN'
 
 exports.tooMuchWork = function(d){return "작업을 너무 많이 해야 되요! 더 적게 반복하는 방법은 없을까요?"};
 
-exports.flappySpecificFail = function(d){return "Your code looks good - it will flap with each click. But you need to click many times to flap to the target."};
+exports.flappySpecificFail = function(d){return "적합한 코드입니다. - 클릭할 때마다 펄럭여 올라갑니다. 목표에 도착하려면 많이 클릭해야 합니다."};
 
 exports.toolboxHeader = function(d){return "블럭"};
 
@@ -5423,6 +5753,10 @@ exports.totalNumLinesOfCodeWritten = function(d){return "지금까지: 코드 "+
 exports.tryAgain = function(d){return "다시 시도"};
 
 exports.backToPreviousLevel = function(d){return "이전 퍼즐"};
+
+exports.saveToGallery = function(d){return "Save to your gallery"};
+
+exports.savedToGallery = function(d){return "Saved to your gallery!"};
 
 exports.typeCode = function(d){return "자바스크립트(JavaScript) 코드를 직접 작성하세요."};
 
@@ -5438,18 +5772,18 @@ exports.rotateText = function(d){return "돌리세요."};
 
 exports.orientationLock = function(d){return "회전 잠금을 해제하세요."};
 
-exports.wantToLearn = function(d){return "Want to learn to code?"};
+exports.wantToLearn = function(d){return "코드(code)를 배워볼까요?"};
 
-exports.watchVideo = function(d){return "Watch the Video"};
+exports.watchVideo = function(d){return "비디오 보기"};
 
-exports.tryHOC = function(d){return "Try the Hour of Code"};
+exports.tryHOC = function(d){return "Hour of Code 해보기"};
 
-exports.signup = function(d){return "Sign up for the intro course"};
+exports.signup = function(d){return "샘플 코스를 위해 가입하기"};
 
 exports.hintHeader = function(d){return "Here's a tip:"};
 
 
-},{"messageformat":46}],34:[function(require,module,exports){
+},{"messageformat":49}],37:[function(require,module,exports){
 var MessageFormat = require("messageformat");MessageFormat.locale.ko=function(n){return "other"}
 exports.blocksUsed = function(d){return "블럭 사용: %1"};
 
@@ -5465,7 +5799,7 @@ exports.catTurtle = function(d){return "동작"};
 
 exports.catVariables = function(d){return "변수"};
 
-exports.catLogic = function(d){return "Logic"};
+exports.catLogic = function(d){return "논리"};
 
 exports.colourTooltip = function(d){return "펜의 색을 바꿉니다."};
 
@@ -5517,13 +5851,13 @@ exports.penTooltip = function(d){return "펜을 올려 선을 그리지 않거�
 
 exports.penUp = function(d){return "펜 올리기"};
 
-exports.reinfFeedbackMsg = function(d){return "Does this look like what you want? You can press the \"Try again\" button to see your drawing."};
+exports.reinfFeedbackMsg = function(d){return "원하는 그림이 만들어지나요? \"다시 시도\" 를 눌러 그림을 확인해 보세요."};
 
 exports.setColour = function(d){return "색 설정:"};
 
 exports.setWidth = function(d){return "두께 설정:"};
 
-exports.shareDrawing = function(d){return "Share your drawing:"};
+exports.shareDrawing = function(d){return "그림 공개하기:"};
 
 exports.showMe = function(d){return "보이기"};
 
@@ -5546,7 +5880,7 @@ exports.widthTooltip = function(d){return "펜의 두께를 바꿉니다."};
 exports.wrongColour = function(d){return "색이 다릅니다. %1 색 이어야 합니다."};
 
 
-},{"messageformat":46}],35:[function(require,module,exports){
+},{"messageformat":49}],38:[function(require,module,exports){
 
 /*!
  * EJS
@@ -5905,7 +6239,7 @@ if (require.extensions) {
   });
 }
 
-},{"./filters":36,"./utils":37,"fs":38,"path":40}],36:[function(require,module,exports){
+},{"./filters":39,"./utils":40,"fs":41,"path":43}],39:[function(require,module,exports){
 /*!
  * EJS - Filters
  * Copyright(c) 2010 TJ Holowaychuk <tj@vision-media.ca>
@@ -6108,7 +6442,7 @@ exports.json = function(obj){
   return JSON.stringify(obj);
 };
 
-},{}],37:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 
 /*!
  * EJS
@@ -6134,9 +6468,9 @@ exports.escape = function(html){
 };
  
 
-},{}],38:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 
-},{}],39:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -6191,7 +6525,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],40:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -6419,7 +6753,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require("/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":39}],41:[function(require,module,exports){
+},{"/home/ubuntu/website-ci/blockly/node_modules/grunt-browserify/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":42}],44:[function(require,module,exports){
 (function (global){
 /*! http://mths.be/punycode v1.2.4 by @mathias */
 ;(function(root) {
@@ -6930,7 +7264,7 @@ var substr = 'ab'.substr(-1) === 'b'
 }(this));
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],42:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -7016,7 +7350,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],43:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -7103,13 +7437,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],44:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":42,"./encode":43}],45:[function(require,module,exports){
+},{"./decode":45,"./encode":46}],48:[function(require,module,exports){
 /*jshint strict:true node:true es5:true onevar:true laxcomma:true laxbreak:true eqeqeq:true immed:true latedef:true*/
 (function () {
   "use strict";
@@ -7742,7 +8076,7 @@ function parseHost(host) {
 
 }());
 
-},{"punycode":41,"querystring":44}],46:[function(require,module,exports){
+},{"punycode":44,"querystring":47}],49:[function(require,module,exports){
 /**
  * messageformat.js
  *
@@ -9325,4 +9659,4 @@ function parseHost(host) {
 
 })( this );
 
-},{}]},{},[26])
+},{}]},{},[29])

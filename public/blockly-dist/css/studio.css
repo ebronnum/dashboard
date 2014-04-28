@@ -95,6 +95,13 @@ button.share:focus {
 .share-cell-enabled {
   min-width: 102px; }
 
+.studio-speech-bubble {
+  fill: white;
+  stroke: black;
+  font-size: x-large;
+  font-weight: bold;
+  stroke-width: 0.5; }
+
 .studio-score {
   text-anchor: middle;
   font-size: xx-large;

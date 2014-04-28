@@ -62,7 +62,7 @@
         text: 你好，我是 Paola ！在接下来的益智游戏中，你将扮演一个准备平整土地开始播种的农夫。
       2:
         image: notes/stage9_2.jpg
-        text: 我们要工资！我们要工资！翻译尼玛这么多代码还有提示语神马的也不给我们付工资！严正抗议~~~
+        text: 你要帮助她移出所有的土堆和填平所有的洞。
       3:
         image: notes/stage9_3.jpg
         text: 新块从土堆上移走一铲土并填到洞里。
@@ -75,9 +75,7 @@
         text: 你好，我是凯蒂 ！计算机科学最令人兴奋的事情之一就是计算机程序可以互动。
       2:
         image: 标记/ flappy02.jpg
-        text: Any time somebody clicks or taps or types on a computer or phone, that
-          generates an EVENT, and there's some code that decides what to do when an
-          EVENT occurs.
+        text: 当有人在电脑或手机上点击或打字时，都会触发一个『事件』，由某些代码决定当『事件』发生时要做什么。
       3:
         image: 标记/ flappy03.jpg
         text: 'For example, you could have an EVENT-HANDLER that says "when the mouse

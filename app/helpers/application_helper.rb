@@ -48,6 +48,13 @@ module ApplicationHelper
     match ? match[1].to_i : 0
   end
 
+  # Returns Chrome version or 0 if not Chrome
+  def chrome_version
+    browser = request.user_agent
+    match = /Chrome\/(\d+)\./.match(browser)
+    match ? match[1].to_i : 0
+  end
+
   def youtube_url(code, args={})
     defaults = {
       v: code,
@@ -69,11 +76,16 @@ module ApplicationHelper
   end
 
   def video_thumbnail_url(video)
-    asset_url("/c/video_thumbnails/#{video.id}.jpg")
+    asset_url(video_thumbnail_path(video))
+  end
+
+  def video_thumbnail_path(video)
+    "/c/video_thumbnails/#{video.id}.jpg"
   end
 
   def video_info(video)
-    { src: youtube_url(video.youtube_code), key: video.key, name: data_t('video.name', video.key), download: video.download }
+    # Note: similar video info is also set in javascript at levels/_blockly.html.haml
+    { src: youtube_url(video.youtube_code), key: video.key, name: data_t('video.name', video.key), download: video.download, thumbnail: video_thumbnail_path(video) }
   end
 
   def format_xml(xml)
@@ -117,4 +129,18 @@ module ApplicationHelper
     [passed, link]
   end
 
+  def show_flashes
+    ret = ""
+    if notice
+      ret += content_tag(:p, flash.notice, {id: "notice"})
+      flash.notice = nil
+    end
+
+    if alert
+      ret += content_tag(:p, flash.alert, {id: "alert"})
+      flash.alert = nil
+    end
+
+    ret
+  end
 end

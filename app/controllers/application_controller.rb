@@ -25,6 +25,11 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def reset_session_endpoint
+    reset_session
+    render text: "OK"
+  end
+
 # we need the following to fix a problem with the interaction between CanCan and strong_parameters
 # https://github.com/ryanb/cancan/issues/835
   def verify_params_before_cancan_loads_model
@@ -77,10 +82,7 @@ class ApplicationController < ActionController::Base
     if options[:solved?]
       response[:total_lines] = options[:total_lines]
 
-      trophy_updates = options.fetch(:trophy_updates, [])
-      if trophy_updates.length > 0
-        response[:trophy_updates] = trophy_updates
-      end
+      response[:trophy_updates] = options[:trophy_updates] unless options[:trophy_updates].blank?
 
       next_level = script_level.next_level
       # If this is the end of the current script
@@ -116,12 +118,19 @@ class ApplicationController < ActionController::Base
           response[:skin_changing] = { previous: level.skin, new: next_level.level.skin }
         end
       end
-    else
+    else # not solved
       response[:message] = 'try again'
     end
 
     if options[:level_source]
       response[:level_source] = level_source_url(options[:level_source])
+    end
+
+    # logged in users can save solved levels to a gallery (subject to
+    # additional logic in the blockly code because blockly owns
+    # which levels are worth saving)
+    if current_user && options[:level_source] && options[:solved?] && options[:activity]
+      response[:save_to_gallery_url] = gallery_activities_path(gallery_activity: {activity_id: options[:activity].id})
     end
 
     # Check if the current level_source has program specific hint, use it if use is set.
@@ -143,9 +152,9 @@ class ApplicationController < ActionController::Base
 
       # Record this activity
       if response[:hint]
-        if options[:activity_id]
+        if options[:activity]
           ActivityHint.create!(
-              activity_id: options[:activity_id],
+              activity_id: options[:activity].id,
               level_source_hint_id: response[:hint].id
           )
         end
@@ -153,10 +162,8 @@ class ApplicationController < ActionController::Base
       end
     end
 
-    # Set up hint design experiment
-    if ExperimentActivity.is_experimenting_feedback_design?
-      response[:design] = ExperimentActivity.get_feedback_design(options[:activity_id])
-    end
+    # Set up the background design
+    response[:design] = ExperimentActivity::TYPE_FEEDBACK_DESIGN_WHITE
 
     response
   end

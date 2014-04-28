@@ -34,7 +34,7 @@ namespace :seed do
     end
   end
   task games: :environment do
-    Game.transaction do 
+    Game.transaction do
       Game.delete_all # use delete instead of destroy so callbacks are not called
       Game.connection.execute("ALTER TABLE games auto_increment = 1")
       game_id = 0
@@ -65,17 +65,52 @@ namespace :seed do
       Game.create!(id: game_id += 1, name: "CustomMaze", app: "maze")
       Game.create!(id: game_id += 1, name: 'Multi', app: 'multi')
       Game.create!(id: game_id += 1, name: 'Multi', app: 'multi')
-   end
+      Game.create!(id: game_id += 1, name: "Studio", app: "studio")
+      Game.create!(id: game_id += 1, name: "Jigsaw", app: 'jigsaw')
+    end
   end
 
   COL_GAME = 'Game'
+  COL_STAGE = 'Stage'
   COL_NAME = 'Name'
   COL_LEVEL = 'Level'
   COL_CONCEPTS = 'Concepts'
   COL_URL = 'Url'
   COL_SKIN = 'Skin'
+  COL_INSTRUCTIONS = 'Instructions'
+  COL_MAZE = 'Maze'
+  COL_X = 'X'
+  COL_Y = 'Y'
+  COL_START_DIRECTION = 'Start_direction'
+  COL_START_BLOCKS = 'Start_blocks'
+  COL_TOOLBOX_BLOCKS = 'Toolbox_blocks'
+  COL_SOLUTION = 'Solution'
 
-  task scripts: :environment do
+  task custom_levels: :environment do
+    Level.transaction do
+      JSON.parse(File.read("config/scripts/custom_levels.json")).each do |row|
+        levels = get_level_by_name(row['name'])
+        level = levels.first_or_create
+        game = Game.find(row['game_id'])
+        level.update(instructions: row['instructions'], skin: row['skin'], maze: row['maze'], x: row['x'], y: row['y'], start_blocks: row['start_blocks'], toolbox_blocks: row['start_blocks'], start_direction: row['start_direction'], game: game)
+        solution = row['properties']['solution_blocks']
+        if solution
+          level.update(solution_level_source: LevelSource.lookup(level, solution))
+        end
+      end
+    end
+  end
+
+  def get_level_by_name(name)
+    levels = Level.where(name: name)
+    if levels.count > 1
+      raise "There exists more than one level with name '#{name}'."
+    end
+    levels
+  end
+
+  task scripts: [:games, :environment] do
+    Rake::Task["seed:custom_levels"].invoke
     Script.transaction do
       game_map = Game.all.index_by(&:name)
       concept_map = Concept.all.index_by(&:name)
@@ -86,22 +121,33 @@ namespace :seed do
                  { file: 'config/ec_script.csv', params: { name: 'Edit Code', wrapup_video: Video.find_by_key('hoc_wrapup'), trophies: false, hidden: true }},
                  { file: 'config/2014_script.csv', params: { name: '2014 Levels', trophies: false, hidden: true }},
                  { file: 'config/builder_script.csv', params: { name: 'Builder Levels', trophies: false, hidden: true }},
-                 { file: 'config/flappy_script.csv', params: { name: 'Flappy Levels', trophies: false, hidden: true }}
+                 { file: 'config/flappy_script.csv', params: { name: 'Flappy Levels', trophies: false, hidden: true }},
+                 { file: 'config/jigsaw_script.csv', params: { name: 'Jigsaw Levels', trophies: false, hidden: true }}
                 ]
-      sources.each do |source|
+      custom_sources = Dir.glob("config/scripts/*.script.csv").map do |script|
+        { file: script, custom: true, params: { name: File.basename(script, ".script.csv"), trophies: false, hidden: true }}
+      end
+
+      (sources + custom_sources).each do |source|
         script = Script.where(source[:params]).first_or_create
         old_script_levels = ScriptLevel.where(script: script).to_a  # tracks which levels are no longer included in script.
         game_index = Hash.new{|h,k| h[k] = 0}
 
         CSV.read(source[:file], { col_sep: "\t", headers: true }).each_with_index do |row, index|
-          game = game_map[row[COL_GAME].squish]
-          level = Level.find_by_game_id_and_level_num(game.id, row[COL_LEVEL])
-          if (level.nil?)
-            level = Level.create(:game_id => game.id, :level_num => row[COL_LEVEL], :name => row[COL_NAME])
+          if source[:custom]
+            level = get_level_by_name(row[COL_NAME]).first
+            if level.nil?
+              raise "There does not exist a level with the name '#{row[COL_NAME]}'. From the row: #{row}, From the script: #{source}."
+            end
+            game = level.game
+            raise "Level #{level.to_json}, does not have a game." if game.nil?
+          else
+            game = game_map[row[COL_GAME].squish]
+            level = Level.where(game: game, level_num: row[COL_LEVEL]).first_or_create
+            level.name = row[COL_NAME]
+            level.level_url ||= row[COL_URL]
+            level.skin = row[COL_SKIN]
           end
-          level.name = row[COL_NAME]
-          level.level_url ||= row[COL_URL]
-          level.skin = row[COL_SKIN]
 
           if level.concepts.empty?
             if row[COL_CONCEPTS]
@@ -125,7 +171,12 @@ namespace :seed do
             script_level.save!
             old_script_levels.delete(script_level)
           else
-            ScriptLevel.where(script: script, level: level, chapter: (index + 1), game_chapter: (game_index[game.id] += 1)).first_or_create
+            script_level = ScriptLevel.where(script: script, level: level, chapter: (index + 1), game_chapter: (game_index[game.id] += 1)).first_or_create
+          end
+          if row[COL_STAGE]
+            stage = Stage.where(name: row[COL_STAGE], script: script).first_or_create
+            script_level.update(stage: stage)
+            script_level.move_to_bottom
           end
         end
         # old_script_levels now contains script_levels that were removed from this csv-based script - clean them up:
@@ -143,7 +194,7 @@ namespace :seed do
       Callout.find_or_create_all_from_tsv!('config/callouts.tsv')
     end
   end
-  
+
   task trophies: :environment do
     # code in user.rb assumes that broze id: 1, silver id: 2 and gold id: 3.
     Trophy.transaction do
@@ -155,12 +206,12 @@ namespace :seed do
       Trophy.create!(id: trophy_id += 1, name: 'Gold', image_name: 'goldtrophy.png')
     end
   end
-  
+
   task prize_providers: :environment do
     PrizeProvider.transaction do
       PrizeProvider.delete_all # use delete instead of destroy so callbacks are not called
       PrizeProvider.connection.execute("ALTER TABLE prize_providers auto_increment = 1")
-      
+
       # placeholder data - id's are assumed to start at 1 so prizes below can be loaded properly
       prize_provider_id = 0
       PrizeProvider.create!(id: prize_provider_id += 1, name: 'Apple iTunes', description_token: 'apple_itunes', url: 'http://www.apple.com/itunes/', image_name: 'itunes_card.jpg')
@@ -259,7 +310,7 @@ namespace :seed do
           birthday: row['Birthday'].blank? ? nil : Date.parse(row['Birthday']))
     end
   end
-  
+
   def import_prize_from_text(file, provider_id, col_sep)
     Rails.logger.info "Importing prize codes from: " + file + " for provider id " + provider_id.to_s
     CSV.read(file, { col_sep: col_sep, headers: false }).each do |row|
@@ -321,6 +372,6 @@ namespace :seed do
 
   task analyze_data: [:ideal_solutions, :frequent_level_sources]
 
-  task all: [:videos, :concepts, :games, :scripts, :trophies, :prize_providers, :callouts]
+  task all: [:videos, :concepts, :scripts, :trophies, :prize_providers, :callouts]
 
 end

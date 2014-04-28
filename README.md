@@ -30,8 +30,9 @@ If you won't be making modifications to blockly code, you can just skip the syml
 
 ### Setting up Dashboard
 
+1. `git clone https://github.com/code-dot-org/dashboard.git`
 1. `cd dashboard` (this repository's root)
-2. Install ruby build prerequisites (using [rbenv](https://github.com/sstephenson/rbenv#installation)) and MySQL
+2. Install ruby build prerequisites (using rbenv) and MySQL:
     - OSX: Using [Homebrew](http://brew.sh/) to install:
       + Install Homebrew:
         - `ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"`
@@ -49,7 +50,7 @@ If you won't be making modifications to blockly code, you can just skip the syml
       + Add this line to your ~/.profile to configure rbenv: `if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi`
       + `source ~/.profile`
     - Ubuntu: using apt-get
-      + install MySQL packages (leave root password blank when prompted): `sudo apt-get install mysql-client mysql-server libmysqlclient-dev`
+      + install MySQL packages and other prerequisites (leave MySQL root password blank when prompted): `sudo apt-get install mysql-client mysql-server libmysqlclient-dev libmagickwand-dev imagemagick`
       + Start service (should auto-start on system boot): `sudo start mysql`
       + To connect:
         - `mysql`
@@ -61,7 +62,8 @@ If you won't be making modifications to blockly code, you can just skip the syml
     - `rbenv local 2.0.0-p247`
 
 4. Install required gems (say “Yes” if asked to overwrite system rake)
-    - `gem install bundle rake mailcatcher`
+    - `gem install bundler`
+    - `gem install rake mailcatcher`
     - an `rbenv rehash` may be required to get the new tools into your path
 
 6. Install project gems
@@ -73,16 +75,16 @@ If you won't be making modifications to blockly code, you can just skip the syml
     - `bundle exec rake db:migrate`
     - `bundle exec rake seed:all`
 
-8. If you'll be modifying blockly as well (see above), you can use this take task to symlink Dashboard to use your development version of Blockly
+8. <a name="symlink"/>If you'll be modifying blockly as well (see above), you can use this rake task to symlink Dashboard to use your development version of Blockly
     - `bundle exec rake 'blockly:dev[../blockly]'`
 
 ### Starting the Server
 
 1. Start [mailcatcher](http://mailcatcher.me/) (installed during core gem install phase)
-    - `mailcatcher`
+    - `mailcatcher --ip=0.0.0.0`
 
 2. Start rails.
-    - `rails s`
+    - `bundle exec rails s`
     - Go to [http://localhost:3000](http://localhost:3000) to see the Blockly running within Dashboard.
 
 ### Sending mail
@@ -98,8 +100,8 @@ mailcatcher
 
 ### Adding an Admin Account
 
-1. Create a user (be sure to have `mailcatcher` running during signup)
-2. `rails c`
+1. Create a first user which will be your admin (be sure to have `mailcatcher` running during signup)
+2. `bundle exec rails c`
 3. `User.first.update(admin: true)`
 
 ### Windows-specific notes

@@ -4,6 +4,7 @@ class LevelsController < ApplicationController
   include LevelsHelper
   include ActiveSupport::Inflector
   before_filter :authenticate_user!
+  before_filter :can_modify?, except: [:show, :index]
   skip_before_filter :verify_params_before_cancan_loads_model, :only => [:create, :update_blocks]
   load_and_authorize_resource :except => [:create]
   check_authorization
@@ -40,7 +41,7 @@ class LevelsController < ApplicationController
   def edit_blocks
     authorize! :manage, :level
     @level = Level.find(params[:level_id])
-    @start_blocks = @level[params[:type]]
+    @start_blocks = @level.properties[params[:type]].presence || @level[params[:type]]
     @toolbox_blocks = @level.complete_toolbox  # Provide complete toolbox for editing start/toolbox blocks.
     @game = @level.game
     @full_width = true
@@ -52,7 +53,7 @@ class LevelsController < ApplicationController
   def update_blocks
     authorize! :manage, :level
     @level = Level.find(params[:level_id])
-    @level[params[:type]] = params[:program]
+    @level.properties[params[:type]] = params[:program]
     @level.save
     render json: { redirect: game_level_url(@level.game, @level) }
   end
@@ -69,35 +70,23 @@ class LevelsController < ApplicationController
   # POST /levels.json
   def create
     authorize! :create, :level
+    params.merge!(user: current_user)
+
     case params[:level_type]
-    when 'maze'
-      create_maze
+    when 'maze', 'karel'
+      begin
+        @level = Maze.create_from_level_builder(params, level_params)
+      rescue ArgumentError
+        render status: :not_acceptable, text: "There is a non integer value in the grid." and return
+      end
+
+      redirect_to game_level_url(@level.game, @level)
     when 'artist'
-      create_artist
+      @level = Turtle.create_from_level_builder(params)
+      render json: { redirect: game_level_url(@level.game, @level) }
     else
       raise "Unkown level type #{params[:level_type]}"
     end
-  end
-
-  def create_maze
-    contents = CSV.new(params[:maze_source].read)
-    raw_maze = contents.read[0...params[:size].to_i]
-    begin
-      maze = raw_maze.map {|row| row.map {|cell| Integer(cell)}}
-    rescue ArgumentError
-      render status: :not_acceptable, text: "There is a non integer value in the grid." and return
-    end
-    game = Game.custom_maze
-    @level = Level.create(level_params.merge(maze: maze.to_s, game: game, user: current_user, level_num: 'custom', skin: 'birds'))
-    redirect_to game_level_url(game, @level)
-  end
-
-  def create_artist
-    game = Game.find(params[:game_id])
-    @level = Level.create(instructions: params[:instructions], name: params[:name], x: params[:x], y: params[:y], game: game, user: current_user, level_num: 'custom', skin: 'artist')
-    solution = LevelSource.lookup(@level, params[:program])
-    @level.update(solution_level_source: solution)
-    render json: { redirect: game_level_url(game, @level) }
   end
 
   # DELETE /levels/1
@@ -109,10 +98,11 @@ class LevelsController < ApplicationController
 
   def new
     authorize! :create, :level
-    case params[:type]
+    @type = params[:type]
+    case @type
     when 'artist'
       artist_builder
-    when 'maze'
+    when 'maze', 'karel'
       @game = Game.custom_maze
       @level = Level.new
       render :maze_builder
@@ -122,18 +112,23 @@ class LevelsController < ApplicationController
 
   def artist_builder
     authorize! :create, :level
-    @level = Level::BUILDER
+    @level = Level.builder
     @game = @level.game
     @full_width = true
     @artist_builder = true
     @callback = game_levels_path @game
-    @level.x = params[:x]
-    @level.y = params[:y]
-    @level.start_direction = params[:start_direction]
+    @level.x = Integer(params[:x]) rescue nil
+    @level.y = Integer(params[:y]) rescue nil
+    @level.start_direction = Integer(params[:start_direction]) rescue nil
     show
     render :show
   end
 
+  def can_modify?
+    if !Rails.env.in?(["staging", "development"])
+      render text: "Cannot create or modify levels from this environment.", status: :forbidden
+    end
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -144,6 +139,6 @@ class LevelsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def level_params
-      params[:level].permit([:name, :level_url, :level_num, :skin, :instructions, :x, :y, :start_direction, {concept_ids: []}])
+      params[:level].permit([:name, :level_url, :level_num, :skin, :instructions, :x, :y, :start_direction, :user, {concept_ids: []}])
     end
 end

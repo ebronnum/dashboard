@@ -16,57 +16,64 @@
   %script{src: "#{blockly_path}js/#{js_locale}/vendor.js"}
   %script{src: "#{blockly_path}js/#{js_locale}/#{app}#{pretty ? '' : '.min'}.js"}
 
-  - @instructions = data_t('level.instructions', "#{@level.game.app}_#{@level.level_num}")
-  - @instructions ||= data_t('level.instructions', "#{@level.game.name}_#{@level.level_num}")
-  -# Get instructions from db if available.
-  - @instructions ||= @level.instructions
-
-  - @levelIncompleteError = data_t('level.levelIncompleteError', "#{@level.game.app}_#{@level.level_num}")
-  - @levelIncompleteError ||= data_t('level.levelIncompleteError', "#{@level.game.name}_#{@level.level_num}")
-
-  - @other1StarError = data_t('level.other1StarError', "#{@level.game.app}_#{@level.level_num}")
-  - @other1StarError ||= data_t('level.other1StarError', "#{@level.game.name}_#{@level.level_num}")
-
-  - @tooFewBlocksMsg = data_t('level.tooFewBlocksMsg', "#{@level.game.app}_#{@level.level_num}")
-  - @tooFewBlocksMsg ||= data_t('level.tooFewBlocksMsg', "#{@level.game.name}_#{@level.level_num}")
+  -# Create level options object to pass to Blockly
+  - level, app_options = blockly_options(local_assigns)
 
   - if @autoplay_video_info
     :javascript
       showVideo(#{@autoplay_video_info.to_json})
 
-  - share = false if local_assigns[:share].nil?
-  - hide_source = false if local_assigns[:hide_source].nil?
-  - start_blocks = false if local_assigns[:start_blocks].nil?
-  - slider_speed = false if local_assigns[:slider_speed].nil?
-  - no_padding = false if local_assigns[:no_padding].nil?
-  - maze = false if local_assigns[:maze].nil?
+  -# use local[:symbol] to access locals passed into this render partial (defaults to false if not present)
+  - local = Hash.new(false).merge!(local_assigns)
 
   :javascript
+    var level = #{level.to_json};
     // See assets/javascripts/sendReport for definition of nextRedirect etc.
-    #{app}Main({
-      level: "#{@level.level_num}",
+    var appOptions = {
+      levelId: '#{@level.level_num}',
+      #{ "scriptId: '#{@script.id}'," if @script }
+      #{ "levelGameName: '#{@level.game.name}'," if @level.game }
+      level: level,
+      skinId: '#{@level.skin}',
       callouts: #{@callouts.to_json} || [],
       createCallouts: function() {
+        $.fn.qtip.zindex = 500;
         this.callouts.every(function(callout) {
           var selector = callout.element_id; // jquery selector.
-          if ($(selector).length <= 0) { return true; }
+          if ($(selector).length <= 0) { console.log("Couldn't find callout target."); return true;}
           
-          var calloutDomElement = $(selector).qtip({
-            content: callout.text,
+          var defaultConfig = {
+            content: {
+              text: callout.localized_text,
+              title: {
+                button: $('<div class="tooltip-x-close"/>').append($('<img src="#{asset_path 'x_button.png'}"/>'))
+              }
+            },
+            style: {
+              classes: "",
+              tip: {
+                width: 20,
+                height: 20
+              }
+            },
             position: {
-              my: callout.qtip_my,
-              at: callout.qtip_at
+              my: "bottom left", 
+              at: "top right"
             },
             hide: {
-              event: 'unfocus click mouseleave'
+              event: 'click mousedown touchstart'
             },
-            show: false
-          });
+            show: false // don't show on mouseover
+          };
           
-          cdo.events.one(cdo.eventType.MODAL_HIDDEN, function() { calloutDomElement.qtip('show'); });
-          cdo.events.on(cdo.eventType.MODAL_SHOWN, function() { calloutDomElement.qtip('hide'); });
+          var customConfig = $.parseJSON(callout.qtip_config);
+          var config = $.extend(true, {}, defaultConfig, customConfig);
+          config.style.classes = config.style.classes.concat(" cdo-qtips");
           
-          calloutDomElement.qtip('hide');
+          var calloutDomElement = $(selector).qtip(config);
+          calloutDomElement.qtip('show');
+          
+          return true;
         });
       },
       onInitialize: function() {
@@ -74,6 +81,7 @@
         onInitializeListeners.forEach(function(listener) {
           listener();
         });
+        #{render(partial: 'levels/chrome34Fix', formats: :js) if chrome_version == 34}
       },
       locale: '#{js_locale}',
       containerId: 'blocklyApp',
@@ -111,15 +119,15 @@
               src: $(this).attr('data-src'),
               name: $(this).attr('data-name'),
               key: $(this).attr('data-key'),
-              download: $(this).attr('data-download')
+              download: $(this).attr('data-download'),
+              thumbnail: $(this).attr('data-thumbnail')
             });
           }, this));
         });
         return referenceDiv[0];
       },
-      levelId: '#{@level.level_num}',
       showInstructionsWrapper: function(showInstructions) {
-        if (#{not share}) {
+        if (#{not local[:share]}) {
           if ('#{@autoplay_video_info}') {
             $('.video-modal').on('hidden.bs.modal', function () {
               showInstructions();
@@ -129,26 +137,11 @@
           }
         }
       },
-      hide_source: #{hide_source},
-      share: #{share},
-      no_padding: #{no_padding},
-      position: { blockYCoordinateInterval: 25 },
-      level: {
-        puzzle_number: #{@script_level ? @script_level.game_chapter : 1},
-        stage_total: #{@script ? @script.script_levels_from_game(@level.game_id).length : @level.game.levels.count},
-        instructions: '#{escape_javascript(@instructions)}',
-        levelIncompleteError: '#{escape_javascript(@levelIncompleteError)}',
-        other1StarError: '#{escape_javascript(@other1StarError)}',
-        tooFewBlocksMsg: '#{escape_javascript(@tooFewBlocksMsg)}',
-        #{("builder: " + @artist_builder.to_json + ",") if @artist_builder}
-        #{("startBlocks: '" + start_blocks + "',") if start_blocks}
-        #{("solutionBlocks: '" + @solution_blocks + "',") if @solution_blocks}
-        #{("sliderSpeed: '" + slider_speed + "',") if slider_speed}
-        #{("maze: '" + maze + "',") if maze}
-        #{("toolbox: '" + @toolbox_blocks + "',") if @toolbox_blocks}
-        #{("initialX: #{@level[:x]},") if @level[:x]}
-        #{("initialY: #{@level[:y]},") if @level[:y]}
-        #{("startDirection: #{@level[:start_direction]},") if @level[:start_direction]}
-      },
-      skinId: '#{@level.skin}'
-    });
+      hide_source: #{local[:hide_source]},
+      share: #{local[:share]},
+      no_padding: #{local[:no_padding]},
+      position: { blockYCoordinateInterval: 25 }
+    };
+    $.extend(appOptions, #{app_options.to_json});
+    #{'console.log(appOptions)' if Rails.env.development?};
+    #{app}Main(appOptions);

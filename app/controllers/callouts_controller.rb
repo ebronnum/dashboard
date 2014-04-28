@@ -71,7 +71,7 @@ class CalloutsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def callout_params
-    params.require(:callout).permit(:element_id, :text)
+    params.require(:callout).permit(:element_id, :localization_key)
   end
 
   # this is to fix a ForbiddenAttributesError cancan issue

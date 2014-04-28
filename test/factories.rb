@@ -33,7 +33,7 @@ FactoryGirl.define do
     game
     
     trait :blockly do
-      game {create(:game, app: "maze")}
+      game {create(:game, app: "maze", name: "Maze")}
     end
   
     trait :unplugged do
@@ -54,17 +54,24 @@ FactoryGirl.define do
     script
     level
     chapter 1
+    sequence(:game_chapter)
+  end
+
+  factory :stage do
+    sequence(:name) { |n| "Bogus Stage #{n}" }
+    script
   end
   
   factory :callout do
     sequence(:element_id) { |n| "#pageElement#{n}" }
-    text 'Hey check this element out!'
+    localization_key 'drag_blocks'
     script_level
   end
 
   factory :activity do
     level
     user
+    level_source
   end
 
   factory :concept do

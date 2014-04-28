@@ -33,7 +33,7 @@ class ScriptLevelsController < ApplicationController
       # and start them at the beginning of the script.
       # If the user is signed in, continue normally
       reset_session if !current_user
-      redirect_to build_script_level_path(@script.script_levels.first)
+      redirect_to build_script_level_path(@script.script_levels.first) # TODO: we don't really specify order, this just happens to work
       return
     end
 
@@ -78,12 +78,12 @@ private
   def present_level(script_level)
     @level = script_level.level
     @game = @level.game
+    @stage = script_level.stage
 
     set_videos_and_blocks_and_callouts
 
     @callback = milestone_url(user_id: current_user.try(:id) || 0, script_level_id: @script_level)
     @full_width = true
-    @callouts = Callout.where(script_level: @script_level)
     @fallback_response = {
       success: milestone_response(script_level: @script_level, solved?: true),
       failure: milestone_response(script_level: @script_level, solved?: false)

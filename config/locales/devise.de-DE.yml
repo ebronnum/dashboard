@@ -1,7 +1,7 @@
 "de":
   devise:
     confirmations:
-      confirmed: Ihr Konto wurde erfolgreich bestätigt. Sie sind jetzt angemeldet.
+      confirmed: Deine E-Mail-Adresse wurde bestätigt.
       send_instructions: Sie erhalten eine E-Mail mit Anweisungen wie Sie Ihr Konto
         bestätigen in wenigen Minuten.
       send_paranoid_instructions: Wenn deine Email-Adresse in unserer Datenbank vorhanden
@@ -19,9 +19,9 @@
       unconfirmed: Sie müssen Ihr Konto zu bestätigen, bevor Sie fortfahren.
     mailer:
       confirmation_instructions:
-        subject: Bestätigungs Anweisungen
+        subject: Code.org Bestätigungsanweisungen
       reset_password_instructions:
-        subject: Passwort-Anweisungen zum Zurücksetzen
+        subject: Code.org Anweisungen um Passwort zurückzusetzen
       unlock_instructions:
         subject: Freischaltungs Anweisungen
     omniauth_callbacks:

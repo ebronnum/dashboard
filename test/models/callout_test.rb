@@ -2,7 +2,7 @@ require 'test_helper'
 
 class CalloutTest < ActiveSupport::TestCase
   setup do
-    @level = create(:level, :level_num => 'level1_2_3')
+    @level = create(:level, :blockly, :level_num => 'level1_2_3')
     @script = create(:script, :id => 333)
     @script2 = create(:script, :id => 321)
     @script_level = create(:script_level, :script => @script, :level => @level)
@@ -16,9 +16,9 @@ class CalloutTest < ActiveSupport::TestCase
   
   test "callouts should have proper attributes after import" do
     assert_equal('#runButton', @csv_callouts.first.element_id)
-    assert_equal('Click here to run your program.', @csv_callouts.first.text)
-    assert_equal('bottom left', @csv_callouts.last.qtip_my)
-    assert_equal('top right', @csv_callouts.last.qtip_at)
+    assert_equal('run', @csv_callouts.first.localization_key)
+    assert_nil(@csv_callouts.first.qtip_config)
+    assert_equal(@csv_callouts.last.qtip_config, '{position: {my: "bottom left", at: "top right", adjust: {x: 297, y:70}}}')
   end
   
   test "callouts should first_or_create when imported from tsv" do
@@ -44,7 +44,7 @@ class CalloutTest < ActiveSupport::TestCase
         @invalid_callout_import = Callout.find_or_create_all_from_tsv!('test/fixtures/callouts_invalid.tsv')
         assert_nil(@invalid_callout_import[0])
       end
-      assert(content.include?("Error creating callout"))
+      assert(content.include?("Error finding script level "))
     end
   end
 end

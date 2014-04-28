@@ -11,7 +11,7 @@
   - @callouts.each do |callout|
     %tr
       %td= callout.element_id
-      %td= callout.text
+      %td= callout.localization_key
       %td= link_to t('crud.show'), callout
       - if can? :update, @callout
         %td= link_to t('crud.edit'), edit_callout_path(callout)

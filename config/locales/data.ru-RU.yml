@@ -32,10 +32,16 @@
           MazeEC: Этап 1
         2014 Levels:
           desc: 2014 Головоломки (beta)
-          MazeEC: Этап 1
+          Bounce: Stage 1
+        Builder Levels:
+          desc: User-Created Puzzles (beta)
+          Custom: Stage 1
         Flappy Levels:
           desc: Порхающая птичка
-          MazeEC: Этап 1
+          Flappy: Stage 1
+        Jigsaw Levels:
+          desc: Jigsaw (beta)
+          Jigsaw: Stage 1
     game:
       name:
         Unplug1: Введение в Информатику
@@ -61,6 +67,7 @@
         MazeEC: Лабиринт
         Bounce: Прыжок
         Flappy: Порхающая птичка
+        Jigsaw: Jigsaw
     trophy:
       name:
         Bronze: Бронзовый
@@ -332,50 +339,69 @@
         bounce_1: Прикрепи блок к блоку "когда стрелка влово" и нажми кнопку «Запуск
           программы». Перемести весло, используя кнопку со стрелкой влево для достижения
           конечной цели.
-        bounce_2: Attach a block to the "when right arrow" and "when left arrow" blocks,
-          then run and move the paddle with the both arrow key to both finish targets.
-        bounce_3: TBD
+        bounce_2: Добавьте блок, "когда правая стрелка" и, "когда левая стрелка".
+          Переместите весло, чтобы достигнуть конца обеих целей.
+        bounce_3: Теперь попробуйте что-то типа "когда стрелка вверх". Переместите
+          весло к финишу на самом верху.
         bounce_4: В этот раз тебе нужно добавить четыре блока. Перемести весло ко
           всем четырем конечным целям , чтобы решить эту головоломку.
-        bounce_5: Attach a blocks to the "when right arrow", "when left arrow", "when
-          ball hits wall", and "when ball hits paddle" blocks.
-        bounce_6: Try again with more balls.
-        bounce_7: Now it is getting crazy!
-        bounce_10: There is a now a goal at the top. Attach "increment score" blocks
-          to the the "when ball in goal" and "when ball misses paddle" blocks to make
-          a game.
+        bounce_5: Мы собираемся отправить мячик в полет в низ до касания с веслом.
+          Добавь блок "когда мячик врежется в весло",  чтобы обеспечить мячику путь
+          до цели.
+        bounce_6: Теперь достижение цели на самом верху. Вам нужно добавить блок к
+          обоим блокам "когда мяч ударяется", чтобы решить головоломку.
+        bounce_7: Добавь блок "когда" к каждому из блоков. Мячик будет скакать, пока
+          не достигнет цели.
+        bounce_10: Теперь цель наверху. Добавьте блок "зарабатывают очко", и "заработать
+          очко сопернику" к блокам "когда шар у цели" и, "когда шар промазал", чтобы
+          сделать игру. Посмотрите, сколько очков Вы можете заработать, прежде чем
+          Ваш противник забьет в двое больше.
         bounce_11: You can now attach blocks to the "when game starts" block. Try
           changing the speed of the paddle and the ball and see how many points you
           can score before your opponent scores twice.
+        bounce_12: Create your own Bounce game. You can change all the visuals and
+          the rules. When you're done, click Share to let friends try your game on
+          their phones.
         Custom_builder: Перетащи блоки с панели инструментов на рабочий стол, чтобы
           нарисовать уровень который хочешь создать. Нажми "Запустить программу" когда
           закончишь.
-        flappy_1: Attach a block to the "when click" block, then press "Run Program"
-          and click or tap to move Flappy to the target.
-        flappy_2: Now we've added some ground.  Attach a block to the "when hit the
-          ground" block, then press "Run Program". To pass this puzzle, your code
-          needs to 'END GAME' when Flappy crashes into the ground.
-        flappy_3: The "when Run is clicked" block allows you to run code when your
-          game first starts.  Try setting the level speed and flapping to the target.
-        flappy_4: Flappy will fly through obstacles unless you write code to make
-          him crash. Attach a block to the "when hit an obstacle" block. To pass the
-          puzzle, your code needs to 'END GAME' and make Flappy crash into the first
-          pipe so he can reach the target.
-        flappy_5: Let's add a scoreboard, and count points when Flappy makes it past
-          obstacles. Add to the "when pass an obstacle" block, and then score a point
-          by flying Flappy through the first set of pipes.
-        flappy_6: See if you can still score a point after making Flappy flap either
-          a smaller or larger amount.
+        flappy_1: Добавь блок "когда нажал мышкой", потом "запустить программу". Кликни
+          или нажми на экран, чтобы продвинуться к своей цели.
+        flappy_2: Мы также добавили немного земли. Добавь блок "когда коснется земли".
+          Ваш код должен содержать "закончить игру", когда Птичка касается земли.
+        flappy_3: Блок "когда начнется игра" позволяет вам запустить задачи после
+          начала игры. Поробуйте настроить скорость полета и сколько осталось до цели.
+        flappy_4: Птичка будет лететь через препятствие до тех пор, как вы не вставите
+          команду, чтобы она могла разбиться. Подключите блок "когда врежешься в препятствие".
+          Вам надо закончить игру, когда Птичка врежется на определенном количестве
+          препятствий.
+        flappy_5: 'Давайте сделаем доску очков и подсчитаем очки, когда Птичка пересекает
+          последнее препятствие. Добавьте команду "когда пройдешь препятствие", и
+          тогда получи очко за пролет Птички через определенное количество труб. '
+        flappy_6: Посмотри можешь ли ты заработать очко в более маленьком или более
+          большом разрыве труб.
         flappy_7: Теперь попробуй изменить сцены, присоединив другой блок на блок,
           «когда начинется игра».
         flappy_8: Визуальные эффекты можно задать в любое время, не только при запуске
           игры. Попробуй установить СЛУЧАЙНАЯ сцена, когда происходят другие события,
           например, когда проходятся препятствия.
-        flappy_9: To mix things up, when hitting an obstacle or the ground, instead
-          of ending the game try setting the score back to 0.
+        flappy_9: Чтобы разнообразить игру, попробуйте когда птичка врежется об препятствие
+          или ударится о землю вместо "конец игры" задать "присвоить значение очков
+          0".
         flappy_11: Создайте свою собственную игру. Вы можете поменять все визуальные
           эффекты и все правила, даже сложность. Когда вы закончите, нажмите поделиться,
           чтобы ваши друзья могли попробовать игру на своих телефонах.
+        jigsaw_1: Click the block
+        jigsaw_2: Drag the block to the target
+        jigsaw_3: Arrange the blocks to form the image
+        jigsaw_4: Arrange the blocks to form the image
+        jigsaw_5: Arrange the blocks to form the image
+        jigsaw_6: Arrange the blocks to form the image
+        jigsaw_7: Arrange the blocks to form the image
+        jigsaw_8: Arrange the blocks to form the image
+        jigsaw_9: Arrange the blocks to form the image
+        jigsaw_10: Arrange the blocks to form the image
+        jigsaw_11: Arrange the blocks to form the image
       levelIncompleteError:
         maze_2_8: 'Чтобы решить эту задачу, нужно определить повторяющиеся действия.
           Используйте блок "повторить" с тремя блоками внутри: двигаться, двигаться,
@@ -403,3 +429,15 @@
         parameters: Процедуры с параметрами
         hoc_wrapup: Итоги Часа кода
         20_wrapup: Итоги 20-часового курса
+    callout:
+      text:
+        drag_blocks: Drag a "move" block and snap it below the other block
+        run: Hit "Run" to try your program
+        watch_again: Click here to watch the video again
+        gray_block_explanation: Blocks that are grey can't be moved or deleted. Can
+          you solve the puzzle anyway?
+        show_code_explanation: Click here to see the code for the program you're making
+        instructions_repeat_explanation: The instructions for each puzzle are repeated
+          here
+        category_explanation: You have all the same blocks but they've now been arranged
+          in categories

@@ -11,6 +11,8 @@
         locale: Език
         gender: Пол
         edit_header: Редактиране на данните за акаунта
+        error:
+          future: can't be in the future
   hello: Здравей, свят
   welcome_back: Добре дошли отново, %{name}
   add_teacher_form:
@@ -19,8 +21,8 @@
       placeholder: Код (ABCDEF) или имейл (teacher@school.edu)
     submit: Добавяне на учител
   add_hint_form:
-    placeholder: Моля, въведете вашия съвет тук
-    submit: Добавяне на подсказване
+    placeholder: Моля, въведете вашата препоръка
+    submit: Добавяне на препоръка
   appname: Code.org
   stage: Етап
   puzzle: Пъзел
@@ -29,12 +31,12 @@
   of: на
   more: ПОВЕЧЕ
   less: ПО-МАЛКО
-  try_hoc: 'Опитайте ''Часът на Кодирането'', натиснете тук >> '
+  try_hoc: 'Опитайте ''Часът на Програмирането'', натиснете тук >> '
   try_k8intro: Или опитайте нашите начални встъпителни курсове по компютърни науки
     (15-25 часа)
   k8intro: K-8 представяне на курс по компютърни науки (15-25 часа)
   already_started: 'Вече сте започнали? Продължете от тук >> '
-  demos: 'Администратор: Всички демонстрации'
+  demos: 'Администратор: Всички демо версии'
   continue: Продължи
   prize: prize
   more_info: Повече информация
@@ -51,10 +53,9 @@
     need_confirmation: Не сте получили инструкции за потвърждение ?
     need_unlock: Не сте получили инструкции за отключване?
   signup_form:
-    overview: Този 20-часов курс, представя основните компютърни науки, концепции
-      и термини в програмирането. Курсът е предназначен най-вече за използване в класните
-      стаи за учениците в 7-8 клас, но е забавен за всички възрасти.
-    no_signup_header: Не искате да се регистрирате?
+    overview_student: Sign up for an account to track your progress.
+    overview_teacher: Teach computer science in your classroom by signing up for an
+      account.<p/> You'll be able to track your students' progress and get rewards.
     no_signup_message: Можете да <a target="_blank" href="http://learn.code.org">
       сърфирате в различните етапи и пъзели</a>, но ще трябва да се регистрирате,
       за да запишете вашия прогрес.
@@ -102,8 +103,9 @@
     remember: Запомни ме
     submit: Вход
   signin:
-    try_hoc: Опитайте един час програмиране първо
-    try_20hours: Опитайте нашите 20 часа въведение в компютърни науки
+    try_heading: Want to try coding without signing up?
+    try_hoc: Опитайте първо един час програмиране
+    try_20hours: Опитайте нашите 20 часа въведение в компютърните науки
   password:
     reset_form:
       title: Забравена парола?
@@ -119,8 +121,8 @@
     body: Щракнете върху връзката по-долу за да се регистрирате за уроци по компютърни
       науки в Code.org (с мен като вашия "учител"):%{link}. Уроците са забавни, визуално
       привлекателни и ще ви научат на основните понятия в компютърните науки, с помощта
-      на прости съвети и игри. Научете се да код от Бил Гейтс, Марк Зукерберг, Angry
-      Birds, и Plants vs. Zombies! :-) %{name}
+      на прости съвети и игри. Научете се на програмиране от Бил Гейтс, Марк Зукерберг,
+      Angry Birds, и Plants vs. Zombies! :-) %{name}
   follower:
     invite_sent: Поканата изпратена
     added_teacher: '%{name}, добавен като ваш учител'
@@ -130,11 +132,11 @@
       username_not_found: Името %{username} не е намерено
       username_in_use: Името %{username} вече е заето, моля изберете друго
       no_teacher: Не е намерен никой регистриран с '%{teacher_email_or_code}'. Моля
-        помолете ги да се регистрират тук и тогава се опитайте да ги добавите отново
+        помолете ги да се регистрират тук и тогава се опитайте да го добавите отново
       blank_code: Моля въведете код или имейл адрес  на учителя си
     mail:
       invite_student:
-        subject: Присъединете се към един клас с %{teacher_name} на Code.org!
+        subject: Присъединете се към класа си %{teacher_name} на Code.org!
       student_disassociated:
         subject: 'Code.org уведомление: %{student_name} вече не свързан като ваш ученик.'
       teacher_disassociated:
@@ -148,6 +150,8 @@
     provider: 'Provider:'
     code: 'Code:'
     redeem_header: 'To redeem:'
+    donorschoose_register: Register as a teacher on DonorsChoose.org
+    donorschoose_project: Post a project
     donorschoose_how_to: Как да използвате вашия код
     success: Your prize was succesfully redeemed, see code below.
     error: Your prize could not be redeemed, please try again.
@@ -170,7 +174,7 @@
       apple_itunes: $10 iTunes Gift Card
       donors_choose: DonorsChoose.org $750 credit
       donors_choose_bonus: DonorsChoose.org $250 credit
-      dropbox: 10GB на Dropbox пространство
+      dropbox: 10GB Dropbox пространство
       valve: Portal 2 (PC or Mac game download)
       ea_bejeweled: Bejeweled 3 (PC game download)
       ea_fifa: FIFA Soccer 13 (PC game download)
@@ -184,36 +188,36 @@
       not_earned_title: Finish the tutorial, earn rewards (U.S. students only)
       not_earned: 'Научете всички компютърни понятия, съберете всички %{num_trophies}
         трофеи и спечелете реални награди. Можете да избирате между 10GB свободно
-        пространство на Dropbox, $10 в Skype кредити, и свободно сваляне игра. Забележка:  офертата
-        е валидна за ученици от САЩ.'
+        пространство на Dropbox, $10 в Skype кредити, и свободно сваляне на игра.
+        Забележка:  офертата е валидна за ученици от САЩ.'
       teacher:
         earned: Ако 15 или повече от Вашите ученици са събрали всички %{num_trophies}
           трофеи, вие печелите награда за учител! (Важи само за учители от САЩ)
         not_earned_title: Teach the class, earn up to $1,000 in <a target="_blank"
           href="http://DonorsChoose.org">DonorsChoose.org</a> credits (U.S. teachers
           only)
-        not_earned: To reward first-time computer science teachers, you can earn up
-          to $1,000 in <a href="http://DonorsChoose.org">DonorsChoose.org</a> credits
-          for guiding a classroom through the K-8 intro course. To qualify, you need
-          to successfully host a classroom of at least 15 students through the entire
-          K-8 intro course, with all 15 students (or more) completing all tutorials
-          and earning all %{num_trophies} trophies. If 7 or more of the students who
-          earn all of the trophies are girls, your reward is $1,000 in <a target="_blank"
-          href="http://DonorsChoose.org">DonorsChoose.org</a> credits. Otherwise,
-          your reward is $750 in <a target="_blank" href="http://DonorsChoose.org">DonorsChoose.org</a>
-          credits.  <a target="_blank" href="http://DonorsChoose.org">DonorsChoose.org</a>
-          credits can only be used by teachers in U.S. public schools.
+        not_earned: За да възнаградим преподавателите, които се включват за първи
+          път, даваме възможност да спечелят до $1000 в <a href="http://DonorsChoose.org">
+          DonorsChoose.org</a> кредити за използване на K-8 intro курса. За да се
+          ползват, трябва успешно учителят да регистрира поне 15 ученици, които да
+          преминат успешно целият K-8 курс и спечелят всички %{num_trophies} трофеи.
+          Ако 7 или повече от учениците, които са печелили всички трофеи са момичета,
+          награда е $1000 в <a target="_blank" href="http://DonorsChoose.org"> DonorsChoose.org</a>
+          кредити. В противен случай вашата награда е $750 в <a target="_blank" href="http://DonorsChoose.org">
+          DonorsChoose.org</a> кредити.  <a target="_blank" href="http://DonorsChoose.org">
+          DonorsChoose.org</a> кредитите могат да бъдат използвани от учители в държавни
+          училища на в САЩ.
         bonus:
           not_earned_title: You can still earn an additional $250 in <a target="_blank"
             href="http://DonorsChoose.org">DonorsChoose.org</a> credits (U.S. teachers
             only)
-          earned: 7 or more of the students who collected all %{num_trophies} trophies
-            are girls. You have won a bonus prize! (U.S. teachers only)
-          not_earned: If at least 7 of your students who earn all %{num_trophies}
-            trophies are girls, your reward is an additional $250 in <a target="_blank"
-            href="http://DonorsChoose.org">DonorsChoose.org</a> credits. <a target="_blank"
-            href="http://DonorsChoose.org">DonorsChoose.org</a> credits can only be
-            used by teachers in U.S. public schools.
+          earned: Ако 7 или повече от учениците, които съберат всички %{num_trophies}
+            трофеи са момичета, вие печелите бонус награда! (Само за САЩ учители)
+          not_earned: Ако най-малко 7 от вашите ученици, които печелят всички %{num_trophies}
+            трофеи са момичета, вашата награда е допълнителен кредит от $250 в <a
+            target="_blank" href="http://DonorsChoose.org"> DonorsChoose.org</a>.
+            <a target="_blank" href="http://DonorsChoose.org"> DonorsChoose.org</a>
+            кредитите могат да бъдат използвани от учители в САЩ държавни училища.
   crud:
     new_model: Нов %{model}
     show: Покажи
@@ -230,7 +234,7 @@
   nav:
     header:
       finished_hoc: Аз приключих моя 'Час на Кодирането'
-      sign_in_to_save: Впишете се, за да си запазите напредъка
+      sign_in_to_save: Впишете се, за да запазите напредъка си
     user:
       classroom: Моите ученици
       label: Здравейте %{username}
@@ -252,29 +256,28 @@
       prizes_link: повече информация
   teacher:
     title:
-      one: Вашият учител е %{name}
+      one: 'Вашият учител:'
       other: 'Вашите учители:'
-    remove: (remove teacher)
+    remove: (премахнете учител)
     confirm:
-      remove: Are you sure you want to remove this teacher?
+      remove: Наистина ли искате да премахнете този учител?
     tools: Учителски инструменти
     students:
       manage: Управление на ученици
       add: Добавяне на ученици
     sections:
-      manage: Manage sections
+      manage: Управление на раздели
     rollup: Табло на прогреса
     activity: Последните дейности на класа
-    user_not_found: The teacher or student could not be found
-    cant_remove_student_no_email: '%{student_name} cannot be removed as your student
-      because %{student_name} has not registered an e-mail address'
-    cant_remove_teacher_no_email: '%{teacher_name} cannot be removed as your teacher
-      because you have not registered an e-mail address'
-    student_teacher_disassociated: '%{teacher_name} has been removed as a teacher
-      for %{student_name}'
+    user_not_found: Учителят или ученикът не може да бъде намерен
+    cant_remove_student_no_email: '%{student_name} не може да бъде премахнато като
+      ваш ученик, защото %{student_name} не регистрирано с e-mail адрес'
+    cant_remove_teacher_no_email: '%{teacher_name} не може да бъде премахнато като
+      ваш учител, защото не сте регистриран с e-mail адрес'
+    student_teacher_disassociated: '%{teacher_name} е премахнато като учител %{student_name}'
   user:
-    email_confirm_needed: 'Email address has not been confirmed:'
-    email_resend_confirm: Resend confirmation instructions
+    email_confirm_needed: 'Имейл адресът не е потвърден:'
+    email_resend_confirm: Повторно изпращане на инструкции
     new_password_hint: (Оставете празно, ако не искате да го промените)
     current_password_hint: (нуждаем се от вашата текуща парола, за да потвърдим вашите
       промени)
@@ -287,38 +290,43 @@
     tried: Опитах
   user_stats:
     recent_activity: Скорошна активност
-    show_more: Show more
+    show_more: Покажи още
   home:
-    signin_message: Или ако вече сте регистрирани, %{link}
-    student_reg_link: Ученик
-    teacher_reg_link: Учител
+    signin_message: Вече сте регистриран? %{link}
+    student_reg_link: Вход за ученик
+    teacher_reg_link: Вход за учител
     signin_directions: Use an account to track progress and get rewards.<br/> Teachers,
       track your entire class.
-    teacher_dashboard: See progress dashboard
+    teacher_dashboard: Виж прогресът на таблото
     teacher_student_count_one: Вие имате %{count} ученици.
     teacher_student_count: Вие имате %{count} ученици.
     teacher_averages: Средно вашите ученици са спечелили %{trophy_average} от %{trophy_max}
       "Концепция майсторство" трофеи.
-    teacher_print_certificates: Print certificates for students who finish this course
-    teacher_read_blog: Read about news and updates to our materials at our Educator
-      Blog
+    teacher_print_certificates: Печат на сертификати за ученици, които завършват този
+      курс
+    teacher_read_blog: Прочетете за новини и актуализации на нашите материали в нашия
+      учителски блог
     teacher_survey: Tell us what you think about this course
     classroom: Вашата класна стая
     student_progress: Вашият учебен прогрес
     student_stats: Вие сте спечелил %{trophy_count} от %{trophy_max} "Концепция майсторство"
       трофеи.
     student_left_off: 'Където сте спрели:'
-    student_finished_prize: You've completed all tutorials, claim your %{prize_link}
-      and pick another class %{online_link} or at a %{local_school_link}
-    student_finished: You've completed all tutorials, pick another class %{online_link}
-      or at a %{local_school_link}
+    student_finished_prize: Ако вие сте завършили всички уроци, вземете %{prize_link}
+      и изберете друг клас %{online_link} или %{local_school_link}
+    student_finished: Като приключите всички уроци, изберете друг клас %{online_link}
+      или %{local_school_link}
     local_school: местно училище
     online: онлайн
     see_details: Вижте детайли
     prize_info: 'Prizes for participation (U.S. only): $10 gift cards for student
       completion and up to $1,000 in classroom rewards for public school teachers'
-    tryfirst: 'Or, you can try it first, and sign up later:'
-    trynow: Try now
+    tryfirst: 'Или можете да пробвате първо и по-късно да се регистрирате:'
+    trynow: Опитайте сега
+    add_hint_help: Please help us to add smart hints to Code.org tutorials
+    20hour_overview: This 20-hour course introduces core computer science and programming
+      concepts. The course is designed for use in classrooms for grades K-8, but it
+      is fun to learn at all ages.
   gender:
     male: Мъж
     female: Жена
@@ -347,29 +355,43 @@
     subtitle: Вижте тези клипове и съвети
     teacher: Вижте решението
     auth_error: Не сте упълномощени да видите решението.
+    submit: Update Artist Location
+    direction: Start Direction
   video:
     tab: Видео.
     notes: Няма видео? Показване на бележките.
     autoplay_option: Автоматично изпълнение на видеата
     download: Изтегляне на видео
   compatability:
-    working: We are working on support for your browser.
+    working: Ние работим по поддръжката на вашия браузър.
     upgrade: Моля, надстройте браузъра си.
   slow_loading: Това отнема повече време от обичайното...
   try_reloading: Опитайте да презаредите страницата
   next_stage: Завършено! Продължете към следващия етап
-  download_pdf: Open Lesson Plan
+  download_pdf: урочен план
   share_code:
     title: Натиснете върху "Изпълни програмата" за да видите програмата си в действие
-    flappy_og_title: Check out my Flappy Game
-    og_description: I wrote the code myself with Code.org
+    bounce_og_title: Check out my Bounce Game
+    flappy_og_title: Вижте моята Flappy игра
+    og_description: Аз написах код с Code.org
   builder:
-    created: You created a new script.
-    destroyed: You destroyed a script.
+    created: Вие създадохте нов скрипт.
+    destroyed: унищожен от вас скрипт.
     manage: Manage Scripts
-    view: View
-    back: Back to scripts
+    view: Изглед
+    back: Обратно към скриптове
     level:
-      create: Create new level
-      current: Current Levels
-      unused: Unused Levels
+      create: Създаване на ново ниво
+      current: Сегашни нива
+      unused: Неизползвани нива
+  upsell:
+    hoc:
+      title: The Hour of Code
+      body: Try the basics of computer science. Millions have given it a shot.
+    flappy:
+      title: Flappy Code
+      body: Wanna write your own game in less than 10 minutes? Try our Flappy Code
+        tutorial!
+    20hour:
+      title: Intro Course
+      body: Try our 20-hour Intro to Computer Science course.

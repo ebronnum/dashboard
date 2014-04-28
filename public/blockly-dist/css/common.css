@@ -31,12 +31,19 @@ html[dir="RTL"] .farSide {
   bottom: 10px;
   margin-left: 415px; }
 
-.show-code-div {
-  margin-top: 5px;
-  margin-bottom: 5px; }
+#show-code-button {
+  background-color: #b9bf15;
+  border-color: #b9bf15;
+  padding: 2px 8px;
+  margin: -5px 0 0 6px;
+  font-size: small;
+  color: white; }
   @media screen and (max-device-width: 540px) {
-    .show-code-div {
+    #show-code-button {
       display: none; } }
+
+.share-code-spacer {
+  min-height: 25px; }
 
 #codeTextbox {
   position: absolute;
@@ -69,8 +76,8 @@ button {
   color: black; }
 
 button.launch {
-  border: 1px solid #ffa000;
-  background-color: #ffa000;
+  border: 1px solid #ffa400;
+  background-color: #ffa400;
   color: white;
   font-size: large;
   min-width: 96px;
@@ -99,10 +106,12 @@ button:active {
 button:hover {
   box-shadow: 2px 2px 5px #888888; }
 
-button.disabled, button[disabled=disabled] {
+button.disabled, button[disabled=disabled], button:disabled {
   border: 1px solid #c7c7c7;
   background-color: #c7c7c7;
   box-shadow: none; }
+  button.disabled:hover, button[disabled=disabled]:hover, button:disabled:hover {
+    box-shadow: none; }
 
 button.disabled:hover > img {
   opacity: 0.6; }
@@ -205,20 +214,6 @@ input[type="radio"] {
   line-height: 28px;
   color: #7e5ba0;
   font-weight: bold; }
-
-.linesOfCodeMsg {
-  font-size: 20px;
-  line-height: normal;
-  color: #5a6a73; }
-
-.shareDrawingMsg {
-  margin-top: 25px;
-  font-size: 20px;
-  color: #5a6a73; }
-
-.shareDiv {
-  display: inline-block;
-  width: 90%; }
 
 #show-code {
   margin-bottom: 5px; }
@@ -339,7 +334,8 @@ input[type="radio"] {
   .generated-code-container .generatedCodeMessage {
     font-size: 14px;
     line-height: inherit;
-    color: #5b6770; }
+    color: #5b6770;
+    margin-bottom: 10px; }
     .generated-code-container .generatedCodeMessage a {
       font-weight: bold;
       color: #7665a0; }
@@ -389,6 +385,11 @@ input[type="radio"] {
     .modal-content .feedback-callout .hint-image {
       float: right;
       width: 20%; }
+  .modal-content .lines-of-code-message {
+    font-size: 20px;
+    line-height: normal;
+    color: #5b6770;
+    margin: 0 0 8px; }
 
 .yellow-background {
   background-color: #ffc459; }
@@ -404,20 +405,31 @@ input[type="radio"] {
 
 #ok-button {
   background-color: #ffa400;
+  border: 1px solid #ffa400;
   color: white;
   min-width: 100px; }
 
 #again-button {
   background-color: #b9bf15;
+  border: 1px solid #b9bf15;
   color: white;
   margin-left: 0px;
   margin-right: 10px; }
 
 #continue-button {
   background-color: #ffa400;
+  border: 1px solid #ffa400;
   color: white;
   margin-left: 0px;
   margin-right: 10px; }
+
+#save-to-gallery-button {
+  background-color: #7665a0;
+  border: 1px solid #7665a0;
+  color: white; }
+  #save-to-gallery-button:disabled {
+    color: #7665a0;
+    background-color: lightgrey; }
 
 .modal-image {
   width: 100px;
@@ -450,5 +462,16 @@ input[type="radio"] {
 .hide-source #bubble {
   display: none; }
 
-.social-buttons a:hover {
-  text-decoration: none; }
+.sharing {
+  margin-top: 15px;
+  font-size: 20px;
+  color: #5b6770; }
+  .sharing div {
+    margin: 15px 0; }
+  .sharing .saved-to-gallery {
+    color: #7665a0; }
+  .sharing .social-buttons a:hover {
+    text-decoration: none; }
+  .sharing #sharing-input {
+    cursor: copy;
+    margin: 0; }

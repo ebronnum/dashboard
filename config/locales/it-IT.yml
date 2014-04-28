@@ -11,6 +11,8 @@
         locale: Lingua
         gender: Sesso
         edit_header: Modifica i dettagli dell'account
+        error:
+          future: can't be in the future
   hello: Ciao Mondo
   welcome_back: Bentornato, %{name}
   add_teacher_form:
@@ -52,10 +54,9 @@
     need_confirmation: Non hai ricevuto le istruzioni di conferma?
     need_unlock: Non hai ricevuto le istruzioni di sblocco?
   signup_form:
-    overview: Questo corso in 20 lezioni introduce l'informatica di base e i concetti
-      della programmazione. Il corso è progettato per l'uso nella scuola elementare
-      e media inferiore, ma è divertente per imparare l'informatica a qualunque età.
-    no_signup_header: Non vuoi iscriverti?
+    overview_student: Sign up for an account to track your progress.
+    overview_teacher: Teach computer science in your classroom by signing up for an
+      account.<p/> You'll be able to track your students' progress and get rewards.
     no_signup_message: Puoi <a target="_blank" href="http://learn.code.org">sfogliare
       le varie lezioni e i puzzle</a>, ma devi iscriverti per salvare i tuoi progressi.
     prizes_header: I primi studenti che completano il corso vincono premi! (Solo per
@@ -103,8 +104,9 @@
     remember: Ricorda le mie credenziali di accesso
     submit: Accedi
   signin:
+    try_heading: Want to try coding without signing up?
     try_hoc: Prova subito l'Ora di Codice
-    try_20hours: Prova il corso di introduzione all'Informatica in 20 ore
+    try_20hours: Prova il corso di introduzione all'Informatica in 20 lezioni
   password:
     reset_form:
       title: Hai dimenticato la tua password?
@@ -150,6 +152,8 @@
     provider: 'Fornitore:'
     code: 'Codice:'
     redeem_header: 'Per richiedere i premi:'
+    donorschoose_register: Register as a teacher on DonorsChoose.org
+    donorschoose_project: Post a project
     donorschoose_how_to: Come usare il tuo codice
     success: Il tuo premio è stato richiesto correttamente, vedi il codice riportato
       di seguito.
@@ -274,14 +278,14 @@
       manage: Gestisci i tuoi studenti
       add: Aggiungi i tuoi studenti
     sections:
-      manage: Manage sections
+      manage: Gestisci le sezioni
     rollup: Cruscotto di avanzamento
     activity: Attività recenti della classe
     user_not_found: L'insegnante o lo studente non è stato trovato
-    cant_remove_student_no_email: '% {student_name} non può essere rimosso come tuo
-      allievo perché % {student_name} non ha registrato un indirizzo di posta elettronica'
-    cant_remove_teacher_no_email: '% {teacher_name} non può essere rimosso come vostro
-      insegnante perché non avete registrato un indirizzo di posta elettronica'
+    cant_remove_student_no_email: '%{student_name} non può essere rimosso come tuo
+      studente perché %{student_name} non ha registrato un indirizzo di posta elettronica'
+    cant_remove_teacher_no_email: '%{teacher_name} non può essere rimosso come tuo
+      insegnante perché non ha registrato un indirizzo di posta elettronica'
     student_teacher_disassociated: '%{teacher_name} è stato rimosso come insegnante
       per %{student_name}'
   user:
@@ -333,6 +337,10 @@
       classe fino a $1,000 per gli insegnanti della scuola pubblica.'
     tryfirst: 'Oppure, puoi prima provarlo e successivamente iscriverti:'
     trynow: Prova adesso
+    add_hint_help: Please help us to add smart hints to Code.org tutorials
+    20hour_overview: This 20-hour course introduces core computer science and programming
+      concepts. The course is designed for use in classrooms for grades K-8, but it
+      is fun to learn at all ages.
   gender:
     male: Maschile
     female: Femminile
@@ -362,6 +370,8 @@
     subtitle: Guarda questi video e suggerimenti
     teacher: Vedi la soluzione
     auth_error: Non sei autorizzato a vedere la soluzione.
+    submit: Update Artist Location
+    direction: Start Direction
   video:
     tab: Video.
     notes: Mostra le spiegazioni.
@@ -375,8 +385,9 @@
   next_stage: Finito! Continua con la lezione successiva
   download_pdf: Apri il piano di lavoro di questa lezione
   share_code:
-    title: Fai click su 'Esegui il programma' per vedere il tuo programma in azione
-    flappy_og_title: Prova il mio gioco Flappy
+    title: Clicca su 'Esegui il programma' per vedere il tuo programma in azione
+    bounce_og_title: Check out my Bounce Game
+    flappy_og_title: Prova la mia versione del gioco Flappy
     og_description: Ho scritto il codice io stesso con Code.org
   builder:
     created: Hai creato un nuovo script.
@@ -388,3 +399,14 @@
       create: Crea un nuovo livello
       current: Livelli correnti
       unused: LIvelli non usati
+  upsell:
+    hoc:
+      title: The Hour of Code
+      body: Try the basics of computer science. Millions have given it a shot.
+    flappy:
+      title: Flappy Code
+      body: Wanna write your own game in less than 10 minutes? Try our Flappy Code
+        tutorial!
+    20hour:
+      title: Intro Course
+      body: Try our 20-hour Intro to Computer Science course.

@@ -12,6 +12,8 @@
         locale: שפה
         gender: מין
         edit_header: שינוי פרטי החשבון
+        error:
+          future: can't be in the future
   hello: הי עולם
   welcome_back: ברוך שובך, %{name}
   add_teacher_form:
@@ -51,9 +53,9 @@
     need_confirmation: לא קיבלת את  ההוראות האישור?
     need_unlock: לא קיבלת את ההוראות הפתיחה?
   signup_form:
-    overview: קורס בן 20 שעות זה, מציג בפניך בסיס במדעי המחשב וברעיונות בתכנות. הקורס
-      מתוכנן לשימוש בכיתות גן עד ח׳, אבל זה כיף ללמוד בכל הגילאים.
-    no_signup_header: למה שלא תירשם?
+    overview_student: Sign up for an account to track your progress.
+    overview_teacher: Teach computer science in your classroom by signing up for an
+      account.<p/> You'll be able to track your students' progress and get rewards.
     no_signup_message: אתה יכול <a target="_blank" href="http://learn.code.org">לדפדף
       בחידות והשלבים השונים</a>, אבל אתה צריך להירשם על-מנת לשמור את התקדמותך.
     prizes_header: The first students to complete the course win prizes! (U.S. students
@@ -96,6 +98,7 @@
     remember: זכור אותי
     submit: התחבר
   signin:
+    try_heading: Want to try coding without signing up?
     try_hoc: נסה קודם את שעת הקוד
     try_20hours: נסה את קורס ה-20 שעות שלנו - מבוא למדעי המחשב
   password:
@@ -146,6 +149,8 @@
     provider: 'ספק:'
     code: 'קוד:'
     redeem_header: 'To redeem:'
+    donorschoose_register: Register as a teacher on DonorsChoose.org
+    donorschoose_project: Post a project
     donorschoose_how_to: איך להשתמש בקוד שלך
     success: Your prize was succesfully redeemed, see code below.
     error: Your prize could not be redeemed, please try again.
@@ -310,6 +315,10 @@
       ועד $1000 בפרסים לכיתות עבוד מורים בבי"ס ציבוריים'
     tryfirst: 'Or, you can try it first, and sign up later:'
     trynow: Try now
+    add_hint_help: Please help us to add smart hints to Code.org tutorials
+    20hour_overview: This 20-hour course introduces core computer science and programming
+      concepts. The course is designed for use in classrooms for grades K-8, but it
+      is fun to learn at all ages.
   gender:
     male: גבר
     female: אישה
@@ -337,6 +346,8 @@
     subtitle: לראות את קטעי וידאו ורמזים
     teacher: תראה את הפתרון
     auth_error: אינך מורשה לראות את הפתרון.
+    submit: Update Artist Location
+    direction: Start Direction
   video:
     tab: וידאו.
     notes: אין וידאו? הצג הערות.
@@ -351,6 +362,7 @@
   download_pdf: שיעור פתוח
   share_code:
     title: לחץ " הפעל תוכנית" בשביל לראות את התוכנית שלך בפעולה
+    bounce_og_title: Check out my Bounce Game
     flappy_og_title: Check out my Flappy Game
     og_description: I wrote the code myself with Code.org
   builder:
@@ -363,3 +375,14 @@
       create: Create new level
       current: Current Levels
       unused: Unused Levels
+  upsell:
+    hoc:
+      title: The Hour of Code
+      body: Try the basics of computer science. Millions have given it a shot.
+    flappy:
+      title: Flappy Code
+      body: Wanna write your own game in less than 10 minutes? Try our Flappy Code
+        tutorial!
+    20hour:
+      title: Intro Course
+      body: Try our 20-hour Intro to Computer Science course.

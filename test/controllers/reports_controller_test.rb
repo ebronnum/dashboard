@@ -8,6 +8,18 @@ class ReportsControllerTest < ActionController::TestCase
     sign_in(@admin)
 
     @not_admin = create(:user)
+
+    @script = create(:script)
+    @stage = create(:stage, script: @script)
+    @stage2 = create(:stage, script: @script)
+    @script_level = create(:script_level, script: @script, stage: @stage)
+    @script_level2 = create(:script_level, script: @script, stage: @stage2)
+    @script_level.move_to_bottom
+    @script_level2.move_to_bottom
+  end
+
+  test "should setup properly" do
+    assert_equal @script_level.script, @script_level2.script
   end
 
   test "should get user_stats" do
@@ -38,6 +50,26 @@ class ReportsControllerTest < ActionController::TestCase
     assert_response :forbidden
   end
 
+  test "should have two game groups if two stages" do
+    get :header_stats, script_id: @script_level.script.id, user_id: @not_admin.id
+    css = css_select "div.game-group"
+    assert_equal 2, css.count
+  end
+
+  test "should have one game group if one stage" do
+    @script_level2.update(stage: @stage)
+    @script_level2.move_to_bottom
+
+    get :user_stats, script_id: @script_level.script.id, user_id: @not_admin.id
+    css = css_select "div.game-group"
+    assert_equal 1, css.count
+  end
+
+  test "should return 20h curriculum by default" do
+    get :user_stats, user_id: @not_admin.id
+    css = css_select "div.game-group"
+    assert_equal 20, css.count
+  end
 
   test "should get header_stats" do
     get :header_stats
@@ -100,6 +132,20 @@ class ReportsControllerTest < ActionController::TestCase
   generate_admin_only_tests_for :all_usage
 
   generate_admin_only_tests_for :admin_stats
+
+  generate_admin_only_tests_for :admin_gallery
+
+  test "admin_gallery shows most recent 25 gallery items" do
+    sign_in @admin
+
+    100.times do
+      create(:gallery_activity)
+    end
+
+    get :admin_gallery
+
+    assert_equal 25, assigns(:gallery_activities).count
+  end
 
   test "should get students" do
     get :students

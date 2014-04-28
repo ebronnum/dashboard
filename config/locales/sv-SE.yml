@@ -11,6 +11,8 @@
         locale: språk
         gender: Kön
         edit_header: Redigera kontouppgifter
+        error:
+          future: can't be in the future
   hello: Hej världen
   welcome_back: Välkommen tillbaka, %{name}
   add_teacher_form:
@@ -51,10 +53,9 @@
     need_confirmation: Har du inte fått bekräftelseinstruktioner?
     need_unlock: Har du inte fått instruktioner för att låsa upp?
   signup_form:
-    overview: Denna 20-timmars kurs introducerar grundläggande datavetenskap och programmeringsbegrepp.
-      Kursen är utformad för användning i klassrummet från förskoleklass till årskurs
-      8, men det är roligt att lära sig i alla åldrar.
-    no_signup_header: Vill du inte registrera dig?
+    overview_student: Sign up for an account to track your progress.
+    overview_teacher: Teach computer science in your classroom by signing up for an
+      account.<p/> You'll be able to track your students' progress and get rewards.
     no_signup_message: Du kan <a target="_blank" href="http://learn.code.org"> Bläddra
       bland de olika stadierna och pusslen</a>, men du måste registrera dig för att
       spara dina framsteg.
@@ -104,6 +105,7 @@
     remember: Kom ihåg mig
     submit: Logga in
   signin:
+    try_heading: Want to try coding without signing up?
     try_hoc: Try one Hour of Code first
     try_20hours: Try our 20 hour Intro to Computer Science
   password:
@@ -154,6 +156,8 @@
     provider: 'Leverantör:'
     code: 'Kod:'
     redeem_header: 'To redeem:'
+    donorschoose_register: Register as a teacher on DonorsChoose.org
+    donorschoose_project: Post a project
     donorschoose_how_to: How to use your code
     success: Ditt pris har lösts in, se nedan.
     error: Ditt pris kunde inte lösas in, försök igen.
@@ -319,6 +323,10 @@
       completion and up to $1,000 in classroom rewards for public school teachers'
     tryfirst: 'Or, you can try it first, and sign up later:'
     trynow: Try now
+    add_hint_help: Please help us to add smart hints to Code.org tutorials
+    20hour_overview: This 20-hour course introduces core computer science and programming
+      concepts. The course is designed for use in classrooms for grades K-8, but it
+      is fun to learn at all ages.
   gender:
     male: Man
     female: Kvinna
@@ -348,6 +356,8 @@
     subtitle: Se dessa filmer och tips
     teacher: Se lösningen
     auth_error: Du har inte behörighet till att se lösningen.
+    submit: Update Artist Location
+    direction: Start Direction
   video:
     tab: Video.
     notes: Ingen video? Visa anteckningar.
@@ -362,6 +372,7 @@
   download_pdf: Öppen kursplan
   share_code:
     title: Klicka "Kör program" för att se vad mitt program gör
+    bounce_og_title: Check out my Bounce Game
     flappy_og_title: Check out my Flappy Game
     og_description: I wrote the code myself with Code.org
   builder:
@@ -374,3 +385,14 @@
       create: Create new level
       current: Current Levels
       unused: Unused Levels
+  upsell:
+    hoc:
+      title: The Hour of Code
+      body: Try the basics of computer science. Millions have given it a shot.
+    flappy:
+      title: Flappy Code
+      body: Wanna write your own game in less than 10 minutes? Try our Flappy Code
+        tutorial!
+    20hour:
+      title: Intro Course
+      body: Try our 20-hour Intro to Computer Science course.

@@ -1,6 +1,8 @@
 class ScriptLevel < ActiveRecord::Base
   belongs_to :level
   belongs_to :script
+  belongs_to :stage
+  acts_as_list scope: :stage
 
   NEXT = 'next'
 
@@ -8,11 +10,23 @@ class ScriptLevel < ActiveRecord::Base
   attr_accessor :user_level
 
   def next_level
-    self.script.try(:get_script_level_by_chapter, self.chapter + 1)
+    if self.stage
+      self.lower_item  # Last level is at position 1
+    else
+      self.script.try(:get_script_level_by_chapter, self.chapter + 1)
+    end
   end
 
   def previous_level
-    self.script.try(:get_script_level_by_chapter, self.chapter - 1)
+    if self.stage
+      self.higher_item
+    else
+      self.script.try(:get_script_level_by_chapter, self.chapter - 1)
+    end
+  end
+
+  def stage_or_game_position
+    self.stage ? self.position : self.game_chapter
   end
 
   def self.cache_find(id)

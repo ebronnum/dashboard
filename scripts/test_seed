@@ -10,7 +10,7 @@ SQL="select id, \`key\` from videos; \
      select id, script_id, level_id, chapter, game_chapter from script_levels; \
      select id, name, image_name from trophies; \
      select id, name, url, description_token, image_name from prize_providers; \
-     select id, element_id, text, qtip_at, qtip_my, script_level_id from callouts;"
+     select id, element_id, localization_key, qtip_config, script_level_id from callouts;"
 
 #echo "$SQL"
 mysql -uroot dashboard_$RAILS_ENV -e "$SQL" > 1.txt

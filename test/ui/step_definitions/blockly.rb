@@ -10,8 +10,9 @@ When /^I click block "([^"]*)"$/ do |block|
   @browser.execute_script("$(\"[block-id='#{block}']\").simulate( 'drag', {handle: 'corner', dx: 0, dy: 0, moves: 5});")
 end
 
-When /^I drag block "([^"]*)" to offset "([^"]*), ([^"]*)"$/ do |from, dx, dy|
-  @browser.execute_script("$(\"[block-id='#{from}']\").simulate( 'drag', {handle: 'corner', dx: #{dx}, dy: #{dy}, moves: 5});")
+# Note: this is an offset relative to the current position of the block
+When /^I drag block "([^"]*)" to offset "([^"]*), ([^"]*)"$/ do |blockId, dx, dy|
+  dragBlockRelative(blockId, dx, dy)
 end
 
 When /^I begin to drag block "([^"]*)" to offset "([^"]*), ([^"]*)"$/ do |from, dx, dy|

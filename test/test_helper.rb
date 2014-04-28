@@ -1,6 +1,11 @@
-require 'simplecov'
-
-SimpleCov.start :rails
+if ENV["CODECLIMATE_REPO_TOKEN"]
+  require "codeclimate-test-reporter"
+  CodeClimate::TestReporter.start
+else
+# there can be only one code coverage tool
+  require 'simplecov'
+  SimpleCov.start :rails
+end
 
 ENV["RAILS_ENV"] ||= "test"
 require File.expand_path('../../config/environment', __FILE__)
@@ -19,6 +24,25 @@ class ActiveSupport::TestCase
 
   # Add more helper methods to be used by all tests here...
   include FactoryGirl::Syntax::Methods
+
+  def assert_creates(*args)
+    assert_difference(args.collect(&:to_s).collect {|class_name| "#{class_name}.count"}) do
+      yield
+    end
+  end
+
+  def assert_does_not_create(*args)
+    assert_no_difference(args.collect(&:to_s).collect {|class_name| "#{class_name}.count"}) do
+      yield
+    end
+  end
+
+end
+
+
+# Helpers for all controller test cases
+class ActionController::TestCase 
+  include Devise::TestHelpers
 
   def assert_redirected_to_sign_in
     assert_response :redirect
@@ -44,5 +68,5 @@ class ActiveSupport::TestCase
       assert_response :forbidden
     end
   end
-
 end
+

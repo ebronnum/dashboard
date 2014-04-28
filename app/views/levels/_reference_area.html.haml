@@ -1,11 +1,11 @@
 - if @artist_builder
   = form_tag('#') do |f|
     = label_tag 'x'
-    = text_field_tag 'x'
+    = text_field_tag 'x', params[:x]
     = label_tag 'y'
-    = text_field_tag 'y'
+    = text_field_tag 'y', params[:y]
     = label_tag t('reference_area.direction')
-    = text_field_tag 'start_direction'
+    = text_field_tag 'start_direction', params[:start_direction]
     = submit_tag t('reference_area.submit'), id: 'builder-coordinate-submit'
 - else
   .reference_area

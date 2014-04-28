@@ -22,7 +22,7 @@ class CalloutsControllerTest < ActionController::TestCase
 
   test "should create callout" do
     assert_difference('Callout.count') do
-      post :create, callout: { element_id: @callout.element_id, text: @callout.text }
+      post :create, callout: { element_id: @callout.element_id, localization_key: @callout.localization_key }
     end
 
     assert_redirected_to callout_path(assigns(:callout))
@@ -39,7 +39,7 @@ class CalloutsControllerTest < ActionController::TestCase
   end
 
   test "should update callout" do
-    patch :update, id: @callout, callout: { element_id: @callout.element_id, text: @callout.text }
+    patch :update, id: @callout, callout: { element_id: @callout.element_id, localization_key: @callout.localization_key }
     assert_redirected_to callout_path(assigns(:callout))
   end
 

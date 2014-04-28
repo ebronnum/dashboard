@@ -19,8 +19,6 @@
             %a#printcertificates{:href=>"#"}  #{t('home.teacher_print_certificates')}
             |
             %a{:href=>'http://codecurriculum.tumblr.com/', :target=>'_blank'} #{t('home.teacher_read_blog')}
-          %p
-            %a{:href=>'https://www.surveymonkey.com/s/5HP8JFJ', :target=>'_blank'} #{t('home.teacher_survey')}
 
           = link_to t('home.add_hint_help'), @_controller.code_org_root_path + "/hints"
 
@@ -46,6 +44,9 @@
           - if !current_user.teacher? && current_user.teachers.length == 0
             = link_to t('add_teacher_form.submit'), "#" + :teacher_email_or_code.to_s
 
+        - unless current_user.gallery_activities.empty?
+          %h4 #{t('home.gallery')}:
+          = render partial: 'home/gallery'
     %br/
 
     .row#lesson
@@ -83,7 +84,7 @@
         = button_to t('home.trynow'), k8intro_chapter_path(ScriptLevel::NEXT), :method => "get", :class=>"btn btn-primary biggerbutton"
       .span10
         %p.smallwhitetext
-          #{t('signup_form.overview')}
+          #{t('home.20hour_overview')}
       .span12
         %p
           =link_to image_tag('signup_header_cropped.jpg'), k8intro_chapter_path(ScriptLevel::NEXT)
@@ -94,9 +95,8 @@
           %br/
 
   .row#stats
-    .span1
-    .span11#rightside
-      = render partial: 'shared/user_stats', locals: { user: current_user, trophies_on_right: true }
+    .span12#rightside
+      = render partial: 'shared/user_stats', locals: { user: current_user, trophies_below: true }
 
   %br/
   - if current_user && !current_user.teacher?
@@ -116,13 +116,7 @@
   %br/
 
   - if current_user && current_user.admin?
-    %h3= t(:demos)
-    %ul
-      %li= link_to 'Feedback System', frequent_unsuccessful_level_sources_path
-      - Script.all.each do |script|
-        %li= link_to(data_t_suffix('script.name', script.name, 'desc'), script_level_path(script, ScriptLevel::NEXT))
-    = link_to t("builder.manage"), levels_new_path
-    %h3= link_to 'Admin Stats', admin_stats_path
+    = render partial: 'home/admin'
 
   - if current_user
     .row

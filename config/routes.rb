@@ -1,4 +1,5 @@
 Dashboard::Application.routes.draw do
+  resources :gallery_activities, path: '/gallery'
   resources :teacher_bonus_prizes
   resources :teacher_prizes
   resources :prizes
@@ -7,9 +8,13 @@ Dashboard::Application.routes.draw do
   resources :concepts
   resources :activities
   resources :sections, only: [:new, :create, :edit, :update, :destroy]
-  resources :level_sources, path: '/sh/', only: [:show, :edit]
+  resources :level_sources, path: '/sh/', only: [:show, :edit] do
+    member do
+      get 'generate_image'
+      get 'original_image'
+    end
+  end
   get '/share/:id', to: redirect('/sh/%{id}')
-  get '/sh/:id/generate_image', to: 'level_sources#generate_image'
 
   resources :level_source_hints
   get '/add_hint/:level_source_id', :to => 'level_source_hints#add_hint', as: 'add_hint'
@@ -57,14 +62,27 @@ Dashboard::Application.routes.draw do
     end
   end
 
+  get 'reset_session', to: 'application#reset_session_endpoint'
+
+  # duplicate routes are for testing -- ActionController::TestCase calls to_s on all params
   get '/hoc/reset', to: 'script_levels#show', script_id: Script::HOC_ID, reset:true, as: 'hoc_reset'
+  get '/hoc/reset', to: 'script_levels#show', script_id: Script::HOC_ID.to_s, reset:true
   get '/hoc/:chapter', to: 'script_levels#show', script_id: Script::HOC_ID, as: 'hoc_chapter', format: false
+  get '/hoc/:chapter', to: 'script_levels#show', script_id: Script::HOC_ID.to_s, format: false
 
   get '/k8intro/:chapter', to: 'script_levels#show', script_id: Script::TWENTY_HOUR_ID, as: 'k8intro_chapter', format: false
+  get '/k8intro/:chapter', to: 'script_levels#show', script_id: Script::TWENTY_HOUR_ID.to_s, format: false
   get '/editcode/:chapter', to: 'script_levels#show', script_id: Script::EDIT_CODE_ID, as: 'editcode_chapter', format: false
+  get '/editcode/:chapter', to: 'script_levels#show', script_id: Script::EDIT_CODE_ID.to_s, format: false
   get '/2014/:chapter', to: 'script_levels#show', script_id: Script::TWENTY_FOURTEEN_LEVELS_ID, as: 'twenty_fourteen_chapter', format: false
+  get '/2014/:chapter', to: 'script_levels#show', script_id: Script::TWENTY_FOURTEEN_LEVELS_ID.to_s, format: false
   get '/builder/:chapter', to: 'script_levels#show', script_id: Script::BUILDER_ID, as: 'builder_chapter', format: false
+  get '/builder/:chapter', to: 'script_levels#show', script_id: Script::BUILDER_ID.to_s, format: false
   get '/flappy/:chapter', to: 'script_levels#show', script_id: Script::FLAPPY_ID, as: 'flappy_chapter', format: false
+  get '/flappy/:chapter', to: 'script_levels#show', script_id: Script::FLAPPY_ID.to_s, format: false
+  get '/jigsaw/:chapter', to: 'script_levels#show', script_id: Script::JIGSAW_ID, as: 'jigsaw_chapter', format: false
+  get '/jigsaw/:chapter', to: 'script_levels#show', script_id: Script::JIGSAW_ID.to_s, format: false
+
 
   resources :prize_providers
   get '/prize_providers/:id/claim_prize', to: 'prize_providers#claim_prize', as: 'prize_provider_claim_prize'
@@ -90,6 +108,7 @@ Dashboard::Application.routes.draw do
   get '/admin/usage', to: 'reports#all_usage', as: 'all_usage'
   get '/admin/stats', to: 'reports#admin_stats', as: 'admin_stats'
   get '/admin/progress', to: 'reports#admin_progress', as: 'admin_progress'
+  get '/admin/gallery', to: 'reports#admin_gallery', as: 'admin_gallery'
   get '/admin/assume_identity', to: 'reports#assume_identity_form', as: 'assume_identity_form'
   post '/admin/assume_identity', to: 'reports#assume_identity', as: 'assume_identity'
   get '/stats/usage/:user_id', to: 'reports#usage', as: 'usage'
