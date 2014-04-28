@@ -96,13 +96,9 @@ class Script < ActiveRecord::Base
       end
 
       # Reference one Level per element
-      if custom
-        # Custom scripts require levels to be in the database
-        level = Level.find_by name: row['name']
-      else
-        # Hardcoded scripts create new level entries (the level is already in Blockly)
-        level = Level.where(game: Game.find_by(name: row.delete('game')), level_num: row['level_num']).first_or_create
-      end
+      level = custom ?
+        Level.find_by name: row['name'] :
+        Level.where(game: Game.find_by(name: row.delete('game')), level_num: row['level_num']).first_or_create
 
       raise "There does not exist a level with the name '#{row['name']}'. From the row: #{row}" if level.nil?
       raise "Level #{level.to_json}, does not have a game." if level.game.nil?
