@@ -38,9 +38,7 @@ namespace :seed do
     create_locale(hash)
     Script.includes(:stages).map do |script|
       script_name = script.name
-      t = I18n.translate("data.script.name.#{script_name}").to_s
-      puts "script:#{script_name},t=#{t}"
-      if t.start_with?('translation missing')
+      if I18n.translate("data.script.name.#{script_name}").to_s.start_with?('translation missing')
         hash_name[script_name] = {'desc' => "Custom script #{script_name}"}
         script.stages.map {|stage| hash_name[script_name][stage.name] = stage.name}
       end
