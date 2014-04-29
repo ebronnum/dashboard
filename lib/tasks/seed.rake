@@ -33,17 +33,17 @@ namespace :seed do
     Script.setup
 
     # Generate locale file for custom scripts
-    hash = {'en' => {'data' => {'script' => {'name' => {}}}}}
-    hash_name = hash['en']['data']['script']['name']
-    create_locale(hash)
+    locale_hash = {'en' => {'data' => {'script' => {'name' => {}}}}}
+    script_names = locale_hash['en']['data']['script']['name']
+    create_locale(locale_hash)
     Script.includes(:stages).map do |script|
       script_name = script.name
       if I18n.translate("data.script.name.#{script_name}").to_s.start_with?('translation missing')
-        hash_name[script_name] = {'desc' => "Custom script #{script_name}"}
-        script.stages.map {|stage| hash_name[script_name][stage.name] = stage.name}
+        script_names[script_name] = {'desc' => "Custom script #{script_name}"}
+        script.stages.map {|stage| script_names[script_name][stage.name] = stage.name}
       end
     end
-    create_locale(hash)
+    create_locale(locale_hash)
   end
 
   def create_locale(hash)
@@ -58,7 +58,7 @@ namespace :seed do
     Level.transaction do
       JSON.parse(File.read("config/scripts/custom_levels.json")).each do |row|
         level = Level.where(name: row['name']).first_or_create
-        row['solution_level_source_id'] = !(s = row['properties']['solution_blocks']).blank? && LevelSource.lookup(level, s).id
+        row['solution_level_source_id'] = (s = row['properties']['solution_blocks']).present? && LevelSource.lookup(level, s).id
         row.delete 'id'
         level.update row
       end

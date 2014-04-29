@@ -142,22 +142,22 @@ module ApplicationHelper
   end
 
   # Load and parse a CSV file
-  def self.load_csv(file, col_sep=',', map_hash={})
-    parse_csv(File.read(file), col_sep, map_hash)
+  def self.load_csv(file, col_sep=',', column_to_key={})
+    parse_csv(File.read(file), col_sep, column_to_key)
   end
 
   # Convert CSV string into hash, with column headers as keys
   # Optional hash mapping column headers to hash keys.
-  def self.parse_csv(csv, col_sep=',', map_hash={})
+  def self.parse_csv(csv, col_sep=',', column_to_key={})
     CSV.parse(csv, { col_sep: col_sep, headers: true }).map do |row|
       hash = row.to_hash
-      hash.keys.each { |key| hash[map_hash[key]] = hash.delete(key) if map_hash[key]}
+      hash.keys.each { |key| hash[column_to_key[key]] = hash.delete(key) if column_to_key[key]}
       hash.delete_if { |_, value| value.nil? }
     end
   end
 
   # Load a YAML script containing options and data. Parses 'TSV'/'CSV' keys as spreadsheets.
-  def self.load_yaml(file, map_hash={})
+  def self.load_yaml(file, column_to_key={})
     data = YAML.load_file(file)
 
     # Set Options and remove element from hash
@@ -166,7 +166,7 @@ module ApplicationHelper
 
     [%W(TSV \t), %w(CSV ,)].each do |xsv, sep|
       data, xsv_data = data.partition { |x| !x || x[xsv].nil? }
-      var = xsv_data.flat_map { |entry| parse_csv(entry[xsv], sep, map_hash) }
+      var = xsv_data.flat_map { |entry| parse_csv(entry[xsv], sep, column_to_key) }
       data += var unless var.nil?
     end
     [options, data]

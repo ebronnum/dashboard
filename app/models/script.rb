@@ -71,28 +71,28 @@ class Script < ActiveRecord::Base
       Dir.glob("config/scripts/default/*.yml").map do |yml|
         ApplicationHelper.load_yaml(yml, SCRIPT_MAP)
       end.sort_by { |options, _| options['id'] }.map do |options, data|
-        add_scripts(options, data)
+        add_script(options, data)
       end
 
       # Load custom scripts from generate_scripts ruby DSL (csv as intermediate format)
       Dir.glob('config/scripts/**/*.script').flatten.each do |script|
         params = {name: File.basename(script, ".script"), trophies: false, hidden: true}
         data = ApplicationHelper.parse_csv(`config/generate_scripts #{script}`, "\t", SCRIPT_MAP)
-        add_scripts(params, data, true)
+        add_script(params, data, true)
       end
       touch
     end
   end
 
-  def self.add_scripts(options, data, custom=false)
+  def self.add_script(options, data, custom=false)
     v = 'wrapup_video'; options[v] = Video.find_by_key(options[v]) if options.has_key? v
     script = Script.where(options).first_or_create
     chapter = 0; game_chapter = Hash.new(0)
-    script.script_level_ids = data.map do |row|
+    script.script_levels = data.map do |row|
 
       # Concepts are comma-separated, indexed by name
-      row['concept_ids'] = (concepts=row.delete('concepts')) && concepts.split(',').map(&:strip).map do |concept_name|
-        (Concept.find_by_name(concept_name)|| raise("missing concept '#{concept_name}'")).id
+      row['concept_ids'] = (concepts = row.delete('concepts')) && concepts.split(',').map(&:strip).map do |concept_name|
+        (Concept.find_by_name(concept_name) || raise("missing concept '#{concept_name}'")).id
       end
 
       # Reference one Level per element
@@ -117,7 +117,7 @@ class Script < ActiveRecord::Base
         script_level.update(stage: Stage.where(name: stage, script: script).first_or_create)
         script_level.move_to_bottom
       end
-      script_level.id
+      script_level
     end
   end
 end
