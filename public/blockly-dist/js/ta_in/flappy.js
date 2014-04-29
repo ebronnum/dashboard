@@ -279,6 +279,7 @@ BlocklyApps.init = function(config) {
     var width = Math.max(minWidth, widthDimension);
     var scale = widthDimension / width;
     var content = ['width=' + width,
+                   'minimal-ui',
                    'initial-scale=' + scale,
                    'maximum-scale=' + scale,
                    'minimum-scale=' + scale,
