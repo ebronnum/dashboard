@@ -88,7 +88,7 @@ class Script < ActiveRecord::Base
     v = 'wrapup_video'; options[v] = Video.find_by_key(options[v]) if options.has_key? v
     script = Script.where(options).first_or_create
     chapter = 0; game_chapter = Hash.new(0)
-    script_levels = data.map do |row|
+    script.script_level_ids = data.map do |row|
 
       # Concepts are comma-separated, indexed by name
       row['concept_ids'] = (concepts=row.delete('concepts')) && concepts.split(',').map(&:strip).map do |concept_name|
@@ -97,7 +97,7 @@ class Script < ActiveRecord::Base
 
       # Reference one Level per element
       level = custom ?
-        Level.find_by name: row['name'] :
+        Level.find_by(name: row['name']) :
         Level.where(game: Game.find_by(name: row.delete('game')), level_num: row['level_num']).first_or_create
 
       raise "There does not exist a level with the name '#{row['name']}'. From the row: #{row}" if level.nil?
@@ -117,10 +117,7 @@ class Script < ActiveRecord::Base
         script_level.update(stage: Stage.where(name: stage, script: script).first_or_create)
         script_level.move_to_bottom
       end
-      script_level
+      script_level.id
     end
-    # Delete all ScriptLevels no longer found in the current script
-    (ScriptLevel.where(script: script).to_a - script_levels).each { |sl| ScriptLevel.delete(sl) }
   end
-
 end
