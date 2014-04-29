@@ -73,4 +73,17 @@ class LevelTest < ActiveSupport::TestCase
 
     assert_equal "Artist", level.type
   end
+
+  test "basic toolbox check" do
+    level = Maze.create(@maze_data)
+    toolbox = Nokogiri::XML(level.complete_toolbox)
+
+    assert_equal "xml", toolbox.root().name
+    assert_equal "toolbox", toolbox.root().attributes["id"].value
+
+    first_block = toolbox.root().children.first
+
+    assert_equal "block", first_block.name
+    assert_equal "maze_moveForward", first_block.attributes["type"].value
+  end
 end
