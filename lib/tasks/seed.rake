@@ -4,8 +4,8 @@ namespace :seed do
   task videos: :environment do
     Video.transaction do
       Video.reset_db
-      CSV.read('config/videos.csv', { col_sep: "\t", headers: true }).each do |row|
-        Video.create!(key: row['Key'], youtube_code: row['YoutubeCode'], download: row['Download'])
+      CSV.read('config/videos.csv', { col_sep: "\t", headers: true }).each_with_index do |row, id|
+        Video.create!(id: id + 1, key: row['Key'], youtube_code: row['YoutubeCode'], download: row['Download'])
       end
     end
 
@@ -77,8 +77,8 @@ namespace :seed do
     # code in user.rb assumes that broze id: 1, silver id: 2 and gold id: 3.
     Trophy.transaction do
       Trophy.reset_db
-      %w(Bronze Silver Gold).each do |trophy|
-        Trophy.create!(name: trophy, image_name: "#{trophy.downcase}trophy.png")
+      %w(Bronze Silver Gold).each_with_index do |trophy, id|
+        Trophy.create!(id: id + 1, name: trophy, image_name: "#{trophy.downcase}trophy.png")
       end
     end
   end
@@ -96,8 +96,8 @@ namespace :seed do
       {name: 'EA Origin Plants vs. Zombies', description_token: 'ea_pvz', url: 'https://www.origin.com/en-us/store/buy/plants-vs-zombies/mac-pc-download/base-game/standard-edition-ANW.html', image_name: 'pvz_card.jpg'},
       {name: 'DonorsChoose.org $750', description_token: 'donors_choose', url: 'http://www.donorschoose.org/', image_name: 'donorschoose_card.jpg'},
       {name: 'DonorsChoose.org $250', description_token: 'donors_choose_bonus', url: 'http://www.donorschoose.org/', image_name: 'donorschoose_card.jpg'},
-      {name: 'Skype', description_token: 'skype', url: 'http://www.skype.com/', image_name: 'skype_card.jpg'}].each do |pp|
-        PrizeProvider.create!(pp)
+      {name: 'Skype', description_token: 'skype', url: 'http://www.skype.com/', image_name: 'skype_card.jpg'}].each_with_index do |pp, id|
+        PrizeProvider.create!(pp.merge!({:id=>id + 1}))
       end
     end
   end

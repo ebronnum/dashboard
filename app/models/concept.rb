@@ -19,8 +19,8 @@ class Concept < ActiveRecord::Base
   def self.setup
     transaction do
       reset_db
-      %w(sequence if if_else loop_times loop_until loop_while loop_for function parameters).each do |concept|
-        Concept.create!(name: concept, video: Video.find_by_key(concept))
+      %w(sequence if if_else loop_times loop_until loop_while loop_for function parameters).each_with_index do |concept, id|
+        Concept.create!(id: id + 1, name: concept, video: Video.find_by_key(concept))
       end
     end
   end

@@ -3,10 +3,16 @@ module Seeded
   extend ActiveSupport::Concern
 
   module ClassMethods
-    # (USE WITH CAUTION) Deletes ALL data from the specified DB table, properly resetting autoincrement primary key
-    # See: http://stackoverflow.com/a/5437720
+    # (USE WITH CAUTION) Deletes ALL data from the specified DB table
     def reset_db
       self.delete_all # use delete instead of destroy so callbacks are not called
+    # (disable reset_autoincrement until tested on production server)
+    #   reset_autoincrement
+    end
+
+    # Reset autoincrement primary key
+    # See: http://stackoverflow.com/a/5437720
+    def reset_autoincrement
       connection = self.connection
       table = self.table_name
       id = self.primary_key
