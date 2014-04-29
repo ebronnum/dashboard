@@ -2634,11 +2634,11 @@ exports.install = function(blockly, skin) {
   blockly.Blocks.studio_setBackground.VALUES =
       [[msg.setBackgroundRandom(), 'random'],
        [msg.setBackgroundCave(), '"cave"'],
-       [msg.setBackgroundSanta(), '"santa"'],
-       [msg.setBackgroundScifi(), '"scifi"'],
+       [msg.setBackgroundNight(), '"night"'],
+       [msg.setBackgroundCloudy(), '"cloudy"'],
        [msg.setBackgroundUnderwater(), '"underwater"'],
        [msg.setBackgroundHardcourt(), '"hardcourt"'],
-       [msg.setBackgroundRetro(), '"retro"']];
+       [msg.setBackgroundBlack(), '"black"']];
 
   generator.studio_setBackground = function() {
     return generateSetterCode({ctx: this, name: 'setBackground'});
@@ -3193,16 +3193,16 @@ exports.load = function(assetUrl, id) {
   skin.hardcourt = {
     background: skin.assetUrl('background.png'),
   };
-  skin.retro = {
+  skin.black = {
     background: skin.assetUrl('retro_background.png'),
   };
   skin.cave = {
     background: skin.assetUrl('background_cave.png'),
   };
-  skin.santa = {
+  skin.night = {
     background: skin.assetUrl('background_santa.png'),
   };
-  skin.scifi = {
+  skin.cloudy = {
     background: skin.assetUrl('background_scifi.png'),
   };
   skin.underwater = {
@@ -5340,15 +5340,15 @@ exports.scoreText = function(d){return "Skor: "+v(d,"playerScore")+" : "+v(d,"op
 
 exports.setBackgroundRandom = function(d){return "set random scene"};
 
+exports.setBackgroundBlack = function(d){return "set black background"};
+
 exports.setBackgroundCave = function(d){return "set cave background"};
+
+exports.setBackgroundCloudy = function(d){return "set cloudy background"};
 
 exports.setBackgroundHardcourt = function(d){return "set hardcourt scene"};
 
-exports.setBackgroundRetro = function(d){return "set retro scene"};
-
-exports.setBackgroundSanta = function(d){return "set santa background"};
-
-exports.setBackgroundScifi = function(d){return "set sci-fi background"};
+exports.setBackgroundNight = function(d){return "set night background"};
 
 exports.setBackgroundUnderwater = function(d){return "set underwater background"};
 

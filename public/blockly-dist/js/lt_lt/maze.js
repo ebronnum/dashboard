@@ -6202,7 +6202,7 @@ Maze.scheduleDance = function(sound) {
   }, danceSpeed * 4);
   timeoutList.setTimeout(function() {
     Maze.displayPegman(Maze.pegmanX, Maze.pegmanY, frame);
-  }, stepSpeed * 5);
+  }, danceSpeed * 5);
 };
 
 /**
