@@ -14,7 +14,7 @@ class Maze < Level
     maze = parse_maze(contents, size)
 
     skin = params[:type] == 'maze' ? 'birds' : 'farmer'
-    level = create(level_params.merge(game: game, level_num: 'custom', skin: skin))
+    level = create(level_params.merge(user: params[:user], game: game, level_num: 'custom', skin: skin))
     level.properties.update(maze)
     level.save!
     level
