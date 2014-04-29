@@ -51,7 +51,7 @@ class Maze < Level
     </block>'
   end
 
-  def complete_toolbox
+  def toolbox
       common_blocks + '<block type="maze_forever"></block>
       <block type="maze_if">
         <title name="DIR">isPathLeft</title>
