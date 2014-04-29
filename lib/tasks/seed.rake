@@ -3,7 +3,7 @@ require "csv"
 namespace :seed do
   task videos: :environment do
     Video.transaction do
-      ApplicationHelper.reset_db(Video)
+      Video.reset_db
       CSV.read('config/videos.csv', { col_sep: "\t", headers: true }).each do |row|
         Video.create!(key: row['Key'], youtube_code: row['YoutubeCode'], download: row['Download'])
       end
@@ -28,8 +28,7 @@ namespace :seed do
     touch t.name
   end
 
-  task scripts: [:games, :environment] do
-    Rake::Task["seed:custom_levels"].invoke
+  task scripts: [:environment, :games, :custom_levels] do
     Script.setup
 
     # Generate locale file for custom scripts
@@ -67,8 +66,7 @@ namespace :seed do
 
   task callouts: :environment do
     Callout.transaction do
-      Callout.delete_all # use delete instead of destroy so callbacks are not called
-      Callout.connection.execute("ALTER TABLE callouts auto_increment = 1")
+      Callout.reset_db
       # TODO if the id of the callout is important, specify it in the tsv
       # preferably the id of the callout is not important ;)
       Callout.find_or_create_all_from_tsv!('config/callouts.tsv')
@@ -78,7 +76,7 @@ namespace :seed do
   task trophies: :environment do
     # code in user.rb assumes that broze id: 1, silver id: 2 and gold id: 3.
     Trophy.transaction do
-      ApplicationHelper.reset_db(Trophy)
+      Trophy.reset_db
       %w(Bronze Silver Gold).each do |trophy|
         Trophy.create!(name: trophy, image_name: "#{trophy.downcase}trophy.png")
       end
@@ -87,7 +85,7 @@ namespace :seed do
 
   task prize_providers: :environment do
     PrizeProvider.transaction do
-      ApplicationHelper.reset_db(PrizeProvider)
+      PrizeProvider.reset_db
       # placeholder data - id's are assumed to start at 1 so prizes below can be loaded properly
       [{name: 'Apple iTunes', description_token: 'apple_itunes', url: 'http://www.apple.com/itunes/', image_name: 'itunes_card.jpg'},
       {name: 'Dropbox', description_token: 'dropbox', url: 'http://www.dropbox.com/', image_name: 'dropbox_card.jpg'},

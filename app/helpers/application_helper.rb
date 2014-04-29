@@ -129,49 +129,6 @@ module ApplicationHelper
     [passed, link]
   end
 
-  # (USE WITH CAUTION) Deletes ALL data from the specified DB table, properly resetting autoincrement primary key.
-  # See: http://stackoverflow.com/a/5437720
-  def self.reset_db(model)
-    model.delete_all # use delete instead of destroy so callbacks are not called
-    connection = model.connection
-    table = model.table_name
-    id = model.primary_key
-    connection.execute("SET @count = 0")
-    connection.execute("UPDATE #{table} SET #{table}.#{id} = @count:= @count + 1")
-    connection.execute("ALTER TABLE #{table} auto_increment = 1")
-  end
-
-  # Load and parse a CSV file
-  def self.load_csv(file, col_sep=',', column_to_key={})
-    parse_csv(File.read(file), col_sep, column_to_key)
-  end
-
-  # Convert CSV string into hash, with column headers as keys
-  # Optional hash mapping column headers to hash keys.
-  def self.parse_csv(csv, col_sep=',', column_to_key={})
-    CSV.parse(csv, { col_sep: col_sep, headers: true }).map do |row|
-      hash = row.to_hash
-      hash.keys.each { |key| hash[column_to_key[key]] = hash.delete(key) if column_to_key[key]}
-      hash.delete_if { |_, value| value.nil? }
-    end
-  end
-
-  # Load a YAML script containing options and data. Parses 'TSV'/'CSV' keys as spreadsheets.
-  def self.load_yaml(file, column_to_key={})
-    data = YAML.load_file(file)
-
-    # Set Options and remove element from hash
-    data, options = data.partition { |x| x['Options'].nil? }
-    options = options.empty? ? {} : options[0]['Options']
-
-    [%W(TSV \t), %w(CSV ,)].each do |xsv, sep|
-      data, xsv_data = data.partition { |x| !x || x[xsv].nil? }
-      var = xsv_data.flat_map { |entry| parse_csv(entry[xsv], sep, column_to_key) }
-      data += var unless var.nil?
-    end
-    [options, data]
-  end
-
   def show_flashes
     ret = ""
     if notice

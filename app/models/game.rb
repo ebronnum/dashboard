@@ -3,6 +3,7 @@
 
 # Game.name also maps to localized strings, e.g. [data.en.yml]: game: name: 'Unplug1': 'Introduction to Computer Science'
 class Game < ActiveRecord::Base
+  include Seeded
   has_many :levels
   belongs_to :intro_video, foreign_key: 'intro_video_id', class_name: 'Video'
 
@@ -11,9 +12,9 @@ class Game < ActiveRecord::Base
   end
 
   def self.setup
-    Game.transaction do
+    transaction do
       # Format: name:app:intro_video
-      ApplicationHelper.reset_db(self)
+      reset_db
       %w(
         Maze:maze:maze_intro
         Artist:turtle:artist_intro

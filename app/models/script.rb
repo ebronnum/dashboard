@@ -1,5 +1,6 @@
 # A sequence of Levels
 class Script < ActiveRecord::Base
+  include Seeded
   has_many :levels, through: :script_levels
   has_many :script_levels
   has_many :stages
@@ -72,12 +73,12 @@ class Script < ActiveRecord::Base
   SCRIPT_MAP = Hash[SCRIPT_CSV_MAPPING.map { |x| x.include?(':') ? x.split(':') : [x, x.downcase] }]
 
   def self.setup
-    Script.transaction do
-      ApplicationHelper.reset_db self
+    transaction do
+      reset_db
 
       # Load default scripts from yml (csv embedded)
       Dir.glob("config/scripts/default/*.yml").map do |yml|
-        ApplicationHelper.load_yaml(yml, SCRIPT_MAP)
+        load_yaml(yml, SCRIPT_MAP)
       end.sort_by { |options, _| options['id'] }.map do |options, data|
         add_script(options, data)
       end
@@ -85,7 +86,7 @@ class Script < ActiveRecord::Base
       # Load custom scripts from generate_scripts ruby DSL (csv as intermediate format)
       Dir.glob('config/scripts/**/*.script').flatten.each do |script|
         params = {name: File.basename(script, ".script"), trophies: false, hidden: true}
-        data = ApplicationHelper.parse_csv(`config/generate_scripts #{script}`, "\t", SCRIPT_MAP)
+        data = parse_csv(`config/generate_scripts #{script}`, "\t", SCRIPT_MAP)
         add_script(params, data, true)
       end
     end

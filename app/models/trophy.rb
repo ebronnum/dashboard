@@ -1,5 +1,6 @@
 # Trophies are awarded based on percentage completion of Concepts
 class Trophy < ActiveRecord::Base
+  include Seeded
   #Hardcoded IDs
   BRONZE = 1
   SILVER = 2
