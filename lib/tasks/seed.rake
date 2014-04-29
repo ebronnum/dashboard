@@ -65,6 +65,7 @@ namespace :seed do
       Game.create!(id: game_id += 1, name: "CustomMaze", app: "maze")
       Game.create!(id: game_id += 1, name: "Studio", app: "studio")
       Game.create!(id: game_id += 1, name: "Jigsaw", app: 'jigsaw')
+      Game.create!(id: game_id += 1, name: "MazeStep", app: "maze")
     end
   end
 
@@ -120,7 +121,8 @@ namespace :seed do
                  { file: 'config/2014_script.csv', params: { name: '2014 Levels', trophies: false, hidden: true }},
                  { file: 'config/builder_script.csv', params: { name: 'Builder Levels', trophies: false, hidden: true }},
                  { file: 'config/flappy_script.csv', params: { name: 'Flappy Levels', trophies: false, hidden: true }},
-                 { file: 'config/jigsaw_script.csv', params: { name: 'Jigsaw Levels', trophies: false, hidden: true }}
+                 { file: 'config/jigsaw_script.csv', params: { name: 'Jigsaw Levels', trophies: false, hidden: true }},
+                 { file: 'config/step_script.csv', params: { name: 'Maze Step Levels', trophies: false, hidden: true }}
                 ]
       custom_sources = Dir.glob("config/scripts/*.script.csv").map do |script|
         { file: script, custom: true, params: { name: File.basename(script, ".script.csv"), trophies: false, hidden: true }}
