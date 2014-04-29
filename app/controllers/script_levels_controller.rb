@@ -22,7 +22,7 @@ class ScriptLevelsController < ApplicationController
 
   def show
     authorize! :show, ScriptLevel
-    @script = Script.cached(params[:script_id])
+    @script = Script.get_from_cache(params[:script_id])
 
     chapter = params[:chapter]
     script_level_id = params[:id]

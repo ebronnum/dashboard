@@ -15,15 +15,19 @@ class Script < ActiveRecord::Base
   FLAPPY_ID = 6
   JIGSAW_ID = 7
 
-  def self.touch
-    @@last_updated = Time.now
+  def self.twenty_hour_script
+    @@twenty_hour_script ||= Script.includes(script_levels: { level: [:game, :concepts] }).find(TWENTY_HOUR_ID)
   end
 
-  touch
+  def self.hoc_script
+    @@hoc_script ||= Script.includes(script_levels: { level: [:game, :concepts] }).find(HOC_ID)
+  end
 
-  def self.cached(id)
-    Rails.cache.fetch("script/#{id}/#{@@last_updated}") do
-      find(id)
+  def self.get_from_cache(id)
+    case id
+      when TWENTY_HOUR_ID then twenty_hour_script
+      when HOC_ID then hoc_script
+      else Script.includes(script_levels: { level: [:game, :concepts] }).find(id)
     end
   end
 
@@ -49,7 +53,11 @@ class Script < ActiveRecord::Base
   end
 
   def self.twenty_hour_script
-    Script.cached(TWENTY_HOUR_ID)
+    Script.find(TWENTY_HOUR_ID)
+  end
+
+  def self.builder_script
+    Script.find(BUILDER_ID)
   end
 
   def get_script_level_by_id(script_level_id)
@@ -80,7 +88,6 @@ class Script < ActiveRecord::Base
         data = ApplicationHelper.parse_csv(`config/generate_scripts #{script}`, "\t", SCRIPT_MAP)
         add_script(params, data, true)
       end
-      touch
     end
   end
 
