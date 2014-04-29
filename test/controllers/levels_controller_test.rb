@@ -95,6 +95,7 @@ class LevelsControllerTest < ActionController::TestCase
 
     assert assigns(:level)
     assert assigns(:level).game
+    assert_equal @user, assigns(:level).user
 
     assert_equal game_level_url(assigns(:level).game, assigns(:level)), JSON.parse(@response.body)["redirect"]
   end
