@@ -6,7 +6,7 @@
 - else
   = link_to "Karel Builder Form", "https://docs.google.com/a/code.org/spreadsheet/ccc?key=0Au-CEJJ_kBL3dGpmbmcxQnF6Z0lZZDcxY0p2LWFIaGc&usp=drive_web#gid=0"
 
-= form_for [@game, @level], method: :post, data: { remote: true }, html: {multipart: true} do |level_form|
+= form_for [@game, @level], method: :post, remote: true, html: {multipart: true} do |level_form|
   = hidden_field_tag :size, 8
   = level_form.hidden_field :type, value: @type.capitalize
   = file_field_tag "maze_source"
@@ -19,7 +19,14 @@
   = level_form.submit "Create Level"
 
 :javascript
-  $('#new_level').on('ajax:success', function(e, data) {
-    window.location.href = data.redirect;
+  $(document).ready(function() {
+    $('#new_level').on('ajax:beforeSend', function(e, xhr) {
+      var token = $('meta[name="csrf-token"]').attr('content');
+      xhr.setRequestHeader('X-CSRF-TOKEN', token);
+    });
+    $('#new_level').on('ajax:complete', function(e, data) {
+      if (data.status === "200") {  // http://stackoverflow.com/a/16699124/2551908
+        window.location.href = JSON.parse(data.responseText).redirect
+      }
+    });
   });
-
