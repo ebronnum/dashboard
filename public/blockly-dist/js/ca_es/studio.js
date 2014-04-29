@@ -2417,10 +2417,10 @@ exports.install = function(blockly, skin) {
        [msg.moveSprite6(), '5']];
   
   blockly.Blocks.studio_move.DIR =
-      [[msg.up(), Direction.NORTH.toString()],
-       [msg.down(), Direction.SOUTH.toString()],
-       [msg.left(), Direction.WEST.toString()],
-       [msg.right(), Direction.EAST.toString()]];
+      [[msg.moveDirectionUp(), Direction.NORTH.toString()],
+       [msg.moveDirectionDown(), Direction.SOUTH.toString()],
+       [msg.moveDirectionLeft(), Direction.WEST.toString()],
+       [msg.moveDirectionRight(), Direction.EAST.toString()]];
 
   generator.studio_move = function() {
     // Generate JavaScript for moving.
@@ -2467,10 +2467,11 @@ exports.install = function(blockly, skin) {
      [msg.moveSprite6(), '5']];
 
   blockly.Blocks.studio_moveDistance.DIR =
-      [[msg.up(), Direction.NORTH.toString()],
-       [msg.down(), Direction.SOUTH.toString()],
-       [msg.left(), Direction.WEST.toString()],
-       [msg.right(), Direction.EAST.toString()]];
+      [[msg.moveDirectionUp(), Direction.NORTH.toString()],
+       [msg.moveDirectionDown(), Direction.SOUTH.toString()],
+       [msg.moveDirectionLeft(), Direction.WEST.toString()],
+       [msg.moveDirectionRight(), Direction.EAST.toString()],
+       [msg.moveDirectionRandom(), 'random']];
 
   blockly.Blocks.studio_moveDistance.DISTANCE =
       [[msg.moveDistance25(), '25'],
@@ -2487,15 +2488,21 @@ exports.install = function(blockly, skin) {
       return item[1];
     });
     var distParam = this.getTitleValue('DISTANCE');
-    
     if (distParam === 'random') {
       distParam = 'Studio.random([' + allDistances + '])';
+    }
+    var allDirections = this.DIR.slice(0, -1).map(function (item) {
+      return item[1];
+    });
+    var dirParam = this.getTitleValue('DIR');
+    if (dirParam === 'random') {
+      dirParam = 'Studio.random([' + allDirections + '])';
     }
 
     return 'Studio.moveDistance(\'block_id_' + this.id +
         '\', executionCtx || 0, ' +
         (this.getTitleValue('SPRITE') || '0') + ', ' +
-        this.getTitleValue('DIR') + ', ' +
+        dirParam + ', ' +
         distParam + ');\n';
   };
 
@@ -5207,8 +5214,6 @@ exports.catVariables = function(d){return "Variables"};
 
 exports.continue = function(d){return "Continuar"};
 
-exports.down = function(d){return "down"};
-
 exports.finalLevel = function(d){return "Felicitats! Has resolt el puzzle final."};
 
 exports.incrementOpponentScore = function(d){return "increment opponent score"};
@@ -5217,9 +5222,17 @@ exports.incrementScoreTooltip = function(d){return "Add one to the player or opp
 
 exports.incrementPlayerScore = function(d){return "increment player score"};
 
-exports.left = function(d){return "left"};
-
 exports.makeYourOwn = function(d){return "Make Your Own Story"};
+
+exports.moveDirectionDown = function(d){return "down"};
+
+exports.moveDirectionLeft = function(d){return "left"};
+
+exports.moveDirectionRight = function(d){return "right"};
+
+exports.moveDirectionUp = function(d){return "up"};
+
+exports.moveDirectionRandom = function(d){return "random"};
 
 exports.moveDistance25 = function(d){return "25 pixels"};
 
@@ -5306,8 +5319,6 @@ exports.reinfFeedbackMsg = function(d){return "You can press the \"Try again\" b
 exports.repeatUntil = function(d){return "repeteix fins que"};
 
 exports.repeatUntilFinish = function(d){return "repeteix fins a acabar"};
-
-exports.right = function(d){return "right"};
 
 exports.saySprite = function(d){return "say"};
 
@@ -5404,8 +5415,6 @@ exports.setSprite4 = function(d){return "set character 4"};
 exports.setSprite5 = function(d){return "set character 5"};
 
 exports.setSprite6 = function(d){return "set character 6"};
-
-exports.up = function(d){return "up"};
 
 exports.whenDown = function(d){return "when Down arrow"};
 
