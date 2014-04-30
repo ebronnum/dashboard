@@ -11,10 +11,10 @@ class LevelsHelperTest < ActionView::TestCase
   test "should parse maze level with non string array" do
     @level.properties["maze"] = [[0, 0], [2, 3]]
     level, options = blockly_options
-    assert (level["maze"].is_a? Array), "Maze is not an array"
+    assert (level["map"].is_a? Array), "Maze is not an array"
 
     @level.properties["maze"] = @level.properties["maze"].to_s
     level, options = blockly_options
-    assert (level["maze"].is_a? Array), "Maze is not an array"
+    assert (level["map"].is_a? Array), "Maze is not an array"
   end
 end
