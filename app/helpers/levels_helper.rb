@@ -1,5 +1,4 @@
 module LevelsHelper
-  require 'json'
   def build_script_level_path(script_level)
     if Script::HOC_ID == script_level.script_id
       hoc_chapter_path(script_level.chapter)
