@@ -45,6 +45,15 @@ class LevelTest < ActiveSupport::TestCase
     end
   end
 
+  test "cannot create two custom levels with same name case insensitive" do
+    assert_no_difference('Level.count') do
+      name_upcase = @custom_maze_data[:name].upcase
+      level2 = Level.create(@custom_maze_data.merge(name: name_upcase))
+      assert_not level2.valid?
+      assert level2.errors.include?(:name)
+    end
+  end
+
   test "can create two custom levels with different names" do
     assert_difference('Level.count', 1) do
       @custom_maze_data[:name] = "__swoop"
