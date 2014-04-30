@@ -1,4 +1,5 @@
 module LevelsHelper
+  require 'json'
   def build_script_level_path(script_level)
     if Script::HOC_ID == script_level.script_id
       hoc_chapter_path(script_level.chapter)
@@ -147,6 +148,9 @@ module LevelsHelper
 
     # Blockly requires startDirection as an integer not a string
     level['startDirection'] = level['startDirection'].to_i if level['startDirection'].present?
+
+    # Blockly requires maze as an array not a string
+    level['maze'] = JSON.parse(level['maze']) if level['maze'].is_a? String
 
     # Fetch localized strings
     %w(instructions levelIncompleteError other1StarError tooFewBlocksMsg).each do |label|
