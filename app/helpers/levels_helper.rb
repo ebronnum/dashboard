@@ -113,7 +113,7 @@ module LevelsHelper
   end
 
   # Code for generating the blockly options hash
-  def blockly_options(local_assigns)
+  def blockly_options(local_assigns={})
     # Use values from properties json when available (use String keys instead of Symbols for consistency)
     level = @level.properties || {}
 
