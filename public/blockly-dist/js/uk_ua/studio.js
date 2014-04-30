@@ -2101,6 +2101,9 @@ Slider.bindEvent_ = function(element, name, func) {
 module.exports = Slider;
 
 },{}],11:[function(require,module,exports){
+var tiles = require('./tiles');
+var xFromPosition = tiles.xFromPosition;
+var yFromPosition = tiles.yFromPosition;
 
 exports.SpriteSpeed = {
   VERY_SLOW: 0.04,
@@ -2149,6 +2152,13 @@ exports.setSpriteSpeed = function (id, spriteIndex, value) {
   Studio.sprite[spriteIndex].speed = value;
 };
 
+exports.setSpritePosition = function (id, spriteIndex, value) {
+  BlocklyApps.highlight(id);
+  Studio.setSpritePosition(spriteIndex,
+                           xFromPosition[value],
+                           yFromPosition[value]);
+};
+
 exports.playSound = function(id, soundName) {
   BlocklyApps.highlight(id);
   BlocklyApps.playAudio(soundName, {volume: 0.5});
@@ -2179,7 +2189,7 @@ exports.incrementScore = function(id, player) {
   Studio.displayScore();
 };
 
-},{}],12:[function(require,module,exports){
+},{"./tiles":19}],12:[function(require,module,exports){
 /**
  * Blockly App: Studio
  *
@@ -2193,6 +2203,7 @@ var codegen = require('../codegen');
 var tiles = require('./tiles');
 
 var Direction = tiles.Direction;
+var Position = tiles.Position;
 var Emotions = tiles.Emotions;
 
 var generateSetterCode = function (opts) {
@@ -2424,6 +2435,58 @@ exports.install = function(blockly, skin) {
     // Generate JavaScript for stopping the movement of a sprite.
     return 'Studio.stop(\'block_id_' + this.id + '\', ' +
         (this.getTitleValue('SPRITE') || '0') + ');\n';
+  };
+
+  blockly.Blocks.studio_setSpritePosition = {
+    // Block for jumping a sprite to different position.
+    helpUrl: '',
+    init: function() {
+      var dropdownArray =
+          this.SPRITE.slice(0, blockly.Blocks.studio_spriteCount);
+      var dropdown = new blockly.FieldDropdown(this.VALUES);
+      dropdown.setValue(this.VALUES[1][1]); // default to top-left
+      this.setHSV(184, 1.00, 0.74);
+      if (blockly.Blocks.studio_spriteCount > 1) {
+        this.appendDummyInput()
+          .appendTitle(new blockly.FieldDropdown(dropdownArray), 'SPRITE');
+      } else {
+        this.appendDummyInput()
+          .appendTitle(msg.setSprite());
+      }
+      this.appendDummyInput()
+        .appendTitle(dropdown, 'VALUE');
+      this.setPreviousStatement(true);
+      this.setInputsInline(true);
+      this.setNextStatement(true);
+      this.setTooltip(msg.setSpritePositionTooltip());
+    }
+  };
+
+  blockly.Blocks.studio_setSpritePosition.SPRITE =
+      [[msg.setSprite1(), '0'],
+       [msg.setSprite2(), '1'],
+       [msg.setSprite3(), '2'],
+       [msg.setSprite4(), '3'],
+       [msg.setSprite5(), '4'],
+       [msg.setSprite6(), '5']];
+  
+  blockly.Blocks.studio_setSpritePosition.VALUES =
+      [[msg.positionRandom(), 'random'],
+       [msg.positionTopLeft(), Position.TOPLEFT.toString()],
+       [msg.positionTopCenter(), Position.TOPCENTER.toString()],
+       [msg.positionTopRight(), Position.TOPRIGHT.toString()],
+       [msg.positionMiddleLeft(), Position.MIDDLELEFT.toString()],
+       [msg.positionMiddleCenter(), Position.MIDDLECENTER.toString()],
+       [msg.positionMiddleRight(), Position.MIDDLERIGHT.toString()],
+       [msg.positionBottomLeft(), Position.BOTTOMLEFT.toString()],
+       [msg.positionBottomCenter(), Position.BOTTOMCENTER.toString()],
+       [msg.positionBottomRight(), Position.BOTTOMRIGHT.toString()]];
+
+  generator.studio_setSpritePosition = function() {
+    return generateSetterCode({
+      ctx: this,
+      extraParams: (this.getTitleValue('SPRITE') || '0'),
+      name: 'setSpritePosition'});
   };
 
   blockly.Blocks.studio_move = {
@@ -3105,6 +3168,7 @@ module.exports = {
       'upButton'
     ],
     'minWorkspaceHeight': 800,
+    'spritesHiddenToStart': true,
     'freePlay': true,
     'map': [
       [0,16, 0, 0, 0,16, 0, 0],
@@ -3126,6 +3190,7 @@ module.exports = {
          blockOfType('studio_playSound') +
          blockOfType('studio_incrementScore') +
          blockOfType('studio_saySprite') +
+         blockOfType('studio_setSpritePosition') +
          blockOfType('studio_setSpriteSpeed') +
          blockOfType('studio_setSpriteEmotion') +
          blockOfType('studio_setBackground') +
@@ -3150,6 +3215,7 @@ module.exports = {
       'upButton'
     ],
     'minWorkspaceHeight': 800,
+    'spritesHiddenToStart': true,
     'freePlay': true,
     'map': [
       [0,16, 0, 0, 0,16, 0, 0],
@@ -3169,6 +3235,7 @@ module.exports = {
                           blockOfType('studio_playSound') +
                           blockOfType('studio_incrementScore') +
                           blockOfType('studio_saySprite') +
+                          blockOfType('studio_setSpritePosition') +
                           blockOfType('studio_setSpriteSpeed') +
                           blockOfType('studio_setSpriteEmotion') +
                           blockOfType('studio_setBackground') +
@@ -3429,6 +3496,7 @@ var loadLevel = function() {
   Studio.timeoutFailureTick = level.timeoutFailureTick || Infinity;
   Studio.minWorkspaceHeight = level.minWorkspaceHeight;
   Studio.spriteStartingImage = level.spriteStartingImage;
+  Studio.spritesHiddenToStart = level.spritesHiddenToStart;
   Studio.softButtons_ = level.softButtons || [];
 
   // Override scalars.
@@ -4098,13 +4166,16 @@ BlocklyApps.reset = function(first) {
     Studio.sprite[i].queuedY = 0;
     Studio.sprite[i].queuedYContext = -1;
     Studio.sprite[i].flags = 0;
-    Studio.sprite[i].dir = 0;
+    Studio.sprite[i].dir = Direction.NONE;
     Studio.sprite[i].displayDir = Direction.SOUTH;
     Studio.sprite[i].emotion = Emotions.NORMAL;
     Studio.sprite[i].xMoveQueue = [];
     Studio.sprite[i].yMoveQueue = [];
     
-    Studio.setSprite(i, spriteStartingSkins[(i + skinBias) % numStartingSkins]);
+    Studio.setSprite(i,
+                     Studio.spritesHiddenToStart ?
+                      "hidden" :
+                      spriteStartingSkins[(i + skinBias) % numStartingSkins]);
     Studio.displaySprite(i);
     document.getElementById('speechBubble' + i)
       .setAttribute('visibility', 'hidden');
@@ -4464,12 +4535,12 @@ Studio.displaySprite = function(i) {
   var yCoordPrev = spriteClipRect.getAttribute('y');
   
   var dirPrev = Studio.sprite[i].dir;
-  if (dirPrev === 0) {
+  if (dirPrev === Direction.NONE) {
     // direction not yet set, start at SOUTH (forward facing)
     Studio.sprite[i].dir = Direction.SOUTH;
   }
   else if ((xCoord != xCoordPrev) || (yCoord != yCoordPrev)) {
-    Studio.sprite[i].dir = 0;
+    Studio.sprite[i].dir = Direction.NONE;
     if (xCoord < xCoordPrev) {
       Studio.sprite[i].dir |= Direction.WEST;
     } else if (xCoord > xCoordPrev) {
@@ -4602,7 +4673,7 @@ Studio.saySprite = function (executionCtx, index, text) {
   Studio.sayQueues[executionCtx].push(sayCmd);
 };
 
-Studio.stop = function (spriteIndex) {
+Studio.stop = function (spriteIndex, dontResetCollisions) {
   Studio.sprite[spriteIndex].queuedYContext = -1;
   Studio.sprite[spriteIndex].queuedY = 0;
   Studio.sprite[spriteIndex].yMoveQueue = [];
@@ -4611,14 +4682,32 @@ Studio.stop = function (spriteIndex) {
   Studio.sprite[spriteIndex].xMoveQueue = [];
   Studio.sprite[spriteIndex].flags &=
     ~(SpriteFlags.LOOPING_MOVE_Y_PENDING | SpriteFlags.LOOPING_MOVE_X_PENDING);
-  // Reset collisionMask so the next movement will fire another collision
-  // event against the same sprite. This makes it easier to write code that
-  // says "when sprite X touches Y" => "stop sprite X", and have it do what
-  // you expect it to do...
-  
-  // TBD: should we cancel this sprite from the collisionMask of the other
-  // sprites?
-  Studio.sprite[spriteIndex].collisionMask = 0;
+
+  if (!dontResetCollisions) {
+    // Reset collisionMasks so the next movement will fire another collision
+    // event against the same sprite if needed. This makes it easier to write code
+    // that says "when sprite X touches Y" => "stop sprite X", and have it do what
+    // you expect it to do...
+    Studio.sprite[spriteIndex].collisionMask = 0;
+    for (var i = 0; i < Studio.spriteCount; i++) {
+      if (i === spriteIndex) {
+        continue;
+      }
+      Studio.sprite[i].collisionMask &= ~(Math.pow(2, spriteIndex));
+    }
+  }
+};
+
+Studio.setSpritePosition = function (index, x, y) {
+  var samePosition =
+      (Studio.sprite[index].x === x && Studio.sprite[index].y === y);
+
+  // Don't reset collisions inside stop() if we're in the same position
+  Studio.stop(index, samePosition);
+  Studio.sprite[index].x = x;
+  Studio.sprite[index].y = y;
+  // Reset to "no direction" so no turn animation will take place
+  Studio.sprite[index].dir = Direction.NONE;
 };
 
 Studio.moveSingle = function (spriteIndex, dir) {
@@ -4770,6 +4859,7 @@ var checkFinished = function () {
 'use strict';
 
 exports.Direction = {
+  NONE: 0,
   NORTH: 1,
   EAST: 2,
   SOUTH: 4,
@@ -4780,11 +4870,51 @@ exports.Direction = {
   NORTHWEST: 9,
 };
 
-var Dir = exports.Direction;
+exports.Position = {
+  TOPLEFT: 1,
+  TOPCENTER: 2,
+  TOPRIGHT: 3,
+  MIDDLELEFT: 4,
+  MIDDLECENTER: 5,
+  MIDDLERIGHT: 6,
+  BOTTOMLEFT: 7,
+  BOTTOMCENTER: 8,
+  BOTTOMRIGHT: 9,
+};
+
+//
+// Coordinates for each Position (revisit when Sprite size is variable)
+//
+
+var Pos = exports.Position;
+
+exports.xFromPosition = {};
+exports.xFromPosition[Pos.TOPLEFT] = 0;
+exports.xFromPosition[Pos.TOPCENTER] = 3;
+exports.xFromPosition[Pos.TOPRIGHT] = 6;
+exports.xFromPosition[Pos.MIDDLELEFT] = 0;
+exports.xFromPosition[Pos.MIDDLECENTER] = 3;
+exports.xFromPosition[Pos.MIDDLERIGHT] = 6;
+exports.xFromPosition[Pos.BOTTOMLEFT] = 0;
+exports.xFromPosition[Pos.BOTTOMCENTER] = 3;
+exports.xFromPosition[Pos.BOTTOMRIGHT] = 6;
+
+exports.yFromPosition = {};
+exports.yFromPosition[Pos.TOPLEFT] = 0;
+exports.yFromPosition[Pos.TOPCENTER] = 0;
+exports.yFromPosition[Pos.TOPRIGHT] = 0;
+exports.yFromPosition[Pos.MIDDLELEFT] = 3;
+exports.yFromPosition[Pos.MIDDLECENTER] = 3;
+exports.yFromPosition[Pos.MIDDLERIGHT] = 3;
+exports.yFromPosition[Pos.BOTTOMLEFT] = 6;
+exports.yFromPosition[Pos.BOTTOMCENTER] = 6;
+exports.yFromPosition[Pos.BOTTOMRIGHT] = 6;
 
 //
 // Turn state machine, use as NextTurn[fromDir][toDir]
 //
+
+var Dir = exports.Direction;
 
 exports.NextTurn = {};
 
@@ -5504,6 +5634,26 @@ exports.playSoundWinPoint2 = function(d){return "play win point 2 sound"};
 
 exports.playSoundWood = function(d){return "play wood sound"};
 
+exports.positionTopLeft = function(d){return "to the top left position"};
+
+exports.positionTopCenter = function(d){return "to the top center position"};
+
+exports.positionTopRight = function(d){return "to the top right position"};
+
+exports.positionMiddleLeft = function(d){return "to the middle left position"};
+
+exports.positionMiddleCenter = function(d){return "to the middle center position"};
+
+exports.positionMiddleRight = function(d){return "to the middle right position"};
+
+exports.positionBottomLeft = function(d){return "to the bottom left position"};
+
+exports.positionBottomCenter = function(d){return "to the bottom center position"};
+
+exports.positionBottomRight = function(d){return "to the bottom right position"};
+
+exports.positionRandom = function(d){return "to the random position"};
+
 exports.reinfFeedbackMsg = function(d){return "You can press the \"Try again\" button to go back to playing your story."};
 
 exports.repeatUntil = function(d){return "повторювати до"};
@@ -5569,6 +5719,8 @@ exports.setSpritePurple = function(d){return "to a purple image"};
 exports.setSpriteRandom = function(d){return "to a random image"};
 
 exports.setSpriteWitch = function(d){return "to a witch image"};
+
+exports.setSpritePositionTooltip = function(d){return "Instantly moves a sprite to the specified location."};
 
 exports.setSpriteTooltip = function(d){return "Sets the character image"};
 
