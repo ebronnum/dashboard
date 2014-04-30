@@ -72,18 +72,17 @@ class Script < ActiveRecord::Base
   SCRIPT_CSV_MAPPING = %w(Game Name Level:level_num Skin Concepts Url:level_url Stage)
   SCRIPT_MAP = Hash[SCRIPT_CSV_MAPPING.map { |x| x.include?(':') ? x.split(':') : [x, x.downcase] }]
 
-  def self.setup
+  def self.setup(default_scripts, custom_scripts)
     transaction do
       reset_db
 
       # Load default scripts from yml (csv embedded)
-      Dir.glob("config/scripts/default/*.yml")
-      .map { |yml| load_yaml(yml, SCRIPT_MAP) }
+      default_scripts.map { |yml| load_yaml(yml, SCRIPT_MAP) }
       .sort_by { |options, _| options[:id] }
       .map { |options, data| add_script(options, data) }
 
       # Load custom scripts from generate_scripts ruby DSL (csv as intermediate format)
-      Dir.glob('config/scripts/**/*.script').flatten.each do |script|
+      custom_scripts.each do |script|
         add_script(
           {name: File.basename(script, ".script"), trophies: false, hidden: true},
           parse_csv(`config/generate_scripts #{script}`, "\t", SCRIPT_MAP),
@@ -91,7 +90,6 @@ class Script < ActiveRecord::Base
         )
       end
     end
-    update_script_locales
   end
 
   def self.add_script(options, data, custom=false)
