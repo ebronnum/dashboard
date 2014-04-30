@@ -95,3 +95,5 @@ gem 'rmagick'
 gem 'acts_as_list'
 
 gem 'kaminari' # pagination
+
+gem 'remotipart' # Ajax file upload

@@ -41,7 +41,7 @@ FactoryGirl.define do
     end
   end
 
-  factory :turtle, :parent => Level, :class => Turtle do
+  factory :artist, :parent => Level, :class => Artist do
   end
 
   factory :level_source do
