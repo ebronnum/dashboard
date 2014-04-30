@@ -74,8 +74,6 @@ class Script < ActiveRecord::Base
 
   def self.setup
     transaction do
-      reset_db
-
       # Load default scripts from yml (csv embedded)
       Dir.glob("config/scripts/default/*.yml").map do |yml|
         load_yaml(yml, SCRIPT_MAP)
