@@ -84,7 +84,9 @@ class Script < ActiveRecord::Base
       # Load custom scripts from generate_scripts ruby DSL (csv as intermediate format)
       Dir.glob('config/scripts/**/*.script').flatten.each do |script|
         params = {name: File.basename(script, ".script"), trophies: false, hidden: true}
-        data = parse_csv(`config/generate_scripts #{script}`, "\t", SCRIPT_MAP)
+        script_ascii = File.read(script).to_ascii
+        script_csv, _ = Open3.capture2('config/generate_scripts', :stdin_data => script_ascii)
+        data = parse_csv(script_csv, "\t", SCRIPT_MAP)
         add_script(params, data, true)
       end
     end
