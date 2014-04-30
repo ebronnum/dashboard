@@ -108,14 +108,6 @@ class Artist < Level
       <block type="simple_jump_down"></block>
       <block type="simple_jump_left"></block>
       <block type="simple_jump_right"></block>
-      <block type="simple_jump_up_long"></block>
-      <block type="simple_jump_down_long"></block>
-      <block type="simple_jump_left_long"></block>
-      <block type="simple_jump_right_long"></block>
-      <block type="simple_jump_up_short"></block>
-      <block type="simple_jump_down_short"></block>
-      <block type="simple_jump_left_short"></block>
-      <block type="simple_jump_right_short"></block>
     </category>'
   end
 end
