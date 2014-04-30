@@ -24,6 +24,8 @@ group :development, :test do
   gem 'simplecov', require: false
   gem 'mocha', require: false
   gem "codeclimate-test-reporter", require: false
+
+  gem 'i18nema' # faster locale backend
 end
 
 group :test do

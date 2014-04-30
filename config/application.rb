@@ -37,6 +37,16 @@ module Dashboard
     config.i18n.available_locales = ['en']
     config.i18n.fallbacks = {}
     config.i18n.default_locale = 'en-us'
+
+    if Rails.env.development? || Rails.env.test?
+      I18n.backend = I18nema::Backend.new
+      config.after_initialize do
+        # I18nema backend doesn't support .rb, so remove rails/pluralization from load path.
+        # rails-i18n pluralization is unused by our app
+        I18n.load_path.delete_if {|x| x.include?(File.join('rails','pluralization'))}
+      end
+    end
+
     locales = YAML.load_file("#{Rails.root}/config/locales.yml")
     LOCALES = Hash[locales.map {|k, v| [k.downcase, v.class == String ? v.downcase : v]}]
     LOCALES.each do |locale, data|
