@@ -29,10 +29,10 @@ class LevelsControllerTest < ActionController::TestCase
   end
 
   test "should get new karel" do
-    get :new, type: 'karel'
+    get :new, type: 'Karel'
 
     css = css_select "#level_type"
-    assert_equal "karel", css.first.attributes['value']
+    assert_equal "Karel", css.first.attributes['value']
     assert_response :success
   end
 
@@ -54,7 +54,7 @@ class LevelsControllerTest < ActionController::TestCase
     game = Game.find_by_name("CustomMaze")
 
     assert_difference('Level.count') do
-      post :create, :level => {:name => "NewCustomLevel", :instructions => "Some Instructions"}, :game_id => game.id, :program => @program, :level_type => 'maze', :maze_source => maze, :size => 8
+      post :create, :level => {:name => "NewCustomLevel", :instructions => "Some Instructions", :type => 'Maze'}, :game_id => game.id, :program => @program, :maze_source => maze, :size => 8
     end
 
     assert assigns(:level)
@@ -79,7 +79,7 @@ class LevelsControllerTest < ActionController::TestCase
     game = Game.find_by_name("CustomMaze")
 
     assert_no_difference('Level.count') do
-      post :create, :level => {:name => "NewCustomLevel", :instructions => "Some Instructions"}, :game_id => game.id, :program => @program, :level_type => 'maze', :maze_source => maze, :size => 8
+      post :create, :level => {:name => "NewCustomLevel", :instructions => "Some Instructions", :type => 'Maze'}, :game_id => game.id, :program => @program, :maze_source => maze, :size => 8
     end
 
     assert_response :not_acceptable
@@ -90,13 +90,14 @@ class LevelsControllerTest < ActionController::TestCase
     game = Game.find_by_name("CustomMaze")
 
     assert_difference('Level.count') do
-      post :create, :level => {:name => "NewCustomLevel", :instructions => "Some Instructions"}, :game_id => game.id, :program => @program, :level_type => 'karel', :maze_source => karel, :size => 8
+      post :create, :level => {:name => "NewCustomLevel", :instructions => "Some Instructions", :type => 'Karel'}, :game_id => game.id, :program => @program, :maze_source => karel, :size => 8
     end
 
     assert assigns(:level)
     assert assigns(:level).game
+    assert_equal @user, assigns(:level).user
 
-    assert_redirected_to game_level_path(assigns(:level).game, assigns(:level))
+    assert_equal game_level_url(assigns(:level).game, assigns(:level)), JSON.parse(@response.body)["redirect"]
   end
 
   test "should not create invalid karel level" do
@@ -104,7 +105,7 @@ class LevelsControllerTest < ActionController::TestCase
     game = Game.find_by_name("CustomMaze")
 
     assert_no_difference('Level.count') do
-      post :create, :level => {:name => "NewCustomLevel", :instructions => "Some Instructions"}, :game_id => game.id, :program => @program, :level_type => 'karel', :maze_source => karel, :size => 8
+      post :create, :level => {:name => "NewCustomLevel", :instructions => "Some Instructions", :type => 'Karel'}, :game_id => game.id, :program => @program, :maze_source => karel, :size => 8
     end
 
     assert_response :not_acceptable
@@ -113,7 +114,7 @@ class LevelsControllerTest < ActionController::TestCase
   test "should create artist level" do
     game = Game.find_by_name("Custom")
     assert_difference('Level.count') do
-      post :create, :game_id => game.id, :name => "NewCustomLevel", :program => @program, :level_type => 'artist'
+      post :create, :level => { :name => "NewCustomLevel", :type => 'Artist' }, :game_id => game.id, :program => @program
     end
 
     assert_equal game_level_url(assigns(:level).game, assigns(:level)), JSON.parse(@response.body)["redirect"]
@@ -132,7 +133,7 @@ class LevelsControllerTest < ActionController::TestCase
   end
 
   test "should set coordinates and direction from query string" do
-    get :new, :type => "artist", :x => 5, :y => 10, :start_direction => 90
+    get :new, :type => "Artist", :x => 5, :y => 10, :start_direction => 90
     level = assigns(:level)
     assert_equal 5, level.x
     assert_equal 10, level.y
@@ -140,8 +141,9 @@ class LevelsControllerTest < ActionController::TestCase
   end
 
   test "should handle coordinates if non integer" do
-    get :new, :type => "artist", :x => "", :y => 5.5, :start_direction => "hi"
+    get :new, :type => "Artist", :x => "", :y => 5.5, :start_direction => "hi"
     level = assigns(:level)
+    assert level
     assert_nil level.x
     assert_nil level.y
     assert_nil level.start_direction
@@ -204,7 +206,7 @@ class LevelsControllerTest < ActionController::TestCase
   end
 
   test "should use level for route helper" do
-    level = create(:turtle)
+    level = create(:artist)
     get :edit, id: level, game_id: level.game
     css = css_select "form[action=#{game_level_path(level.game, level)}]"
     assert_not css.empty?
