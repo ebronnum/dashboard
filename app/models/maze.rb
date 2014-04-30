@@ -39,7 +39,7 @@ class Maze < Level
   end
 
   def common_blocks
-    '<block type="maze_moveForward"></block>
+    k1_blocks + '<block type="maze_moveForward"></block>
     <block type="maze_turn">
       <title name="DIR">turnLeft</title>
     </block>
@@ -49,6 +49,16 @@ class Maze < Level
     <block type="controls_repeat">
       <title name="TIMES">5</title>
     </block>'
+  end
+
+  def k1_blocks
+    '<block type="controls_repeat_simplified">
+      <title name="TIMES">5</title>
+    </block>
+    <block type="maze_moveNorth"></block>
+    <block type="maze_moveSouth"></block>
+    <block type="maze_moveEast"></block>
+    <block type="maze_moveWest"></block>'
   end
 
   def toolbox
