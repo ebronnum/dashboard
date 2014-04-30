@@ -279,6 +279,7 @@ BlocklyApps.init = function(config) {
     var width = Math.max(minWidth, widthDimension);
     var scale = widthDimension / width;
     var content = ['width=' + width,
+                   'minimal-ui',
                    'initial-scale=' + scale,
                    'maximum-scale=' + scale,
                    'minimum-scale=' + scale,
@@ -635,15 +636,24 @@ BlocklyApps.resizeHeaders = function() {
 /**
  * Highlight the block (or clear highlighting).
  * @param {?string} id ID of block that triggered this action.
+ * @param {boolean} spotlight Optional.  Highlight entire block if true
  */
-BlocklyApps.highlight = function(id) {
+BlocklyApps.highlight = function(id, spotlight) {
   if (id) {
     var m = id.match(/^block_id_(\d+)$/);
     if (m) {
       id = m[1];
     }
   }
-  Blockly.mainWorkspace.highlightBlock(id);
+
+  Blockly.mainWorkspace.highlightBlock(id, spotlight);
+};
+
+/**
+ * Remove highlighting from all blocks
+ */
+BlocklyApps.clearHighlighting = function () {
+  BlocklyApps.highlight(null);
 };
 
 /**
@@ -832,6 +842,7 @@ BlocklyApps.report = function(options) {
 BlocklyApps.resetButtonClick = function() {
   document.getElementById('runButton').style.display = 'inline';
   document.getElementById('resetButton').style.display = 'none';
+  BlocklyApps.clearHighlighting();
   Blockly.mainWorkspace.traceOn(false);
   BlocklyApps.reset(false);
 };
@@ -881,6 +892,12 @@ exports.createToolbox = function(blocks) {
 
 exports.blockOfType = function(type) {
   return '<block type="' + type + '"></block>';
+};
+
+exports.createCategory = function(name, blocks, custom) {
+  return '<category name="' + name + '"' +
+          (custom ? ' custom="' + custom + '"' : '') +
+          '>' + blocks + '</category>';
 };
 
 },{}],4:[function(require,module,exports){
@@ -1410,7 +1427,7 @@ exports.createSharingDiv = function(options) {
     // don't even try if our caller didn't give us something that can be shared
     // options.response.level_source is the url that we are sharing
     return null;
-  } 
+  }
 
   // set up the twitter share url
   var twitterUrl = "https://twitter.com/intent/tweet?url=" +
@@ -1709,7 +1726,7 @@ var getMissingRequiredBlocks = function () {
             break;
           }
         } else {
-          window.alert('Bad test: ' + test);
+          throw new Error('Bad test: ' + test);
         }
       }
       if (!usedRequiredBlock) {
@@ -1926,6 +1943,8 @@ exports.load = function(assetUrl, id) {
     downJumpArrow: skinUrl('down_jump.png'),
     upJumpArrow: skinUrl('up_jump.png'),
     rightJumpArrow: skinUrl('right_jump.png'),
+    shortLineDraw: skinUrl('short_line_draw.png'),
+    longLineDraw: skinUrl('long_line_draw.png'),
     offsetLineSlice: skinUrl('offset_line_slice.png'),
     // Sounds
     startSound: [skinUrl('start.mp3'), skinUrl('start.ogg')],
@@ -2281,8 +2300,11 @@ escape = escape || function (html){
 };
 var buf = [];
 with (locals || {}) { (function(){ 
- buf.push('');1; var msg = require('../../locale/sq_al/common'); ; buf.push('\n\n<div id="rotateContainer" style="background-image: url(', escape((3,  assetUrl('media/mobile_tutorial_turnphone.png') )), ')">\n  <div id="rotateText">\n    <p>', escape((5,  msg.rotateText() )), '<br>', escape((5,  msg.orientationLock() )), '</p>\n  </div>\n</div>\n\n');9; var instructions = function() {; buf.push('  <div id="bubble">\n    <img id="prompt-icon">\n    <p id="prompt">\n    </p>\n  </div>\n');14; };; buf.push('\n');15; // A spot for the server to inject some HTML for help content.
-var helpArea = function(html) {; buf.push('  ');16; if (html) {; buf.push('    <div id="helpArea">\n      ', (17,  html ), '\n    </div>\n  ');19; }; buf.push('');19; };; buf.push('\n');20; var codeArea = function() {; buf.push('  <div id="codeTextbox" contenteditable spellcheck=false>\n    // ', escape((21,  msg.typeCode() )), '\n    <br>\n    // ', escape((23,  msg.typeHint() )), '\n    <br>\n  </div>\n');26; }; ; buf.push('\n\n<div id="visualization">\n  ', (29,  data.visualization ), '\n</div>\n\n<div id="belowVisualization">\n\n  <table id="gameButtons">\n    <tr>\n      <td style="width:100%;">\n        <button id="runButton" class="launch">\n          <img src="', escape((38,  assetUrl('media/1x1.gif') )), '" class="run icon21">\n          ', escape((39,  msg.runProgram() )), '\n        </button>\n        <button id="resetButton" class="launch" style="display: none">\n          <img src="', escape((42,  assetUrl('media/1x1.gif') )), '" class="stop icon21">\n            ', escape((43,  msg.resetProgram() )), '\n        </button>\n      </td>\n      ');46; if (data.controls) { ; buf.push('\n        ', (47,  data.controls ), '\n      ');48; } ; buf.push('\n    </tr>\n    ');50; if (data.extraControlRows) { ; buf.push('\n      ', (51,  data.extraControlRows ), '\n    ');52; } ; buf.push('\n  </table>\n\n  ');55; instructions() ; buf.push('\n  ');56; helpArea(data.helpHtml) ; buf.push('\n\n</div>\n\n<div id="blockly">\n  <div id="headers" dir="', escape((61,  data.localeDirection )), '">\n    <div id="toolbox-header" class="blockly-header"><span>', escape((62,  msg.toolboxHeader() )), '</span></div>\n    <div id="workspace-header" class="blockly-header">\n      <span id="blockCounter">', escape((64,  msg.workspaceHeader() )), '</span>\n      <div id="blockUsed" class=', escape((65,  data.blockCounterClass )), '>\n        ', escape((66,  data.blockUsed )), '\n      </div>\n      <span>&nbsp;/</span>\n      <span id="idealBlockNumber">', escape((69,  data.idealBlockNumber )), '</span>\n    </div>\n    <div id="show-code-header" class="blockly-header"><span>', escape((71,  msg.showCodeHeader() )), '</span></div>\n  </div>\n</div>\n\n<div class="clear"></div>\n\n');77; codeArea() ; buf.push('\n'); })();
+ buf.push('');1;
+  var msg = require('../../locale/sq_al/common');
+  var hideRunButton = locals.hideRunButton || false;
+; buf.push('\n\n<div id="rotateContainer" style="background-image: url(', escape((6,  assetUrl('media/mobile_tutorial_turnphone.png') )), ')">\n  <div id="rotateText">\n    <p>', escape((8,  msg.rotateText() )), '<br>', escape((8,  msg.orientationLock() )), '</p>\n  </div>\n</div>\n\n');12; var instructions = function() {; buf.push('  <div id="bubble">\n    <img id="prompt-icon">\n    <p id="prompt">\n    </p>\n  </div>\n');17; };; buf.push('\n');18; // A spot for the server to inject some HTML for help content.
+var helpArea = function(html) {; buf.push('  ');19; if (html) {; buf.push('    <div id="helpArea">\n      ', (20,  html ), '\n    </div>\n  ');22; }; buf.push('');22; };; buf.push('\n');23; var codeArea = function() {; buf.push('  <div id="codeTextbox" contenteditable spellcheck=false>\n    // ', escape((24,  msg.typeCode() )), '\n    <br>\n    // ', escape((26,  msg.typeHint() )), '\n    <br>\n  </div>\n');29; }; ; buf.push('\n\n<div id="visualization">\n  ', (32,  data.visualization ), '\n</div>\n\n<div id="belowVisualization">\n\n  <table id="gameButtons">\n    <tr>\n      <td style="width:100%;">\n        <button id="runButton" class="launch ', escape((40,  hideRunButton ? 'hide' : '')), '">\n          <img src="', escape((41,  assetUrl('media/1x1.gif') )), '" class="run icon21">\n          ', escape((42,  msg.runProgram() )), '\n        </button>\n        <button id="resetButton" class="launch" style="display: none">\n          <img src="', escape((45,  assetUrl('media/1x1.gif') )), '" class="stop icon21">\n            ', escape((46,  msg.resetProgram() )), '\n        </button>\n      </td>\n      ');49; if (data.controls) { ; buf.push('\n        ', (50,  data.controls ), '\n      ');51; } ; buf.push('\n    </tr>\n    ');53; if (data.extraControlRows) { ; buf.push('\n      ', (54,  data.extraControlRows ), '\n    ');55; } ; buf.push('\n  </table>\n\n  ');58; instructions() ; buf.push('\n  ');59; helpArea(data.helpHtml) ; buf.push('\n\n</div>\n\n<div id="blockly">\n  <div id="headers" dir="', escape((64,  data.localeDirection )), '">\n    <div id="toolbox-header" class="blockly-header"><span>', escape((65,  msg.toolboxHeader() )), '</span></div>\n    <div id="workspace-header" class="blockly-header">\n      <span id="blockCounter">', escape((67,  msg.workspaceHeader() )), '</span>\n      <div id="blockUsed" class=', escape((68,  data.blockCounterClass )), '>\n        ', escape((69,  data.blockUsed )), '\n      </div>\n      <span>&nbsp;/</span>\n      <span id="idealBlockNumber">', escape((72,  data.idealBlockNumber )), '</span>\n    </div>\n    <div id="show-code-header" class="blockly-header"><span>', escape((74,  msg.showCodeHeader() )), '</span></div>\n  </div>\n</div>\n\n<div class="clear"></div>\n\n');80; codeArea() ; buf.push('\n'); })();
 } 
 return buf.join('');
 };
@@ -3274,8 +3296,8 @@ exports.install = function(blockly, skin) {
       jump_down_short: { letter: 'S short', moveFunction: 'jumpDown', image: skin.downJumpArrow, image_width: 42, image_height: 42 }
     },
     LENGTHS: [
-      ['short', "SHORT_MOVE_LENGTH"],
-      ['long', "LONG_MOVE_LENGTH"]
+      [skin.shortLineDraw, "SHORT_MOVE_LENGTH"],
+      [skin.longLineDraw, "LONG_MOVE_LENGTH"]
     ],
     generateBlocksForAllDirections: function() {
       SimpleMove.generateBlocksForDirection("up");
@@ -3306,9 +3328,8 @@ exports.install = function(blockly, skin) {
             .appendTitle(new blockly.FieldImage(directionConfig.image, directionConfig.image_width, directionConfig.image_height));
           this.setPreviousStatement(true);
           this.setNextStatement(true);
-          this.setTooltip(msg.jumpTooltip());
           if (hasLengthInput) {
-            var dropdown = new blockly.FieldDropdown(SimpleMove.LENGTHS);
+            var dropdown = new blockly.FieldImageDropdown(SimpleMove.LENGTHS);
             dropdown.setValue(SimpleMove.LENGTHS[0][1]);
             input.appendTitle(dropdown, 'length');
           }
@@ -3324,11 +3345,6 @@ exports.install = function(blockly, skin) {
         }
         return 'Turtle.' + SimpleMove.DIRECTION_CONFIGS[direction].moveFunction + '(' + length + ',' + '\'block_id_' + this.id + '\');\n';
       };
-    },
-    stretchedLine: function(width) {
-      var lineImage = new blockly.FieldImage(skin.offsetLineSlice, width, 9);
-      lineImage.setPreserveAspectRatio("none");
-      return lineImage;
     }
   };
 
@@ -4348,7 +4364,7 @@ module.exports = {
     answer: [],
     freePlay: true,
     initialY: 300,
-    toolbox: toolbox(5, 6),
+    toolbox: toolbox(5, 7),
     startBlocks: '',
     startDirection: 0,
     sliderSpeed: 1.0
@@ -4358,7 +4374,7 @@ module.exports = {
     answer: [],
     freePlay: false,
     initialY: 300,
-    toolbox: toolbox(5, 6),
+    toolbox: toolbox(5, 7),
     startBlocks: '',
     startDirection: 0,
     sliderSpeed: 1.0
@@ -4802,14 +4818,15 @@ Level 10 [free play]
 ; buf.push('    ');219; // because we want to offer simplified getters and no setters.
 ; buf.push('    ');219; if (page == 2 && level >= 6) {; buf.push('      <category name="', escape((219,  msg.catVariables() )), '">\n        <block type="variables_get_counter"></block>\n      </category>\n    ');222; } else if (page == 3 && level >= 6 && level < 10) {; buf.push('      <category name="', escape((222,  msg.catVariables() )), '">\n        ');223; if (level >= 9) {; buf.push('          <block type="variables_get_counter"></block>\n        ');224; }; buf.push('        ');224; if (level >= 6) {; buf.push('          <block type="variables_get_length"></block>\n        ');225; }; buf.push('      </category>\n    ');226; } else if (page == 3 && level == 10) {; buf.push('      <category name="', escape((226,  msg.catVariables() )), '" custom="VARIABLE">\n      </category>\n    ');228; }; buf.push('  ');228; } else if (page == 4) {; buf.push('    ');228; // Actions: draw_move, draw_turn.
 ; buf.push('    <block type="draw_move_by_constant"></block>\n    <block type="draw_turn_by_constant">\n      <title name="VALUE">90</title>\n    </block>\n    ');232; if (level == 11) {; buf.push('    <block id="draw-width" type="draw_width">\n      <value name="WIDTH">\n        <block type="math_number">\n          <title name="NUM">1</title>\n        </block>\n      </value>\n    </block>\n    ');239; }; buf.push('    ');239; // Colour: draw_colour with colour_picker and colour_random.
-; buf.push('    <block id="draw-color" type="draw_colour">\n      <value name="COLOUR">\n        <block type="colour_picker"></block>\n      </value>\n    </block>\n    <block id="draw-color" type="draw_colour">\n      <value name="COLOUR">\n        <block type="colour_random"></block>\n      </value>\n    </block>\n    <block type="controls_repeat">\n      <title name="TIMES">4</title>\n    </block>\n  ');252; } else if (page == 5) {; buf.push('    ');252; // Actions: draw_move, draw_turn.
-; buf.push('    <category id="actions" name="', escape((252,  msg.catTurtle() )), '">\n      <block type="draw_move">\n        <value name="VALUE">\n          <block type="math_number">\n            <title name="NUM">100</title>\n          </block>\n        </value>\n      </block>\n      <block type="jump">\n        <value name="VALUE">\n          <block type="math_number">\n            <title name="NUM">50</title>\n          </block>\n        </value>\n      </block>\n      <block type="draw_turn">\n        <value name="VALUE">\n          <block type="math_number">\n            <title name="NUM">90</title>\n          </block>\n        </value>\n      </block>\n      <block type="draw_pen"></block>\n      <block id="draw-width" type="draw_width">\n        <value name="WIDTH">\n          <block type="math_number">\n            <title name="NUM">1</title>\n          </block>\n        </value>\n      </block>\n    </category>\n    ');283; // Colour: draw_colour with colour_picker and colour_random.
-; buf.push('    <category name="', escape((283,  msg.catColour() )), '">\n      <block id="draw-color" type="draw_colour">\n        <value name="COLOUR">\n          <block type="colour_picker"></block>\n        </value>\n      </block>\n      <block id="draw-color" type="draw_colour">\n        <value name="COLOUR">\n          <block type="colour_random"></block>\n        </value>\n      </block>\n    </category>\n    ');295; // Functions
-; buf.push('    <category name="', escape((295,  msg.catProcedures() )), '" custom="PROCEDURE"></category>\n    ');296; // Control: controls_for_counter and repeat.
-; buf.push('    <category name="', escape((296,  msg.catControl() )), '">\n      <block type="controls_for_counter">\n        <value name="FROM">\n          <block type="math_number">\n            <title name="NUM">1</title>\n          </block>\n        </value>\n        <value name="TO">\n          <block type="math_number">\n            <title name="NUM">100</title>\n          </block>\n        </value>\n        <value name="BY">\n          <block type="math_number">\n            <title name="NUM">10</title>\n          </block>\n        </value>\n      </block>\n      ');314; if (level < 6) {; buf.push('        <block type="controls_repeat">\n          <title name="TIMES">4</title>\n        </block>\n      ');317; } else {; buf.push('        <block type="controls_repeat_ext">\n          <value name="TIMES">\n            <block type="math_number">\n              <title name="NUM">10</title>\n            </block>\n          </value>\n        </block>\n      ');324; }; buf.push('    </category>\n  ');325; // Logic
-; buf.push('    <category name="', escape((325,  msg.catLogic() )), '">\n      <block type="controls_if"></block>\n      <block type="logic_compare"></block>\n      <block type="logic_operation"></block>\n      <block type="logic_negate"></block>\n      <block type="logic_boolean"></block>\n      <block type="logic_null"></block>\n      <block type="logic_ternary"></block>\n    </category>\n    ');334; // Math: Just number blocks until final level.
-; buf.push('    <category name="', escape((334,  msg.catMath() )), '">\n      <block type="math_number"></block>\n      <block type="math_arithmetic" inline="true"></block>\n      <block type="math_random_int">\n        <value name="FROM">\n          <block type="math_number">\n            <title name="NUM">1</title>\n          </block>\n        </value>\n        <value name="TO">\n          <block type="math_number">\n            <title name="NUM">100</title>\n          </block>\n        </value>\n      </block>\n      <block type="math_random_float"></block>\n     </category>\n    ');351; // Variables
-; buf.push('    <category name="', escape((351,  msg.catVariables() )), '" custom="VARIABLE">\n    </category>\n  ');353; }; buf.push('</xml>\n'); })();
+; buf.push('    <block id="draw-color" type="draw_colour">\n      <value name="COLOUR">\n        <block type="colour_picker"></block>\n      </value>\n    </block>\n    <block id="draw-color" type="draw_colour">\n      <value name="COLOUR">\n        <block type="colour_random"></block>\n      </value>\n    </block>\n    <block type="controls_repeat">\n      <title name="TIMES">4</title>\n    </block>\n  ');252; } else if (page == 5) {; buf.push('  ');252; // K1 simplified blocks for editor: keep in sync with Dashboard artist.rb
+; buf.push('    ');252; if (level >= 7) {; buf.push('      <category name="K1 Simplified">\n        <block type="controls_repeat_simplified">\n          <title name="TIMES">5</title>\n        </block>\n        <block type="simple_move_up"></block>\n        <block type="simple_move_down"></block>\n        <block type="simple_move_left"></block>\n        <block type="simple_move_right"></block>\n        <block type="simple_move_up_length"></block>\n        <block type="simple_move_down_length"></block>\n        <block type="simple_move_left_length"></block>\n        <block type="simple_move_right_length"></block>\n        <block type="simple_jump_up"></block>\n        <block type="simple_jump_down"></block>\n        <block type="simple_jump_left"></block>\n        <block type="simple_jump_right"></block>\n        <block type="simple_jump_up_long"></block>\n        <block type="simple_jump_down_long"></block>\n        <block type="simple_jump_left_long"></block>\n        <block type="simple_jump_right_long"></block>\n        <block type="simple_jump_up_short"></block>\n        <block type="simple_jump_down_short"></block>\n        <block type="simple_jump_left_short"></block>\n        <block type="simple_jump_right_short"></block>\n      </category>\n    ');277; }; buf.push('    ');277; // Actions: draw_move, draw_turn.
+; buf.push('    <category id="actions" name="', escape((277,  msg.catTurtle() )), '">\n      <block type="draw_move">\n        <value name="VALUE">\n          <block type="math_number">\n            <title name="NUM">100</title>\n          </block>\n        </value>\n      </block>\n      <block type="jump">\n        <value name="VALUE">\n          <block type="math_number">\n            <title name="NUM">50</title>\n          </block>\n        </value>\n      </block>\n      <block type="draw_turn">\n        <value name="VALUE">\n          <block type="math_number">\n            <title name="NUM">90</title>\n          </block>\n        </value>\n      </block>\n      <block type="draw_pen"></block>\n      <block id="draw-width" type="draw_width">\n        <value name="WIDTH">\n          <block type="math_number">\n            <title name="NUM">1</title>\n          </block>\n        </value>\n      </block>\n    </category>\n    ');308; // Colour: draw_colour with colour_picker and colour_random.
+; buf.push('    <category name="', escape((308,  msg.catColour() )), '">\n      <block id="draw-color" type="draw_colour">\n        <value name="COLOUR">\n          <block type="colour_picker"></block>\n        </value>\n      </block>\n      <block id="draw-color" type="draw_colour">\n        <value name="COLOUR">\n          <block type="colour_random"></block>\n        </value>\n      </block>\n    </category>\n    ');320; // Functions
+; buf.push('    <category name="', escape((320,  msg.catProcedures() )), '" custom="PROCEDURE"></category>\n    ');321; // Control: controls_for_counter and repeat.
+; buf.push('    <category name="', escape((321,  msg.catControl() )), '">\n      <block type="controls_for_counter">\n        <value name="FROM">\n          <block type="math_number">\n            <title name="NUM">1</title>\n          </block>\n        </value>\n        <value name="TO">\n          <block type="math_number">\n            <title name="NUM">100</title>\n          </block>\n        </value>\n        <value name="BY">\n          <block type="math_number">\n            <title name="NUM">10</title>\n          </block>\n        </value>\n      </block>\n      ');339; if (level < 6) {; buf.push('        <block type="controls_repeat">\n          <title name="TIMES">4</title>\n        </block>\n      ');342; } else {; buf.push('        <block type="controls_repeat_ext">\n          <value name="TIMES">\n            <block type="math_number">\n              <title name="NUM">10</title>\n            </block>\n          </value>\n        </block>\n      ');349; }; buf.push('    </category>\n  ');350; // Logic
+; buf.push('    <category name="', escape((350,  msg.catLogic() )), '">\n      <block type="controls_if"></block>\n      <block type="logic_compare"></block>\n      <block type="logic_operation"></block>\n      <block type="logic_negate"></block>\n      <block type="logic_boolean"></block>\n      <block type="logic_null"></block>\n      <block type="logic_ternary"></block>\n    </category>\n    ');359; // Math: Just number blocks until final level.
+; buf.push('    <category name="', escape((359,  msg.catMath() )), '">\n      <block type="math_number"></block>\n      <block type="math_arithmetic" inline="true"></block>\n      <block type="math_random_int">\n        <value name="FROM">\n          <block type="math_number">\n            <title name="NUM">1</title>\n          </block>\n        </value>\n        <value name="TO">\n          <block type="math_number">\n            <title name="NUM">100</title>\n          </block>\n        </value>\n      </block>\n      <block type="math_random_float"></block>\n     </category>\n    ');376; // Variables
+; buf.push('    <category name="', escape((376,  msg.catVariables() )), '" custom="VARIABLE">\n    </category>\n  ');378; }; buf.push('</xml>\n'); })();
 } 
 return buf.join('');
 };

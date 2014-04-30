@@ -24,7 +24,7 @@
       showVideo(#{@autoplay_video_info.to_json})
 
   -# use local[:symbol] to access locals passed into this render partial (defaults to false if not present)
-  - local = Hash.new(false).merge!(local_assigns)
+  - local = Hash.new(false).merge!(local_assigns.delete_if{|_,v|v.nil?})
 
   :javascript
     var level = #{level.to_json};
@@ -89,9 +89,12 @@
       cacheBust: '#{blockly_cache_bust}',
       onAttempt: function(report) {
         report.fallbackResponse = #{@fallback_response.to_json};
-        #{("report.level_type = 'artist';") if @artist_builder}
         report.callback = '#{@callback}';
         if (#{@artist_builder.to_json}) {
+          ['program', 'name', 'instructions', 'type'].forEach(function(key) {
+            report['level[' + key + ']'] = report[key];
+          });
+          delete report.level;
           report.onComplete = function(response) {
             window.location.href = nextRedirect;
           };
