@@ -2,6 +2,8 @@ require 'test_helper'
 
 class LevelsControllerTest < ActionController::TestCase
   include Devise::TestHelpers
+  include LevelsHelper
+  include LocaleHelper # to test blockly_options, which uses data_t
 
   setup do
     @level = create(:level)
@@ -60,6 +62,24 @@ class LevelsControllerTest < ActionController::TestCase
     assert assigns(:level)
     assert assigns(:level).game
     assert_equal game_level_url(assigns(:level).game, assigns(:level)), JSON.parse(@response.body)["redirect"]
+  end
+
+  test "should parse maze level with non string array" do
+    maze = fixture_file_upload("maze_level.csv", "r")
+    game = Game.find_by_name("CustomMaze")
+
+    assert_difference('Level.count') do
+      post :create, :level => {:name => "NewCustomLevel", :instructions => "Some Instructions", :type => 'Maze'}, :game_id => game.id, :program => @program, :maze_source => maze, :size => 8
+    end
+
+
+    @level = assigns(:level)
+    level, options = blockly_options
+    assert (level["maze"].is_a? Array), "Maze is not an array"
+
+    @level.properties["maze"] = @level.properties["maze"].to_s
+    level, options = blockly_options
+    assert (level["maze"].is_a? Array), "Maze is not an array"
   end
 
   test "should create maze levels with step mode" do
