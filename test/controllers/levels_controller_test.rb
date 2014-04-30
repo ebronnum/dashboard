@@ -67,7 +67,7 @@ class LevelsControllerTest < ActionController::TestCase
     game = Game.find_by_name("CustomMaze")
 
     assert_difference('Level.count') do
-      post :create, :level => {:name => "NewCustomLevel", :instructions => "Some Instructions", :step_mode => 1}, :game_id => game.id, :program => @program, :level_type => 'maze', :maze_source => maze, :size => 8
+      post :create, :level => {:name => "NewCustomLevel", :instructions => "Some Instructions", :step_mode => 1, :type => 'Maze'}, :game_id => game.id, :program => @program, :maze_source => maze, :size => 8
     end
 
     assert assigns(:level)
