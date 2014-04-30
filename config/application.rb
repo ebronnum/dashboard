@@ -37,6 +37,7 @@ module Dashboard
     config.i18n.fallbacks = {}
     config.i18n.default_locale = 'en-US'
     LOCALES = YAML.load_file("#{Rails.root}/config/locales.yml")
+    LOCALES = Hash[LOCALES.map {|k, v| [k.downcase, v]}]
     LOCALES.each do |locale, data|
       next unless data.is_a? Hash
       data.symbolize_keys!
