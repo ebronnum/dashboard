@@ -3365,6 +3365,14 @@ Studio.scale = {
 };
 
 Studio.SPEECH_BUBBLE_TIMEOUT = 3000;
+var SPEECH_BUBBLE_WIDTH = 180;
+var SPEECH_BUBBLE_HEIGHT = 60;
+var SPEECH_BUBBLE_RADIUS = 20;
+var SPEECH_BUBBLE_MARGIN = 10;
+var SPEECH_BUBBLE_PADDING = 5;
+var SPEECH_BUBBLE_LINE_HEIGHT = 20;
+var SPEECH_BUBBLE_MAX_LINES = 2;
+var SPEECH_BUBBLE_V_OFFSET = 5;
 
 var twitterOptions = {
   text: studioMsg.shareStudioTwitter(),
@@ -3465,11 +3473,26 @@ var drawMap = function() {
                                           i));
     }
     for (i = 0; i < Studio.spriteCount; i++) {
-      var spriteSpeechBubble = document.createElementNS(Blockly.SVG_NS, 'text');
+      var spriteSpeechBubble = document.createElementNS(Blockly.SVG_NS, 'g');
       spriteSpeechBubble.setAttribute('id', 'speechBubble' + i);
-      spriteSpeechBubble.setAttribute('class', 'studio-speech-bubble');
-      spriteSpeechBubble.appendChild(document.createTextNode(''));
       spriteSpeechBubble.setAttribute('visibility', 'hidden');
+      
+      var speechRect = document.createElementNS(Blockly.SVG_NS, 'rect');
+      speechRect.setAttribute('id', 'speechBubbleRect' + i);
+      speechRect.setAttribute('class', 'studio-speech-rect');
+      speechRect.setAttribute('x', 0);
+      speechRect.setAttribute('y', 0);
+      speechRect.setAttribute('rx', SPEECH_BUBBLE_RADIUS);
+      speechRect.setAttribute('ry', SPEECH_BUBBLE_RADIUS);
+      speechRect.setAttribute('width', SPEECH_BUBBLE_WIDTH);
+      speechRect.setAttribute('height', SPEECH_BUBBLE_HEIGHT);
+
+      var speechText = document.createElementNS(Blockly.SVG_NS, 'text');
+      speechText.setAttribute('id', 'speechBubbleText' + i);
+      speechText.setAttribute('class', 'studio-speech-bubble');
+      
+      spriteSpeechBubble.appendChild(speechRect);
+      spriteSpeechBubble.appendChild(speechText);
       svg.appendChild(spriteSpeechBubble);
     }
   }
@@ -3593,6 +3616,60 @@ var performQueuedMoves = function(i)
 };
 
 //
+// Set speech text into SVG text tspan elements (manual word wrapping)
+// Thanks http://stackoverflow.com/questions/
+//        7046986/svg-using-getcomputedtextlength-to-wrap-text
+//
+
+var setSpeechText = function(svgText, text) {
+  // Remove any children from the svgText node:
+  while (svgText.firstChild) {
+    svgText.removeChild(svgText.firstChild);
+  }
+
+  var words = text.split(' ');
+  // Create first tspan element
+  var tspan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+  tspan.setAttribute("x", SPEECH_BUBBLE_WIDTH / 2);
+  tspan.setAttribute("dy", SPEECH_BUBBLE_LINE_HEIGHT + SPEECH_BUBBLE_V_OFFSET);
+  // Create text in tspan element
+  var text_node = document.createTextNode(words[0]);
+
+  // Add text to tspan element
+  tspan.appendChild(text_node);
+  // Add tspan element to DOM
+  svgText.appendChild(tspan);
+  var tSpansAdded = 1;
+
+  for (var i = 1; i < words.length; i++) {
+    // Find number of letters in string
+    var len = tspan.firstChild.data.length;
+    // Add next word
+    tspan.firstChild.data += " " + words[i];
+
+    if (tspan.getComputedTextLength() >
+        SPEECH_BUBBLE_WIDTH - 2 * SPEECH_BUBBLE_MARGIN) {
+      // Remove added word
+      tspan.firstChild.data = tspan.firstChild.data.slice(0, len);
+
+      if (SPEECH_BUBBLE_MAX_LINES === tSpansAdded) {
+        return SPEECH_BUBBLE_HEIGHT;
+      }
+      // Create new tspan element
+      tspan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+      tspan.setAttribute("x", SPEECH_BUBBLE_WIDTH / 2);
+      tspan.setAttribute("dy", SPEECH_BUBBLE_LINE_HEIGHT);
+      text_node = document.createTextNode(words[i]);
+      tspan.appendChild(text_node);
+      svgText.appendChild(tspan);
+      tSpansAdded++;
+    }
+  }
+  var linesLessThanMax = SPEECH_BUBBLE_MAX_LINES - Math.max(1, tSpansAdded);
+  return SPEECH_BUBBLE_HEIGHT - linesLessThanMax * SPEECH_BUBBLE_LINE_HEIGHT;
+};
+
+//
 // Show speech bubbles queued in sayQueues (called from inside onTick)
 //
 
@@ -3604,8 +3681,14 @@ var showSpeechBubbles = function() {
            (sayCmd = sayQueue[0]) && sayCmd.tickCount <= Studio.tickCount) {
       // Remove this item from the queue
       sayQueue.shift();
+      var bblText = document.getElementById('speechBubbleText' + sayCmd.index);
+      var bblHeight = setSpeechText(bblText, sayCmd.text);
+      var speechBubbleRect =
+          document.getElementById('speechBubbleRect' + sayCmd.index);
+      speechBubbleRect.setAttribute('height', bblHeight);
       var speechBubble = document.getElementById('speechBubble' + sayCmd.index);
-      speechBubble.textContent = sayCmd.text;
+      // displaySprite will reposition the bubble
+      Studio.displaySprite(sayCmd.index);
       speechBubble.setAttribute('visibility', 'visible');
       window.clearTimeout(Studio.sprite[sayCmd.index].bubbleTimeout);
       Studio.sprite[sayCmd.index].bubbleTimeout = window.setTimeout(
@@ -4361,8 +4444,15 @@ Studio.displaySprite = function(i) {
   spriteClipRect.setAttribute('y', yCoord);
 
   var speechBubble = document.getElementById('speechBubble' + i);
-  speechBubble.setAttribute('x', xCoord);
-  speechBubble.setAttribute('y', yCoord);
+  var speechBubbleRect = document.getElementById('speechBubbleRect' + i);
+  var bblHeight = +speechBubbleRect.getAttribute('height');
+  var ySpeech = yCoord - (bblHeight + SPEECH_BUBBLE_PADDING);
+  if (ySpeech < 0) {
+    ySpeech = yCoord + Studio.SPRITE_HEIGHT + SPEECH_BUBBLE_PADDING;
+  }
+  var xSpeech = Math.min(xCoord, Studio.MAZE_WIDTH - SPEECH_BUBBLE_WIDTH);
+  speechBubble.setAttribute('transform',
+                            'translate(' + xSpeech + ',' + ySpeech + ')');
 };
 
 Studio.displayScore = function() {
