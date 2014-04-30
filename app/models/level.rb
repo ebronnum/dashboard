@@ -6,7 +6,7 @@ class Level < ActiveRecord::Base
   belongs_to :solution_level_source, :class_name => "LevelSource"
   belongs_to :user
   validates_length_of :name, within: 1..70
-  validates_uniqueness_of :name, conditions: -> { where.not(user_id: nil) }
+  validates_uniqueness_of :name, case_sensitive: false, conditions: -> { where.not(user_id: nil) }
   after_save :write_custom_levels_to_file if Rails.env == "staging"
   after_initialize :init
 
