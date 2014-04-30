@@ -2953,6 +2953,8 @@ exports.load = function(assetUrl, id) {
     downJumpArrow: skinUrl('down_jump.png'),
     upJumpArrow: skinUrl('up_jump.png'),
     rightJumpArrow: skinUrl('right_jump.png'),
+    shortLineDraw: skinUrl('short_line_draw.png'),
+    longLineDraw: skinUrl('long_line_draw.png'),
     offsetLineSlice: skinUrl('offset_line_slice.png'),
     // Sounds
     startSound: [skinUrl('start.mp3'), skinUrl('start.ogg')],
