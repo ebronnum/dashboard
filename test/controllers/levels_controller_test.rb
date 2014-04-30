@@ -59,7 +59,7 @@ class LevelsControllerTest < ActionController::TestCase
 
     assert assigns(:level)
     assert assigns(:level).game
-    assert_redirected_to game_level_path(assigns(:level).game, assigns(:level))
+    assert_equal game_level_url(assigns(:level).game, assigns(:level)), JSON.parse(@response.body)["redirect"]
   end
 
   test "should create maze levels with step mode" do
