@@ -1884,6 +1884,8 @@ exports.load = function(assetUrl, id) {
     downJumpArrow: skinUrl('down_jump.png'),
     upJumpArrow: skinUrl('up_jump.png'),
     rightJumpArrow: skinUrl('right_jump.png'),
+    shortLineDraw: skinUrl('short_line_draw.png'),
+    longLineDraw: skinUrl('long_line_draw.png'),
     offsetLineSlice: skinUrl('offset_line_slice.png'),
     // Sounds
     startSound: [skinUrl('start.mp3'), skinUrl('start.ogg')],
@@ -2152,6 +2154,11 @@ exports.playSound = function(id, soundName) {
   BlocklyApps.playAudio(soundName, {volume: 0.5});
 };
 
+exports.stop = function(id, spriteIndex) {
+  BlocklyApps.highlight(id);
+  Studio.stop(spriteIndex);
+};
+
 exports.move = function(id, spriteIndex, dir) {
   BlocklyApps.highlight(id);
   Studio.moveSingle(spriteIndex, dir);
@@ -2383,6 +2390,41 @@ exports.install = function(blockly, skin) {
        [msg.whenSpriteCollidedWith6(), '5']];
   
   generator.studio_whenSpriteCollided = generator.studio_eventHandlerPrologue;
+
+  blockly.Blocks.studio_stop = {
+    // Block for stopping the movement of a sprite.
+    helpUrl: '',
+    init: function() {
+      var dropdownArray =
+          this.SPRITE.slice(0, blockly.Blocks.studio_spriteCount);
+      this.setHSV(184, 1.00, 0.74);
+      if (blockly.Blocks.studio_spriteCount > 1) {
+        this.appendDummyInput()
+          .appendTitle(new blockly.FieldDropdown(dropdownArray), 'SPRITE');
+      } else {
+        this.appendDummyInput()
+          .appendTitle(msg.stopSprite());
+      }
+      this.setPreviousStatement(true);
+      this.setInputsInline(true);
+      this.setNextStatement(true);
+      this.setTooltip(msg.stopTooltip());
+    }
+  };
+
+  blockly.Blocks.studio_stop.SPRITE =
+      [[msg.stopSprite1(), '0'],
+       [msg.stopSprite2(), '1'],
+       [msg.stopSprite3(), '2'],
+       [msg.stopSprite4(), '3'],
+       [msg.stopSprite5(), '4'],
+       [msg.stopSprite6(), '5']];
+  
+  generator.studio_stop = function() {
+    // Generate JavaScript for stopping the movement of a sprite.
+    return 'Studio.stop(\'block_id_' + this.id + '\', ' +
+        (this.getTitleValue('SPRITE') || '0') + ');\n';
+  };
 
   blockly.Blocks.studio_move = {
     // Block for moving one frame a time.
@@ -3080,6 +3122,7 @@ module.exports = {
          blockOfType('studio_whenGameIsRunning') +
          blockOfType('studio_move') +
          blockOfType('studio_moveDistance') +
+         blockOfType('studio_stop') +
          blockOfType('studio_playSound') +
          blockOfType('studio_incrementScore') +
          blockOfType('studio_saySprite') +
@@ -3122,6 +3165,7 @@ module.exports = {
       tb(createCategory(msg.catActions(),
                           blockOfType('studio_move') +
                           blockOfType('studio_moveDistance') +
+                          blockOfType('studio_stop') +
                           blockOfType('studio_playSound') +
                           blockOfType('studio_incrementScore') +
                           blockOfType('studio_saySprite') +
@@ -3365,6 +3409,14 @@ Studio.scale = {
 };
 
 Studio.SPEECH_BUBBLE_TIMEOUT = 3000;
+var SPEECH_BUBBLE_WIDTH = 180;
+var SPEECH_BUBBLE_HEIGHT = 60;
+var SPEECH_BUBBLE_RADIUS = 20;
+var SPEECH_BUBBLE_MARGIN = 10;
+var SPEECH_BUBBLE_PADDING = 5;
+var SPEECH_BUBBLE_LINE_HEIGHT = 20;
+var SPEECH_BUBBLE_MAX_LINES = 2;
+var SPEECH_BUBBLE_V_OFFSET = 5;
 
 var twitterOptions = {
   text: studioMsg.shareStudioTwitter(),
@@ -3465,11 +3517,26 @@ var drawMap = function() {
                                           i));
     }
     for (i = 0; i < Studio.spriteCount; i++) {
-      var spriteSpeechBubble = document.createElementNS(Blockly.SVG_NS, 'text');
+      var spriteSpeechBubble = document.createElementNS(Blockly.SVG_NS, 'g');
       spriteSpeechBubble.setAttribute('id', 'speechBubble' + i);
-      spriteSpeechBubble.setAttribute('class', 'studio-speech-bubble');
-      spriteSpeechBubble.appendChild(document.createTextNode(''));
       spriteSpeechBubble.setAttribute('visibility', 'hidden');
+      
+      var speechRect = document.createElementNS(Blockly.SVG_NS, 'rect');
+      speechRect.setAttribute('id', 'speechBubbleRect' + i);
+      speechRect.setAttribute('class', 'studio-speech-rect');
+      speechRect.setAttribute('x', 0);
+      speechRect.setAttribute('y', 0);
+      speechRect.setAttribute('rx', SPEECH_BUBBLE_RADIUS);
+      speechRect.setAttribute('ry', SPEECH_BUBBLE_RADIUS);
+      speechRect.setAttribute('width', SPEECH_BUBBLE_WIDTH);
+      speechRect.setAttribute('height', SPEECH_BUBBLE_HEIGHT);
+
+      var speechText = document.createElementNS(Blockly.SVG_NS, 'text');
+      speechText.setAttribute('id', 'speechBubbleText' + i);
+      speechText.setAttribute('class', 'studio-speech-bubble');
+      
+      spriteSpeechBubble.appendChild(speechRect);
+      spriteSpeechBubble.appendChild(speechText);
       svg.appendChild(spriteSpeechBubble);
     }
   }
@@ -3518,19 +3585,31 @@ var delegate = function(scope, func, data)
 };
 
 //
+// Return the next position for this sprite on a given coordinate axis
+// given the queued moves (yAxis == false means xAxis)
+// NOTE: position values returned are not clamped to playspace boundaries
+//
+
+var getNextPosition = function (i, yAxis) {
+  var nextPos = yAxis ? Studio.sprite[i].y : Studio.sprite[i].x;
+  var queuedVal = yAxis ? Studio.sprite[i].queuedY : Studio.sprite[i].queuedX;
+  if (queuedVal) {
+    if (queuedVal < 0) {
+      nextPos -= Math.min(Math.abs(queuedVal), Studio.sprite[i].speed);
+    } else {
+      nextPos += Math.min(queuedVal, Studio.sprite[i].speed);
+    }
+  }
+  return nextPos;
+};
+
+//
 // Perform Queued Moves in the X and Y axes (called from inside onTick)
 //
-var performQueuedMoves = function(i)
-{
+var performQueuedMoves = function (i) {
   // Make queued moves in the X axis (fixed to .01 values):
   if (Studio.sprite[i].queuedX) {
-    var nextX = Studio.sprite[i].x;
-    if (Studio.sprite[i].queuedX < 0) {
-      nextX -= Math.min(Math.abs(Studio.sprite[i].queuedX),
-                        Studio.sprite[i].speed);
-    } else {
-      nextX += Math.min(Studio.sprite[i].queuedX, Studio.sprite[i].speed);
-    }
+    var nextX = getNextPosition(i, false);
     // Clamp nextX to boundaries as newX:
     var newX = Math.min(Studio.COLS - 2, Math.max(0, nextX));
     if (nextX != newX) {
@@ -3558,13 +3637,7 @@ var performQueuedMoves = function(i)
   }
   // Make queued moves in the Y axis (fixed to .01 values):
   if (Studio.sprite[i].queuedY) {
-    var nextY = Studio.sprite[i].y;
-    if (Studio.sprite[i].queuedY < 0) {
-      nextY -= Math.min(Math.abs(Studio.sprite[i].queuedY),
-                        Studio.sprite[i].speed);
-    } else {
-      nextY += Math.min(Studio.sprite[i].queuedY, Studio.sprite[i].speed);
-    }
+    var nextY = getNextPosition(i, true);
     // Clamp nextY to boundaries as newY:
     var newY = Math.min(Studio.ROWS - 2, Math.max(0, nextY));
     if (nextY != newY) {
@@ -3593,6 +3666,60 @@ var performQueuedMoves = function(i)
 };
 
 //
+// Set speech text into SVG text tspan elements (manual word wrapping)
+// Thanks http://stackoverflow.com/questions/
+//        7046986/svg-using-getcomputedtextlength-to-wrap-text
+//
+
+var setSpeechText = function(svgText, text) {
+  // Remove any children from the svgText node:
+  while (svgText.firstChild) {
+    svgText.removeChild(svgText.firstChild);
+  }
+
+  var words = text.split(' ');
+  // Create first tspan element
+  var tspan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+  tspan.setAttribute("x", SPEECH_BUBBLE_WIDTH / 2);
+  tspan.setAttribute("dy", SPEECH_BUBBLE_LINE_HEIGHT + SPEECH_BUBBLE_V_OFFSET);
+  // Create text in tspan element
+  var text_node = document.createTextNode(words[0]);
+
+  // Add text to tspan element
+  tspan.appendChild(text_node);
+  // Add tspan element to DOM
+  svgText.appendChild(tspan);
+  var tSpansAdded = 1;
+
+  for (var i = 1; i < words.length; i++) {
+    // Find number of letters in string
+    var len = tspan.firstChild.data.length;
+    // Add next word
+    tspan.firstChild.data += " " + words[i];
+
+    if (tspan.getComputedTextLength() >
+        SPEECH_BUBBLE_WIDTH - 2 * SPEECH_BUBBLE_MARGIN) {
+      // Remove added word
+      tspan.firstChild.data = tspan.firstChild.data.slice(0, len);
+
+      if (SPEECH_BUBBLE_MAX_LINES === tSpansAdded) {
+        return SPEECH_BUBBLE_HEIGHT;
+      }
+      // Create new tspan element
+      tspan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+      tspan.setAttribute("x", SPEECH_BUBBLE_WIDTH / 2);
+      tspan.setAttribute("dy", SPEECH_BUBBLE_LINE_HEIGHT);
+      text_node = document.createTextNode(words[i]);
+      tspan.appendChild(text_node);
+      svgText.appendChild(tspan);
+      tSpansAdded++;
+    }
+  }
+  var linesLessThanMax = SPEECH_BUBBLE_MAX_LINES - Math.max(1, tSpansAdded);
+  return SPEECH_BUBBLE_HEIGHT - linesLessThanMax * SPEECH_BUBBLE_LINE_HEIGHT;
+};
+
+//
 // Show speech bubbles queued in sayQueues (called from inside onTick)
 //
 
@@ -3604,8 +3731,14 @@ var showSpeechBubbles = function() {
            (sayCmd = sayQueue[0]) && sayCmd.tickCount <= Studio.tickCount) {
       // Remove this item from the queue
       sayQueue.shift();
+      var bblText = document.getElementById('speechBubbleText' + sayCmd.index);
+      var bblHeight = setSpeechText(bblText, sayCmd.text);
+      var speechBubbleRect =
+          document.getElementById('speechBubbleRect' + sayCmd.index);
+      speechBubbleRect.setAttribute('height', bblHeight);
       var speechBubble = document.getElementById('speechBubble' + sayCmd.index);
-      speechBubble.textContent = sayCmd.text;
+      // displaySprite will reposition the bubble
+      Studio.displaySprite(sayCmd.index);
       speechBubble.setAttribute('visibility', 'visible');
       window.clearTimeout(Studio.sprite[sayCmd.index].bubbleTimeout);
       Studio.sprite[sayCmd.index].bubbleTimeout = window.setTimeout(
@@ -3687,20 +3820,19 @@ Studio.onTick = function() {
     }
   }
   
-  // Do per-sprite tasks:
+  // Check for collisions (note that we use the positions they are about
+  // to attain with queued moves - this allows the moves to be canceled before
+  // the actual movements take place):
   for (var i = 0; i < Studio.spriteCount; i++) {
-    performQueuedMoves(i);
-
-    // Check for collisions:
     for (var j = 0; j < Studio.spriteCount; j++) {
       if (i == j) {
         continue;
       }
-      if (essentiallyEqual(Studio.sprite[i].x,
-                           Studio.sprite[j].x,
+      if (essentiallyEqual(getNextPosition(i, false),
+                           getNextPosition(j, false),
                            tiles.SPRITE_COLLIDE_DISTANCE) &&
-          essentiallyEqual(Studio.sprite[i].y,
-                           Studio.sprite[j].y,
+          essentiallyEqual(getNextPosition(i, true),
+                           getNextPosition(j, true),
                            tiles.SPRITE_COLLIDE_DISTANCE)) {
         if (0 === (Studio.sprite[i].collisionMask & Math.pow(2, j))) {
           Studio.sprite[i].collisionMask |= Math.pow(2, j);
@@ -3712,6 +3844,11 @@ Studio.onTick = function() {
           Studio.sprite[i].collisionMask &= ~(Math.pow(2, j));
       }
     }
+  }
+  
+  for (i = 0; i < Studio.spriteCount; i++) {
+    performQueuedMoves(i);
+
     // Display sprite:
     Studio.displaySprite(i);
   }
@@ -4361,8 +4498,15 @@ Studio.displaySprite = function(i) {
   spriteClipRect.setAttribute('y', yCoord);
 
   var speechBubble = document.getElementById('speechBubble' + i);
-  speechBubble.setAttribute('x', xCoord);
-  speechBubble.setAttribute('y', yCoord);
+  var speechBubbleRect = document.getElementById('speechBubbleRect' + i);
+  var bblHeight = +speechBubbleRect.getAttribute('height');
+  var ySpeech = yCoord - (bblHeight + SPEECH_BUBBLE_PADDING);
+  if (ySpeech < 0) {
+    ySpeech = yCoord + Studio.SPRITE_HEIGHT + SPEECH_BUBBLE_PADDING;
+  }
+  var xSpeech = Math.min(xCoord, Studio.MAZE_WIDTH - SPEECH_BUBBLE_WIDTH);
+  speechBubble.setAttribute('transform',
+                            'translate(' + xSpeech + ',' + ySpeech + ')');
 };
 
 Studio.displayScore = function() {
@@ -4456,6 +4600,25 @@ Studio.saySprite = function (executionCtx, index, text) {
     Studio.loopingPendingSayCmds++;
   }
   Studio.sayQueues[executionCtx].push(sayCmd);
+};
+
+Studio.stop = function (spriteIndex) {
+  Studio.sprite[spriteIndex].queuedYContext = -1;
+  Studio.sprite[spriteIndex].queuedY = 0;
+  Studio.sprite[spriteIndex].yMoveQueue = [];
+  Studio.sprite[spriteIndex].queuedXContext = -1;
+  Studio.sprite[spriteIndex].queuedX = 0;
+  Studio.sprite[spriteIndex].xMoveQueue = [];
+  Studio.sprite[spriteIndex].flags &=
+    ~(SpriteFlags.LOOPING_MOVE_Y_PENDING | SpriteFlags.LOOPING_MOVE_X_PENDING);
+  // Reset collisionMask so the next movement will fire another collision
+  // event against the same sprite. This makes it easier to write code that
+  // says "when sprite X touches Y" => "stop sprite X", and have it do what
+  // you expect it to do...
+  
+  // TBD: should we cancel this sprite from the collisionMask of the other
+  // sprites?
+  Studio.sprite[spriteIndex].collisionMask = 0;
 };
 
 Studio.moveSingle = function (spriteIndex, dir) {
@@ -4714,7 +4877,7 @@ exports.Emotions = {
 };
 
 exports.FINISH_COLLIDE_DISTANCE = 1.5;
-exports.SPRITE_COLLIDE_DISTANCE = 1.5;
+exports.SPRITE_COLLIDE_DISTANCE = 1.8;
 exports.DEFAULT_SPRITE_SPEED = 0.1;
 
 /**
@@ -5438,6 +5601,22 @@ exports.setSprite4 = function(d){return "set character 4"};
 exports.setSprite5 = function(d){return "set character 5"};
 
 exports.setSprite6 = function(d){return "set character 6"};
+
+exports.stopSprite = function(d){return "stop"};
+
+exports.stopSprite1 = function(d){return "stop sprite 1"};
+
+exports.stopSprite2 = function(d){return "stop sprite 2"};
+
+exports.stopSprite3 = function(d){return "stop sprite 3"};
+
+exports.stopSprite4 = function(d){return "stop sprite 4"};
+
+exports.stopSprite5 = function(d){return "stop sprite 5"};
+
+exports.stopSprite6 = function(d){return "stop sprite 6"};
+
+exports.stopTooltip = function(d){return "Stops a sprite's movement."};
 
 exports.whenDown = function(d){return "when Down arrow"};
 

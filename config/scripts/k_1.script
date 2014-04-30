@@ -1,6 +1,20 @@
 stage 'The Maze'
+level 'K-1 Maze 0'
+concepts ‘sequence’
 level 'K-1 Maze 1'
-level 'test3'
+concepts ‘sequence’
+level 'K-1 Maze 2'
+concepts ‘sequence’
+level 'K-1 Maze 3'
+concepts ‘sequence’
+level 'K-1 Maze 4'
+concepts ‘sequence’
+level 'K-1 Maze 5'
+concepts ‘sequence’
+level 'K-1 Maze 6'
+concepts ‘sequence’
+level 'K-1 Maze 7'
+concepts ‘sequence’
 
 stage 'The Coffee'
 level 'yoyoyo'
