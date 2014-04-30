@@ -100,6 +100,10 @@ class Artist < Level
       <block type="simple_move_down"></block>
       <block type="simple_move_left"></block>
       <block type="simple_move_right"></block>
+      <block type="simple_move_up_length"></block>
+      <block type="simple_move_down_length"></block>
+      <block type="simple_move_left_length"></block>
+      <block type="simple_move_right_length"></block>
       <block type="simple_jump_up"></block>
       <block type="simple_jump_down"></block>
       <block type="simple_jump_left"></block>
