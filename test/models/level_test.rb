@@ -93,6 +93,6 @@ class LevelTest < ActiveSupport::TestCase
     first_block = toolbox.root().children.first
 
     assert_equal "block", first_block.name
-    assert_equal "maze_moveForward", first_block.attributes["type"].value
+    assert_equal "controls_repeat_simplified", first_block.attributes["type"].value
   end
 end

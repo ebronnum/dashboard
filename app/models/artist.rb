@@ -13,7 +13,7 @@ class Artist < Level
   end
 
   def toolbox
-    '<category id="actions" name="Actions">
+    k1_blocks_category + '<category id="actions" name="Actions">
       <block type="draw_move">
         <value name="VALUE">
           <block type="math_number">
@@ -89,5 +89,29 @@ class Artist < Level
       <block type="math_random_float"></block>
     </category>
     <category name="Variables" custom="VARIABLE"></category>'
+  end
+
+  def k1_blocks_category
+    '<category name="K1 Simplified">
+      <block type="controls_repeat_simplified">
+        <title name="TIMES">5</title>
+      </block>
+      <block type="simple_move_up"></block>
+      <block type="simple_move_down"></block>
+      <block type="simple_move_left"></block>
+      <block type="simple_move_right"></block>
+      <block type="simple_jump_up"></block>
+      <block type="simple_jump_down"></block>
+      <block type="simple_jump_left"></block>
+      <block type="simple_jump_right"></block>
+      <block type="simple_jump_up_long"></block>
+      <block type="simple_jump_down_long"></block>
+      <block type="simple_jump_left_long"></block>
+      <block type="simple_jump_right_long"></block>
+      <block type="simple_jump_up_short"></block>
+      <block type="simple_jump_down_short"></block>
+      <block type="simple_jump_left_short"></block>
+      <block type="simple_jump_right_short"></block>
+    </category>'
   end
 end
