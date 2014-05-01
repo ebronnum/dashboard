@@ -115,7 +115,7 @@ module LevelsHelper
   # Code for generating the blockly options hash
   def blockly_options(local_assigns={})
     # Use values from properties json when available (use String keys instead of Symbols for consistency)
-    level = @level.properties || {}
+    level = @level.properties.dup || {}
 
     # Set some specific values
     level['puzzle_number'] = @script_level ? @script_level.game_chapter : 1
