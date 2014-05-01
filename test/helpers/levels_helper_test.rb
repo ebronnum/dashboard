@@ -8,16 +8,6 @@ class LevelsHelperTest < ActionView::TestCase
     @level = Maze.create(@maze_data)
   end
 
-  test "should parse maze level with non string array" do
-    @level.properties["maze"] = [[0, 0], [2, 3]]
-    level, options = blockly_options
-    assert (level["map"].is_a? Array), "Maze is not an array"
-
-    @level.properties["maze"] = @level.properties["maze"].to_s
-    level, options = blockly_options
-    assert (level["map"].is_a? Array), "Maze is not an array"
-  end
-
   test "change default level localization after locale switch" do
     DEFAULT_LOCALE = 'en-us'
     NEW_LOCALE = 'de-de'
