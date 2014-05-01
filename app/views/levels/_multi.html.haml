@@ -1,68 +1,127 @@
 .unplugged.multi
-  %h2 #{data_t('multi', @game.name)[:title]}
-  %p #{data_t('multi', @game.name)[:desc]}
 
-  =@level.game.name
-  -data = YAML.load(File.read("config/puzzles/" + @level.level_num + ".multi.yml"))
+  -data = @level.properties
 
-  -if data[:style] == 'radio'
+  %h2= data['title']
+  %p= data['description']
+
+  -if data['style'] == 'radio'
     %div{:style=>'margin-left:20px'}
-      %b= data[:questions][0][:text]
+      %b= data['questions'][0]['text']
       %form#voteform{onsubmit: "return doVote()"}
         -index = 0
-        -data[:answers].each do |answer|
-          %input{id: "choice_#{index}", name: "vote", type: "radio", value: "#{index}"}
-            %label{style: "display:inline", for: "choice_#{index}"}= answer[:text]
+        -data['answers'].each do |answer|
+          -correct = answer["correct"]
+          %input{id: "choice_#{index}", name: "vote", type: "radio", value: "#{index}", onchange: "radioChanged(#{index})", correct: "#{correct}"}
+            %label{style: "display:inline", for: "choice_#{index}"}= answer['text']
           %br
           -index += 1
         %br
         %br
       .buttons
-        %a.btn.btn-primary.next-stage
+        %a.btn.btn-primary.next-stage.submitButton
           Submit
     %br/
     %br/
     %br/
 
-  -if data[:style] == 'drag'
+  -if data['style'] == 'drag'
+    -data['answers'].each_with_index do |answer, i|
+      -answer['index'] = i
+    -data['answers'].shuffle!
+
     %div{:style=>'margin-left:20px'}
       %div{:style=>'height:40px'}
         %b Match the questions with the answers
       %div{:style=>'width: 220px; float:left'}
         %ul.sortableq
-          -data[:questions].each do |question|
-            %li= question[:text]
+          -data['questions'].each do |question|
+            %li= question['text']
       %div{:style=>'width: 220px; float:left'}
-        %ul.sortable{:style=>'cursor:default'}
-          -data[:answers].each do |answer|
-            %li= answer[:text]
+        %ul.sortable#answerlist{:style=>'cursor:default'}
+          -data['answers'].each do |answer|
+            %li{originalIndex: answer['index']}= answer['text']
       %div{:style=>'clear:both'}
       %br/
       %div
         .buttons
-          %a.btn.btn-primary.next-stage
+          %a.btn.btn-primary.next-stage.submitButton
             Submit
 
   %div{:style=>'clear:both'}
 
 :javascript
 
+  var valueChosen = false;
+  var valueChosenCorrect = false;
+
+  function radioChanged(index) {
+    $('.submitButton').css({ opacity: 1.0 });
+    valueChosenCorrect = $("#choice_" + index).attr("correct") == "true";
+  }
+
   $(function() {
     $( ".sortable" ).sortable();
     $( ".sortable" ).disableSelection();
+
+    if ("#{data['style']}" == 'radio')
+    {
+      $('.submitButton').css({ opacity: 0.5 });
+      valueChosen = true;
+    }
   });
 
   var clickedNext = false;
-  $('a.next-stage').click(function() {
+  $('.submitButton').click(function() {
     if (!clickedNext) {
       clickedNext = true;
+
+      var correct = false;
+
+      if ("#{data['style']}" == 'radio')
+      {
+        if (!valueChosen)
+        {
+          clickedNext = false;
+          return;
+        }
+
+        correct = valueChosenCorrect;
+      }
+      else if ("#{data['style']}" == 'drag')
+      {
+        var wrongAnswer = false;
+
+        var answers = $("#answerlist").sortable('toArray', {attribute:"originalIndex"});
+        for (var i = 0; i < answers.length; i++)
+        {
+          if (answers[i] != i)
+          {
+            wrongAnswer = true;
+          }
+        }
+        if (! wrongAnswer)
+          correct = true;
+      }
+
+      if (correct)
+      {
+        alert("correct");
+      }
+      else
+      {
+        alert("incorrect");
+        clickedNext = false;
+        return;
+      }
+
       sendReport({
         fallbackResponse: '#{@fallback_response.to_json}',
         callback: '#{@callback}',
         app: 'multi',
         level: '#{@level.level_num}',
         result: true,
-        testResult: 100,
+        testResult: correct ? 100 : 0,
         onComplete: function() {
           if (videoInfo) {
             showVideo(videoInfo);

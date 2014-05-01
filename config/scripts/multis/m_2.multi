@@ -1,4 +1,8 @@
+multi_name 'test-brendan2'
 style 'drag'
+title 'Matching'
+description 'Some really easy stuff to match.  Drag it around until you get it.'
+
 question "What color is the sky?"
 question "What's in the ocean?"
 question "What's Brent's last name?"

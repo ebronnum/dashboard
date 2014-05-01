@@ -1,5 +1,7 @@
 require "csv"
 
+require "#{Rails.root}/config/parse_multi.rb"
+
 namespace :seed do
   task videos: :environment do
     Video.transaction do
@@ -62,8 +64,24 @@ namespace :seed do
     touch t.name
   end
 
-  task scripts: [:environment, :games, :custom_levels] do
+  task scripts: [:environment, :games, :custom_levels, :multis] do
     Script.setup
+  end
+
+  # cronjob that detects changes to .multi files
+  MULTIS_GLOB = Dir.glob('config/scripts/multis/**/*.multi').flatten
+  file 'config/scripts/multis/.seeded' => MULTIS_GLOB do |t|
+    Rake::Task['seed:multis'].invoke
+    touch t.name
+  end
+
+  # explicit execution of "seed:multis"
+  task multis: :environment do
+    Multi.reset_db
+    # Parse each .multi file and setup its model.
+    Dir.glob('config/scripts/multis/**/*.multi').flatten.each do |script|
+      Multi.setup parse_multi(script)
+    end
   end
 
   # Generate the database entry from the custom levels json file
@@ -261,6 +279,6 @@ namespace :seed do
 
   task analyze_data: [:ideal_solutions, :frequent_level_sources]
 
-  task all: [:videos, :concepts, :scripts, :trophies, :prize_providers, :callouts]
+  task all: [:videos, :concepts, :scripts, :multis, :trophies, :prize_providers, :callouts]
 
 end
