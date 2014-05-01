@@ -2945,6 +2945,12 @@ var tb = blockUtils.createToolbox;
 var blockOfType = blockUtils.blockOfType;
 var createCategory = blockUtils.createCategory;
 
+var defaultSayBlock = function () {
+  return '<block type="studio_saySprite"><title name="TEXT">' +
+          msg.defaultSayText() +
+          '</title></block>';
+};
+
 /*
  * Configuration for all levels.
  */
@@ -2975,7 +2981,7 @@ module.exports = {
     'timeoutFailureTick': 100,
     'toolbox':
       tb('<block type="studio_moveDistance"><title name="DIR">2</title></block>' +
-         blockOfType('studio_saySprite')),
+         defaultSayBlock()),
     'startBlocks':
      '<block type="studio_whenGameStarts" deletable="false" x="20" y="20"></block>'
   },
@@ -2999,7 +3005,7 @@ module.exports = {
     'timeoutFailureTick': 100,
     'toolbox':
       tb('<block type="studio_moveDistance"><title name="DIR">2</title></block>' +
-         blockOfType('studio_saySprite')),
+         defaultSayBlock()),
     'startBlocks':
      '<block type="studio_whenGameStarts" deletable="false" x="20" y="20"></block>'
   },
@@ -3030,7 +3036,7 @@ module.exports = {
     'timeoutFailureTick': 200,
     'toolbox':
       tb('<block type="studio_moveDistance"><title name="DIR">2</title></block>' +
-         blockOfType('studio_saySprite')),
+         defaultSayBlock()),
     'startBlocks':
      '<block type="studio_whenGameStarts" deletable="false" x="20" y="20"></block> \
       <block type="studio_whenSpriteCollided" deletable="false" x="20" y="120"></block>'
@@ -3060,7 +3066,7 @@ module.exports = {
     ],
     'toolbox':
       tb(blockOfType('studio_move') +
-         blockOfType('studio_saySprite')),
+         defaultSayBlock()),
     'startBlocks':
      '<block type="studio_whenLeft" deletable="false" x="20" y="20"></block> \
       <block type="studio_whenRight" deletable="false" x="180" y="20"></block> \
@@ -3088,7 +3094,7 @@ module.exports = {
     'timeoutFailureTick': 200,
     'toolbox':
       tb(blockOfType('studio_moveDistance') +
-         blockOfType('studio_saySprite')),
+         defaultSayBlock()),
     'startBlocks':
      '<block type="studio_whenGameIsRunning" deletable="false" x="20" y="20"></block>'
   },
@@ -3119,7 +3125,7 @@ module.exports = {
     'toolbox':
       tb(blockOfType('studio_moveDistance') +
          blockOfType('studio_move') +
-         blockOfType('studio_saySprite')),
+         defaultSayBlock()),
     'minWorkspaceHeight': 600,
     'startBlocks':
      '<block type="studio_whenLeft" deletable="false" x="20" y="20"> \
@@ -3184,7 +3190,7 @@ module.exports = {
          blockOfType('studio_stop') +
          blockOfType('studio_playSound') +
          blockOfType('studio_incrementScore') +
-         blockOfType('studio_saySprite') +
+         defaultSayBlock() +
          blockOfType('studio_setSpritePosition') +
          blockOfType('studio_setSpriteSpeed') +
          blockOfType('studio_setSpriteEmotion') +
@@ -3229,7 +3235,7 @@ module.exports = {
                           blockOfType('studio_stop') +
                           blockOfType('studio_playSound') +
                           blockOfType('studio_incrementScore') +
-                          blockOfType('studio_saySprite') +
+                          defaultSayBlock() +
                           blockOfType('studio_setSpritePosition') +
                           blockOfType('studio_setSpriteSpeed') +
                           blockOfType('studio_setSpriteEmotion') +
@@ -5503,6 +5509,8 @@ exports.catVariables = function(d){return "Variables"};
 
 exports.continue = function(d){return "Continue"};
 
+exports.defaultSayText = function(d){return "type here"};
+
 exports.finalLevel = function(d){return "Congratulations! You have solved the final puzzle."};
 
 exports.incrementOpponentScore = function(d){return "score opponent point"};
@@ -5535,39 +5543,39 @@ exports.moveDistance400 = function(d){return "400 pixels"};
 
 exports.moveDistanceRandom = function(d){return "random pixels"};
 
-exports.moveDistanceTooltip = function(d){return "Move a sprite a specific distance in the specified direction."};
+exports.moveDistanceTooltip = function(d){return "Move an actor a specific distance in the specified direction."};
 
 exports.moveSprite = function(d){return "move"};
 
-exports.moveSprite1 = function(d){return "move sprite 1"};
+exports.moveSprite1 = function(d){return "move actor 1"};
 
-exports.moveSprite2 = function(d){return "move sprite 2"};
+exports.moveSprite2 = function(d){return "move actor 2"};
 
-exports.moveSprite3 = function(d){return "move sprite 3"};
+exports.moveSprite3 = function(d){return "move actor 3"};
 
-exports.moveSprite4 = function(d){return "move sprite 4"};
+exports.moveSprite4 = function(d){return "move actor 4"};
 
-exports.moveSprite5 = function(d){return "move sprite 5"};
+exports.moveSprite5 = function(d){return "move actor 5"};
 
-exports.moveSprite6 = function(d){return "move sprite 6"};
+exports.moveSprite6 = function(d){return "move actor 6"};
 
 exports.moveDown = function(d){return "move down"};
 
-exports.moveDownTooltip = function(d){return "Move a sprite down."};
+exports.moveDownTooltip = function(d){return "Move an actor down."};
 
 exports.moveLeft = function(d){return "move left"};
 
-exports.moveLeftTooltip = function(d){return "Move a sprite to the left."};
+exports.moveLeftTooltip = function(d){return "Move an actor to the left."};
 
 exports.moveRight = function(d){return "move right"};
 
-exports.moveRightTooltip = function(d){return "Move a sprite to the right."};
+exports.moveRightTooltip = function(d){return "Move an actor to the right."};
 
 exports.moveUp = function(d){return "move up"};
 
-exports.moveUpTooltip = function(d){return "Move a sprite up."};
+exports.moveUpTooltip = function(d){return "Move an actor up."};
 
-exports.moveTooltip = function(d){return "Move a sprite."};
+exports.moveTooltip = function(d){return "Move an actor."};
 
 exports.nextLevel = function(d){return "Congratulations! You have completed this puzzle."};
 
@@ -5631,19 +5639,19 @@ exports.repeatUntilFinish = function(d){return "repeat until finish"};
 
 exports.saySprite = function(d){return "say"};
 
-exports.saySprite1 = function(d){return "sprite 1 say"};
+exports.saySprite1 = function(d){return "actor 1 say"};
 
-exports.saySprite2 = function(d){return "sprite 2 say"};
+exports.saySprite2 = function(d){return "actor 2 say"};
 
-exports.saySprite3 = function(d){return "sprite 3 say"};
+exports.saySprite3 = function(d){return "actor 3 say"};
 
-exports.saySprite4 = function(d){return "sprite 4 say"};
+exports.saySprite4 = function(d){return "actor 4 say"};
 
-exports.saySprite5 = function(d){return "sprite 5 say"};
+exports.saySprite5 = function(d){return "actor 5 say"};
 
-exports.saySprite6 = function(d){return "sprite 6 say"};
+exports.saySprite6 = function(d){return "actor 6 say"};
 
-exports.saySpriteTooltip = function(d){return "Pop up a speech bubble with the associated text from the specified sprite."};
+exports.saySpriteTooltip = function(d){return "Pop up a speech bubble with the associated text from the specified actor."};
 
 exports.scoreText = function(d){return "Score: "+v(d,"playerScore")+" : "+v(d,"opponentScore")};
 
@@ -5673,7 +5681,7 @@ exports.setSpriteEmotionRandom = function(d){return "to a random emotion"};
 
 exports.setSpriteEmotionSad = function(d){return "to a sad emotion"};
 
-exports.setSpriteEmotionTooltip = function(d){return "Sets the sprite emotion"};
+exports.setSpriteEmotionTooltip = function(d){return "Sets the actor emotion"};
 
 exports.setSpriteGreen = function(d){return "to a green image"};
 
@@ -5689,9 +5697,9 @@ exports.setSpriteRandom = function(d){return "to a random image"};
 
 exports.setSpriteWitch = function(d){return "to a witch image"};
 
-exports.setSpritePositionTooltip = function(d){return "Instantly moves a sprite to the specified location."};
+exports.setSpritePositionTooltip = function(d){return "Instantly moves an actor to the specified location."};
 
-exports.setSpriteTooltip = function(d){return "Sets the sprite image"};
+exports.setSpriteTooltip = function(d){return "Sets the actor image"};
 
 exports.setSpriteSpeedRandom = function(d){return "to a random speed"};
 
@@ -5705,7 +5713,7 @@ exports.setSpriteSpeedFast = function(d){return "to a fast speed"};
 
 exports.setSpriteSpeedVeryFast = function(d){return "to a very fast speed"};
 
-exports.setSpriteSpeedTooltip = function(d){return "Sets the speed of a sprite"};
+exports.setSpriteSpeedTooltip = function(d){return "Sets the speed of an actor"};
 
 exports.share = function(d){return "Share"};
 
@@ -5715,33 +5723,33 @@ exports.shareGame = function(d){return "Share your story:"};
 
 exports.setSprite = function(d){return "set"};
 
-exports.setSprite1 = function(d){return "set sprite 1"};
+exports.setSprite1 = function(d){return "set actor 1"};
 
-exports.setSprite2 = function(d){return "set sprite 2"};
+exports.setSprite2 = function(d){return "set actor 2"};
 
-exports.setSprite3 = function(d){return "set sprite 3"};
+exports.setSprite3 = function(d){return "set actor 3"};
 
-exports.setSprite4 = function(d){return "set sprite 4"};
+exports.setSprite4 = function(d){return "set actor 4"};
 
-exports.setSprite5 = function(d){return "set sprite 5"};
+exports.setSprite5 = function(d){return "set actor 5"};
 
-exports.setSprite6 = function(d){return "set sprite 6"};
+exports.setSprite6 = function(d){return "set actor 6"};
 
 exports.stopSprite = function(d){return "stop"};
 
-exports.stopSprite1 = function(d){return "stop sprite 1"};
+exports.stopSprite1 = function(d){return "stop actor 1"};
 
-exports.stopSprite2 = function(d){return "stop sprite 2"};
+exports.stopSprite2 = function(d){return "stop actor 2"};
 
-exports.stopSprite3 = function(d){return "stop sprite 3"};
+exports.stopSprite3 = function(d){return "stop actor 3"};
 
-exports.stopSprite4 = function(d){return "stop sprite 4"};
+exports.stopSprite4 = function(d){return "stop actor 4"};
 
-exports.stopSprite5 = function(d){return "stop sprite 5"};
+exports.stopSprite5 = function(d){return "stop actor 5"};
 
-exports.stopSprite6 = function(d){return "stop sprite 6"};
+exports.stopSprite6 = function(d){return "stop actor 6"};
 
-exports.stopTooltip = function(d){return "Stops a sprite's movement."};
+exports.stopTooltip = function(d){return "Stops an actor's movement."};
 
 exports.whenDown = function(d){return "when down arrow"};
 
@@ -5763,47 +5771,47 @@ exports.whenRight = function(d){return "when right arrow"};
 
 exports.whenRightTooltip = function(d){return "Execute the actions below when the right arrow key is pressed."};
 
-exports.whenSpriteClicked = function(d){return "when sprite clicked"};
+exports.whenSpriteClicked = function(d){return "when actor clicked"};
 
-exports.whenSpriteClicked1 = function(d){return "when sprite 1 clicked"};
+exports.whenSpriteClicked1 = function(d){return "when actor 1 clicked"};
 
-exports.whenSpriteClicked2 = function(d){return "when sprite 2 clicked"};
+exports.whenSpriteClicked2 = function(d){return "when actor 2 clicked"};
 
-exports.whenSpriteClicked3 = function(d){return "when sprite 3 clicked"};
+exports.whenSpriteClicked3 = function(d){return "when actor 3 clicked"};
 
-exports.whenSpriteClicked4 = function(d){return "when sprite 4 clicked"};
+exports.whenSpriteClicked4 = function(d){return "when actor 4 clicked"};
 
-exports.whenSpriteClicked5 = function(d){return "when sprite 5 clicked"};
+exports.whenSpriteClicked5 = function(d){return "when actor 5 clicked"};
 
-exports.whenSpriteClicked6 = function(d){return "when sprite 6 clicked"};
+exports.whenSpriteClicked6 = function(d){return "when actor 6 clicked"};
 
-exports.whenSpriteClickedTooltip = function(d){return "Execute the actions below when a sprite is clicked."};
+exports.whenSpriteClickedTooltip = function(d){return "Execute the actions below when an actor is clicked."};
 
-exports.whenSpriteCollided1 = function(d){return "when sprite 1"};
+exports.whenSpriteCollided1 = function(d){return "when actor 1"};
 
-exports.whenSpriteCollided2 = function(d){return "when sprite 2"};
+exports.whenSpriteCollided2 = function(d){return "when actor 2"};
 
-exports.whenSpriteCollided3 = function(d){return "when sprite 3"};
+exports.whenSpriteCollided3 = function(d){return "when actor 3"};
 
-exports.whenSpriteCollided4 = function(d){return "when sprite 4"};
+exports.whenSpriteCollided4 = function(d){return "when actor 4"};
 
-exports.whenSpriteCollided5 = function(d){return "when sprite 5"};
+exports.whenSpriteCollided5 = function(d){return "when actor 5"};
 
-exports.whenSpriteCollided6 = function(d){return "when sprite 6"};
+exports.whenSpriteCollided6 = function(d){return "when actor 6"};
 
-exports.whenSpriteCollidedTooltip = function(d){return "Execute the actions below when a sprite touches another sprite."};
+exports.whenSpriteCollidedTooltip = function(d){return "Execute the actions below when an actor touches another actor."};
 
-exports.whenSpriteCollidedWith1 = function(d){return "touches sprite 1"};
+exports.whenSpriteCollidedWith1 = function(d){return "touches actor 1"};
 
-exports.whenSpriteCollidedWith2 = function(d){return "touches sprite 2"};
+exports.whenSpriteCollidedWith2 = function(d){return "touches actor 2"};
 
-exports.whenSpriteCollidedWith3 = function(d){return "touches sprite 3"};
+exports.whenSpriteCollidedWith3 = function(d){return "touches actor 3"};
 
-exports.whenSpriteCollidedWith4 = function(d){return "touches sprite 4"};
+exports.whenSpriteCollidedWith4 = function(d){return "touches actor 4"};
 
-exports.whenSpriteCollidedWith5 = function(d){return "touches sprite 5"};
+exports.whenSpriteCollidedWith5 = function(d){return "touches actor 5"};
 
-exports.whenSpriteCollidedWith6 = function(d){return "touches sprite 6"};
+exports.whenSpriteCollidedWith6 = function(d){return "touches actor 6"};
 
 exports.whenUp = function(d){return "when up arrow"};
 

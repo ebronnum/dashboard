@@ -2945,6 +2945,12 @@ var tb = blockUtils.createToolbox;
 var blockOfType = blockUtils.blockOfType;
 var createCategory = blockUtils.createCategory;
 
+var defaultSayBlock = function () {
+  return '<block type="studio_saySprite"><title name="TEXT">' +
+          msg.defaultSayText() +
+          '</title></block>';
+};
+
 /*
  * Configuration for all levels.
  */
@@ -2975,7 +2981,7 @@ module.exports = {
     'timeoutFailureTick': 100,
     'toolbox':
       tb('<block type="studio_moveDistance"><title name="DIR">2</title></block>' +
-         blockOfType('studio_saySprite')),
+         defaultSayBlock()),
     'startBlocks':
      '<block type="studio_whenGameStarts" deletable="false" x="20" y="20"></block>'
   },
@@ -2999,7 +3005,7 @@ module.exports = {
     'timeoutFailureTick': 100,
     'toolbox':
       tb('<block type="studio_moveDistance"><title name="DIR">2</title></block>' +
-         blockOfType('studio_saySprite')),
+         defaultSayBlock()),
     'startBlocks':
      '<block type="studio_whenGameStarts" deletable="false" x="20" y="20"></block>'
   },
@@ -3030,7 +3036,7 @@ module.exports = {
     'timeoutFailureTick': 200,
     'toolbox':
       tb('<block type="studio_moveDistance"><title name="DIR">2</title></block>' +
-         blockOfType('studio_saySprite')),
+         defaultSayBlock()),
     'startBlocks':
      '<block type="studio_whenGameStarts" deletable="false" x="20" y="20"></block> \
       <block type="studio_whenSpriteCollided" deletable="false" x="20" y="120"></block>'
@@ -3060,7 +3066,7 @@ module.exports = {
     ],
     'toolbox':
       tb(blockOfType('studio_move') +
-         blockOfType('studio_saySprite')),
+         defaultSayBlock()),
     'startBlocks':
      '<block type="studio_whenLeft" deletable="false" x="20" y="20"></block> \
       <block type="studio_whenRight" deletable="false" x="180" y="20"></block> \
@@ -3088,7 +3094,7 @@ module.exports = {
     'timeoutFailureTick': 200,
     'toolbox':
       tb(blockOfType('studio_moveDistance') +
-         blockOfType('studio_saySprite')),
+         defaultSayBlock()),
     'startBlocks':
      '<block type="studio_whenGameIsRunning" deletable="false" x="20" y="20"></block>'
   },
@@ -3119,7 +3125,7 @@ module.exports = {
     'toolbox':
       tb(blockOfType('studio_moveDistance') +
          blockOfType('studio_move') +
-         blockOfType('studio_saySprite')),
+         defaultSayBlock()),
     'minWorkspaceHeight': 600,
     'startBlocks':
      '<block type="studio_whenLeft" deletable="false" x="20" y="20"> \
@@ -3184,7 +3190,7 @@ module.exports = {
          blockOfType('studio_stop') +
          blockOfType('studio_playSound') +
          blockOfType('studio_incrementScore') +
-         blockOfType('studio_saySprite') +
+         defaultSayBlock() +
          blockOfType('studio_setSpritePosition') +
          blockOfType('studio_setSpriteSpeed') +
          blockOfType('studio_setSpriteEmotion') +
@@ -3229,7 +3235,7 @@ module.exports = {
                           blockOfType('studio_stop') +
                           blockOfType('studio_playSound') +
                           blockOfType('studio_incrementScore') +
-                          blockOfType('studio_saySprite') +
+                          defaultSayBlock() +
                           blockOfType('studio_setSpritePosition') +
                           blockOfType('studio_setSpriteSpeed') +
                           blockOfType('studio_setSpriteEmotion') +
@@ -5503,6 +5509,8 @@ exports.catVariables = function(d){return "Variables"};
 
 exports.continue = function(d){return "Doorgaan"};
 
+exports.defaultSayText = function(d){return "type here"};
+
 exports.finalLevel = function(d){return "Gefeliciteerd! je hebt de laatste puzzel opgelost."};
 
 exports.incrementOpponentScore = function(d){return "increment opponent score"};
@@ -5673,7 +5681,7 @@ exports.setSpriteEmotionRandom = function(d){return "to a random emotion"};
 
 exports.setSpriteEmotionSad = function(d){return "to a sad emotion"};
 
-exports.setSpriteEmotionTooltip = function(d){return "Sets the sprite emotion"};
+exports.setSpriteEmotionTooltip = function(d){return "Sets the actor emotion"};
 
 exports.setSpriteGreen = function(d){return "to a green image"};
 
@@ -5689,7 +5697,7 @@ exports.setSpriteRandom = function(d){return "to a random image"};
 
 exports.setSpriteWitch = function(d){return "to a witch image"};
 
-exports.setSpritePositionTooltip = function(d){return "Instantly moves a sprite to the specified location."};
+exports.setSpritePositionTooltip = function(d){return "Instantly moves an actor to the specified location."};
 
 exports.setSpriteTooltip = function(d){return "Sets the character image"};
 
@@ -5729,19 +5737,19 @@ exports.setSprite6 = function(d){return "set character 6"};
 
 exports.stopSprite = function(d){return "stop"};
 
-exports.stopSprite1 = function(d){return "stop sprite 1"};
+exports.stopSprite1 = function(d){return "stop actor 1"};
 
-exports.stopSprite2 = function(d){return "stop sprite 2"};
+exports.stopSprite2 = function(d){return "stop actor 2"};
 
-exports.stopSprite3 = function(d){return "stop sprite 3"};
+exports.stopSprite3 = function(d){return "stop actor 3"};
 
-exports.stopSprite4 = function(d){return "stop sprite 4"};
+exports.stopSprite4 = function(d){return "stop actor 4"};
 
-exports.stopSprite5 = function(d){return "stop sprite 5"};
+exports.stopSprite5 = function(d){return "stop actor 5"};
 
-exports.stopSprite6 = function(d){return "stop sprite 6"};
+exports.stopSprite6 = function(d){return "stop actor 6"};
 
-exports.stopTooltip = function(d){return "Stops a sprite's movement."};
+exports.stopTooltip = function(d){return "Stops an actor's movement."};
 
 exports.whenDown = function(d){return "when Down arrow"};
 
@@ -5763,7 +5771,7 @@ exports.whenRight = function(d){return "when Right arrow"};
 
 exports.whenRightTooltip = function(d){return "Execute the actions below when the Right arrow button is pressed."};
 
-exports.whenSpriteClicked = function(d){return "when sprite clicked"};
+exports.whenSpriteClicked = function(d){return "when actor clicked"};
 
 exports.whenSpriteClicked1 = function(d){return "when character 1 clicked"};
 
