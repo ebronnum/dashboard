@@ -3513,6 +3513,14 @@ exports.dialogCancel = function(d){return "ยกเลิก"};
 
 exports.dialogOK = function(d){return "ตกลง, ได้"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "\"ทำซ้ำ\" หรือ \"ถ้า\" บล็อกต้องมีบล็อกอื่น ๆ ภายในให้ทำงาน ตรวจสอบให้แน่ใจว่า บล็อกภายในอย่างเหมาะสมกันอย่างถูกต้องภายในบล็อกที่มี."};
 
 exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
@@ -3528,6 +3536,8 @@ exports.hashError = function(d){return "ขออภัย '%1' ไม่ตร�
 exports.help = function(d){return "วิธีใช้"};
 
 exports.hintTitle = function(d){return "คำแนะนำ:"};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "คุณกำลังใช้ทุกชนิดที่จำเป็นของบล็อก แต่ไม่ได้อยู่ในทางที่ถูกต้อง."};
 

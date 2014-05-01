@@ -4718,6 +4718,14 @@ exports.dialogCancel = function(d){return "Annuller"};
 
 exports.dialogOK = function(d){return "Ok"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "\"Gentag\" eller \"Hvis\" blokkene skal have andre blokke inden i for at virke. Kontroller, at den indre blok passer ordentligt inde i blokken."};
 
 exports.extraTopBlocks = function(d){return "Du har ekstra blokke, der ikke er knyttet til en hændelsesblok."};
@@ -4733,6 +4741,8 @@ exports.hashError = function(d){return "Beklager, '%1' svarer ikke til noget gem
 exports.help = function(d){return "Hjælp"};
 
 exports.hintTitle = function(d){return "Tip:"};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "Du bruger alle de nødvendige typer af blokke, men ikke på den rigtige måde."};
 

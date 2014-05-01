@@ -3524,6 +3524,14 @@ exports.dialogCancel = function(d){return "Prekliči"};
 
 exports.dialogOK = function(d){return "Vredu"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "Znotraj 'Ponovi' ali 'če' bloka morajo biti drugi bloki, da bo delovalo. Prepričaj se, da se notranji bloki ustrezno prilegajo zunanjemu bloku."};
 
 exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
@@ -3539,6 +3547,8 @@ exports.hashError = function(d){return "Oprosti, '%1' ne ustreza nobenemu shranj
 exports.help = function(d){return "Pomoč"};
 
 exports.hintTitle = function(d){return "Namig:"};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "Uporabljaš vse potrebne tipe blokov, a ne na pravi način."};
 

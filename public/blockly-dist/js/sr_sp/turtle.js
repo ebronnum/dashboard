@@ -2854,6 +2854,7 @@ exports.showTurtle = function(id) {
 
 var Colours = require('./core').Colours;
 var msg = require('../../locale/sr_sp/turtle');
+var commonMsg = require('../../locale/sr_sp/common');
 
 // Install extensions to Blockly's language and JavaScript generator.
 exports.install = function(blockly, skin) {
@@ -3273,22 +3274,14 @@ exports.install = function(blockly, skin) {
     SHORT_MOVE_LENGTH: 25,
     LONG_MOVE_LENGTH: 100,
     DIRECTION_CONFIGS: {
-      left: { letter: 'W', moveFunction: 'moveLeft', image: skin.leftArrow, image_width: 42, image_height: 42 },
-      right: { letter: 'E', moveFunction: 'moveRight', image: skin.rightArrow, image_width: 42, image_height: 42 },
-      up: { letter: 'N', moveFunction: 'moveUp', image: skin.upArrow, image_width: 42, image_height: 42 },
-      down: { letter: 'S', moveFunction: 'moveDown', image: skin.downArrow, image_width: 42, image_height: 42 },
-      jump_left: { letter: 'W', moveFunction: 'jumpLeft', image: skin.leftJumpArrow, image_width: 42, image_height: 42 },
-      jump_right: { letter: 'E', moveFunction: 'jumpRight', image: skin.rightJumpArrow, image_width: 42, image_height: 42 },
-      jump_up: { letter: 'N', moveFunction: 'jumpUp', image: skin.upJumpArrow, image_width: 42, image_height: 42 },
-      jump_down: { letter: 'S', moveFunction: 'jumpDown', image: skin.downJumpArrow, image_width: 42, image_height: 42 },
-      jump_left_long: { letter: 'W long', moveFunction: 'jumpLeft', image: skin.leftJumpArrow, image_width: 42, image_height: 42 },
-      jump_right_long: { letter: 'E long', moveFunction: 'jumpRight', image: skin.rightJumpArrow, image_width: 42, image_height: 42 },
-      jump_up_long: { letter: 'N long', moveFunction: 'jumpUp', image: skin.upJumpArrow, image_width: 42, image_height: 42 },
-      jump_down_long: { letter: 'S long', moveFunction: 'jumpDown', image: skin.downJumpArrow, image_width: 42, image_height: 42 },
-      jump_left_short: { letter: 'W short', moveFunction: 'jumpLeft', image: skin.leftJumpArrow, image_width: 42, image_height: 42 },
-      jump_right_short: { letter: 'E short', moveFunction: 'jumpRight', image: skin.rightJumpArrow, image_width: 42, image_height: 42 },
-      jump_up_short: { letter: 'N short', moveFunction: 'jumpUp', image: skin.upJumpArrow, image_width: 42, image_height: 42 },
-      jump_down_short: { letter: 'S short', moveFunction: 'jumpDown', image: skin.downJumpArrow, image_width: 42, image_height: 42 }
+      left: { letter: commonMsg.directionWestLetter(), moveFunction: 'moveLeft', image: skin.leftArrow, image_width: 42, image_height: 42 },
+      right: { letter: commonMsg.directionEastLetter(), moveFunction: 'moveRight', image: skin.rightArrow, image_width: 42, image_height: 42 },
+      up: { letter: commonMsg.directionNorthLetter(), moveFunction: 'moveUp', image: skin.upArrow, image_width: 42, image_height: 42 },
+      down: { letter: commonMsg.directionSouthLetter(), moveFunction: 'moveDown', image: skin.downArrow, image_width: 42, image_height: 42 },
+      jump_left: { letter: commonMsg.directionWestLetter(), moveFunction: 'jumpLeft', image: skin.leftJumpArrow, image_width: 42, image_height: 42 },
+      jump_right: { letter: commonMsg.directionEastLetter(), moveFunction: 'jumpRight', image: skin.rightJumpArrow, image_width: 42, image_height: 42 },
+      jump_up: { letter: commonMsg.directionNorthLetter(), moveFunction: 'jumpUp', image: skin.upJumpArrow, image_width: 42, image_height: 42 },
+      jump_down: { letter: commonMsg.directionSouthLetter(), moveFunction: 'jumpDown', image: skin.downJumpArrow, image_width: 42, image_height: 42 },
     },
     LENGTHS: [
       [skin.shortLineDraw, "SHORT_MOVE_LENGTH"],
@@ -3304,23 +3297,18 @@ exports.install = function(blockly, skin) {
       generator["simple_move_" + direction] = SimpleMove.generateCodeGenerator(direction);
       generator["simple_jump_" + direction] = SimpleMove.generateCodeGenerator('jump_' + direction);
       generator["simple_move_" + direction + "_length"] = SimpleMove.generateCodeGenerator(direction, true);
-      generator["simple_jump_" + direction + "_long"] = SimpleMove.generateCodeGenerator('jump_' + direction, false, SimpleMove.LONG_MOVE_LENGTH);
-      generator["simple_jump_" + direction + "_short"] = SimpleMove.generateCodeGenerator('jump_' + direction, false, SimpleMove.SHORT_MOVE_LENGTH);
-      blockly.Blocks['simple_move_' + direction + '_length'] = SimpleMove.generateBlock(direction, true);
-      blockly.Blocks['simple_jump_' + direction + '_long'] = SimpleMove.generateBlock('jump_' + direction + '_long');
-      blockly.Blocks['simple_jump_' + direction + '_short'] = SimpleMove.generateBlock('jump_' + direction + '_short');
-      blockly.Blocks['simple_move_' + direction] = SimpleMove.generateBlock(direction);
-      blockly.Blocks['simple_jump_' + direction] = SimpleMove.generateBlock('jump_' + direction);
+      blockly.Blocks['simple_move_' + direction + '_length'] = SimpleMove.generateMoveBlock(direction, true);
+      blockly.Blocks['simple_move_' + direction] = SimpleMove.generateMoveBlock(direction);
+      blockly.Blocks['simple_jump_' + direction] = SimpleMove.generateJumpBlock('jump_' + direction);
     },
-    generateBlock: function(direction, hasLengthInput) {
+    generateMoveBlock: function(direction, hasLengthInput) {
       var directionConfig = SimpleMove.DIRECTION_CONFIGS[direction];
       return {
         helpUrl: '',
         init: function () {
           this.setHSV(184, 1.00, 0.74);
-          var input = this.appendDummyInput()
-            .appendTitle(directionConfig.letter)
-            .appendTitle(new blockly.FieldImage(directionConfig.image, directionConfig.image_width, directionConfig.image_height));
+          var input = this.appendDummyInput().appendTitle(directionConfig.letter)
+            .appendTitle(new blockly.FieldImage(directionConfig.image));
           this.setPreviousStatement(true);
           this.setNextStatement(true);
           if (hasLengthInput) {
@@ -3328,6 +3316,19 @@ exports.install = function(blockly, skin) {
             dropdown.setValue(SimpleMove.LENGTHS[0][1]);
             input.appendTitle(dropdown, 'length');
           }
+        }
+      };
+    },
+    generateJumpBlock: function(direction) {
+      var directionConfig = SimpleMove.DIRECTION_CONFIGS[direction];
+      return {
+        helpUrl: '',
+        init: function () {
+          this.setHSV(184, 1.00, 0.74);
+          this.appendDummyInput().appendTitle(commonMsg.jump() + " " + directionConfig.letter);
+          this.appendDummyInput().appendTitle(new blockly.FieldImage(directionConfig.image));
+          this.setPreviousStatement(true);
+          this.setNextStatement(true);
         }
       };
     },
@@ -3499,7 +3500,7 @@ exports.install = function(blockly, skin) {
 
 };
 
-},{"../../locale/sr_sp/turtle":37,"./core":27}],26:[function(require,module,exports){
+},{"../../locale/sr_sp/common":36,"../../locale/sr_sp/turtle":37,"./core":27}],26:[function(require,module,exports){
 module.exports= (function() {
   var t = function anonymous(locals, filters, escape, rethrow) {
 escape = escape || function (html){
@@ -3598,14 +3599,6 @@ var blocks = {
   SIMPLE_MOVE_DOWN_LENGTH: blockUtils.blockOfType('simple_move_down_length'),
   SIMPLE_MOVE_LEFT_LENGTH: blockUtils.blockOfType('simple_move_left_length'),
   SIMPLE_MOVE_RIGHT_LENGTH: blockUtils.blockOfType('simple_move_right_length'),
-  SIMPLE_JUMP_UP_LONG: blockUtils.blockOfType('simple_jump_up_long'),
-  SIMPLE_JUMP_DOWN_LONG: blockUtils.blockOfType('simple_jump_down_long'),
-  SIMPLE_JUMP_LEFT_LONG: blockUtils.blockOfType('simple_jump_left_long'),
-  SIMPLE_JUMP_RIGHT_LONG: blockUtils.blockOfType('simple_jump_right_long'),
-  SIMPLE_JUMP_UP_SHORT: blockUtils.blockOfType('simple_jump_up_short'),
-  SIMPLE_JUMP_DOWN_SHORT: blockUtils.blockOfType('simple_jump_down_short'),
-  SIMPLE_JUMP_LEFT_SHORT: blockUtils.blockOfType('simple_jump_left_short'),
-  SIMPLE_JUMP_RIGHT_SHORT: blockUtils.blockOfType('simple_jump_right_short'),
   simpleMoveBlocks: function() {
     return this.SIMPLE_MOVE_UP +
       this.SIMPLE_MOVE_DOWN +
@@ -3623,16 +3616,6 @@ var blocks = {
       this.SIMPLE_MOVE_DOWN_LENGTH +
       this.SIMPLE_MOVE_LEFT_LENGTH +
       this.SIMPLE_MOVE_RIGHT_LENGTH;
-  },
-  simpleJumpLengthBlocks: function() {
-    return this.SIMPLE_JUMP_UP_LONG +
-      this.SIMPLE_JUMP_UP_SHORT +
-      this.SIMPLE_JUMP_DOWN_LONG +
-      this.SIMPLE_JUMP_DOWN_SHORT +
-      this.SIMPLE_JUMP_LEFT_LONG +
-      this.SIMPLE_JUMP_LEFT_SHORT +
-      this.SIMPLE_JUMP_RIGHT_LONG +
-      this.SIMPLE_JUMP_RIGHT_SHORT;
   }
 };
 
@@ -4382,7 +4365,6 @@ module.exports = {
         blocks.simpleMoveBlocks() +
         blocks.simpleJumpBlocks() +
         blocks.simpleMoveLengthBlocks() +
-        blocks.simpleJumpLengthBlocks() +
         blockUtils.blockOfType('controls_repeat_simplified')
       ),
     startBlocks: '',
@@ -5709,6 +5691,14 @@ exports.dialogCancel = function(d){return "Откажи"};
 
 exports.dialogOK = function(d){return "У реду"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "Да би блок \"Понављај\" или  \"Ако\" радио, у њега треба уградити друге блокове. Постарајте се да је унутрашњи блок правилно убачен у спољни блок."};
 
 exports.extraTopBlocks = function(d){return "Имаш блокове који нису повезани са основним блоком."};
@@ -5724,6 +5714,8 @@ exports.hashError = function(d){return "Жао нам је, '%1' не одгов
 exports.help = function(d){return "Помоћ"};
 
 exports.hintTitle = function(d){return "Савет:"};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "Користиш све неопходне типове блокова, али не на прави начин."};
 
@@ -5860,6 +5852,8 @@ exports.drawASnowman = function(d){return "нацртај Снешка Бели�
 exports.heightParameter = function(d){return "висина"};
 
 exports.hideTurtle = function(d){return "сакриј аутора"};
+
+exports.jump = function(d){return "jump"};
 
 exports.jumpBackward = function(d){return "скоћи назад за"};
 

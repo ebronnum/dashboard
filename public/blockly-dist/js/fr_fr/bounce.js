@@ -5482,6 +5482,14 @@ exports.dialogCancel = function(d){return "Annuler"};
 
 exports.dialogOK = function(d){return "OK"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "Le bloc « Répéter » ou «Si» doit avoir des autres blocs à l'intérieur pour fonctionner. Assurez-vous que le bloc interne s'adapte correctement à l'intérieur du bloc conteneur."};
 
 exports.extraTopBlocks = function(d){return "Vous avez des blocs supplémentaires qui ne sont pas attachés à un bloc d'événements."};
@@ -5497,6 +5505,8 @@ exports.hashError = function(d){return "Désolé, '%1' ne correspond avec aucun 
 exports.help = function(d){return "À l'aide"};
 
 exports.hintTitle = function(d){return "Indice :"};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "Vous utilisez tous les types nécessaires des blocs, mais pas de la bonne manière."};
 

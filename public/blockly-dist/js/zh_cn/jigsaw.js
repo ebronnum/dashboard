@@ -3513,6 +3513,14 @@ exports.dialogCancel = function(d){return "取消"};
 
 exports.dialogOK = function(d){return "确定"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "“Repeat”或“If”模块需要其他的模块充填在里面才能工作。请确保在容器模块里填入了合适的模块。"};
 
 exports.extraTopBlocks = function(d){return "你有多余的块没有附加到任何的事件块。"};
@@ -3528,6 +3536,8 @@ exports.hashError = function(d){return "对不起，'%1' 并不对应任何已�
 exports.help = function(d){return "帮助"};
 
 exports.hintTitle = function(d){return "提示："};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "你虽然把所有必要的模块都用上了，但是使用方法不对。"};
 

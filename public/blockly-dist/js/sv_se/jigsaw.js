@@ -3513,6 +3513,14 @@ exports.dialogCancel = function(d){return "Avbryt"};
 
 exports.dialogOK = function(d){return "Ok"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "\"Upprepa\" eller \"Om\" blocken måste ha andra block inuti sig för att fungera. Se till att det inre blocket sitter rätt inuti blocket."};
 
 exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
@@ -3528,6 +3536,8 @@ exports.hashError = function(d){return "Tyvärr, '%1' finns inte bland dina spar
 exports.help = function(d){return "Hjälp"};
 
 exports.hintTitle = function(d){return "Tips:"};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "Du använder alla nödvändiga typer av block, men inte på rätt sätt."};
 

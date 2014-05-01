@@ -4718,6 +4718,14 @@ exports.dialogCancel = function(d){return "Annulla"};
 
 exports.dialogOK = function(d){return "Ok"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "Il blocco \"ripeti\" o \"se\" deve avere all'interno altri blocchi per poter funzionare. Assicurati che i blocchi interni siano inseriti correttamente all'interno del blocco principale."};
 
 exports.extraTopBlocks = function(d){return "Ci sono blocchi che non sono attaccati ad un blocco evento."};
@@ -4733,6 +4741,8 @@ exports.hashError = function(d){return "Siamo spiacenti, '%1' non corrisponde ad
 exports.help = function(d){return "Aiuto"};
 
 exports.hintTitle = function(d){return "Suggerimento:"};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "Stai usando tutti i tipi di blocchi necessari, ma non nel modo giusto."};
 

@@ -5400,6 +5400,14 @@ exports.dialogCancel = function(d){return "Zrušiť"};
 
 exports.dialogOK = function(d){return "ok"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "\"Repeat\", alebo \"If\" bloky musia obsahovať ďalšie bloky vo vnútri aby pracovali. Uistite sa, že vnútorný blok sedí správne vo vnútri týchto blokov."};
 
 exports.extraTopBlocks = function(d){return "Máte ďalšie extra bloky, ktoré nie sú pripojené k blokom udalostí."};
@@ -5415,6 +5423,8 @@ exports.hashError = function(d){return "Prepáčte, '%1' nezodpovedá žiadnemu 
 exports.help = function(d){return "pomoc"};
 
 exports.hintTitle = function(d){return "Tip:"};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "Používate všetky potrebné typy blokov, ale nie tým správnym spôsobom."};
 

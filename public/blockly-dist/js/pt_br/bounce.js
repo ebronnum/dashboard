@@ -5482,6 +5482,14 @@ exports.dialogCancel = function(d){return "Cancelar"};
 
 exports.dialogOK = function(d){return "Confirma"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "Os blocos \"Repetir\"ou \"Se\" precisam conter outros blocos para funcionar. Tenha certeza de que o bloco de dentro se ajusta corretamente ao bloco principal."};
 
 exports.extraTopBlocks = function(d){return "Você tem blocos extras que não estão ligados a um bloco de evento."};
@@ -5497,6 +5505,8 @@ exports.hashError = function(d){return "Desculpe, nenhum programa salvo como '%1
 exports.help = function(d){return "Ajuda"};
 
 exports.hintTitle = function(d){return "Dica:"};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "Você está usando todos os tipos  de blocos necessários, mas não na ordem certa."};
 

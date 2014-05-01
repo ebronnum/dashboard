@@ -5392,6 +5392,14 @@ exports.dialogCancel = function(d){return "İptal"};
 
 exports.dialogOK = function(d){return "TAMAM"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "\"Tekrar\" bloğu veya \"Eğer\" bloğunun çalışması için  içerisinde bir başka blok yer almalıdır. İçteki bloğu, dış blok içerisine yerleştirdiğine emin ol."};
 
 exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
@@ -5407,6 +5415,8 @@ exports.hashError = function(d){return "Üzgünüz, '%1' kayıtlı herhangi bir 
 exports.help = function(d){return "Yardım"};
 
 exports.hintTitle = function(d){return "İpucu:"};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "Tüm gerekli türdeki blokları kullanıyorsunuz ama doğru şekilde değil."};
 

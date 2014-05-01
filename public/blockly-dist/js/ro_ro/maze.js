@@ -2210,9 +2210,9 @@ exports.install = function(blockly, skin) {
     },
     generateBlocksForDirection: function(direction) {
       generator["maze_move" + direction] = SimpleMove.generateCodeGenerator(direction);
-      blockly.Blocks['maze_move' + direction] = SimpleMove.generateBlock(direction);
+      blockly.Blocks['maze_move' + direction] = SimpleMove.generateMoveBlock(direction);
     },
-    generateBlock: function(direction) {
+    generateMoveBlock: function(direction) {
       var directionConfig = SimpleMove.DIRECTION_CONFIGS[direction];
       return {
         helpUrl: '',
@@ -7310,6 +7310,14 @@ exports.dialogCancel = function(d){return "Revocare"};
 
 exports.dialogOK = function(d){return "OK"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "Blocul \"Repetă\" sau \"Dacă\" trebuie să aibe alte blocuri în interiorul său  pentru a putea funcționa. Asigură-te că blocul interior se încadrează corect în blocul care îl conține."};
 
 exports.extraTopBlocks = function(d){return "Ai blocuri suplimentare care nu sunt ataşate la un bloc de eveniment."};
@@ -7325,6 +7333,8 @@ exports.hashError = function(d){return "Ne pare rău, '%1' nu corespunde cu nici
 exports.help = function(d){return "Ajutor"};
 
 exports.hintTitle = function(d){return "Sugestie:"};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "Utilizezi toate tipurile de blocuri necesare, dar nu așa cum trebuie."};
 

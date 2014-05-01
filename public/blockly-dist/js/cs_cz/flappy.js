@@ -4726,6 +4726,14 @@ exports.dialogCancel = function(d){return "Storno"};
 
 exports.dialogOK = function(d){return "OK"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "Bloky \"Opakovat\" nebo \"Pokud\" v sobě musí mít další bloky, aby fungovaly. Ujisti se, že vnitřní bloky jsou v pořádku vložené dovnitř vnějších bloků."};
 
 exports.extraTopBlocks = function(d){return "Máš další extra bloky, které nejsou připojené k bloku událostí."};
@@ -4741,6 +4749,8 @@ exports.hashError = function(d){return "Promiň, ale '%1' neodpovídá žádném
 exports.help = function(d){return "Nápověda"};
 
 exports.hintTitle = function(d){return "Tip:"};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "Používáš všechny potřebné typy bloků, ale nesprávným způsobem."};
 

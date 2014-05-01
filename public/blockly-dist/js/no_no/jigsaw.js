@@ -3513,6 +3513,14 @@ exports.dialogCancel = function(d){return "Avbryt"};
 
 exports.dialogOK = function(d){return "OK"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "\"Gjenta\"- eller \"Hvis\"-blokken må ha andre blokker inne i seg for å fungere. Kontroller at den indre blokken sitter riktig på plass i blokken som er utenfor."};
 
 exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
@@ -3528,6 +3536,8 @@ exports.hashError = function(d){return "Beklager, '%1' samsvarer ikke med noe la
 exports.help = function(d){return "Hjelp"};
 
 exports.hintTitle = function(d){return "Tips:"};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "Du bruker alle nødvendige typer blokker, men ikke på riktig måte."};
 

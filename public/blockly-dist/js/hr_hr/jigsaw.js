@@ -3526,6 +3526,14 @@ exports.dialogCancel = function(d){return "Odustani"};
 
 exports.dialogOK = function(d){return "U redu"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "Da bi blok \"Ponovi\" ili \"Ako\" radio, u njega treba ugraditi druge blokove. Provjeri uklapa li se unutarnji blok pravilno u vanjski blok."};
 
 exports.extraTopBlocks = function(d){return "Imaš viška blokova koji nisu povezani za \"događaj\" blokom."};
@@ -3541,6 +3549,8 @@ exports.hashError = function(d){return "Nažalost, '%1' ne odgovara nijednom spr
 exports.help = function(d){return "Pomoć"};
 
 exports.hintTitle = function(d){return "Savjet:"};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "Koristiš sve potrebne vrste blokova, ali na pogrešan način."};
 

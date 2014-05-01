@@ -3526,6 +3526,14 @@ exports.dialogCancel = function(d){return "Отменить"};
 
 exports.dialogOK = function(d){return "Продолжить"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "Блокам \"повторять\" или \"если\" необходимо иметь внутри другие блоки для работы. Убедись  в том, что внутренний блок должным образом подходит к блоку, в котором он содержится."};
 
 exports.extraTopBlocks = function(d){return "У вас есть дополнительные блоки, которые не присоединены к основному блоку."};
@@ -3541,6 +3549,8 @@ exports.hashError = function(d){return "К сожалению, «%1» не со�
 exports.help = function(d){return "Справка"};
 
 exports.hintTitle = function(d){return "Подсказка:"};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "Ты используешь все необходимые виды блоков, но неправильным способом."};
 

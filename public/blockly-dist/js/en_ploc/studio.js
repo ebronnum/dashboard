@@ -5392,6 +5392,14 @@ exports.dialogCancel = function(d){return "!!-Cancel-!!"};
 
 exports.dialogOK = function(d){return "!!-OK-!!"};
 
+exports.directionNorthLetter = function(d){return "!!-N-!!"};
+
+exports.directionSouthLetter = function(d){return "!!-S-!!"};
+
+exports.directionEastLetter = function(d){return "!!-E-!!"};
+
+exports.directionWestLetter = function(d){return "!!-W-!!"};
+
 exports.emptyBlocksErrorMsg = function(d){return "!!-The \"Repeat\" or \"If\" block needs to have other blocks inside it to work. Make sure the inner block fits properly inside the containing block.-!!"};
 
 exports.extraTopBlocks = function(d){return "!!-You have extra blocks that aren't attached to an event block.-!!"};
@@ -5407,6 +5415,8 @@ exports.hashError = function(d){return "!!-Sorry, '%1' doesn't correspond with a
 exports.help = function(d){return "!!-Help-!!"};
 
 exports.hintTitle = function(d){return "!!-Hint:-!!"};
+
+exports.jump = function(d){return "!!-jump-!!"};
 
 exports.levelIncompleteError = function(d){return "!!-You are using all of the necessary types of blocks but not in the right way.-!!"};
 

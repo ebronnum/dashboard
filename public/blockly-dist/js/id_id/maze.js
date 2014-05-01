@@ -2210,9 +2210,9 @@ exports.install = function(blockly, skin) {
     },
     generateBlocksForDirection: function(direction) {
       generator["maze_move" + direction] = SimpleMove.generateCodeGenerator(direction);
-      blockly.Blocks['maze_move' + direction] = SimpleMove.generateBlock(direction);
+      blockly.Blocks['maze_move' + direction] = SimpleMove.generateMoveBlock(direction);
     },
-    generateBlock: function(direction) {
+    generateMoveBlock: function(direction) {
       var directionConfig = SimpleMove.DIRECTION_CONFIGS[direction];
       return {
         helpUrl: '',
@@ -7301,6 +7301,14 @@ exports.dialogCancel = function(d){return "Batal"};
 
 exports.dialogOK = function(d){return "Oke!"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "Blok \"Ulangi\" atau blok \"Jika\" membutuhkan blok lain di dalamnya supaya bisa bekerja. Pastikan blok yang berada didalam diletakkan secara pas."};
 
 exports.extraTopBlocks = function(d){return "Anda memiliki blok ekstra yang tidak melekat pada sebuah blok acara (event)."};
@@ -7316,6 +7324,8 @@ exports.hashError = function(d){return "Maaf, '%1' tidak sesuai dengan program y
 exports.help = function(d){return "Tolong"};
 
 exports.hintTitle = function(d){return "Tips:"};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "Anda telah gunakan semua jenis blok yang diperlukan  tetapi tidak dengan cara yang tepat."};
 

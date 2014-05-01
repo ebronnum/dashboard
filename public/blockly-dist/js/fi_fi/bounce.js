@@ -5482,6 +5482,14 @@ exports.dialogCancel = function(d){return "Peru"};
 
 exports.dialogOK = function(d){return "OK"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "\"Toista\" ja \"Jos\"-lohkot tarvitsevat toisen lohkon sisäänsä toimiakseen. Varmista, että sisempi lohko asettuu oikein ulompaan lohkoon."};
 
 exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
@@ -5497,6 +5505,8 @@ exports.hashError = function(d){return "Valitan, '%1' ei vastaa mitään tallenn
 exports.help = function(d){return "Ohje"};
 
 exports.hintTitle = function(d){return "Vihje:"};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "Käytät kaikkia oikeanlaisia lohkoja, mutta et oikella tavalla."};
 

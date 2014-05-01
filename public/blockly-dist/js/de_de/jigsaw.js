@@ -3513,6 +3513,14 @@ exports.dialogCancel = function(d){return "Abbrechen"};
 
 exports.dialogOK = function(d){return "OK"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "Die \"Wiederholen\"- und die \"Wenn\"-Bausteine benötigten im Inneren andere Bausteine um zu funktionieren. Stelle sicher, dass der innere Baustein in den umschließenden Baustein passt."};
 
 exports.extraTopBlocks = function(d){return "Es gibt zusätzliche Bausteine, die keinem Ereignis-Baustein zugeordnet sind."};
@@ -3528,6 +3536,8 @@ exports.hashError = function(d){return "Ups, '%1' stimmt mit keinem gespeicherte
 exports.help = function(d){return "Hilfe"};
 
 exports.hintTitle = function(d){return "Hinweis:"};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "Du benutzt alle nötigen Bausteine, aber noch nicht auf die richtige Weise."};
 

@@ -2210,9 +2210,9 @@ exports.install = function(blockly, skin) {
     },
     generateBlocksForDirection: function(direction) {
       generator["maze_move" + direction] = SimpleMove.generateCodeGenerator(direction);
-      blockly.Blocks['maze_move' + direction] = SimpleMove.generateBlock(direction);
+      blockly.Blocks['maze_move' + direction] = SimpleMove.generateMoveBlock(direction);
     },
-    generateBlock: function(direction) {
+    generateMoveBlock: function(direction) {
       var directionConfig = SimpleMove.DIRECTION_CONFIGS[direction];
       return {
         helpUrl: '',
@@ -7315,6 +7315,14 @@ exports.dialogCancel = function(d){return "Anuluj"};
 
 exports.dialogOK = function(d){return "OK"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "Blok powtórz lub blok jeśli musi zawierać inne bloki w środku, by poprawnie działać. Upewnij się, czy wewnętrzny blok pasuje do zewnętrznego."};
 
 exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
@@ -7330,6 +7338,8 @@ exports.hashError = function(d){return "Przepraszamy, '%1' nie odpowiada żadnem
 exports.help = function(d){return "Pomoc"};
 
 exports.hintTitle = function(d){return "Podpowiedź:"};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "Używasz wszystkich niezbędnych rodzajów bloków, ale w niewłaściwy sposób."};
 

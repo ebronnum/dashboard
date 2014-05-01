@@ -2210,9 +2210,9 @@ exports.install = function(blockly, skin) {
     },
     generateBlocksForDirection: function(direction) {
       generator["maze_move" + direction] = SimpleMove.generateCodeGenerator(direction);
-      blockly.Blocks['maze_move' + direction] = SimpleMove.generateBlock(direction);
+      blockly.Blocks['maze_move' + direction] = SimpleMove.generateMoveBlock(direction);
     },
-    generateBlock: function(direction) {
+    generateMoveBlock: function(direction) {
       var directionConfig = SimpleMove.DIRECTION_CONFIGS[direction];
       return {
         helpUrl: '',
@@ -7314,6 +7314,14 @@ exports.dialogCancel = function(d){return "Скасувати"};
 
 exports.dialogOK = function(d){return "Гаразд"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "Блоки \"Повторити\" та \"Якщо\" повинні містити інші блоки. Переконайтесь, що внутрішній блок належно розміщений всередині зовнішнього."};
 
 exports.extraTopBlocks = function(d){return "У вас є додаткові блоки, які не прив'язані до жодного блоку подій."};
@@ -7329,6 +7337,8 @@ exports.hashError = function(d){return "Шкода, але  '%1' не відпо
 exports.help = function(d){return "Допомога"};
 
 exports.hintTitle = function(d){return "Підказка:"};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "Використано усі необхідні типи блоків, але у неправильному порядку."};
 

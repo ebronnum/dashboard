@@ -5392,6 +5392,14 @@ exports.dialogCancel = function(d){return "Άκυρο"};
 
 exports.dialogOK = function(d){return "OΚ"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "Το μπλοκ του \"Repeat\" ή του \"If\" πρέπει να περιέχει άλλα μπλοκ για να δουλέψει. Σιγουρέψου ότι το εσωτερικό μπλοκ ταιριάζει μέσα στο εξωτερικό."};
 
 exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
@@ -5407,6 +5415,8 @@ exports.hashError = function(d){return "Συγνώμη, το '%1' δεν αντ�
 exports.help = function(d){return "Βοήθεια"};
 
 exports.hintTitle = function(d){return "Υπόδειξη:"};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "Χρησιμοποιείς όλα τα αναγκαία είδη μπλοκ, αλλά όχι με τον σωστό τρόπο."};
 

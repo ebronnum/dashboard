@@ -2210,9 +2210,9 @@ exports.install = function(blockly, skin) {
     },
     generateBlocksForDirection: function(direction) {
       generator["maze_move" + direction] = SimpleMove.generateCodeGenerator(direction);
-      blockly.Blocks['maze_move' + direction] = SimpleMove.generateBlock(direction);
+      blockly.Blocks['maze_move' + direction] = SimpleMove.generateMoveBlock(direction);
     },
-    generateBlock: function(direction) {
+    generateMoveBlock: function(direction) {
       var directionConfig = SimpleMove.DIRECTION_CONFIGS[direction];
       return {
         helpUrl: '',
@@ -7301,6 +7301,14 @@ exports.dialogCancel = function(d){return "취소"};
 
 exports.dialogOK = function(d){return "확인"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "\"반복\" 블럭이나 \"조건\" 블럭이 실행되려면, 그 안에 다른 블럭들이 있어야 합니다. 블럭 안쪽에 필요한 블럭들을 끼워 맞춰 연결하세요."};
 
 exports.extraTopBlocks = function(d){return "이벤트 블럭에 연결하지 않은 남는 블럭이 있습니다."};
@@ -7316,6 +7324,8 @@ exports.hashError = function(d){return "죄송합니다. 저장된 '%1' 프로�
 exports.help = function(d){return "도움말"};
 
 exports.hintTitle = function(d){return "힌트:"};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "필요한 블럭들을 모두 사용했지만, 정확한 방법은 아닙니다."};
 

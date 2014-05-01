@@ -5392,6 +5392,14 @@ exports.dialogCancel = function(d){return "रद्द करें"};
 
 exports.dialogOK = function(d){return "ठीक है"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "\"दोहराएँ\" या \"यदि\" ब्लॉक को काम करने के लिए अपने अंदर अन्य ब्लॉक्स की ज़रूरत है । ध्यान दें कि भीतर के ब्लॉक बाहरी ब्लॉक में ठीक बैठें।"};
 
 exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
@@ -5407,6 +5415,8 @@ exports.hashError = function(d){return "Sorry, '%1' doesn't correspond with any 
 exports.help = function(d){return "Help"};
 
 exports.hintTitle = function(d){return "Hint:"};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "You are using all of the necessary types of blocks but not in the right way."};
 

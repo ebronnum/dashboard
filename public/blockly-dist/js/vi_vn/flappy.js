@@ -4718,6 +4718,14 @@ exports.dialogCancel = function(d){return "Huỷ"};
 
 exports.dialogOK = function(d){return "Đồng ý"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "Miếng ghép được \"Lặp lại\" hay \"Nếu\" cần có những miếng ghép bên trong để hoạt động. Đảm bảo là miếng gạch đó khớp hoàn toàn phần ở trong của miếng gạch kia."};
 
 exports.extraTopBlocks = function(d){return "Bạn có khối phụ không gắn liền với một sự kiện khối."};
@@ -4733,6 +4741,8 @@ exports.hashError = function(d){return "Xin lỗi, '%1' không tương ứng v�
 exports.help = function(d){return "Trợ Giúp"};
 
 exports.hintTitle = function(d){return "Gợi ý:"};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "Bạn đã dùng tất cả các khối cần thiết, nhưng không đúng cách."};
 

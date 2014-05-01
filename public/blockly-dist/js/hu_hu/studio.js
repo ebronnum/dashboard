@@ -5392,6 +5392,14 @@ exports.dialogCancel = function(d){return "Mégsem"};
 
 exports.dialogOK = function(d){return "OK"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "Akkor van értelme az \"Ismétel\" vagy a \"Ha\" blokknak, ha van  bennük egy vagy több blokk. Bizonyosodj meg róla, hogy a belső blokk megfelelően illeszkedik a külső blokkhoz."};
 
 exports.extraTopBlocks = function(d){return "Van egy blokk, ami nincs csatolva egyetlen eseményblokkhoz se."};
@@ -5407,6 +5415,8 @@ exports.hashError = function(d){return "Sajnálom, de \"%1\" nem felel meg egyet
 exports.help = function(d){return "Segítség"};
 
 exports.hintTitle = function(d){return "Tanács:"};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "Minden szükséges blokkot felhasználtál, de nem megfelelően."};
 

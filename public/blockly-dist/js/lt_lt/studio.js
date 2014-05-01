@@ -5401,6 +5401,14 @@ exports.dialogCancel = function(d){return "Atšaukti"};
 
 exports.dialogOK = function(d){return "gerai"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "„Kartojimo“ arba „Jei“ blokelių viduje reikia įdėti kitus blokelius, kad jie veiktų. Įsitikink, kad jie yra gerai sukibę vienas su kitu."};
 
 exports.extraTopBlocks = function(d){return "Tu panaudojai keletą blokų, kurie nėra sujungti su būtinuoju blokeliu."};
@@ -5416,6 +5424,8 @@ exports.hashError = function(d){return "Atsiprašome, '%1' nesutampa su jokia į
 exports.help = function(d){return "pagalba"};
 
 exports.hintTitle = function(d){return "Patarimas:"};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "Tu naudoji visus būtinus blokelius, tačiau netinkamai."};
 

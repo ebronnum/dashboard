@@ -5392,6 +5392,14 @@ exports.dialogCancel = function(d){return "取消"};
 
 exports.dialogOK = function(d){return "確定"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "\"重複\"和\"如果\"程式積木需要包含其它積木在裏面才能正常運作, 請檢查裏面是否有安排適當的程式積木."};
 
 exports.extraTopBlocks = function(d){return "你有一些程式積木還沒有加到事件積木中。"};
@@ -5407,6 +5415,8 @@ exports.hashError = function(d){return "對不起，'%1' 無法對應任何已�
 exports.help = function(d){return "說明"};
 
 exports.hintTitle = function(d){return "提示："};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "您已使用了所有必要類型的程式積木，但方式不太正確。"};
 

@@ -3526,6 +3526,14 @@ exports.dialogCancel = function(d){return "Откажи"};
 
 exports.dialogOK = function(d){return "У реду"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "Да би блок \"Понављај\" или  \"Ако\" радио, у њега треба уградити друге блокове. Постарајте се да је унутрашњи блок правилно убачен у спољни блок."};
 
 exports.extraTopBlocks = function(d){return "Имаш блокове који нису повезани са основним блоком."};
@@ -3541,6 +3549,8 @@ exports.hashError = function(d){return "Жао нам је, '%1' не одгов
 exports.help = function(d){return "Помоћ"};
 
 exports.hintTitle = function(d){return "Савет:"};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "Користиш све неопходне типове блокова, али не на прави начин."};
 

@@ -3513,6 +3513,14 @@ exports.dialogCancel = function(d){return "キャンセル"};
 
 exports.dialogOK = function(d){return "OK"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "”Repeat”または\"If\"のブロックを動作をさせるためには内側に別のブロックが必要になります。内側のブロックが構成されているブロック 内に適切にはめ込まれているか確認をしてください。\n\n\n"};
 
 exports.extraTopBlocks = function(d){return "イベントブロックに付いていない余分なブロックがあります。"};
@@ -3528,6 +3536,8 @@ exports.hashError = function(d){return "申し訳ありませんが、'%1'は保
 exports.help = function(d){return "ヘルプ"};
 
 exports.hintTitle = function(d){return "ヒント:"};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "構成に必要なブロックをすべて使っていますが、使い方が適切ではありません。"};
 

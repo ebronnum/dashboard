@@ -2210,9 +2210,9 @@ exports.install = function(blockly, skin) {
     },
     generateBlocksForDirection: function(direction) {
       generator["maze_move" + direction] = SimpleMove.generateCodeGenerator(direction);
-      blockly.Blocks['maze_move' + direction] = SimpleMove.generateBlock(direction);
+      blockly.Blocks['maze_move' + direction] = SimpleMove.generateMoveBlock(direction);
     },
-    generateBlock: function(direction) {
+    generateMoveBlock: function(direction) {
       var directionConfig = SimpleMove.DIRECTION_CONFIGS[direction];
       return {
         helpUrl: '',
@@ -7301,6 +7301,14 @@ exports.dialogCancel = function(d){return "בטל"};
 
 exports.dialogOK = function(d){return "אישור"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "בלוקי ה\"חזור שוב\" או \"אם\" צריכים להיות בעלי בלוקים פנימיים כדי לעבוד. וודא כי הבלוק הפנימי מתאים בבלוק המכיל."};
 
 exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
@@ -7316,6 +7324,8 @@ exports.hashError = function(d){return "סליחה, אך '%1' אינו תואם 
 exports.help = function(d){return "עזרה"};
 
 exports.hintTitle = function(d){return "רמז:"};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "הנך משתמש בכל סוגי הבלוקים הנדרשים אך לא באופן הנכון."};
 

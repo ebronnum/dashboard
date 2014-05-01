@@ -5482,6 +5482,14 @@ exports.dialogCancel = function(d){return "Cancelar"};
 
 exports.dialogOK = function(d){return "OK"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "Os blocos \"Repetir\" ou \"Se\" precisam de incluir blocos dentro para funcionar. Garante que o bloco interno encaixa correctamente dentro do bloco que o contém."};
 
 exports.extraTopBlocks = function(d){return "You have extra blocks that aren't attached to an event block."};
@@ -5497,6 +5505,8 @@ exports.hashError = function(d){return "Desculpa, '%1' não corresponde a qualqu
 exports.help = function(d){return "Ajuda"};
 
 exports.hintTitle = function(d){return "Dica:"};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "Estás a usar todos os tipos necessários de blocos, mas não da forma certa."};
 
