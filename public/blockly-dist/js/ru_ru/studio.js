@@ -54,7 +54,7 @@ module.exports = function(app, levels, options) {
   };
 
   options.skin = options.skinsModule.load(BlocklyApps.assetUrl, options.skinId);
-  blocksCommon.install(Blockly);
+  blocksCommon.install(Blockly, options.skin);
   options.blocksModule.install(Blockly, options.skin);
 
   addReadyListener(function() {
@@ -906,15 +906,11 @@ exports.createCategory = function(name, blocks, custom) {
  */
 'use strict';
 
-var REPEAT_IMAGE_URL = 'media/sharedBlocks/repeat.png';
-var REPEAT_IMAGE_WIDTH = 53;
-var REPEAT_IMAGE_HEIGHT = 57;
-
 /**
  * Install extensions to Blockly's language and JavaScript generator
  * @param blockly instance of Blockly
  */
-exports.install = function(blockly) {
+exports.install = function(blockly, skin) {
   // Re-uses the repeat block generator from core
   blockly.JavaScript.controls_repeat_simplified = blockly.JavaScript.controls_repeat;
 
@@ -924,8 +920,7 @@ exports.install = function(blockly) {
       this.setHelpUrl(blockly.Msg.CONTROLS_REPEAT_HELPURL);
       this.setHSV(322, 0.90, 0.95);
       this.appendStatementInput('DO')
-        .appendTitle(new blockly.FieldImage(
-          blockly.assetUrl(REPEAT_IMAGE_URL), REPEAT_IMAGE_WIDTH, REPEAT_IMAGE_HEIGHT));
+        .appendTitle(new blockly.FieldImage(skin.repeatImage));
       this.appendDummyInput()
         .appendTitle(blockly.Msg.CONTROLS_REPEAT_TITLE_REPEAT)
         .appendTitle(new Blockly.FieldTextInput('10',
@@ -1876,17 +1871,17 @@ exports.load = function(assetUrl, id) {
     staticAvatar: skinUrl('static_avatar.png'),
     winAvatar: skinUrl('win_avatar.png'),
     failureAvatar: skinUrl('failure_avatar.png'),
-    leftArrow: skinUrl('left.png'),
-    downArrow: skinUrl('down.png'),
-    upArrow: skinUrl('up.png'),
-    rightArrow: skinUrl('right.png'),
-    leftJumpArrow: skinUrl('left_jump.png'),
-    downJumpArrow: skinUrl('down_jump.png'),
-    upJumpArrow: skinUrl('up_jump.png'),
-    rightJumpArrow: skinUrl('right_jump.png'),
-    shortLineDraw: skinUrl('short_line_draw.png'),
-    longLineDraw: skinUrl('long_line_draw.png'),
-    offsetLineSlice: skinUrl('offset_line_slice.png'),
+    repeatImage: assetUrl('media/common_images/repeat-arrows.png'),
+    leftArrow: assetUrl('media/common_images/move-west-arrow.png'),
+    downArrow: assetUrl('media/common_images/move-south-arrow.png'),
+    upArrow: assetUrl('media/common_images/move-north-arrow.png'),
+    rightArrow: assetUrl('media/common_images/move-east-arrow.png'),
+    leftJumpArrow: assetUrl('media/common_images/jump-west-arrow.png'),
+    downJumpArrow: assetUrl('media/common_images/jump-south-arrow.png'),
+    upJumpArrow: assetUrl('media/common_images/jump-north-arrow.png'),
+    rightJumpArrow: assetUrl('media/common_images/jump-east-arrow.png'),
+    shortLineDraw: assetUrl('media/common_images/draw-short-line-crayon.png'),
+    longLineDraw: assetUrl('media/common_images/draw-long-line-crayon.png'),
     // Sounds
     startSound: [skinUrl('start.mp3'), skinUrl('start.ogg')],
     winSound: [skinUrl('win.mp3'), skinUrl('win.ogg')],
@@ -2101,6 +2096,9 @@ Slider.bindEvent_ = function(element, name, func) {
 module.exports = Slider;
 
 },{}],11:[function(require,module,exports){
+var tiles = require('./tiles');
+var xFromPosition = tiles.xFromPosition;
+var yFromPosition = tiles.yFromPosition;
 
 exports.SpriteSpeed = {
   VERY_SLOW: 0.04,
@@ -2149,6 +2147,13 @@ exports.setSpriteSpeed = function (id, spriteIndex, value) {
   Studio.sprite[spriteIndex].speed = value;
 };
 
+exports.setSpritePosition = function (id, spriteIndex, value) {
+  BlocklyApps.highlight(id);
+  Studio.setSpritePosition(spriteIndex,
+                           xFromPosition[value],
+                           yFromPosition[value]);
+};
+
 exports.playSound = function(id, soundName) {
   BlocklyApps.highlight(id);
   BlocklyApps.playAudio(soundName, {volume: 0.5});
@@ -2179,7 +2184,7 @@ exports.incrementScore = function(id, player) {
   Studio.displayScore();
 };
 
-},{}],12:[function(require,module,exports){
+},{"./tiles":19}],12:[function(require,module,exports){
 /**
  * Blockly App: Studio
  *
@@ -2193,6 +2198,7 @@ var codegen = require('../codegen');
 var tiles = require('./tiles');
 
 var Direction = tiles.Direction;
+var Position = tiles.Position;
 var Emotions = tiles.Emotions;
 
 var generateSetterCode = function (opts) {
@@ -2424,6 +2430,58 @@ exports.install = function(blockly, skin) {
     // Generate JavaScript for stopping the movement of a sprite.
     return 'Studio.stop(\'block_id_' + this.id + '\', ' +
         (this.getTitleValue('SPRITE') || '0') + ');\n';
+  };
+
+  blockly.Blocks.studio_setSpritePosition = {
+    // Block for jumping a sprite to different position.
+    helpUrl: '',
+    init: function() {
+      var dropdownArray =
+          this.SPRITE.slice(0, blockly.Blocks.studio_spriteCount);
+      var dropdown = new blockly.FieldDropdown(this.VALUES);
+      dropdown.setValue(this.VALUES[1][1]); // default to top-left
+      this.setHSV(184, 1.00, 0.74);
+      if (blockly.Blocks.studio_spriteCount > 1) {
+        this.appendDummyInput()
+          .appendTitle(new blockly.FieldDropdown(dropdownArray), 'SPRITE');
+      } else {
+        this.appendDummyInput()
+          .appendTitle(msg.setSprite());
+      }
+      this.appendDummyInput()
+        .appendTitle(dropdown, 'VALUE');
+      this.setPreviousStatement(true);
+      this.setInputsInline(true);
+      this.setNextStatement(true);
+      this.setTooltip(msg.setSpritePositionTooltip());
+    }
+  };
+
+  blockly.Blocks.studio_setSpritePosition.SPRITE =
+      [[msg.setSprite1(), '0'],
+       [msg.setSprite2(), '1'],
+       [msg.setSprite3(), '2'],
+       [msg.setSprite4(), '3'],
+       [msg.setSprite5(), '4'],
+       [msg.setSprite6(), '5']];
+  
+  blockly.Blocks.studio_setSpritePosition.VALUES =
+      [[msg.positionRandom(), 'random'],
+       [msg.positionTopLeft(), Position.TOPLEFT.toString()],
+       [msg.positionTopCenter(), Position.TOPCENTER.toString()],
+       [msg.positionTopRight(), Position.TOPRIGHT.toString()],
+       [msg.positionMiddleLeft(), Position.MIDDLELEFT.toString()],
+       [msg.positionMiddleCenter(), Position.MIDDLECENTER.toString()],
+       [msg.positionMiddleRight(), Position.MIDDLERIGHT.toString()],
+       [msg.positionBottomLeft(), Position.BOTTOMLEFT.toString()],
+       [msg.positionBottomCenter(), Position.BOTTOMCENTER.toString()],
+       [msg.positionBottomRight(), Position.BOTTOMRIGHT.toString()]];
+
+  generator.studio_setSpritePosition = function() {
+    return generateSetterCode({
+      ctx: this,
+      extraParams: (this.getTitleValue('SPRITE') || '0'),
+      name: 'setSpritePosition'});
   };
 
   blockly.Blocks.studio_move = {
@@ -2887,6 +2945,12 @@ var tb = blockUtils.createToolbox;
 var blockOfType = blockUtils.blockOfType;
 var createCategory = blockUtils.createCategory;
 
+var defaultSayBlock = function () {
+  return '<block type="studio_saySprite"><title name="TEXT">' +
+          msg.defaultSayText() +
+          '</title></block>';
+};
+
 /*
  * Configuration for all levels.
  */
@@ -2917,7 +2981,7 @@ module.exports = {
     'timeoutFailureTick': 100,
     'toolbox':
       tb('<block type="studio_moveDistance"><title name="DIR">2</title></block>' +
-         blockOfType('studio_saySprite')),
+         defaultSayBlock()),
     'startBlocks':
      '<block type="studio_whenGameStarts" deletable="false" x="20" y="20"></block>'
   },
@@ -2941,7 +3005,7 @@ module.exports = {
     'timeoutFailureTick': 100,
     'toolbox':
       tb('<block type="studio_moveDistance"><title name="DIR">2</title></block>' +
-         blockOfType('studio_saySprite')),
+         defaultSayBlock()),
     'startBlocks':
      '<block type="studio_whenGameStarts" deletable="false" x="20" y="20"></block>'
   },
@@ -2972,7 +3036,7 @@ module.exports = {
     'timeoutFailureTick': 200,
     'toolbox':
       tb('<block type="studio_moveDistance"><title name="DIR">2</title></block>' +
-         blockOfType('studio_saySprite')),
+         defaultSayBlock()),
     'startBlocks':
      '<block type="studio_whenGameStarts" deletable="false" x="20" y="20"></block> \
       <block type="studio_whenSpriteCollided" deletable="false" x="20" y="120"></block>'
@@ -3002,7 +3066,7 @@ module.exports = {
     ],
     'toolbox':
       tb(blockOfType('studio_move') +
-         blockOfType('studio_saySprite')),
+         defaultSayBlock()),
     'startBlocks':
      '<block type="studio_whenLeft" deletable="false" x="20" y="20"></block> \
       <block type="studio_whenRight" deletable="false" x="180" y="20"></block> \
@@ -3030,7 +3094,7 @@ module.exports = {
     'timeoutFailureTick': 200,
     'toolbox':
       tb(blockOfType('studio_moveDistance') +
-         blockOfType('studio_saySprite')),
+         defaultSayBlock()),
     'startBlocks':
      '<block type="studio_whenGameIsRunning" deletable="false" x="20" y="20"></block>'
   },
@@ -3061,7 +3125,7 @@ module.exports = {
     'toolbox':
       tb(blockOfType('studio_moveDistance') +
          blockOfType('studio_move') +
-         blockOfType('studio_saySprite')),
+         defaultSayBlock()),
     'minWorkspaceHeight': 600,
     'startBlocks':
      '<block type="studio_whenLeft" deletable="false" x="20" y="20"> \
@@ -3105,6 +3169,7 @@ module.exports = {
       'upButton'
     ],
     'minWorkspaceHeight': 800,
+    'spritesHiddenToStart': true,
     'freePlay': true,
     'map': [
       [0,16, 0, 0, 0,16, 0, 0],
@@ -3125,7 +3190,8 @@ module.exports = {
          blockOfType('studio_stop') +
          blockOfType('studio_playSound') +
          blockOfType('studio_incrementScore') +
-         blockOfType('studio_saySprite') +
+         defaultSayBlock() +
+         blockOfType('studio_setSpritePosition') +
          blockOfType('studio_setSpriteSpeed') +
          blockOfType('studio_setSpriteEmotion') +
          blockOfType('studio_setBackground') +
@@ -3150,6 +3216,7 @@ module.exports = {
       'upButton'
     ],
     'minWorkspaceHeight': 800,
+    'spritesHiddenToStart': true,
     'freePlay': true,
     'map': [
       [0,16, 0, 0, 0,16, 0, 0],
@@ -3168,7 +3235,8 @@ module.exports = {
                           blockOfType('studio_stop') +
                           blockOfType('studio_playSound') +
                           blockOfType('studio_incrementScore') +
-                          blockOfType('studio_saySprite') +
+                          defaultSayBlock() +
+                          blockOfType('studio_setSpritePosition') +
                           blockOfType('studio_setSpriteSpeed') +
                           blockOfType('studio_setSpriteEmotion') +
                           blockOfType('studio_setBackground') +
@@ -3429,6 +3497,7 @@ var loadLevel = function() {
   Studio.timeoutFailureTick = level.timeoutFailureTick || Infinity;
   Studio.minWorkspaceHeight = level.minWorkspaceHeight;
   Studio.spriteStartingImage = level.spriteStartingImage;
+  Studio.spritesHiddenToStart = level.spritesHiddenToStart;
   Studio.softButtons_ = level.softButtons || [];
 
   // Override scalars.
@@ -4098,13 +4167,16 @@ BlocklyApps.reset = function(first) {
     Studio.sprite[i].queuedY = 0;
     Studio.sprite[i].queuedYContext = -1;
     Studio.sprite[i].flags = 0;
-    Studio.sprite[i].dir = 0;
+    Studio.sprite[i].dir = Direction.NONE;
     Studio.sprite[i].displayDir = Direction.SOUTH;
     Studio.sprite[i].emotion = Emotions.NORMAL;
     Studio.sprite[i].xMoveQueue = [];
     Studio.sprite[i].yMoveQueue = [];
     
-    Studio.setSprite(i, spriteStartingSkins[(i + skinBias) % numStartingSkins]);
+    Studio.setSprite(i,
+                     Studio.spritesHiddenToStart ?
+                      "hidden" :
+                      spriteStartingSkins[(i + skinBias) % numStartingSkins]);
     Studio.displaySprite(i);
     document.getElementById('speechBubble' + i)
       .setAttribute('visibility', 'hidden');
@@ -4464,12 +4536,12 @@ Studio.displaySprite = function(i) {
   var yCoordPrev = spriteClipRect.getAttribute('y');
   
   var dirPrev = Studio.sprite[i].dir;
-  if (dirPrev === 0) {
+  if (dirPrev === Direction.NONE) {
     // direction not yet set, start at SOUTH (forward facing)
     Studio.sprite[i].dir = Direction.SOUTH;
   }
   else if ((xCoord != xCoordPrev) || (yCoord != yCoordPrev)) {
-    Studio.sprite[i].dir = 0;
+    Studio.sprite[i].dir = Direction.NONE;
     if (xCoord < xCoordPrev) {
       Studio.sprite[i].dir |= Direction.WEST;
     } else if (xCoord > xCoordPrev) {
@@ -4602,7 +4674,7 @@ Studio.saySprite = function (executionCtx, index, text) {
   Studio.sayQueues[executionCtx].push(sayCmd);
 };
 
-Studio.stop = function (spriteIndex) {
+Studio.stop = function (spriteIndex, dontResetCollisions) {
   Studio.sprite[spriteIndex].queuedYContext = -1;
   Studio.sprite[spriteIndex].queuedY = 0;
   Studio.sprite[spriteIndex].yMoveQueue = [];
@@ -4611,14 +4683,32 @@ Studio.stop = function (spriteIndex) {
   Studio.sprite[spriteIndex].xMoveQueue = [];
   Studio.sprite[spriteIndex].flags &=
     ~(SpriteFlags.LOOPING_MOVE_Y_PENDING | SpriteFlags.LOOPING_MOVE_X_PENDING);
-  // Reset collisionMask so the next movement will fire another collision
-  // event against the same sprite. This makes it easier to write code that
-  // says "when sprite X touches Y" => "stop sprite X", and have it do what
-  // you expect it to do...
-  
-  // TBD: should we cancel this sprite from the collisionMask of the other
-  // sprites?
-  Studio.sprite[spriteIndex].collisionMask = 0;
+
+  if (!dontResetCollisions) {
+    // Reset collisionMasks so the next movement will fire another collision
+    // event against the same sprite if needed. This makes it easier to write code
+    // that says "when sprite X touches Y" => "stop sprite X", and have it do what
+    // you expect it to do...
+    Studio.sprite[spriteIndex].collisionMask = 0;
+    for (var i = 0; i < Studio.spriteCount; i++) {
+      if (i === spriteIndex) {
+        continue;
+      }
+      Studio.sprite[i].collisionMask &= ~(Math.pow(2, spriteIndex));
+    }
+  }
+};
+
+Studio.setSpritePosition = function (index, x, y) {
+  var samePosition =
+      (Studio.sprite[index].x === x && Studio.sprite[index].y === y);
+
+  // Don't reset collisions inside stop() if we're in the same position
+  Studio.stop(index, samePosition);
+  Studio.sprite[index].x = x;
+  Studio.sprite[index].y = y;
+  // Reset to "no direction" so no turn animation will take place
+  Studio.sprite[index].dir = Direction.NONE;
 };
 
 Studio.moveSingle = function (spriteIndex, dir) {
@@ -4770,6 +4860,7 @@ var checkFinished = function () {
 'use strict';
 
 exports.Direction = {
+  NONE: 0,
   NORTH: 1,
   EAST: 2,
   SOUTH: 4,
@@ -4780,11 +4871,51 @@ exports.Direction = {
   NORTHWEST: 9,
 };
 
-var Dir = exports.Direction;
+exports.Position = {
+  TOPLEFT: 1,
+  TOPCENTER: 2,
+  TOPRIGHT: 3,
+  MIDDLELEFT: 4,
+  MIDDLECENTER: 5,
+  MIDDLERIGHT: 6,
+  BOTTOMLEFT: 7,
+  BOTTOMCENTER: 8,
+  BOTTOMRIGHT: 9,
+};
+
+//
+// Coordinates for each Position (revisit when Sprite size is variable)
+//
+
+var Pos = exports.Position;
+
+exports.xFromPosition = {};
+exports.xFromPosition[Pos.TOPLEFT] = 0;
+exports.xFromPosition[Pos.TOPCENTER] = 3;
+exports.xFromPosition[Pos.TOPRIGHT] = 6;
+exports.xFromPosition[Pos.MIDDLELEFT] = 0;
+exports.xFromPosition[Pos.MIDDLECENTER] = 3;
+exports.xFromPosition[Pos.MIDDLERIGHT] = 6;
+exports.xFromPosition[Pos.BOTTOMLEFT] = 0;
+exports.xFromPosition[Pos.BOTTOMCENTER] = 3;
+exports.xFromPosition[Pos.BOTTOMRIGHT] = 6;
+
+exports.yFromPosition = {};
+exports.yFromPosition[Pos.TOPLEFT] = 0;
+exports.yFromPosition[Pos.TOPCENTER] = 0;
+exports.yFromPosition[Pos.TOPRIGHT] = 0;
+exports.yFromPosition[Pos.MIDDLELEFT] = 3;
+exports.yFromPosition[Pos.MIDDLECENTER] = 3;
+exports.yFromPosition[Pos.MIDDLERIGHT] = 3;
+exports.yFromPosition[Pos.BOTTOMLEFT] = 6;
+exports.yFromPosition[Pos.BOTTOMCENTER] = 6;
+exports.yFromPosition[Pos.BOTTOMRIGHT] = 6;
 
 //
 // Turn state machine, use as NextTurn[fromDir][toDir]
 //
+
+var Dir = exports.Direction;
 
 exports.NextTurn = {};
 
@@ -5274,6 +5405,14 @@ exports.dialogCancel = function(d){return "Отменить"};
 
 exports.dialogOK = function(d){return "Продолжить"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "Блокам \"повторять\" или \"если\" необходимо иметь внутри другие блоки для работы. Убедись  в том, что внутренний блок должным образом подходит к блоку, в котором он содержится."};
 
 exports.extraTopBlocks = function(d){return "У вас есть дополнительные блоки, которые не присоединены к основному блоку."};
@@ -5289,6 +5428,8 @@ exports.hashError = function(d){return "К сожалению, «%1» не со�
 exports.help = function(d){return "Справка"};
 
 exports.hintTitle = function(d){return "Подсказка:"};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "Ты используешь все необходимые виды блоков, но неправильным способом."};
 
@@ -5404,6 +5545,8 @@ exports.catVariables = function(d){return "Variables"};
 
 exports.continue = function(d){return "Продолжить"};
 
+exports.defaultSayText = function(d){return "type here"};
+
 exports.finalLevel = function(d){return "Поздравляю! Последняя головоломка решена."};
 
 exports.incrementOpponentScore = function(d){return "increment opponent score"};
@@ -5504,6 +5647,26 @@ exports.playSoundWinPoint2 = function(d){return "play win point 2 sound"};
 
 exports.playSoundWood = function(d){return "play wood sound"};
 
+exports.positionTopLeft = function(d){return "to the top left position"};
+
+exports.positionTopCenter = function(d){return "to the top center position"};
+
+exports.positionTopRight = function(d){return "to the top right position"};
+
+exports.positionMiddleLeft = function(d){return "to the middle left position"};
+
+exports.positionMiddleCenter = function(d){return "to the middle center position"};
+
+exports.positionMiddleRight = function(d){return "to the middle right position"};
+
+exports.positionBottomLeft = function(d){return "to the bottom left position"};
+
+exports.positionBottomCenter = function(d){return "to the bottom center position"};
+
+exports.positionBottomRight = function(d){return "to the bottom right position"};
+
+exports.positionRandom = function(d){return "to the random position"};
+
 exports.reinfFeedbackMsg = function(d){return "You can press the \"Try again\" button to go back to playing your story."};
 
 exports.repeatUntil = function(d){return "повторять до"};
@@ -5554,7 +5717,7 @@ exports.setSpriteEmotionRandom = function(d){return "to a random emotion"};
 
 exports.setSpriteEmotionSad = function(d){return "to a sad emotion"};
 
-exports.setSpriteEmotionTooltip = function(d){return "Sets the sprite emotion"};
+exports.setSpriteEmotionTooltip = function(d){return "Sets the actor emotion"};
 
 exports.setSpriteGreen = function(d){return "to a green image"};
 
@@ -5569,6 +5732,8 @@ exports.setSpritePurple = function(d){return "to a purple image"};
 exports.setSpriteRandom = function(d){return "to a random image"};
 
 exports.setSpriteWitch = function(d){return "to a witch image"};
+
+exports.setSpritePositionTooltip = function(d){return "Instantly moves an actor to the specified location."};
 
 exports.setSpriteTooltip = function(d){return "Sets the character image"};
 
@@ -5608,19 +5773,19 @@ exports.setSprite6 = function(d){return "set character 6"};
 
 exports.stopSprite = function(d){return "stop"};
 
-exports.stopSprite1 = function(d){return "stop sprite 1"};
+exports.stopSprite1 = function(d){return "stop actor 1"};
 
-exports.stopSprite2 = function(d){return "stop sprite 2"};
+exports.stopSprite2 = function(d){return "stop actor 2"};
 
-exports.stopSprite3 = function(d){return "stop sprite 3"};
+exports.stopSprite3 = function(d){return "stop actor 3"};
 
-exports.stopSprite4 = function(d){return "stop sprite 4"};
+exports.stopSprite4 = function(d){return "stop actor 4"};
 
-exports.stopSprite5 = function(d){return "stop sprite 5"};
+exports.stopSprite5 = function(d){return "stop actor 5"};
 
-exports.stopSprite6 = function(d){return "stop sprite 6"};
+exports.stopSprite6 = function(d){return "stop actor 6"};
 
-exports.stopTooltip = function(d){return "Stops a sprite's movement."};
+exports.stopTooltip = function(d){return "Stops an actor's movement."};
 
 exports.whenDown = function(d){return "when Down arrow"};
 
@@ -5642,7 +5807,7 @@ exports.whenRight = function(d){return "when Right arrow"};
 
 exports.whenRightTooltip = function(d){return "Execute the actions below when the Right arrow button is pressed."};
 
-exports.whenSpriteClicked = function(d){return "when sprite clicked"};
+exports.whenSpriteClicked = function(d){return "when actor clicked"};
 
 exports.whenSpriteClicked1 = function(d){return "when character 1 clicked"};
 
