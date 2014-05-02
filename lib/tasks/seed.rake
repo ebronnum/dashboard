@@ -21,41 +21,7 @@ namespace :seed do
   end
 
   task games: :environment do
-    Game.transaction do
-      Game.delete_all # use delete instead of destroy so callbacks are not called
-      Game.connection.execute("ALTER TABLE games auto_increment = 1")
-      game_id = 0
-      Game.create!(id: game_id += 1, name: 'Maze', app: 'maze', intro_video: Video.find_by_key('maze_intro'))
-      Game.create!(id: game_id += 1, name: 'Artist', app: 'turtle', intro_video: Video.find_by_key('artist_intro'))
-      Game.create!(id: game_id += 1, name: 'Artist2', app: 'turtle')
-      Game.create!(id: game_id += 1, name: 'Farmer', app: 'maze', intro_video: Video.find_by_key('farmer_intro'))
-      Game.create!(id: game_id += 1, name: 'Artist3', app: 'turtle')
-      Game.create!(id: game_id += 1, name: 'Farmer2', app: 'maze')
-      Game.create!(id: game_id += 1, name: 'Artist4', app: 'turtle')
-      Game.create!(id: game_id += 1, name: 'Farmer3', app: 'maze')
-      Game.create!(id: game_id += 1, name: 'Artist5', app: 'turtle')
-      Game.create!(id: game_id += 1, name: 'MazeEC', app: 'maze', intro_video: Video.find_by_key('maze_intro'))
-      Game.create!(id: game_id += 1, name: 'Unplug1', app: 'unplug')
-      Game.create!(id: game_id += 1, name: 'Unplug2', app: 'unplug')
-      Game.create!(id: game_id += 1, name: 'Unplug3', app: 'unplug')
-      Game.create!(id: game_id += 1, name: 'Unplug4', app: 'unplug')
-      Game.create!(id: game_id += 1, name: 'Unplug5', app: 'unplug')
-      Game.create!(id: game_id += 1, name: 'Unplug6', app: 'unplug')
-      Game.create!(id: game_id += 1, name: 'Unplug7', app: 'unplug')
-      Game.create!(id: game_id += 1, name: 'Unplug8', app: 'unplug')
-      Game.create!(id: game_id += 1, name: 'Unplug9', app: 'unplug')
-      Game.create!(id: game_id += 1, name: 'Unplug10', app: 'unplug')
-      Game.create!(id: game_id += 1, name: 'Unplug11', app: 'unplug')
-      Game.create!(id: game_id += 1, name: 'Bounce', app: 'bounce')
-      Game.create!(id: game_id += 1, name: "Custom", app: "turtle")
-      Game.create!(id: game_id += 1, name: 'Flappy', app: 'flappy', intro_video: Video.find_by_key('flappy_intro'))
-      Game.create!(id: game_id += 1, name: "CustomMaze", app: "maze")
-      Game.create!(id: game_id += 1, name: 'Multi', app: 'multi')
-      Game.create!(id: game_id += 1, name: 'Multi', app: 'multi')
-      Game.create!(id: game_id += 1, name: "Studio", app: "studio")
-      Game.create!(id: game_id += 1, name: "Jigsaw", app: 'jigsaw')
-      Game.create!(id: game_id += 1, name: "MazeStep", app: "maze")
-    end
+    Game.setup
   end
 
   SCRIPTS_GLOB = Dir.glob('config/scripts/**/*.script').flatten

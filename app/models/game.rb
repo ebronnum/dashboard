@@ -43,6 +43,7 @@ class Game < ActiveRecord::Base
         CustomMaze:maze
         Studio:studio
         Jigsaw:jigsaw
+        MazeStep:maze
         Multi:multi
       ).each_with_index do |game, id|
         name, app, intro_video = game.split ':'

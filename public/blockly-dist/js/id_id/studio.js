@@ -54,7 +54,7 @@ module.exports = function(app, levels, options) {
   };
 
   options.skin = options.skinsModule.load(BlocklyApps.assetUrl, options.skinId);
-  blocksCommon.install(Blockly);
+  blocksCommon.install(Blockly, options.skin);
   options.blocksModule.install(Blockly, options.skin);
 
   addReadyListener(function() {
@@ -906,15 +906,11 @@ exports.createCategory = function(name, blocks, custom) {
  */
 'use strict';
 
-var REPEAT_IMAGE_URL = 'media/sharedBlocks/repeat.png';
-var REPEAT_IMAGE_WIDTH = 53;
-var REPEAT_IMAGE_HEIGHT = 57;
-
 /**
  * Install extensions to Blockly's language and JavaScript generator
  * @param blockly instance of Blockly
  */
-exports.install = function(blockly) {
+exports.install = function(blockly, skin) {
   // Re-uses the repeat block generator from core
   blockly.JavaScript.controls_repeat_simplified = blockly.JavaScript.controls_repeat;
 
@@ -924,8 +920,7 @@ exports.install = function(blockly) {
       this.setHelpUrl(blockly.Msg.CONTROLS_REPEAT_HELPURL);
       this.setHSV(322, 0.90, 0.95);
       this.appendStatementInput('DO')
-        .appendTitle(new blockly.FieldImage(
-          blockly.assetUrl(REPEAT_IMAGE_URL), REPEAT_IMAGE_WIDTH, REPEAT_IMAGE_HEIGHT));
+        .appendTitle(new blockly.FieldImage(skin.repeatImage));
       this.appendDummyInput()
         .appendTitle(blockly.Msg.CONTROLS_REPEAT_TITLE_REPEAT)
         .appendTitle(new Blockly.FieldTextInput('10',
@@ -1876,17 +1871,17 @@ exports.load = function(assetUrl, id) {
     staticAvatar: skinUrl('static_avatar.png'),
     winAvatar: skinUrl('win_avatar.png'),
     failureAvatar: skinUrl('failure_avatar.png'),
-    leftArrow: skinUrl('left.png'),
-    downArrow: skinUrl('down.png'),
-    upArrow: skinUrl('up.png'),
-    rightArrow: skinUrl('right.png'),
-    leftJumpArrow: skinUrl('left_jump.png'),
-    downJumpArrow: skinUrl('down_jump.png'),
-    upJumpArrow: skinUrl('up_jump.png'),
-    rightJumpArrow: skinUrl('right_jump.png'),
-    shortLineDraw: skinUrl('short_line_draw.png'),
-    longLineDraw: skinUrl('long_line_draw.png'),
-    offsetLineSlice: skinUrl('offset_line_slice.png'),
+    repeatImage: assetUrl('media/common_images/repeat-arrows.png'),
+    leftArrow: assetUrl('media/common_images/move-west-arrow.png'),
+    downArrow: assetUrl('media/common_images/move-south-arrow.png'),
+    upArrow: assetUrl('media/common_images/move-north-arrow.png'),
+    rightArrow: assetUrl('media/common_images/move-east-arrow.png'),
+    leftJumpArrow: assetUrl('media/common_images/jump-west-arrow.png'),
+    downJumpArrow: assetUrl('media/common_images/jump-south-arrow.png'),
+    upJumpArrow: assetUrl('media/common_images/jump-north-arrow.png'),
+    rightJumpArrow: assetUrl('media/common_images/jump-east-arrow.png'),
+    shortLineDraw: assetUrl('media/common_images/draw-short-line-crayon.png'),
+    longLineDraw: assetUrl('media/common_images/draw-long-line-crayon.png'),
     // Sounds
     startSound: [skinUrl('start.mp3'), skinUrl('start.ogg')],
     winSound: [skinUrl('win.mp3'), skinUrl('win.ogg')],
@@ -2950,6 +2945,12 @@ var tb = blockUtils.createToolbox;
 var blockOfType = blockUtils.blockOfType;
 var createCategory = blockUtils.createCategory;
 
+var defaultSayBlock = function () {
+  return '<block type="studio_saySprite"><title name="TEXT">' +
+          msg.defaultSayText() +
+          '</title></block>';
+};
+
 /*
  * Configuration for all levels.
  */
@@ -2980,7 +2981,7 @@ module.exports = {
     'timeoutFailureTick': 100,
     'toolbox':
       tb('<block type="studio_moveDistance"><title name="DIR">2</title></block>' +
-         blockOfType('studio_saySprite')),
+         defaultSayBlock()),
     'startBlocks':
      '<block type="studio_whenGameStarts" deletable="false" x="20" y="20"></block>'
   },
@@ -3004,7 +3005,7 @@ module.exports = {
     'timeoutFailureTick': 100,
     'toolbox':
       tb('<block type="studio_moveDistance"><title name="DIR">2</title></block>' +
-         blockOfType('studio_saySprite')),
+         defaultSayBlock()),
     'startBlocks':
      '<block type="studio_whenGameStarts" deletable="false" x="20" y="20"></block>'
   },
@@ -3035,7 +3036,7 @@ module.exports = {
     'timeoutFailureTick': 200,
     'toolbox':
       tb('<block type="studio_moveDistance"><title name="DIR">2</title></block>' +
-         blockOfType('studio_saySprite')),
+         defaultSayBlock()),
     'startBlocks':
      '<block type="studio_whenGameStarts" deletable="false" x="20" y="20"></block> \
       <block type="studio_whenSpriteCollided" deletable="false" x="20" y="120"></block>'
@@ -3065,7 +3066,7 @@ module.exports = {
     ],
     'toolbox':
       tb(blockOfType('studio_move') +
-         blockOfType('studio_saySprite')),
+         defaultSayBlock()),
     'startBlocks':
      '<block type="studio_whenLeft" deletable="false" x="20" y="20"></block> \
       <block type="studio_whenRight" deletable="false" x="180" y="20"></block> \
@@ -3093,7 +3094,7 @@ module.exports = {
     'timeoutFailureTick': 200,
     'toolbox':
       tb(blockOfType('studio_moveDistance') +
-         blockOfType('studio_saySprite')),
+         defaultSayBlock()),
     'startBlocks':
      '<block type="studio_whenGameIsRunning" deletable="false" x="20" y="20"></block>'
   },
@@ -3124,7 +3125,7 @@ module.exports = {
     'toolbox':
       tb(blockOfType('studio_moveDistance') +
          blockOfType('studio_move') +
-         blockOfType('studio_saySprite')),
+         defaultSayBlock()),
     'minWorkspaceHeight': 600,
     'startBlocks':
      '<block type="studio_whenLeft" deletable="false" x="20" y="20"> \
@@ -3189,7 +3190,7 @@ module.exports = {
          blockOfType('studio_stop') +
          blockOfType('studio_playSound') +
          blockOfType('studio_incrementScore') +
-         blockOfType('studio_saySprite') +
+         defaultSayBlock() +
          blockOfType('studio_setSpritePosition') +
          blockOfType('studio_setSpriteSpeed') +
          blockOfType('studio_setSpriteEmotion') +
@@ -3234,7 +3235,7 @@ module.exports = {
                           blockOfType('studio_stop') +
                           blockOfType('studio_playSound') +
                           blockOfType('studio_incrementScore') +
-                          blockOfType('studio_saySprite') +
+                          defaultSayBlock() +
                           blockOfType('studio_setSpritePosition') +
                           blockOfType('studio_setSpriteSpeed') +
                           blockOfType('studio_setSpriteEmotion') +
@@ -5391,6 +5392,14 @@ exports.dialogCancel = function(d){return "Batal"};
 
 exports.dialogOK = function(d){return "Oke!"};
 
+exports.directionNorthLetter = function(d){return "N"};
+
+exports.directionSouthLetter = function(d){return "S"};
+
+exports.directionEastLetter = function(d){return "E"};
+
+exports.directionWestLetter = function(d){return "W"};
+
 exports.emptyBlocksErrorMsg = function(d){return "Blok \"Ulangi\" atau blok \"Jika\" membutuhkan blok lain di dalamnya supaya bisa bekerja. Pastikan blok yang berada didalam diletakkan secara pas."};
 
 exports.extraTopBlocks = function(d){return "Anda memiliki blok ekstra yang tidak melekat pada sebuah blok acara (event)."};
@@ -5406,6 +5415,8 @@ exports.hashError = function(d){return "Maaf, '%1' tidak sesuai dengan program y
 exports.help = function(d){return "Tolong"};
 
 exports.hintTitle = function(d){return "Tips:"};
+
+exports.jump = function(d){return "jump"};
 
 exports.levelIncompleteError = function(d){return "Anda telah gunakan semua jenis blok yang diperlukan  tetapi tidak dengan cara yang tepat."};
 
@@ -5507,6 +5518,8 @@ exports.catProcedures = function(d){return "Functions"};
 exports.catVariables = function(d){return "Variables"};
 
 exports.continue = function(d){return "Lanjutkan"};
+
+exports.defaultSayText = function(d){return "type here"};
 
 exports.finalLevel = function(d){return "Horee! Anda telah memecahkan teka-teki akhir."};
 
@@ -5678,7 +5691,7 @@ exports.setSpriteEmotionRandom = function(d){return "to a random emotion"};
 
 exports.setSpriteEmotionSad = function(d){return "to a sad emotion"};
 
-exports.setSpriteEmotionTooltip = function(d){return "Sets the sprite emotion"};
+exports.setSpriteEmotionTooltip = function(d){return "Sets the actor emotion"};
 
 exports.setSpriteGreen = function(d){return "to a green image"};
 
@@ -5694,7 +5707,7 @@ exports.setSpriteRandom = function(d){return "to a random image"};
 
 exports.setSpriteWitch = function(d){return "to a witch image"};
 
-exports.setSpritePositionTooltip = function(d){return "Instantly moves a sprite to the specified location."};
+exports.setSpritePositionTooltip = function(d){return "Instantly moves an actor to the specified location."};
 
 exports.setSpriteTooltip = function(d){return "Sets the character image"};
 
@@ -5734,19 +5747,19 @@ exports.setSprite6 = function(d){return "set character 6"};
 
 exports.stopSprite = function(d){return "stop"};
 
-exports.stopSprite1 = function(d){return "stop sprite 1"};
+exports.stopSprite1 = function(d){return "stop actor 1"};
 
-exports.stopSprite2 = function(d){return "stop sprite 2"};
+exports.stopSprite2 = function(d){return "stop actor 2"};
 
-exports.stopSprite3 = function(d){return "stop sprite 3"};
+exports.stopSprite3 = function(d){return "stop actor 3"};
 
-exports.stopSprite4 = function(d){return "stop sprite 4"};
+exports.stopSprite4 = function(d){return "stop actor 4"};
 
-exports.stopSprite5 = function(d){return "stop sprite 5"};
+exports.stopSprite5 = function(d){return "stop actor 5"};
 
-exports.stopSprite6 = function(d){return "stop sprite 6"};
+exports.stopSprite6 = function(d){return "stop actor 6"};
 
-exports.stopTooltip = function(d){return "Stops a sprite's movement."};
+exports.stopTooltip = function(d){return "Stops an actor's movement."};
 
 exports.whenDown = function(d){return "when Down arrow"};
 
@@ -5768,7 +5781,7 @@ exports.whenRight = function(d){return "when Right arrow"};
 
 exports.whenRightTooltip = function(d){return "Execute the actions below when the Right arrow button is pressed."};
 
-exports.whenSpriteClicked = function(d){return "when sprite clicked"};
+exports.whenSpriteClicked = function(d){return "when actor clicked"};
 
 exports.whenSpriteClicked1 = function(d){return "when character 1 clicked"};
 
