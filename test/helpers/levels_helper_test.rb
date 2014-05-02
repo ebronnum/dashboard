@@ -30,6 +30,7 @@ class LevelsHelperTest < ActionView::TestCase
     I18n.locale = NEW_LOCALE
     level, options = blockly_options
     assert_equal I18n.t('data.level.instructions.maze_2_2', locale: NEW_LOCALE), level['instructions']
+    I18n.locale = DEFAULT_LOCALE
   end
 
   test "display custom level instructions instead of localized string" do
