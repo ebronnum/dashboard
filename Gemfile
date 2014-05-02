@@ -3,12 +3,15 @@ ruby '2.0.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.3'
-gem 'rails-i18n', '~> 4.0.0'
 
 gem 'mysql2', '0.3.13'
 gem 'seamless_database_pool'
 
 gem 'le', '2.2.2'
+
+group :staging, :production do
+  gem 'rails-i18n', '~> 4.0.0'
+end
 
 group :development, :test do
   # Use debugger
