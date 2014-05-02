@@ -2,20 +2,21 @@
 
   -data = @level.properties
 
-  %h2= data['title']
-  %p= data['description']
+  %h2= multi_t(data['title'])
+  %p= multi_t(data['description'])
+
+  -# =data_t('multi.' + @level.name, data['title'])
+  -# =multi_t(data['title'])
 
   -if data['style'] == 'radio'
     %div{:style=>'margin-left:20px'}
       %b= data['questions'][0]['text']
       %form#voteform{onsubmit: "return doVote()"}
-        -index = 0
-        -data['answers'].each do |answer|
+        -data['answers'].each_with_index do |answer, i|
           -correct = answer["correct"]
-          %input{id: "choice_#{index}", name: "vote", type: "radio", value: "#{index}", onchange: "radioChanged(#{index})", correct: "#{correct}"}
-            %label{style: "display:inline", for: "choice_#{index}"}= answer['text']
+          %input{id: "choice_#{i}", name: "vote", type: "radio", value: "#{i}", onchange: "radioChanged(#{i})", correct: "#{correct}"}
+            %label{style: "display:inline", for: "choice_#{i}"}= multi_t(answer['text'])
           %br
-          -index += 1
         %br
         %br
       .buttons
@@ -36,11 +37,11 @@
       %div{:style=>'width: 220px; float:left'}
         %ul.sortableq
           -data['questions'].each do |question|
-            %li= question['text']
+            %li= multi_t(question['text'])
       %div{:style=>'width: 220px; float:left'}
         %ul.sortable#answerlist{:style=>'cursor:default'}
           -data['answers'].each do |answer|
-            %li{originalIndex: answer['index']}= answer['text']
+            %li{originalIndex: answer['index']}= multi_t(answer['text'])
       %div{:style=>'clear:both'}
       %br/
       %div

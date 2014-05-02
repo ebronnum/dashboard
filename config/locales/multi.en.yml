@@ -1,9 +1,26 @@
+---
 en:
   data:
     multi:
-      'Multi':
-        title: 'My first multi'
-        desc: 'This lesson is a multi'
-        video: 'HsXaVV6fFDY'
-        download: 'https://s3.amazonaws.com/cdo-videos/new/1-whatisCS-unpluggedactivity.mp4'
-        pdfs: ['multi1']
+      test-brendan:
+        Presidents: Presidents
+        This multiple choice is all about the presidents of the United States.: This
+          multiple choice is all about the presidents of the United States.
+        Who was the first president of the USA?: Who was the first president of the
+          USA?
+        Fred Flintstone: Fred Flintstone
+        Martha Washington: Martha Washington
+        George Washington: George Washington
+        George Jetson: George Jetson
+      test-brendan2:
+        Matching: Matching
+        Some really easy stuff to match.  Drag it around until you get it.: Some really
+          easy stuff to match.  Drag it around until you get it.
+        What color is the sky?: What color is the sky?
+        What's in the ocean?: What's in the ocean?
+        What's Brent's last name?: What's Brent's last name?
+        Where is Brendan from?: Where is Brendan from?
+        blue: blue
+        salt: salt
+        Van Minnen: Van Minnen
+        Sydney: Sydney

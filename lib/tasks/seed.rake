@@ -1,6 +1,6 @@
 require "csv"
 
-require "#{Rails.root}/config/parse_multi.rb"
+require "#{Rails.root}/config/process_multi.rb"
 
 namespace :seed do
   task videos: :environment do
@@ -44,10 +44,14 @@ namespace :seed do
   # explicit execution of "seed:multis"
   task multis: :environment do
     Multi.reset_db
+    multi_strings = {}
     # Parse each .multi file and setup its model.
     Dir.glob('config/scripts/multis/**/*.multi').flatten.each do |script|
-      Multi.setup ParseMulti.new.parse(script)
+      process_multi = ProcessMulti.new
+      Multi.setup process_multi.parse(script)
+      multi_strings.deep_merge! process_multi.get_strings
     end
+    File.write("config/locales/multi.en.yml", multi_strings.to_yaml)
   end
 
   # Generate the database entry from the custom levels json file
@@ -245,6 +249,6 @@ namespace :seed do
 
   task analyze_data: [:ideal_solutions, :frequent_level_sources]
 
-  task all: [:videos, :concepts, :scripts, :multis, :trophies, :prize_providers, :callouts]
+  task all: [:videos, :concepts, :scripts, :trophies, :prize_providers, :callouts]
 
 end
