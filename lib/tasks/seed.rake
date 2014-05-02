@@ -46,7 +46,7 @@ namespace :seed do
     Multi.reset_db
     # Parse each .multi file and setup its model.
     Dir.glob('config/scripts/multis/**/*.multi').flatten.each do |script|
-      Multi.setup parse_multi(script)
+      Multi.setup ParseMulti.new.parse(script)
     end
   end
 

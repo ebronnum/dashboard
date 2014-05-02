@@ -1,4 +1,4 @@
-multi_name 'test-brendan2'
+name 'test-brendan2'
 style 'drag'
 title 'Matching'
 description 'Some really easy stuff to match.  Drag it around until you get it.'

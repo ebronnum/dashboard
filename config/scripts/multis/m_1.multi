@@ -1,4 +1,4 @@
-multi_name 'test-brendan'
+name 'test-brendan'
 style 'radio'
 title 'Presidents'
 description 'This multiple choice is all about the presidents of the United States.'
