@@ -5,9 +5,6 @@
   %h2= multi_t(data['title'])
   %p= multi_t(data['description'])
 
-  -# =data_t('multi.' + @level.name, data['title'])
-  -# =multi_t(data['title'])
-
   -if data['style'] == 'radio'
     %div{:style=>'margin-left:20px'}
       %b= data['questions'][0]['text']
