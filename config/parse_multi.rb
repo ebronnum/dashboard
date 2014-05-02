@@ -47,5 +47,3 @@ class ParseMulti
 
 end
 
-# for testing
-# puts parse_multi("scripts/multis/m_1.multi")
