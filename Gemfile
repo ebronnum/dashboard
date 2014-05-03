@@ -9,10 +9,6 @@ gem 'seamless_database_pool'
 
 gem 'le', '2.2.2'
 
-group :staging, :production do
-  gem 'rails-i18n', '~> 4.0.0'
-end
-
 group :development, :test do
   # Use debugger
   #gem 'debugger' unless ENV['RM_INFO']
@@ -27,8 +23,6 @@ group :development, :test do
   gem 'simplecov', require: false
   gem 'mocha', require: false
   gem "codeclimate-test-reporter", require: false
-
-  gem 'i18nema' # faster locale backend
 end
 
 group :test do
@@ -103,3 +97,4 @@ gem 'kaminari' # pagination
 
 gem 'remotipart' # Ajax file upload
 gem 'stringex', '~> 2.5.2' # Provides String.to_ascii
+gem 'i18nema', group: :I18n  # faster locale backend (active in dev environment or FAST_LOC=true)

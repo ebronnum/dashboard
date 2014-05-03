@@ -38,8 +38,6 @@ module Dashboard
     config.i18n.fallbacks = {}
     config.i18n.default_locale = 'en-us'
 
-    I18n.backend = I18nema::Backend.new if Rails.env.development? || Rails.env.test?
-
     locales = YAML.load_file("#{Rails.root}/config/locales.yml")
     LOCALES = Hash[locales.map {|k, v| [k.downcase, v.class == String ? v.downcase : v]}]
     LOCALES.each do |locale, data|
@@ -51,6 +49,12 @@ module Dashboard
       if data[:fallback]
         config.i18n.fallbacks[locale] = data[:fallback]
       end
+    end
+
+    if ENV['FAST_LOC'] || Rails.env.development?
+      Bundler.require(:I18n)
+      I18n.backend = I18nema::Backend.new
+      I18n.backend.init_translations
     end
 
     config.prize_providers = YAML.load_file("#{Rails.root}/config/prize_providers.yml")
