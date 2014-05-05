@@ -11,7 +11,7 @@ class Artist < Level
 
   def self.create_from_level_builder(params, level_params)
     game = Game.find(params[:game_id])
-    level = create(level_params.merge(user: params[:user], x: params[:x], y: params[:y], start_direction: params[:start_direction], game: game, level_num: 'custom', skin: skins.first))
+    level = create(level_params.merge(user: params[:user], x: params[:x], y: params[:y], start_direction: params[:start_direction], game: game, level_num: 'custom'))
     solution = LevelSource.lookup(level, params[:program])
     level.update(solution_level_source: solution)
     level

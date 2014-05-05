@@ -212,6 +212,22 @@ class LevelsControllerTest < ActionController::TestCase
     assert_not css.empty?
   end
 
+  test "should use first skin as default" do
+    maze = fixture_file_upload("maze_level.csv", "r")
+    game = Game.find_by_name("CustomMaze")
+
+    post :create, :level => {:name => "NewCustomLevel", :instructions => "Some Instructions", :type => 'Maze'}, :game_id => game.id, :program => @program, :maze_source => maze, :size => 8
+    assert_equal Maze.skins.first, assigns(:level).skin
+  end
+
+  test "should use skin from params on create" do
+    maze = fixture_file_upload("maze_level.csv", "r")
+    game = Game.find_by_name("CustomMaze")
+
+    post :create, :level => {:skin => Maze.skins.last, :name => "NewCustomLevel", :instructions => "Some Instructions", :type => 'Maze'}, :game_id => game.id, :program => @program, :maze_source => maze, :size => 8
+    assert_equal Maze.skins.last, assigns(:level).skin
+  end
+
   test "edit form should include skins" do
     level = create(:artist)
     skins = level.class.skins
