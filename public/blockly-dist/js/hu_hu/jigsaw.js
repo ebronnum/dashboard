@@ -2510,7 +2510,6 @@ module.exports = {
         // how close to ghost?
         var dx = Math.abs(400 - pos.x);
         var dy = Math.abs(100 - pos.y);
-        console.log(dx + dy);
         return dx + dy < 80;
       }
     },
