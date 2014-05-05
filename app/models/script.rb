@@ -6,6 +6,7 @@ class Script < ActiveRecord::Base
   has_many :stages
   belongs_to :wrapup_video, foreign_key: 'wrapup_video_id', class_name: 'Video'
   belongs_to :user
+  validates_uniqueness_of :name, allow_nil: false, allow_blank: false, case_sensitive: false
 
   # Hardcoded scriptID constants used throughout the code
   TWENTY_HOUR_ID = 1
@@ -74,15 +75,13 @@ class Script < ActiveRecord::Base
 
   def self.setup(default_scripts, custom_scripts)
     transaction do
-      reset_db
-
       # Load default scripts from yml (csv embedded)
       default_scripts.map { |yml| load_yaml(yml, SCRIPT_MAP) }
       .sort_by { |options, _| options[:id] }
       .map { |options, data| add_script(options, data) }
 
       # Load custom scripts from generate_scripts ruby DSL (csv as intermediate format)
-      custom_scripts.each do |script|
+      custom_scripts.map do |script|
         add_script(
           {name: File.basename(script, ".script"), trophies: false, hidden: true},
           parse_csv(`config/generate_scripts #{script}`, "\t", SCRIPT_MAP),
@@ -93,8 +92,15 @@ class Script < ActiveRecord::Base
   end
 
   def self.add_script(options, data, custom=false)
-    v = 'wrapup_video'; options[v] = Video.find_by_key(options[v]) if options.has_key? v
-    script = Script.where(options).first_or_create
+    options.symbolize_keys!
+    v = :wrapup_video; options[v] = Video.find_by_key(options[v]) if options.has_key? v
+    script_options = options.has_key?(:id) ?
+      {id: options.delete(:id)} :
+      {name: options.delete(:name)}
+    script = Script.find_or_create_by(script_options)
+    puts "options=#{options}, script = #{script}"
+    output = script.update(options)
+    puts "output=#{output}"
     chapter = 0; game_chapter = Hash.new(0)
     script.script_levels = data.map do |row|
       row.symbolize_keys!
