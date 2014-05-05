@@ -70,11 +70,8 @@ class LevelsController < ApplicationController
   # POST /levels.json
   def create
     authorize! :create, :level
-    type_class = level_params[:type].constantize
-
-    # Add some options to params
     params.merge!(user: current_user)
-
+    type_class = level_params[:type].constantize
     begin
       @level = type_class.create_from_level_builder(params, level_params)
     rescue ArgumentError
