@@ -128,6 +128,7 @@ class Script < ActiveRecord::Base
     end
   end
 
+  # script is found/created by 'id' (if provided) otherwise by 'name'
   def self.fetch_script(options)
     options.symbolize_keys!
     v = :wrapup_video; options[v] = Video.find_by(key: options[v]) if options.has_key? v
