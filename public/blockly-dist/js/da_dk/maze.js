@@ -5803,7 +5803,7 @@ Maze.performStep = function(stepMode) {
   if (!action) {
     BlocklyApps.clearHighlighting();
     Maze.animating_ = false;
-    window.setTimeout(displayFeedback(),
+    window.setTimeout(displayFeedback,
       Maze.result === ResultType.TIMEOUT ? 0 : 1000);
     return;
   }
