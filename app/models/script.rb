@@ -92,15 +92,7 @@ class Script < ActiveRecord::Base
   end
 
   def self.add_script(options, data, custom=false)
-    options.symbolize_keys!
-    v = :wrapup_video; options[v] = Video.find_by_key(options[v]) if options.has_key? v
-    script_options = options.has_key?(:id) ?
-      {id: options.delete(:id)} :
-      {name: options.delete(:name)}
-    script = Script.find_or_create_by(script_options)
-    puts "options=#{options}, script = #{script}"
-    output = script.update(options)
-    puts "output=#{output}"
+    script = fetch(options)
     chapter = 0; game_chapter = Hash.new(0)
     script.script_levels = data.map do |row|
       row.symbolize_keys!
@@ -134,6 +126,16 @@ class Script < ActiveRecord::Base
       end
       script_level
     end
+  end
+
+  def self.fetch(options)
+    options.symbolize_keys!
+    v = :wrapup_video; options[v] = Video.find_by(key: options[v]) if options.has_key? v
+    name = {name: options.delete(:name)}
+    script_key = ((id = options.delete(:id)) && {id: id}) || name
+    script = Script.create_with(name).find_or_create_by(script_key)
+    script.update!(options)
+    script
   end
 
   def self.update_script_locales
