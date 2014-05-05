@@ -26,7 +26,7 @@ FactoryGirl.define do
     app "maze"
   end
 
-  factory :level do
+  factory :level, :class => Level do
     sequence(:name) { |n| "Level #{n}" }
     sequence(:level_num) {|n| "1_2_#{n}" }
     
