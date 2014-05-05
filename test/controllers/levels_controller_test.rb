@@ -211,4 +211,13 @@ class LevelsControllerTest < ActionController::TestCase
     css = css_select "form[action=#{game_level_path(level.game, level)}]"
     assert_not css.empty?
   end
+
+  test "edit form should include skins" do
+    level = create(:artist)
+    skins = level.class.skins
+    get :edit, id: level, game_id: level.game
+    skin_select = css_select "#level_skin option"
+    values = skin_select.map { |option| option.attributes["value"] }
+    assert_equal skins, values
+  end
 end

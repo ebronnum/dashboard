@@ -83,6 +83,14 @@ class LevelTest < ActiveSupport::TestCase
     assert_equal "Artist", level.type
   end
 
+  test "levels should use first skin as default" do
+    @maze_data.delete(:skin)
+    @maze_data[:name] = "__coderkat"
+    maze = fixture_file_upload("karel_level.csv", "r")
+    level = Karel.create_from_level_builder({:maze_source => maze, :size => 8}, @maze_data)
+    assert_equal Karel.skins.first, level.skin
+  end
+
   test "basic toolbox check" do
     level = Maze.create(@maze_data)
     toolbox = Nokogiri::XML(level.complete_toolbox)
