@@ -73,7 +73,7 @@ class LevelsController < ApplicationController
     type_class = level_params[:type].constantize
 
     # Set some defaults.
-    params[:level].merge!(skin: type_class.skins.first) if params[:level][:skin].nil?
+    params[:level].reverse_merge!(skin: type_class.skins.first)
     params.merge!(user: current_user)
 
     begin
