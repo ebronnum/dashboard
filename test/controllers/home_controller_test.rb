@@ -24,6 +24,24 @@ class HomeControllerTest < ActionController::TestCase
     assert_equal "language_=es-ES; domain=.code.org; path=/", @response.headers["Set-Cookie"]
   end
 
+  test "Language is determined from HTTP header" do
+    @request.headers["HTTP_X_VARNISH_ACCEPT_LANGUAGE"] = "es-ES"
+    get :index
+    assert_select 'a', 'Iniciar Sesión'
+  end
+
+  test "Language header supports language-only codes" do
+    sign_in User.new # devise uses an empty user instead of nil? Hm
+
+    request.host = "learn.code.org"
+
+    get :set_locale, :return_to => "http://blahblah", :locale => "es"
+    @request.cookies[:language_] = "es"
+    get :index
+    assert_select 'a', 'Iniciar Sesión'
+    puts "Test: #{@controller.t('test')}"
+  end
+
   test "should get index with edmodo header" do
     @request.headers["Accept"] = "image/*"
     @request.headers["User-Agent"] = "Edmodo/14 CFNetwork/672.0.2 Darwin/14.0.0"

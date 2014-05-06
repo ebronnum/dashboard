@@ -5,6 +5,8 @@ module LocaleHelper
     best = candidate_locales.find { |locale|
       Dashboard::Application::LOCALES.has_key? locale
     }
+    puts "candidates=#{candidate_locales}, best=#{best}"
+
     # Expand language codes to include regions, if applicable.
     data = Dashboard::Application::LOCALES[best]
     (data.is_a?(String) ? data : best).to_sym
@@ -53,6 +55,7 @@ module LocaleHelper
   # Parses and ranks locale code strings from the Accept-Language header.
   def accepted_locales
     header = request.env.fetch('HTTP_X_VARNISH_ACCEPT_LANGUAGE', '')
+    puts "header: #{header}"
     begin
       header.split(',').map { |entry|
         locale, weight = entry.split(';')
@@ -73,7 +76,7 @@ module LocaleHelper
 
   # Provides a prioritized list of possible locale codes as strings.
   def candidate_locales
-    ([cookies[:language_], current_user.try(:locale)] +
+    ([cookies[:language_], try(:current_user).try(:locale)] +
      accepted_locales + accepted_languages +
      [I18n.default_locale]
     ).reject(&:nil?).map(&:to_s).map(&:downcase)
