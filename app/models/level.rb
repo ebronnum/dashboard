@@ -1,4 +1,5 @@
-# An individual Blockly level definition
+# Maps to an individual Blockly level definition
+# "name" is unique in custom-built levels
 class Level < ActiveRecord::Base
   serialize :properties, JSON
   belongs_to :game
@@ -28,6 +29,11 @@ class Level < ActiveRecord::Base
 
   # Overriden by different level types.
   def toolbox
+  end
+
+  # Overriden by different level types.
+  def self.skins
+    []
   end
 
   def self.custom_levels

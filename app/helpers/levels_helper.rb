@@ -148,6 +148,9 @@ module LevelsHelper
     # Blockly requires startDirection as an integer not a string
     level['startDirection'] = level['startDirection'].to_i if level['startDirection'].present?
 
+    # Blockly requires map as an array not a string
+    level['map'] = JSON.parse(level['map']) if level['map'].is_a? String
+
     # Fetch localized strings
     %w(instructions levelIncompleteError other1StarError tooFewBlocksMsg).each do |label|
       level[label] ||= [@level.game.app, @level.game.name].map { |name|
