@@ -1,6 +1,6 @@
 require 'yaml'
 
-class ProcessMulti
+class ProcessMatch
 
   def name(text)
     @name = text
@@ -18,12 +18,8 @@ class ProcessMulti
     @hash[:questions] << { text: text }
   end
 
-  def right(text)
-    @hash[:answers] << { text: text, correct: true }
-  end
-
-  def wrong(text)
-    @hash[:answers] << { text: text, correct: false }
+  def answer(text)
+    @hash[:answers] << { text: text }
   end
 
   def parse(filename)
@@ -46,7 +42,7 @@ class ProcessMulti
       strings[text] = text
     end
 
-    {"en" => { "data" => { "multi" => { @name => strings }}}}
+    {"en" => { "data" => { "match" => { @name => strings }}}}
   end
 
 end

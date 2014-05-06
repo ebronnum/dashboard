@@ -169,4 +169,8 @@ module LevelsHelper
     data_t('multi.' + @level.name, text)
   end
 
+  def match_t(text)
+    data_t('match.' + @level.name, text)
+  end
+
 end

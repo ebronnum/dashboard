@@ -5,128 +5,81 @@
   %h2= multi_t(data['title'])
   %p= multi_t(data['description'])
 
-  -if data['style'] == 'radio'
-    %div{:style=>'margin-left:20px'}
-      %b= data['questions'][0]['text']
-      %form#voteform{onsubmit: "return doVote()"}
-        -data['answers'].each_with_index do |answer, i|
-          -correct = answer["correct"]
-          %input{id: "choice_#{i}", name: "vote", type: "radio", value: "#{i}", onchange: "radioChanged(#{i})", correct: "#{correct}"}
-            %label{style: "display:inline", for: "choice_#{i}"}= multi_t(answer['text'])
-          %br
+  %div{:style=>'margin-left:20px'}
+    %b= data['questions'][0]['text']
+    %form#voteform{onsubmit: "return doVote()"}
+      -data['answers'].each_with_index do |answer, i|
+        -correct = answer["correct"]
+        %input{id: "choice_#{i}", name: "vote", type: "radio", value: "#{i}", onchange: "radioChanged(#{i})", correct: "#{correct}"}
+          %label{style: "display:inline", for: "choice_#{i}"}= multi_t(answer['text'])
         %br
-        %br
-      .buttons
-        %a.btn.btn-primary.next-stage.submitButton
-          Submit
-    %br/
-    %br/
-    %br/
-
-  -if data['style'] == 'drag'
-    -data['answers'].each_with_index do |answer, i|
-      -answer['index'] = i
-    -data['answers'].shuffle!
-
-    %div{:style=>'margin-left:20px'}
-      %div{:style=>'height:40px'}
-        %b Match the questions with the answers
-      %div{:style=>'width: 220px; float:left'}
-        %ul.sortableq
-          -data['questions'].each do |question|
-            %li= multi_t(question['text'])
-      %div{:style=>'width: 220px; float:left'}
-        %ul.sortable#answerlist{:style=>'cursor:default'}
-          -data['answers'].each do |answer|
-            %li{originalIndex: answer['index']}= multi_t(answer['text'])
-      %div{:style=>'clear:both'}
-      %br/
-      %div
-        .buttons
-          %a.btn.btn-primary.next-stage.submitButton
-            Submit
+      %br
+      %br
+    .buttons
+      %a.btn.btn-primary.next-stage.submitButton
+        Submit
+  %br/
+  %br/
+  %br/
 
   %div{:style=>'clear:both'}
 
 :javascript
 
-  var valueChosen = false;
-  var valueChosenCorrect = false;
+  var selection = "none";   // "none", "wrong", "right"
+  var clickedNext = false;  // avoid multiple simultaneous submissions
 
-  function radioChanged(index) {
+  function radioChanged(index) 
+  {
     $('.submitButton').css({ opacity: 1.0 });
-    valueChosenCorrect = $("#choice_" + index).attr("correct") == "true";
+    selection = $("#choice_" + index).attr("correct") == "true" ? "right" : "wrong";
   }
 
-  $(function() {
-    $( ".sortable" ).sortable();
-    $( ".sortable" ).disableSelection();
-
-    if ("#{data['style']}" == 'radio')
-    {
-      $('.submitButton').css({ opacity: 0.5 });
-      valueChosen = true;
-    }
+  $(function() 
+  {
+    $('.submitButton').css({ opacity: 0.5 });
   });
 
-  var clickedNext = false;
-  $('.submitButton').click(function() {
-    if (!clickedNext) {
+  $('.submitButton').click(function() 
+  {
+    if (!clickedNext) 
+    {
       clickedNext = true;
 
-      var correct = false;
-
-      if ("#{data['style']}" == 'radio')
+      if (selection == "wrong") 
       {
-        if (!valueChosen)
-        {
-          clickedNext = false;
-          return;
-        }
-
-        correct = valueChosenCorrect;
+        alert("incorrect");
       }
-      else if ("#{data['style']}" == 'drag')
-      {
-        var wrongAnswer = false;
 
-        var answers = $("#answerlist").sortable('toArray', {attribute:"originalIndex"});
-        for (var i = 0; i < answers.length; i++)
-        {
-          if (answers[i] != i)
+      if (solution != "none")
+      {
+        sendReport({
+          fallbackResponse: '#{@fallback_response.to_json}',
+          callback: '#{@callback}',
+          app: 'multi',
+          level: '#{@level.level_num}',
+          result: solution == "right",
+          testResult: solution == "right" ? 100 : 0,
+          onComplete: function() 
           {
-            wrongAnswer = true;
-          }
-        }
-        if (! wrongAnswer)
-          correct = true;
-      }
+            // reenable button
+            clickedNext = false;
 
-      if (correct)
-      {
-        alert("correct");
+            if (videoInfo) 
+            {
+              showVideo(videoInfo);
+            } 
+            else if (nextRedirect) 
+            {
+              window.location.href = nextRedirect;
+            }
+          }
+        });
       }
       else
       {
-        alert("incorrect");
+        // reenable button
         clickedNext = false;
-        return;
       }
-
-      sendReport({
-        fallbackResponse: '#{@fallback_response.to_json}',
-        callback: '#{@callback}',
-        app: 'multi',
-        level: '#{@level.level_num}',
-        result: true,
-        testResult: correct ? 100 : 0,
-        onComplete: function() {
-          if (videoInfo) {
-            showVideo(videoInfo);
-          } else if (nextRedirect) {
-            window.location.href = nextRedirect;
-          }
-        }
-      });
     }
   });

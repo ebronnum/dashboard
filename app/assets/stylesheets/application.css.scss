@@ -1046,36 +1046,45 @@ a.download-video {
   }
 }
 
-.multi {
-  .sortableq {
+.match {
+  li {
+    height: 20px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    background-color: lightgrey;
+    padding-left: 10px;
+    width: 200px;
+    margin-top:2px;
+    margin-bottom:2px;  
+  } 
+  #questions {
     list-style-type: none;
     margin-left:0px;
     li {
-      height: 20px;
-      padding-top: 7px;
-      padding-bottom: 7px;
       background-color: lightgrey;
-      padding-left: 10px;
-      width: 200px;
-      margin-top:2px;
-      margin-bottom:2px;  
-    } 
-  }
-  .sortable {
-    list-style-type: none;
-    li {
-      height: 20px;
-      padding-top: 7px;
-      padding-bottom: 7px;
-      background-color: lightblue;
-      padding-left: 10px;
-      width: 200px;
-      margin-top:2px;
-      margin-bottom:2px;
     }
   }
+  #slots {
+    list-style-type: none;
+    margin-left:0px;
+    .emptyslot {
+      background-color: #eee;
+    }
+    .active {
+      background-color: lightyellow;
+    }    
+  }
+  .answer {
+    background-color: lightblue;
+    .active {
+      background-color: green;
+    }
+  }
+  #answers {
+    list-style-type: none;
+    margin-left:0px;
+  }
 }
-
 
 #current-script-levels, #all-levels {
   min-height: 50px;
